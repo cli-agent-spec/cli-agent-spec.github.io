@@ -423,7 +423,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="research/agentyper/" class="md-tabs__link">
+        <a href="research/" class="md-tabs__link">
           
   
   
@@ -9150,6 +9150,10 @@
     
       
         
+          
+        
+      
+        
       
         
       
@@ -9193,8 +9197,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="research/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -9208,8 +9213,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_10">
@@ -9221,6 +9232,8 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -9848,7 +9861,7 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 <td>Per-framework analysis and competitive landscape (MCP, OpenAPI, function calling)</td>
 </tr>
 <tr>
-<td><a href="skills/"><code>skills/</code></a></td>
+<td><a href="https://github.com/cli-agent-spec/cli-agent-spec/tree/master/skills"><code>skills/</code></a></td>
 <td>Agent skills for evaluating CLIs and guiding implementation</td>
 </tr>
 </tbody>
@@ -9857,9 +9870,9 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 <h2 id="start-here">Start here</h2>
 <p><strong>I want to understand the problem</strong> → <a href="challenges/"><code>challenges/index.md</code></a> — browse by severity. Start with §10 (interactive blocking), §43 (output size), §50 (stdin deadlock), §62 (editor trap).</p>
 <p><strong>I want to implement this in my framework</strong> → <a href="IMPLEMENTING/"><code>IMPLEMENTING.md</code></a> — wave-based implementation order, or pick a goal-based path:
-- <a href="IMPLEMENTING/#path-a--fewer-retries">Fewer agent retries</a> — 15 requirements
-- <a href="IMPLEMENTING/#path-b--less-context-consumed">Less context consumed</a> — 14 requirements
-- <a href="IMPLEMENTING/#path-c--less-token-spend">Less token spend</a> — 12 requirements</p>
+- <a href="IMPLEMENTING/#path-a-fewer-retries">Fewer agent retries</a> — 15 requirements
+- <a href="IMPLEMENTING/#path-b-less-context-consumed">Less context consumed</a> — 14 requirements
+- <a href="IMPLEMENTING/#path-c-less-token-spend">Less token spend</a> — 12 requirements</p>
 <p><strong>I want to evaluate my existing CLI</strong> → use the agent skills below, or read <a href="challenges/checklist/"><code>challenges/checklist.md</code></a> for a self-assessment.</p>
 <p><strong>I want to add a failure mode or requirement</strong> → <a href="AGENTS/"><code>AGENTS.md</code></a></p>
 <hr />
@@ -9874,15 +9887,15 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 </thead>
 <tbody>
 <tr>
-<td><a href="skills/cli-agent-onboard/"><code>cli-agent-onboard</code></a></td>
+<td><a href="https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-onboard/SKILL.md"><code>cli-agent-onboard</code></a></td>
 <td>Profile a CLI tool once — detects runtime, binary, flags, timeout method</td>
 </tr>
 <tr>
-<td><a href="skills/cli-agent-evaluate/"><code>cli-agent-evaluate</code></a></td>
+<td><a href="https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-evaluate/SKILL.md"><code>cli-agent-evaluate</code></a></td>
 <td>Score a CLI against a single failure mode (0–3), with applicable agent workaround</td>
 </tr>
 <tr>
-<td><a href="skills/cli-agent-implement/"><code>cli-agent-implement</code></a></td>
+<td><a href="https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-implement/SKILL.md"><code>cli-agent-implement</code></a></td>
 <td>Guide implementing the spec in a CLI framework, tier by tier</td>
 </tr>
 </tbody>
