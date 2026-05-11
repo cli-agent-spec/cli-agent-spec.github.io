@@ -9951,6 +9951,12 @@ tool list-users --output json
 tool list-users --output jsonl   # one JSON object per line for streaming
 tool list-users --output tsv     # tab-separated, good for piping
 tool list-users --output plain   # minimal, no decoration (for humans too)
+
+# Some CLIs use --json as a shorthand (gh, az, etc.)
+tool list-users --json           # equivalent to --output json
+
+# Some CLIs use -o as a short flag (kubectl, helm, etc.)
+tool list-users -o json
 </code></pre>
 <p><strong>JSON output schema:</strong></p>
 <pre><code class="language-json">{
@@ -10097,8 +10103,24 @@ It is consolidated here because it describes a specific case of the same root pr
 <hr />
 <h3 id="agent-workaround">Agent Workaround</h3>
 <p><strong>Always request structured output and detect format violations before parsing:</strong></p>
-<pre><code class="language-python">result = subprocess.run(
-    [*cmd, &quot;--output&quot;, &quot;json&quot;],
+<pre><code class="language-python"># Discover the JSON flag from --help before invoking the real command
+_help = subprocess.run([*cmd, &quot;--help&quot;], capture_output=True, text=True)
+help_text = _help.stdout + _help.stderr
+
+JSON_FLAG_PATTERNS = [
+    (r&quot;--output\s+\w*json&quot;, [&quot;--output&quot;, &quot;json&quot;]),  # --output json / --output-format json
+    (r&quot;--json\b&quot;,            [&quot;--json&quot;]),             # gh, az
+    (r&quot;-o\b&quot;,                [&quot;-o&quot;, &quot;json&quot;]),         # kubectl, helm
+]
+json_flag = next(
+    (flag for pattern, flag in JSON_FLAG_PATTERNS if re.search(pattern, help_text)),
+    None,
+)
+if json_flag is None:
+    raise ValueError(f&quot;No JSON output flag found in --help for: {cmd}&quot;)
+
+result = subprocess.run(
+    [*cmd, *json_flag],
     capture_output=True, text=True,
     env={**os.environ, &quot;NO_COLOR&quot;: &quot;1&quot;, &quot;CI&quot;: &quot;true&quot;},
 )
