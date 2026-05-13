@@ -9881,6 +9881,7 @@ Commands:
 - Output schema is declared alongside input schema, not separate
 - Schema versioning: <code>tool --schema-version</code> to track evolution</p>
 <h3 id="evaluation">Evaluation</h3>
+<p><strong>Prerequisite check (§1 / REQ-F-068):</strong> Run <code>tool</code> with no arguments and verify exit code is 0. If the bare invocation exits non-zero, cap the score at 0 regardless of <code>--schema</code> richness — the agent's first-contact probe fails before any discovery can occur.</p>
 <table>
 <thead>
 <tr>
@@ -9891,23 +9892,23 @@ Commands:
 <tbody>
 <tr>
 <td>0</td>
-<td>Help is prose only; no <code>--schema</code> flag; agent must parse natural language to understand arguments</td>
+<td>Bare invocation exits non-zero; or help is prose only with no <code>--schema</code> flag; agent must parse natural language to understand arguments</td>
 </tr>
 <tr>
 <td>1</td>
-<td><code>--help --output json</code> returns some structured info but no output schema; commands not enumerable from root</td>
+<td>Bare invocation exits 0 with root help; <code>--help --output json</code> returns some structured info but no output schema; commands not enumerable from root</td>
 </tr>
 <tr>
 <td>2</td>
-<td><code>tool --schema --output json</code> returns command list with parameter types, required flags, and exit codes</td>
+<td>Bare invocation exits 0; <code>tool --schema --output json</code> returns command list with parameter types, required flags, and exit codes</td>
 </tr>
 <tr>
 <td>3</td>
-<td>Full manifest includes <code>output_schema</code> per command; <code>danger_level</code> declared; schema auto-generated from parameter declarations; <code>--print-schema</code> compatibility alias accepted</td>
+<td>Bare invocation exits 0; full manifest includes <code>output_schema</code> per command; <code>danger_level</code> declared; schema auto-generated from parameter declarations; <code>--print-schema</code> compatibility alias accepted</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Check:</strong> Run <code>tool --schema --output json</code> and verify the response includes <code>commands[].parameters[].type</code> and <code>commands[].output_schema</code> for at least one command.</p>
+<p><strong>Check:</strong> First run <code>tool</code> with no arguments and confirm exit 0. Then run <code>tool --schema --output json</code> and verify the response includes <code>commands[].parameters[].type</code> and <code>commands[].output_schema</code> for at least one command.</p>
 <hr />
 <h3 id="agent-workaround">Agent Workaround</h3>
 <p><strong>Load the full schema manifest once per session; use it to construct and validate calls:</strong></p>

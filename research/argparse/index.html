@@ -10055,6 +10055,11 @@ Application logic (developer-controlled)
 <p><strong>Overrideable <code>error()</code> and <code>exit()</code> methods</strong>: Both methods are designed to be subclassed. An agent framework can wrap argparse to capture errors as structured data rather than printed text.</p>
 <p><strong><code>parse_known_args()</code></strong>: Returns unknown arguments as a list rather than erroring. Allows composable CLI tools that pass unrecognized arguments downstream.</p>
 <p><strong>Subcommand discoverability</strong>: <code>parser.parse_args(['--help'])</code> exits 0 and prints all subcommands to stdout. <code>parser.parse_args(['subcommand', '--help'])</code> prints subcommand-specific help. This is reliable and consistent.</p>
+<p><strong>Warning — two bare-invocation anti-patterns</strong>: The default <code>add_subparsers(required=False)</code> produces silent exit 0 with no output on bare invocation. Agents expect a command list on stdout; empty output fails discovery silently. Explicit <code>required=True</code> is worse: it exits 2 with "the following arguments are required: COMMAND", which agents interpret as the tool being broken. Both anti-patterns share the same fix: <code>required=False</code> combined with a default handler that prints help and exits 0:</p>
+<pre><code class="language-python">subparsers = parser.add_subparsers(dest=&quot;command&quot;, required=False)
+parser.set_defaults(func=lambda args: (parser.print_help(), sys.exit(0)))
+</code></pre>
+<p>Without <code>set_defaults</code>, argparse silently does nothing on bare invocation, which also fails agents (exit 0 but no output). Both the error-exit form and the silent-success form violate REQ-F-068.</p>
 <p><strong>No external dependencies</strong>: An argparse-based CLI works in any Python environment without installation. An agent can invoke it without dependency management.</p>
 <p><strong><code>suggest_on_error=True</code></strong> (Python 3.14+): When enabled, provides "did you mean X?" suggestions for typo'd argument names or choices. Reduces agent retry cycles for near-miss invocations.</p>
 <p><strong><code>deprecated=True</code> on arguments</strong> (Python 3.14+): Arguments can be marked deprecated with a warning to stderr. Agents can detect deprecation warnings and adjust invocations.</p>
@@ -10217,7 +10222,7 @@ Application logic (developer-controlled)
 <td>21</td>
 <td>Schema &amp; Help Discoverability</td>
 <td>~</td>
-<td><code>--help</code> is auto-generated and covers all arguments with types and defaults; <code>format_help()</code> returns string programmatically; no JSON Schema export</td>
+<td><code>--help</code> is auto-generated; <code>format_help()</code> available programmatically; no JSON Schema export; bare invocation exits 0 with help only if <code>add_subparsers(required=False)</code> + default handler is configured — the common <code>required=True</code> anti-pattern caps §21 score at 0 regardless of <code>--schema</code> richness</td>
 </tr>
 <tr>
 <td>22</td>

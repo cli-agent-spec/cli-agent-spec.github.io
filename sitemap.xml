@@ -417,6 +417,10 @@
          <lastmod>2026-05-13</lastmod>
     </url>
     <url>
+         <loc>https://cli-agent-spec.github.io/guides/no-args-entry-point/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
          <loc>https://cli-agent-spec.github.io/guides/stdin-native-cli/</loc>
          <lastmod>2026-05-13</lastmod>
     </url>

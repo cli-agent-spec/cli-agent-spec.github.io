@@ -9907,7 +9907,7 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 <p><strong>I want to add a failure mode or requirement</strong> → <a href="AGENTS/"><code>AGENTS.md</code></a></p>
 <hr />
 <h2 id="agent-skills">Agent skills</h2>
-<p>Three installable skills for <a href="https://agentskills.io">Agent Skills-compatible</a> agents (Claude Code, Cursor, Gemini CLI, Copilot, and others):</p>
+<p>Four installable skills for <a href="https://agentskills.io">Agent Skills-compatible</a> agents (Claude Code, Cursor, Gemini CLI, Copilot, and others):</p>
 <table>
 <thead>
 <tr>
@@ -9928,12 +9928,17 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 <td><a href="https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-implement/SKILL.md"><code>cli-agent-implement</code></a></td>
 <td>Guide implementing the spec in a CLI framework, tier by tier</td>
 </tr>
+<tr>
+<td><a href="https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-diagnose/SKILL.md"><code>cli-agent-diagnose</code></a></td>
+<td>Classify a failed CLI call against §N taxonomy, return workaround + memory string</td>
+</tr>
 </tbody>
 </table>
 <pre><code class="language-bash"># Install (run inside your agent)
 npx skills install romamo/cli-agent-spec/skills/cli-agent-onboard
 npx skills install romamo/cli-agent-spec/skills/cli-agent-evaluate
 npx skills install romamo/cli-agent-spec/skills/cli-agent-implement
+npx skills install romamo/cli-agent-spec/skills/cli-agent-diagnose
 </code></pre>
 <hr />
 <h2 id="contributing">Contributing</h2>
