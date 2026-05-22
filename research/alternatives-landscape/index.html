@@ -9432,6 +9432,78 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#egisai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EgisAI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencerun-agent-reliability-audit-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EvidenceRun — Agent Reliability Audit Taxonomy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="EvidenceRun — Agent Reliability Audit Taxonomy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-it-is_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it is
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-to-this-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapping to this spec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compounding-and-the-specs-contribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compounding and the spec's contribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relationship-to-this-spec_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to this spec
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10375,6 +10447,78 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#egisai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EgisAI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencerun-agent-reliability-audit-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EvidenceRun — Agent Reliability Audit Taxonomy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="EvidenceRun — Agent Reliability Audit Taxonomy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-it-is_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it is
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-to-this-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapping to this spec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compounding-and-the-specs-contribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compounding and the spec's contribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relationship-to-this-spec_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to this spec
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10485,7 +10629,7 @@
 
 <h1 id="alternative-solutions-landscape">Alternative Solutions Landscape</h1>
 <blockquote>
-<p>A comprehensive comparison of existing approaches to the agent-CLI integration problem, evaluated against the 67 failure modes in this specification.</p>
+<p>A comprehensive comparison of existing approaches to the agent-CLI integration problem, evaluated against the 73 failure modes in this specification.</p>
 </blockquote>
 <p>Researched March 2026.</p>
 <hr />
@@ -10520,9 +10664,14 @@
 <td>Informal checklists for CLI authors</td>
 <td>better-cli, DEV Community guides</td>
 </tr>
+<tr>
+<td>Audit</td>
+<td>Post-hoc reliability classification of production agent traces</td>
+<td>EvidenceRun</td>
+</tr>
 </tbody>
 </table>
-<p>CLI Agent Spec occupies a fifth layer — <strong>behavioral contract specification</strong> — that none of these approaches formally addresses.</p>
+<p>CLI Agent Spec occupies a sixth layer — <strong>behavioral contract specification</strong> — that none of these approaches formally addresses.</p>
 <hr />
 <h2 id="1-model-context-protocol-mcp">1. Model Context Protocol (MCP)</h2>
 <h3 id="what-it-is">What it is</h3>
@@ -10892,6 +11041,191 @@
 <p>A community standard for publishing AI service metadata at <code>/.well-known/ai.json</code>, combining OpenAPI schema discovery with JWKS-based cryptographic verification. Addresses service <em>discovery</em> — how agents find what tools exist — not the behavioral contracts of those tools after discovery. Complementary.</p>
 <h3 id="aws-cli-agent-orchestrator-awslabscli-agent-orchestrator">AWS CLI Agent Orchestrator (awslabs/cli-agent-orchestrator)</h3>
 <p>An open-source multi-agent orchestration framework from AWS Labs that wraps Amazon Q CLI and Claude Code as worker agents in a supervisor/worker hierarchy. Orchestrates calls to existing CLIs rather than specifying how CLIs should behave. Does not define exit code standards, structured output envelopes, or tool manifests.</p>
+<h3 id="egisai">EgisAI</h3>
+<p><strong>Source:</strong> <a href="https://egisai.co/">egisai.co</a> / <a href="https://github.com/EgisLabs/egisai-sdk">EgisLabs/egisai-sdk</a> — runtime governance SDK for Python AI applications.</p>
+<p>EgisAI intercepts LLM provider calls and tool invocations to enforce PII masking, policy rules, model allowlists, and audit logging before and after each call. One-line integration (<code>egisai.init()</code>) with 15+ AI frameworks. Targets engineering and security teams shipping production AI features, not CLI authors.</p>
+<p>The SDK operates at the agent → LLM/tool boundary, not the host → subprocess boundary. It addresses adjacent challenges from the agent side:</p>
+<table>
+<thead>
+<tr>
+<th>EgisAI concern</th>
+<th>Spec challenge</th>
+<th>Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PII leakage to third-party APIs</td>
+<td>§25 Prompt injection, §59 Token poisoning</td>
+<td>EgisAI sanitizes agent-side output before dispatch; spec requires CLIs to sanitize their own responses before returning them to the agent</td>
+</tr>
+<tr>
+<td>Unauthorized tool access</td>
+<td>§34 Shell injection</td>
+<td>EgisAI restricts which tools agents may call; spec requires tools to reject dangerous inputs at registration</td>
+</tr>
+<tr>
+<td>Audit trail</td>
+<td>§33 Observability &amp; audit trail</td>
+<td>EgisAI audits at the agent layer; spec requires <code>request_id</code> and JSONL audit logs at the CLI layer</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationship to this spec:</strong> Complementary — agent-side governance vs. CLI-side behavioral contracts. EgisAI governs what the agent is permitted to invoke; this spec governs how CLIs must behave when invoked. Both are necessary in a production agent deployment; neither substitutes for the other.</p>
+<h3 id="evidencerun-agent-reliability-audit-taxonomy">EvidenceRun — Agent Reliability Audit Taxonomy</h3>
+<p><strong>Source:</strong> <a href="https://www.evidencerun.com/">evidencerun.com</a> / <a href="https://getevidencerun.substack.com/p/12-ways-ai-agents-fail-in-production">Substack: "12 Ways AI Agents Fail in Production"</a> (May 2026) — a structured failure taxonomy for production agent behavior, used as the basis for a commercial reliability audit service targeting enterprise-facing agent startups.</p>
+<h4 id="what-it-is_2">What it is</h4>
+<p>A 12-mode taxonomy derived from production incidents, red-team write-ups, and instrumented agent traces across refund bots, coding agents, research agents, sales-prospecting agents, and support copilots. The taxonomy is organized into three severity tiers and delivered as a buyer-ready "Agent Reliability Report" founders can use in investor, security, and enterprise sales conversations.</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Mode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Critical</td>
+<td>#3 PII exposure</td>
+<td>Customer data, secrets, or prompt content leaks to a third-party tool, log, or downstream model</td>
+</tr>
+<tr>
+<td>Critical</td>
+<td>#5 Missing approval</td>
+<td>High-impact actions execute without the human-in-the-loop check the workflow promises</td>
+</tr>
+<tr>
+<td>Critical</td>
+<td>#11 Unverifiable decisions</td>
+<td>A decision was made; nobody can reconstruct what the agent saw, asked, or weighed</td>
+</tr>
+<tr>
+<td>Critical</td>
+<td>#12 No replay trail</td>
+<td>Inputs, prompts, model versions, and tool outputs are not stored long enough for an after-the-fact audit</td>
+</tr>
+<tr>
+<td>Operational</td>
+<td>#1 Tool misuse</td>
+<td>Agent calls a tool with the wrong args, wrong scope, or no need to call it at all</td>
+</tr>
+<tr>
+<td>Operational</td>
+<td>#2 Hidden retries</td>
+<td>Silent retry loops on non-idempotent calls cause duplicate side effects nobody can see in the trace</td>
+</tr>
+<tr>
+<td>Operational</td>
+<td>#6 Runaway cost</td>
+<td>Recursive calls, retry storms, or context bloat send a single run past the alarm threshold</td>
+</tr>
+<tr>
+<td>Operational</td>
+<td>#8 Silent failure</td>
+<td>Tool returned an error; the agent returned success — the user is told something happened that didn't</td>
+</tr>
+<tr>
+<td>Subtle</td>
+<td>#4 Prompt injection</td>
+<td>Untrusted content in inputs, attachments, or web pages overrides system instructions</td>
+</tr>
+<tr>
+<td>Subtle</td>
+<td>#7 Stale context</td>
+<td>Agent acts on cached customer state, expired session data, or out-of-date documents</td>
+</tr>
+<tr>
+<td>Subtle</td>
+<td>#9 Wrong system access</td>
+<td>Agent inherits service-account permissions far beyond what the workflow requires</td>
+</tr>
+<tr>
+<td>Subtle</td>
+<td>#10 Output drift</td>
+<td>Customer-facing wording, format, or recommendations drift across runs in ways nobody noticed</td>
+</tr>
+</tbody>
+</table>
+<h4 id="mapping-to-this-spec">Mapping to this spec</h4>
+<p>EvidenceRun's taxonomy operates at the agent behavior layer; this spec operates at the CLI tool design layer. Most of EvidenceRun's 12 modes have root causes that live in CLI behavioral contracts:</p>
+<table>
+<thead>
+<tr>
+<th>EvidenceRun mode</th>
+<th>Spec challenges</th>
+<th>Relationship</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#1 Tool misuse</td>
+<td>§2 Output format, §21 Schema discoverability, §35 Hallucination input patterns</td>
+<td>Exit code taxonomy and arg validation requirements make misuse structurally detectable</td>
+</tr>
+<tr>
+<td>#2 Hidden retries</td>
+<td>§12 Idempotency / safe retries, §19 Retry hints</td>
+<td>Near-perfect match: the spec's <code>retryable</code>/<code>side_effects</code> invariant is the only known design-time mechanism that addresses this mode per exit code</td>
+</tr>
+<tr>
+<td>#3 PII exposure</td>
+<td>§34 Shell injection, §59 Token poisoning</td>
+<td>Spec controls structured output boundaries; EgisAI is the closer agent-side enforcement</td>
+</tr>
+<tr>
+<td>#4 Prompt injection</td>
+<td>§25 Prompt injection, §59 Token poisoning</td>
+<td>Spec addresses the CLI trust boundary; CLI-side response sanitization (per Poehnelt's Model Armor approach) is the structural fix</td>
+</tr>
+<tr>
+<td>#5 Missing approval</td>
+<td>§23 Destructive operations</td>
+<td><code>side_effects</code> field enables agent-side approval gating; spec cannot enforce gating by design — enforcement is the agent's responsibility</td>
+</tr>
+<tr>
+<td>#6 Runaway cost</td>
+<td>§11 Timeout enforcement, §43 Unbounded output</td>
+<td>Timeout signals and pagination requirements reduce runaway cost surface</td>
+</tr>
+<tr>
+<td>#7 Stale context</td>
+<td>None</td>
+<td>Agent architecture concern; no CLI design addresses read/write time-delta in agent state</td>
+</tr>
+<tr>
+<td>#8 Silent failure</td>
+<td>§1 Exit code taxonomy, §6 Errors (entire part)</td>
+<td><strong>Core value of this spec</strong> — exit codes, structured error envelopes, and non-zero exits on failure are the direct structural fix</td>
+</tr>
+<tr>
+<td>#9 Wrong system access</td>
+<td>§30 Undeclared filesystem side effects, §53 Credential expiry</td>
+<td>Manifest declarations enable least-privilege reasoning; IAM enforcement is external</td>
+</tr>
+<tr>
+<td>#10 Output drift</td>
+<td>§22 Schema versioning per response</td>
+<td>Versioned <code>response-envelope</code> schema and regression scaffolding directly address drift</td>
+</tr>
+<tr>
+<td>#11 Unverifiable decisions</td>
+<td>§33 Observability &amp; audit trail</td>
+<td><code>request_id</code>, JSONL audit logs, and structured response envelopes are the spec's contributions</td>
+</tr>
+<tr>
+<td>#12 No replay trail</td>
+<td>§33 Observability &amp; audit trail, §22 Schema versioning</td>
+<td>Structured, versioned, deterministic output makes replay possible; the spec provides the format</td>
+</tr>
+</tbody>
+</table>
+<p>10 of EvidenceRun's 12 modes trace directly to CLI behavioral gaps this spec addresses. The two without a CLI fix — #7 (Stale context) and partly #9 (Wrong system access / IAM enforcement) — are genuinely agent-architecture concerns.</p>
+<h4 id="compounding-and-the-specs-contribution">Compounding and the spec's contribution</h4>
+<p>EvidenceRun emphasizes that failure modes compound in production: prompt injection (#4) + wrong system access (#9) = an attacker with write access to billing; hidden retries (#2) + silent failure (#8) = three invoices sent, system reports one. The spec's <code>side_effects</code> declarations and structured exit codes allow agents to implement defense-in-depth before a call lands — earlier in the stack than any audit can intervene.</p>
+<h4 id="relationship-to-this-spec_3">Relationship to this spec</h4>
+<p>EvidenceRun is post-hoc audit; this spec is design-time prevention. EvidenceRun instruments one workflow, maps failures to the 12-mode taxonomy, and packages the evidence for enterprise buyers. This spec provides the behavioral contracts that make most of those failures structurally impossible or detectable at call time. A CLI built to this spec would score better on modes #1, #2, #8, #10, #11, and #12 by construction — not because the audit rubric changed, but because the failure mode was eliminated at the source.</p>
+<p><strong>The spec as the substrate that makes EvidenceRun findings fixable:</strong> EvidenceRun's 12 modes are high-level; the spec's 73 failure modes are granular sub-cases. "#1 Tool misuse" in EvidenceRun decomposes into at least 8 §N failure modes in the spec. An EvidenceRun audit tells a team which high-level mode fired. The spec tells CLI authors which specific behavioral contract to implement to prevent it from firing again.</p>
 <hr />
 <h2 id="7-universal-gaps">7. Universal Gaps</h2>
 <p>The following 23 challenges have <strong>zero</strong> native implementations across all 12 evaluated solutions, including MCP. They represent the genuinely novel territory this spec addresses:</p>
@@ -11094,6 +11428,20 @@
 <td>No enforcement, no schemas, no tiered contracts</td>
 <td>Informal predecessor of same problem space</td>
 </tr>
+<tr>
+<td>EgisAI</td>
+<td>0% (different layer)</td>
+<td>Add <code>egisai.init()</code> to agent code</td>
+<td>CLI behavioral contracts entirely</td>
+<td>Complementary — agent-side governance</td>
+</tr>
+<tr>
+<td>EvidenceRun</td>
+<td>N/A (audit taxonomy)</td>
+<td>Instrument one agent workflow for tracing</td>
+<td>Post-hoc only — no prevention mechanism; no structural enforcement at CLI or protocol layer</td>
+<td>Complementary — post-hoc audit taxonomy vs. design-time behavioral contracts</td>
+</tr>
 </tbody>
 </table>
 <hr />
@@ -11226,6 +11574,21 @@
 <td>AWS CLI agent orchestrator</td>
 <td>https://github.com/awslabs/cli-agent-orchestrator</td>
 <td>Multi-agent CLI orchestration framework</td>
+</tr>
+<tr>
+<td>EgisAI SDK</td>
+<td>https://github.com/EgisLabs/egisai-sdk</td>
+<td>Runtime governance interceptor; agent-side §25/§34/§33 adjacency</td>
+</tr>
+<tr>
+<td>EvidenceRun</td>
+<td>https://www.evidencerun.com/</td>
+<td>12-mode agent reliability audit taxonomy; post-hoc diagnosis of production agent failures</td>
+</tr>
+<tr>
+<td>EvidenceRun — "12 Ways AI Agents Fail in Production"</td>
+<td>https://getevidencerun.substack.com/p/12-ways-ai-agents-fail-in-production</td>
+<td>Primary taxonomy source; mapping between 12 modes and spec §N failure modes</td>
 </tr>
 </tbody>
 </table>
