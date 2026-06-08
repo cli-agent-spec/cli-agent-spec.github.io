@@ -563,6 +563,8 @@
       
         
       
+        
+      
     
     
     
@@ -820,14 +822,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../../evaluations/neonctl/" class="md-nav__link">
+      <a href="../../evaluations/link/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    neonctl
+    Link
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluations/neon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    neon
   
 
     
@@ -3976,6 +4006,8 @@
       
         
           
+        
+      
         
       
         
@@ -8682,6 +8714,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/o-049-llm-token-budget-flags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-O-049: LLM Token Budget Flags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -8937,6 +8997,17 @@
     <span class="md-ellipsis">
       
         Implementation notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related
       
     </span>
   </a>
@@ -9633,6 +9704,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -9748,6 +9830,12 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td>Shape of the command's stdout payload on success. Agents use this to validate responses and detect schema drift</td>
 </tr>
 <tr>
+<td><code>output_formats</code></td>
+<td>string[]</td>
+<td>no</td>
+<td>Additional format values accepted by <code>--output</code> or <code>--format</code> beyond the framework defaults (<code>json</code>, <code>jsonl</code>, <code>tsv</code>, <code>plain</code>). Omit when only defaults are supported. <code>json</code> is always assumed available. Sourced from REQ-O-049</td>
+</tr>
+<tr>
 <td><code>examples</code></td>
 <td><code>Example[]</code></td>
 <td>no</td>
@@ -9861,6 +9949,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - <code>type: "enum"</code> — only values in <code>enum_values</code> are accepted; sending any other value produces <code>ARG_ERROR (3)</code>
 - <code>default</code> absent — the flag is optional but has no fallback; omitting it changes behavior; include explicitly if the outcome matters
 - <code>short</code> present — both <code>--flag-name value</code> and <code>-f value</code> are valid; prefer long form for clarity in agent-constructed calls</p>
+<p><strong>Selecting output format from <code>output_formats</code></strong>
+- If <code>output_formats</code> is absent, treat <code>json</code> as the only guaranteed format — do not attempt non-standard values
+- If <code>output_formats</code> is present, select the most appropriate format for your consumer: <code>json</code> for programmatic parsing, an LLM-optimized value (e.g. <code>toon</code>) when the language model is the final reader and token cost matters
+- Never assume a format value is valid unless it appears in <code>output_formats</code> or is one of the framework defaults</p>
 <p><strong>Pre-planning retries from <code>exit_codes</code></strong>
 - Before the first call, read the command's <code>exit_codes</code> map and identify which codes are retryable
 - Build the retry/rollback plan before calling, not reactively — this avoids ambiguity about whether a retry is safe after a partial failure</p>
@@ -9893,7 +9985,47 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><code>etag</code> must be computed from registrations (names, flags, exit codes, descriptions), not runtime state. Same registrations → same etag</li>
 <li><code>exit_codes</code> keys are strings (<code>"0"</code>, <code>"2"</code>) because JSON object keys are always strings</li>
 <li><code>FlagEntry.default</code> must be omitted (not <code>null</code>) when no default exists, to distinguish "optional without fallback" from "default is null"</li>
+<li><code>output_formats</code> must list only values the command actually accepts; do not list formats that resolve to an error</li>
 </ul>
+<h2 id="related">Related</h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Relationship</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
+<td>Consumes: the command that returns this schema</td>
+</tr>
+<tr>
+<td><a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a></td>
+<td>Sources: <code>output_formats</code> field — LLM-optimized formats are declared here</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a></td>
+<td>Sources: <code>exit_codes</code> per command</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a></td>
+<td>Sources: <code>danger_level</code> per command</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a></td>
+<td>Sources: <code>required_scopes</code> per command</td>
+</tr>
+<tr>
+<td><a href="../exit-code-entry/">schemas/exit-code-entry.md</a></td>
+<td>Provides: <code>ExitCodeEntry</code> type used in <code>exit_codes</code> map</td>
+</tr>
+<tr>
+<td><a href="../response-envelope/">schemas/response-envelope.md</a></td>
+<td>Wraps: manifest is returned as the <code>data</code> field of a <code>ResponseEnvelope</code></td>
+</tr>
+</tbody>
+</table>
 
 
 

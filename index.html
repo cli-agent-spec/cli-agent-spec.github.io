@@ -696,6 +696,8 @@
       
         
       
+        
+      
     
     
     
@@ -953,14 +955,42 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/neonctl/" class="md-nav__link">
+      <a href="evaluations/link/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    neonctl
+    Link
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="evaluations/neon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    neon
   
 
     
@@ -4109,6 +4139,8 @@
       
         
           
+        
+      
         
       
         
@@ -8815,6 +8847,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements/o-049-llm-token-budget-flags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-O-049: LLM Token Budget Flags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -9780,7 +9840,7 @@
 
 <h1 id="cli-agent-spec">CLI Agent Spec</h1>
 <p><strong>Your CLI tool works perfectly for humans. For AI agents, it silently hangs, corrupts data, leaks secrets, and exhausts context windows — and you would never know.</strong></p>
-<p>This is a specification for building CLI tools that AI agents can call reliably: <strong>73 documented failure modes</strong>, <strong>155 requirements</strong> to eliminate them, machine-readable schemas an agent can consume directly, and design guides for CLI authors.</p>
+<p>This is a specification for building CLI tools that AI agents can call reliably: <strong>73 documented failure modes</strong>, <strong>156 requirements</strong> to eliminate them, machine-readable schemas an agent can consume directly, and design guides for CLI authors.</p>
 <blockquote>
 <p><strong>No existing CLI framework covers more than 58% of these failure modes.</strong></p>
 </blockquote>
@@ -9809,7 +9869,7 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 <hr />
 <h2 id="what-this-spec-defines">What this spec defines</h2>
 <p><strong>73 failure modes</strong> — each documented with severity, frequency, detectability, token cost, time cost, and context cost from the agent's perspective. Grouped into 7 parts: ecosystem/runtime, execution, security, output, environment, errors, and observability.</p>
-<p><strong>155 requirements</strong> across 3 tiers:</p>
+<p><strong>156 requirements</strong> across 3 tiers:</p>
 <table>
 <thead>
 <tr>
@@ -9859,7 +9919,7 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 </tr>
 <tr>
 <td><a href="requirements/"><code>requirements/</code></a></td>
-<td>155 requirements with acceptance criteria, wire format, and examples</td>
+<td>156 requirements with acceptance criteria, wire format, and examples</td>
 </tr>
 <tr>
 <td><a href="schemas/"><code>schemas/</code></a></td>
@@ -9954,7 +10014,7 @@ npx skills install romamo/cli-agent-spec/skills/cli-agent-diagnose
 <p>The spec is a living document. New failure modes are documented when confirmed against real tooling. New requirements follow from new failure modes.</p>
 <p>Before contributing, read <a href="AGENTS/"><code>AGENTS.md</code></a> for conventions: file format, required sections, naming rules, and how to run <code>/validate-links</code> to verify cross-references after any edit.</p>
 <hr />
-<p><em>CLI Agent Spec v1.6 — 73 failure modes · 155 requirements · 4 schemas · 12 frameworks evaluated</em></p>
+<p><em>CLI Agent Spec v1.6 — 73 failure modes · 156 requirements · 4 schemas · 12 frameworks evaluated</em></p>
 
 
 

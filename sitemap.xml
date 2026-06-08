@@ -681,91 +681,91 @@
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/environment/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/environment/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/findings/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/findings/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/issues/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/issues/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/readiness/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/readiness/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/report-agent-dev/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/report-agent-dev/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/report-dev/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/report-dev/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/report-index/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/report-index/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/report-issues/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/report-issues/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/report-runtime/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/report-runtime/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/trace/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/link/trace/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/environment/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/environment/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/findings/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/findings/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/issues/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/issues/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/readiness/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/readiness/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/report-agent-dev/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/report-agent-dev/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/report-dev/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/report-dev/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/report-index/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/report-index/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/report-issues/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/report-issues/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/report-runtime/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/report-runtime/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
-         <loc>https://cli-agent-spec.github.io/evaluations/neonctl/trace/</loc>
+         <loc>https://cli-agent-spec.github.io/evaluations/neon/trace/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
@@ -858,6 +858,10 @@
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/guides/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/guides/llm-optimized-output-formats/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
@@ -1502,6 +1506,10 @@
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-048-destructive-commands-default-dry-run/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/requirements/o-049-llm-token-budget-flags/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
