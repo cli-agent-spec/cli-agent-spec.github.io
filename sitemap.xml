@@ -2,1550 +2,1594 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://cli-agent-spec.github.io/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/AGENTS/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/IMPLEMENTING/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/agent-builders/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/comparison-matrix/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/skills/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/checklist/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/sources/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/34-critical-shell-injection/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/35-high-hallucination-inputs/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/36-critical-pager-blocking/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/37-critical-repl-triggering/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/38-high-dependency-version-mismatch/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/39-high-help-to-stdout/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/40-high-async-race-condition/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/41-high-update-notifier/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/42-critical-debug-secret-leakage/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/43-critical-output-size-unboundedness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/44-medium-knowledge-packaging/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/45-critical-headless-auth/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/46-high-api-translation-loss/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/47-high-mcp-schema-staleness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/48-high-output-envelope/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/49-high-async-job-polling/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/50-critical-stdin-deadlock/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/51-high-glob-expansion/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/52-medium-command-tree-discovery/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/53-critical-credential-expiry/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/54-high-conditional-args/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/55-high-silent-truncation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/56-high-pipeline-exit-masking/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/57-medium-locale-errors/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/58-high-multiagent-conflict/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/59-high-high-entropy-tokens/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/60-critical-output-buffer-deadlock/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/61-critical-pipe-payload-deadlock/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/62-critical-editor-trap/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/63-medium-column-width-corruption/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/64-critical-headless-gui/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/65-high-global-config-contamination/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/66-high-symlink-loop/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/67-high-json5-input/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/68-high-stdout-pollution/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/69-high-argument-order-ambiguity/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/70-high-single-argument-arity/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/71-critical-noninteractive-installation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/72-high-integration-artifact-drift/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/01-critical-ecosystem-runtime-agent-specific/73-high-documentation-accuracy-drift/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/02-critical-execution-and-reliability/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/02-critical-execution-and-reliability/10-critical-interactivity/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/02-critical-execution-and-reliability/11-critical-timeouts/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/02-critical-execution-and-reliability/12-critical-idempotency/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/02-critical-execution-and-reliability/13-critical-partial-failure/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/02-critical-execution-and-reliability/14-high-arg-validation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/02-critical-execution-and-reliability/15-high-race-conditions/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/02-critical-execution-and-reliability/16-high-signal-handling/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/02-critical-execution-and-reliability/17-medium-child-process-leakage/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/03-critical-security/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/03-critical-security/23-critical-destructive-ops/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/03-critical-security/24-critical-auth-secrets/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/03-critical-security/25-critical-prompt-injection/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/03-critical-security/74-critical-credential-scope-declaration/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/03-critical-security/75-critical-safe-default-execution/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/01-critical-exit-codes/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/02-critical-output-format/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/03-high-stderr-stdout/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/04-medium-verbosity/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/05-high-pagination/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/06-medium-command-composition/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/07-medium-output-nondeterminism/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/08-high-ansi-leakage/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/09-high-binary-encoding/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/04-critical-output-and-parsing/76-high-streaming-default-incompatibility/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/05-high-environment-and-state/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/05-high-environment-and-state/26-high-session-management/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/05-high-environment-and-state/27-medium-platform-portability/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/05-high-environment-and-state/28-high-config-shadowing/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/05-high-environment-and-state/29-medium-working-directory/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/05-high-environment-and-state/30-medium-filesystem-side-effects/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/05-high-environment-and-state/31-high-network-proxy/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/05-high-environment-and-state/32-high-self-update/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/06-high-errors-and-discoverability/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/06-high-errors-and-discoverability/18-high-error-quality/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/06-high-errors-and-discoverability/19-high-retry-hints/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/06-high-errors-and-discoverability/20-medium-dependency-discovery/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/06-high-errors-and-discoverability/21-medium-schema-discoverability/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/06-high-errors-and-discoverability/22-high-schema-versioning/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/07-medium-observability/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/challenges/07-medium-observability/33-medium-observability/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/environment/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/findings/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/readiness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/report-agent-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/report-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/report-index/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/report-issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/report-runtime/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/docuseal/trace/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/environment/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/findings/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/readiness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/report-agent-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/report-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/report-index/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/report-issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/report-runtime/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/dokploy/trace/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/environment/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/findings/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/readiness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/report-agent-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/report-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/report-index/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/report-issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/report-runtime/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/firecrawl/trace/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/environment/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/findings/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/readiness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/report-agent-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/report-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/report-index/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/report-issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/report-runtime/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gh/trace/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/environment/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/findings/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/readiness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/report-agent-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/report-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/report-index/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/report-issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/report-runtime/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/gws/trace/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/environment/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/findings/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/readiness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/report-agent-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/report-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/report-index/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/report-issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/report-runtime/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/hevn/trace/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/environment/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/findings/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/readiness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/report-agent-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/report-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/report-index/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/report-issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/report-runtime/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/langfuse/trace/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/environment/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/findings/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/issues/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/readiness/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/report-agent-dev/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/report-dev/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/report-index/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/report-issues/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/report-runtime/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://cli-agent-spec.github.io/evaluations/link-cli/trace/</loc>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/environment/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/findings/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/readiness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/report-agent-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/report-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/report-index/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/report-issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/report-runtime/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/neonctl/trace/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/environment/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/findings/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/readiness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/report-agent-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/report-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/report-index/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/report-issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/report-runtime/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/omd/trace/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/environment/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/findings/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/readiness/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/report-agent-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/report-dev/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/report-index/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/report-issues/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/report-runtime/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/evaluations/shopify/trace/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/guides/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/guides/no-args-entry-point/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/guides/skill-optimizable-design/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/guides/stdin-native-cli/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/guides/streaming-vs-envelope/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/guides/unix-naming-conventions/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-001-command-declares-exit-codes/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-002-command-declares-danger-level/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-003-mutating-commands-declare-effect-field/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-004-destructive-commands-must-support-dry-run/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-005-interactive-commands-must-support-yes-non-interact/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-006-all-args-validated-in-phase-1/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-007-mutating-commands-accept-idempotency-key/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-008-multi-step-commands-emit-step-manifest/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-009-multi-step-commands-report-completed-failed-skippe/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-010-background-process-commands-declare-metadata/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-011-commands-declare-filesystem-side-effects/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-012-commands-with-network-i-o-support-timeout/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-013-error-responses-include-code-and-message/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-014-error-responses-include-retryable-and-retry-after-/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-015-commands-declare-input-and-output-schema/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-016-secrets-accepted-only-via-env-var-or-file/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-017-commands-register-cleanup-hook/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-018-commands-declare-platform-requirements/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-019-subprocess-invoking-commands-declare-argument-sche/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-020-resource-id-fields-declare-validation-pattern/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-021-auth-commands-declare-headless-mode-support/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-022-async-commands-declare-job-descriptor-schema/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-023-editor-requiring-commands-declare-non-interactive-/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-024-gui-launching-commands-declare-headless-behavior/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-025-config-writing-commands-declare-write-scope/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-026-commands-declare-conditional-argument-dependencies/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-027-commands-declare-option-placement/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-028-already-exists-response-pattern/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/c-029-command-declares-required-scopes/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-001-standard-exit-code-table/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-002-exit-code-2-reserved-for-validation-failures/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-003-json-output-mode-auto-activation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-004-consistent-json-response-envelope/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-005-locale-invariant-serialization/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-006-stdout-stderr-stream-enforcement/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-007-ansi-color-code-suppression/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-008-no-color-and-ci-environment-detection/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-009-non-interactive-mode-auto-detection/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-010-pager-suppression/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-011-default-timeout-per-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-012-timeout-exit-code-and-json-error/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-013-sigterm-handler-installation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-014-sigpipe-handler-installation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-015-validate-before-execute-phase-order/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-016-utf-8-sanitization-before-serialization/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-017-binary-field-base64-encoding/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-018-pagination-metadata-on-list-commands/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-019-default-output-limit/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-020-stable-array-sorting-in-json-output/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-021-data-meta-separation-in-response-envelope/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-022-schema-version-in-every-response/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-023-tool-version-in-every-response/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-024-request-id-and-trace-id-in-every-response/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-025-tool-trace-id-environment-variable-propagation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-026-append-only-audit-log/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-027-cwd-in-response-meta/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-028-config-source-tracking-in-response-meta/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-029-auto-update-suppression-in-non-interactive-mode/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-030-child-process-session-tracking/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-031-sigterm-forwarding-to-tracked-children/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-032-session-scoped-temp-directory/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-033-lock-acquisition-with-timeout-and-retry-after-ms/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-034-secret-field-auto-redaction-in-logs/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-035-external-data-trust-tagging/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-036-http-client-proxy-environment-variable-compliance/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-037-network-error-context-block/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-038-verbosity-auto-quiet-in-non-tty-context/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-039-duration-tracking-in-response-meta/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-040-absolute-path-output-enforcement/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-041-process-cwd-immutability/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-042-log-rotation-in-framework-logger/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-043-temp-file-session-scoped-auto-cleanup/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-044-shell-argument-escaping-enforcement/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-045-agent-hallucination-input-pattern-rejection/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-046-pager-environment-variable-suppression/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-047-repl-mode-prohibition-in-non-tty-context/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-048-help-output-routing-to-stderr-in-non-tty-mode/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-049-async-command-handler-enforcement/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-050-update-notifier-side-channel-suppression/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-051-debug-and-trace-mode-secret-redaction/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-052-response-size-hard-cap-with-truncation-indicator/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-053-stdout-unbuffering-in-non-tty-mode/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-055-editor-and-visual-no-op-in-non-tty-mode/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-056-terminal-width-wrapping-disabled-in-json-mode/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-057-headless-environment-detection-and-gui-suppression/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-058-high-entropy-field-masking/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-059-json5-input-normalization/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-060-third-party-stdout-interception/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-061-symlink-loop-detection-in-traversal-utilities/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-062-glob-expansion-and-word-splitting-prevention/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-063-credential-expiry-structured-error/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-064-output-truncation-detection-and-warning/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-065-pipeline-exit-code-propagation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-066-subprocess-locale-normalization/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-067-interspersed-option-parsing/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-068-help-and-version-flag-purity/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-069-sigint-handler-installation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-070-atomic-write-via-rename/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-071-file-descriptor-leak-prevention/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-072-lf-line-ending-enforcement/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-073-env-var-namespace-prefix/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-074-json-null-absent-empty-convention/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-075-subcommand-additive-stability/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-076-first-run-init-isolation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-077-telemetry-non-blocking/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-078-retry-count-in-response-meta/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-001-output-format-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-002-fields-selector/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-003-limit-and-cursor-pagination-flags/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-004-output-jsonl-stream-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-005-output-id-extraction-mode/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-006-stdin-as-id-source/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-007-stable-output-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-008-quiet-verbose-debug-verbosity-flags/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-009-validate-only-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-010-resume-from-flag-for-multi-step-commands/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-011-rollback-on-failure-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-012-heartbeat-interval-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-013-schema-output-schema-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-014-schema-version-compatibility-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-015-show-config-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-016-no-config-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-017-cwd-root-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-018-no-cache-and-cache-ttl-flags/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-019-proxy-and-no-proxy-flags/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-020-no-update-check-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-021-confirm-destructive-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-022-secret-from-env-secret-from-file-flags/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-023-no-injection-protection-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-024-context-config-override-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-025-warnings-as-errors-flag/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-026-tool-doctor-built-in-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-027-tool-cleanup-built-in-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-028-tool-status-built-in-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-029-tool-changelog-built-in-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-030-tool-audit-log-built-in-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-031-dependency-version-matrix-declaration/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-032-raw-payload-flag-for-mutating-commands/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-033-headless-and-token-env-var-flags-for-auth-commands/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-034-tool-generate-skills-built-in-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-035-tool-mcp-validate-built-in-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-036-instance-id-flag-for-agent-state-namespacing/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-037-unmask-flag-for-high-entropy-fields/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-038-heartbeat-ms-flag-for-long-running-commands/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-039-input-file-flag-for-stdin-commands/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-040-no-follow-symlinks-flag-for-traversal-commands/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-041-tool-manifest-built-in-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-042-output-format-env-var-default/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-043-agents-md-content-spec/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-044-noninteractive-install-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-045-integration-artifact-version-declaration/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-046-agents-md-ci-validation/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-047-tool-check-permissions-built-in-command/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/requirements/o-048-destructive-commands-default-dry-run/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/agentyper/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/alternatives-landscape/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/argparse/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/clap/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/click/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/cobra/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/commander-js/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/emerging-solutions/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/jpoehnelt-skills/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/mcp/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/openapi/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/pydantic/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/python-fire/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/research/typer/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/schemas/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/schemas/codegen-guide/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/schemas/diagnose-result/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/schemas/exit-code-entry/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/schemas/exit-code/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/schemas/manifest-response/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
     <url>
          <loc>https://cli-agent-spec.github.io/schemas/response-envelope/</loc>
-         <lastmod>2026-06-06</lastmod>
+         <lastmod>2026-06-08</lastmod>
     </url>
 </urlset>
