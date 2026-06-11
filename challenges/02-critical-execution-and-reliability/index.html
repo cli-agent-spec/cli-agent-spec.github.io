@@ -2497,6 +2497,8 @@
       
         
       
+        
+      
     
     
     
@@ -2765,6 +2767,34 @@
     
   
     17 medium child process leakage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="77-high-no-batch-dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    77 high no batch dispatch
   
 
     
@@ -4034,6 +4064,8 @@
       
         
           
+        
+      
         
       
         
@@ -8770,6 +8802,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/o-050-tool-exec-built-in-command/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-O-050: tool exec Built-In Command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -9660,7 +9720,7 @@
 <blockquote>
 <p>Execution flow, blocking behavior, atomicity, and reliability under agent orchestration.</p>
 </blockquote>
-<p><strong>Failure modes:</strong> 8 active &nbsp;|&nbsp; 🔴 4 critical · 🟠 3 high · 🟡 1 medium</p>
+<p><strong>Failure modes:</strong> 9 active &nbsp;|&nbsp; 🔴 4 critical · 🟠 4 high · 🟡 1 medium</p>
 <hr />
 <table>
 <thead>
@@ -9710,6 +9770,11 @@
 <td><a href="17-medium-child-process-leakage/">17-medium-child-process-leakage.md</a></td>
 <td>🟡 Medium</td>
 <td>CLI tools frequently spawn background processes — log forwarders, file watchers, health monitors, connection pools</td>
+</tr>
+<tr>
+<td><a href="77-high-no-batch-dispatch/">77-high-no-batch-dispatch.md</a></td>
+<td>🟠 High</td>
+<td>No batch dispatch command forces agents to shell out once per operation, exhausting the tool-call budget</td>
 </tr>
 </tbody>
 </table>
@@ -9798,6 +9863,15 @@
 <td>Low</td>
 <td>Low</td>
 <td>Low</td>
+</tr>
+<tr>
+<td><a href="77-high-no-batch-dispatch/">§77</a></td>
+<td>🟠 High</td>
+<td>Common</td>
+<td>Easy</td>
+<td>High</td>
+<td>High</td>
+<td>Medium</td>
 </tr>
 </tbody>
 </table>

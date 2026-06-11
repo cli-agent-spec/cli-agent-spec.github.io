@@ -2620,6 +2620,8 @@
       
         
       
+        
+      
     
     
     
@@ -2885,6 +2887,34 @@
     
   
     17 medium child process leakage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="challenges/02-critical-execution-and-reliability/77-high-no-batch-dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    77 high no batch dispatch
   
 
     
@@ -4139,6 +4169,8 @@
       
         
           
+        
+      
         
       
         
@@ -8875,6 +8907,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements/o-050-tool-exec-built-in-command/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-O-050: tool exec Built-In Command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -9840,7 +9900,7 @@
 
 <h1 id="cli-agent-spec">CLI Agent Spec</h1>
 <p><strong>Your CLI tool works perfectly for humans. For AI agents, it silently hangs, corrupts data, leaks secrets, and exhausts context windows — and you would never know.</strong></p>
-<p>This is a specification for building CLI tools that AI agents can call reliably: <strong>73 documented failure modes</strong>, <strong>156 requirements</strong> to eliminate them, machine-readable schemas an agent can consume directly, and design guides for CLI authors.</p>
+<p>This is a specification for building CLI tools that AI agents can call reliably: <strong>74 documented failure modes</strong>, <strong>157 requirements</strong> to eliminate them, machine-readable schemas an agent can consume directly, and design guides for CLI authors.</p>
 <blockquote>
 <p><strong>No existing CLI framework covers more than 58% of these failure modes.</strong></p>
 </blockquote>
@@ -9868,8 +9928,8 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 <p>These are not edge cases. They are the <strong>default behavior</strong> of most CLI tools today — including tools from major companies. The cost falls on the agent: wasted tokens, stalled pipelines, data corruption from blind retries, cascading failures with no root cause.</p>
 <hr />
 <h2 id="what-this-spec-defines">What this spec defines</h2>
-<p><strong>73 failure modes</strong> — each documented with severity, frequency, detectability, token cost, time cost, and context cost from the agent's perspective. Grouped into 7 parts: ecosystem/runtime, execution, security, output, environment, errors, and observability.</p>
-<p><strong>156 requirements</strong> across 3 tiers:</p>
+<p><strong>74 failure modes</strong> — each documented with severity, frequency, detectability, token cost, time cost, and context cost from the agent's perspective. Grouped into 7 parts: ecosystem/runtime, execution, security, output, environment, errors, and observability.</p>
+<p><strong>157 requirements</strong> across 3 tiers:</p>
 <table>
 <thead>
 <tr>
@@ -9891,13 +9951,13 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 </tr>
 <tr>
 <td><strong>O</strong> — Opt-In</td>
-<td>48</td>
+<td>50</td>
 <td>Applications enable it explicitly</td>
 </tr>
 </tbody>
 </table>
-<p><strong>4 JSON schemas</strong> — machine-readable type definitions for exit codes, response envelopes, tool manifests, and error details. Generate typed structs for your language directly from the schemas.</p>
-<p><strong>A comparison matrix</strong> — 12 existing frameworks (argparse, Click, Cobra, Clap, Typer, Commander.js, and more) scored against all 73 failure modes. No framework exceeds 58%.</p>
+<p><strong>5 JSON schemas</strong> — machine-readable type definitions for exit codes, response envelopes, tool manifests, dispatch requests, and error details. Generate typed structs for your language directly from the schemas.</p>
+<p><strong>A comparison matrix</strong> — 12 existing frameworks (argparse, Click, Cobra, Clap, Typer, Commander.js, and more) scored against all 74 failure modes. No framework exceeds 58%.</p>
 <hr />
 <h2 id="the-three-contracts-that-matter-most">The three contracts that matter most</h2>
 <p><strong>Exit codes</strong> — 14 named codes (0–13) with machine-readable guarantees per code: <code>retryable: true/false</code>, <code>side_effects: "none" | "partial" | "complete"</code>. An agent receiving exit 11 (<code>CONFLICT</code>) knows the operation is safe to retry. Receiving exit 6 (<code>PARTIAL_FAILURE</code>) knows it must inspect state before retrying. See <a href="schemas/exit-code.json"><code>exit-code.json</code></a>.</p>
@@ -9915,15 +9975,15 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 <tbody>
 <tr>
 <td><a href="challenges/"><code>challenges/</code></a></td>
-<td>73 failure modes, each with problem, impact, solutions, 0–3 evaluation rubric, and agent workaround</td>
+<td>74 failure modes, each with problem, impact, solutions, 0–3 evaluation rubric, and agent workaround</td>
 </tr>
 <tr>
 <td><a href="requirements/"><code>requirements/</code></a></td>
-<td>156 requirements with acceptance criteria, wire format, and examples</td>
+<td>157 requirements with acceptance criteria, wire format, and examples</td>
 </tr>
 <tr>
 <td><a href="schemas/"><code>schemas/</code></a></td>
-<td>JSON Schema draft-07 definitions for all 4 types</td>
+<td>JSON Schema draft-07 definitions for all 5 types</td>
 </tr>
 <tr>
 <td><a href="guides/"><code>guides/</code></a></td>
@@ -9935,7 +9995,7 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 </tr>
 <tr>
 <td><a href="comparison-matrix/"><code>comparison-matrix.md</code></a></td>
-<td>73 failure modes × 12 frameworks coverage table</td>
+<td>74 failure modes × 12 frameworks coverage table</td>
 </tr>
 <tr>
 <td><a href="research/"><code>research/</code></a></td>
@@ -9950,7 +10010,7 @@ $ tool list users --output json   # parsed as: list &quot;users&quot; &quot;--ou
 <hr />
 <h2 id="where-this-fits">Where this fits</h2>
 <p>The field is converging on <strong>Agent Experience (AX)</strong> as the term for "how well is a system designed to be consumed by an AI agent" — the machine-facing analog of Developer Experience (DX) or User Experience (UX). It applies across APIs, databases, SDKs, web services, and CLIs.</p>
-<p>This spec is AX research applied to the CLI layer. CLIs are the most underserved slice of the problem: they are the primary interface through which agents interact with infrastructure, but they were designed for human terminal sessions. The gap between CLI defaults and agent requirements is where the 73 failure modes live.</p>
+<p>This spec is AX research applied to the CLI layer. CLIs are the most underserved slice of the problem: they are the primary interface through which agents interact with infrastructure, but they were designed for human terminal sessions. The gap between CLI defaults and agent requirements is where the 74 failure modes live.</p>
 <p><strong>What distinguishes this project from other AX work:</strong></p>
 <ul>
 <li><strong>It names failure</strong> — most AX guidance is prescriptive ("do this"). The failure mode taxonomy is a named, scored, reproducible catalog of what goes wrong and why, making automated evaluation possible</li>
@@ -10014,7 +10074,7 @@ npx skills install romamo/cli-agent-spec/skills/cli-agent-diagnose
 <p>The spec is a living document. New failure modes are documented when confirmed against real tooling. New requirements follow from new failure modes.</p>
 <p>Before contributing, read <a href="AGENTS/"><code>AGENTS.md</code></a> for conventions: file format, required sections, naming rules, and how to run <code>/validate-links</code> to verify cross-references after any edit.</p>
 <hr />
-<p><em>CLI Agent Spec v1.6 — 73 failure modes · 156 requirements · 4 schemas · 12 frameworks evaluated</em></p>
+<p><em>CLI Agent Spec v1.6 — 74 failure modes · 157 requirements · 5 schemas · 12 frameworks evaluated</em></p>
 
 
 
