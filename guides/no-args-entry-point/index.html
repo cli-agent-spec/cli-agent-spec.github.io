@@ -9746,6 +9746,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#structuring-the-help-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structuring the Help Output
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#verification-checklist-for-cli-authors" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9908,6 +9919,35 @@ struct Cli {
     },
 }
 </code></pre>
+<hr />
+<h2 id="structuring-the-help-output">Structuring the Help Output</h2>
+<p>Exit 0 with a subcommand list is the floor, not the ceiling. The help output is the first screen a human reads — and often the last they consult before deciding whether the tool fits their workflow. Structure it to answer three questions in order: what does this do, where do I start, and where do I go next.</p>
+<p><strong>Group commands by role, not alphabet</strong></p>
+<p>Alphabetical ordering exposes implementation detail. Role-based grouping encodes priority. A <code>CORE COMMANDS</code> group signals "start here"; <code>ADDITIONAL COMMANDS</code> signals "you'll find this later"; <code>HELP TOPICS</code> signals "concepts, not commands." The grouping lets a reader form a mental model before reading a single description.</p>
+<pre><code>CORE COMMANDS
+  issue:    Manage issues
+  pr:       Manage pull requests
+  repo:     Manage repositories
+
+ADDITIONAL COMMANDS
+  alias:    Create command shortcuts
+  config:   Manage configuration
+
+HELP TOPICS
+  exit-codes:    Exit codes used by this tool
+  formatting:    Formatting options for JSON output
+  environment:   Environment variables that can be used with this tool
+</code></pre>
+<p><strong>Provide curated examples, not abstract syntax</strong></p>
+<p>Abstract usage syntax (<code>tool &lt;command&gt; [flags]</code>) describes the grammar. Examples demonstrate the idiom. Provide 2–4 examples that span distinct domains and represent the most common real workflows — not a complete inventory.</p>
+<pre><code>EXAMPLES
+  $ gh issue create
+  $ gh repo clone owner/repo
+  $ gh pr checkout 321
+</code></pre>
+<p>Three examples, three domains. A reader immediately grasps the scope of the tool without reading the full command list.</p>
+<p><strong>Make help topics first-class</strong></p>
+<p>Concepts like exit codes, output formats, and environment variables are often buried in man pages or online documentation. Listing them by name in the root help makes them discoverable in one invocation. An agent that sees <code>exit-codes</code> as a named topic knows to run <code>tool help exit-codes</code> before guessing. A human knows where to look before reaching for a browser.</p>
 <hr />
 <h2 id="verification-checklist-for-cli-authors">Verification Checklist for CLI Authors</h2>
 <p>Three checks that must all pass before a CLI is considered agent-accessible:</p>
