@@ -10005,8 +10005,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - If the key is not in <code>commands</code> — do not guess; emit <code>REDIRECTED</code> behavior: try <code>tool manifest</code> again in case it was stale, then escalate
 - Check <code>aliases</code> before concluding a command does not exist — the agent may be using an alias that maps to a different primary key</p>
 <p><strong>Building a call from <code>FlagEntry</code></strong>
-- <code>required: true</code> flags must always be present; absence will produce <code>ARG_ERROR (3)</code>
-- <code>type: "enum"</code> — only values in <code>enum_values</code> are accepted; sending any other value produces <code>ARG_ERROR (3)</code>
+- <code>required: true</code> flags must always be present; absence will produce <code>ARG_ERROR (2)</code>
+- <code>type: "enum"</code> — only values in <code>enum_values</code> are accepted; sending any other value produces <code>ARG_ERROR (2)</code>
 - <code>default</code> absent — the flag is optional but has no fallback; omitting it changes behavior; include explicitly if the outcome matters
 - <code>short</code> present — both <code>--flag-name value</code> and <code>-f value</code> are valid; prefer long form for clarity in agent-constructed calls</p>
 <p><strong>Selecting output format from <code>output_formats</code></strong>
@@ -10018,7 +10018,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Build the retry/rollback plan before calling, not reactively — this avoids ambiguity about whether a retry is safe after a partial failure</p>
 <p><strong>Manifest staleness</strong>
 - If a command call returns <code>REDIRECTED (13)</code> for a path that exists in the manifest — the manifest is stale; re-fetch unconditionally and update the cache
-- If a call returns <code>ARG_ERROR (3)</code> for a flag shown as valid in the manifest — possible version skew; re-fetch manifest before retrying</p>
+- If a call returns <code>ARG_ERROR (2)</code> for a flag shown as valid in the manifest — possible version skew; re-fetch manifest before retrying</p>
 <h2 id="coding-agent-notes">Coding agent notes</h2>
 <p><strong>Generation strategy</strong>
 - Generate the manifest by reflecting over registered commands at startup — do not generate it by hand or from a separate config file

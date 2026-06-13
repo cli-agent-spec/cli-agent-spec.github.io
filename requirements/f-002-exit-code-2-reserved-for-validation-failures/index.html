@@ -9880,7 +9880,7 @@
 <p>The <code>ErrorDetail.phase</code> field carries <code>"validation"</code> to guarantee the agent that no side effect occurred and the command is safe to retry after correcting the input.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
-<p>JSON error response for a command that exits <code>3</code> (<code>ARG_ERROR</code>) — <code>phase</code> field confirms validation-only failure:</p>
+<p>JSON error response for a command that exits <code>2</code> (<code>ARG_ERROR</code>) — <code>phase</code> field confirms validation-only failure:</p>
 <pre><code class="language-json">{
   &quot;ok&quot;: false,
   &quot;data&quot;: null,
@@ -9901,12 +9901,12 @@
 <pre><code># Command receives --count foo (invalid integer)
 # Framework phase: VALIDATION
 # No I/O or state mutation has occurred
-→ exit 3, error.phase = &quot;validation&quot;, error.retryable = true
+→ exit 2, error.phase = &quot;validation&quot;, error.retryable = true
 
 # Command receives --count 5 (valid), begins writing to database
 # Framework phase: EXECUTION
 # A partial failure here cannot use ARG_ERROR
-→ exit 2 (PARTIAL_FAILURE), error.phase = &quot;execution&quot;
+→ exit 3 (PARTIAL_FAILURE), error.phase = &quot;execution&quot;
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>
@@ -9922,7 +9922,7 @@
 <tr>
 <td><a href="../f-001-standard-exit-code-table/">REQ-F-001</a></td>
 <td>F</td>
-<td>Specializes: enforces reserved semantics for <code>ARG_ERROR (3)</code> — zero side effects guarantee</td>
+<td>Specializes: enforces reserved semantics for <code>ARG_ERROR (2)</code> — zero side effects guarantee</td>
 </tr>
 <tr>
 <td><a href="../f-015-validate-before-execute-phase-order/">REQ-F-015</a></td>

@@ -9872,8 +9872,8 @@
 <ul>
 <li>Every error response includes <code>error.retryable</code></li>
 <li>A <code>RATE_LIMITED</code> error includes <code>error.retry_after_ms &gt; 0</code></li>
-<li>A <code>VALIDATION_ERROR</code> error has <code>error.retryable: false</code></li>
-<li>A <code>TIMEOUT</code> error has <code>error.retryable: true</code></li>
+<li>A <code>VALIDATION_ERROR</code> error has <code>error.retryable: true</code></li>
+<li>A <code>TIMEOUT</code> error has <code>error.retryable: true</code> by default; commands that declare <code>side_effects: "partial"</code> for <code>TIMEOUT</code> MUST override to <code>retryable: false</code></li>
 <li>The framework error registry maps all standard error codes to default <code>retryable</code> values</li>
 </ul>
 <hr />
@@ -9943,14 +9943,14 @@
   &quot;meta&quot;: { &quot;duration_ms&quot;: 30001 }
 }
 </code></pre>
-<p>Validation error (not retryable):</p>
+<p>Validation error (retryable after correcting input):</p>
 <pre><code class="language-json">{
   &quot;ok&quot;: false,
   &quot;data&quot;: null,
   &quot;error&quot;: {
     &quot;code&quot;: &quot;INVALID_ENVIRONMENT&quot;,
     &quot;message&quot;: &quot;Unknown target 'prodution'&quot;,
-    &quot;retryable&quot;: false,
+    &quot;retryable&quot;: true,
     &quot;phase&quot;: &quot;validation&quot;,
     &quot;suggestion&quot;: &quot;Valid values: prod, staging, dev&quot;
   },
@@ -9960,15 +9960,14 @@
 </code></pre>
 <hr />
 <h2 id="example">Example</h2>
-<p>The command author overrides the framework default <code>retryable</code> value and supplies retry guidance at registration time:</p>
+<p>The command author explicitly declares exit code behavior at registration time, overriding framework defaults where appropriate:</p>
 <pre><code>register command &quot;deploy&quot;:
   exit_codes:
     SUCCESS  (0): retryable: false, side_effects: complete
-    TIMEOUT (10): retryable: true,  side_effects: partial,
-                  retry_after_ms: 0, retry_strategy: immediate
+    TIMEOUT (10): retryable: false, side_effects: partial
     RATE_LIMITED(11): retryable: true, side_effects: none,
                       retry_after_ms: 30000, retry_strategy: exponential_backoff
-    ARG_ERROR(3): retryable: false, side_effects: none
+    ARG_ERROR(2): retryable: true,  side_effects: none
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>

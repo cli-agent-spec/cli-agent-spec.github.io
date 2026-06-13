@@ -9867,7 +9867,7 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: High / Time: High / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST define and enforce a fixed, documented exit code table. Commands MUST NOT exit with any code outside this table for a standard condition. The table MUST include: <code>0</code> (success), <code>1</code> (general error — last resort), <code>2</code> (operation started but failed mid-way, partial side effects), <code>3</code> (argument/validation error — zero side effects guaranteed), <code>4</code> (precondition not met), <code>5</code> (not found), <code>6</code> (conflict / already exists), <code>7</code> (permission denied — valid credentials, wrong access level), <code>8</code> (auth required — credentials missing or invalid), <code>9</code> (payment required), <code>10</code> (timeout — partial side effects possible), <code>11</code> (rate limited — retry after back-off), <code>12</code> (service unavailable), <code>13</code> (command redirected — use replacement verbatim). The framework MUST provide named constants for every code; commands MUST reference these constants, never literal integers.</p>
+<p>The framework MUST define and enforce a fixed, documented exit code table. Commands MUST NOT exit with any code outside this table for a standard condition. The table MUST include: <code>0</code> (success), <code>1</code> (general error — last resort), <code>2</code> (argument/validation error — zero side effects guaranteed), <code>3</code> (operation started but failed mid-way, partial side effects), <code>4</code> (precondition not met), <code>5</code> (not found), <code>6</code> (conflict / already exists), <code>7</code> (permission denied — valid credentials, wrong access level), <code>8</code> (auth required — credentials missing or invalid), <code>9</code> (payment required), <code>10</code> (timeout — partial side effects possible), <code>11</code> (rate limited — retry after back-off), <code>12</code> (service unavailable), <code>13</code> (command redirected — use replacement verbatim). The framework MUST provide named constants for every code; commands MUST reference these constants, never literal integers.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Every exit code emitted by a framework-based command appears in the framework's code table</li>
@@ -9903,15 +9903,15 @@
 </tr>
 <tr>
 <td>2</td>
-<td><code>PARTIAL_FAILURE</code></td>
-<td>no</td>
-<td>partial</td>
-</tr>
-<tr>
-<td>3</td>
 <td><code>ARG_ERROR</code></td>
 <td>yes</td>
 <td><strong>none</strong> (REQ-F-002)</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>PARTIAL_FAILURE</code></td>
+<td>no</td>
+<td>partial</td>
 </tr>
 <tr>
 <td>4</td>
@@ -9984,8 +9984,8 @@
   &quot;exit_codes&quot;: {
     &quot;0&quot;:  { &quot;name&quot;: &quot;SUCCESS&quot;,     &quot;description&quot;: &quot;Operation completed as intended&quot;,          &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; },
     &quot;1&quot;:  { &quot;name&quot;: &quot;GENERAL_ERROR&quot;,&quot;description&quot;: &quot;Unclassified failure — use specific code when available&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;unknown&quot; },
-    &quot;2&quot;:  { &quot;name&quot;: &quot;PARTIAL_FAILURE&quot;,&quot;description&quot;: &quot;Operation ran but failed mid-way; partial writes occurred&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;partial&quot; },
-    &quot;3&quot;:  { &quot;name&quot;: &quot;ARG_ERROR&quot;,   &quot;description&quot;: &quot;Input validation failed before any side effect&quot;,  &quot;retryable&quot;: true,  &quot;side_effects&quot;: &quot;none&quot;     },
+    &quot;2&quot;:  { &quot;name&quot;: &quot;ARG_ERROR&quot;,      &quot;description&quot;: &quot;Input validation failed before any side effect&quot;,           &quot;retryable&quot;: true,  &quot;side_effects&quot;: &quot;none&quot;    },
+    &quot;3&quot;:  { &quot;name&quot;: &quot;PARTIAL_FAILURE&quot;,&quot;description&quot;: &quot;Operation ran but failed mid-way; partial writes occurred&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;partial&quot;  },
     &quot;10&quot;: { &quot;name&quot;: &quot;TIMEOUT&quot;,     &quot;description&quot;: &quot;Operation exceeded its configured time limit&quot;,     &quot;retryable&quot;: true,  &quot;side_effects&quot;: &quot;partial&quot;  },
     &quot;11&quot;: { &quot;name&quot;: &quot;RATE_LIMITED&quot;,&quot;description&quot;: &quot;Server-side rate limit reached&quot;,                  &quot;retryable&quot;: true,  &quot;side_effects&quot;: &quot;none&quot;     },
     &quot;12&quot;: { &quot;name&quot;: &quot;UNAVAILABLE&quot;, &quot;description&quot;: &quot;Service temporarily unavailable&quot;,                 &quot;retryable&quot;: true,  &quot;side_effects&quot;: &quot;none&quot;     },
@@ -10017,7 +10017,7 @@ raise CommandError(5, &quot;User not found&quot;)
 <tr>
 <td><a href="../f-002-exit-code-2-reserved-for-validation-failures/">REQ-F-002</a></td>
 <td>F</td>
-<td>Specializes: enforces reserved semantics for <code>ARG_ERROR (3)</code> — zero side effects guarantee</td>
+<td>Specializes: enforces reserved semantics for <code>ARG_ERROR (2)</code> — zero side effects guarantee</td>
 </tr>
 <tr>
 <td><a href="../c-001-command-declares-exit-codes/">REQ-C-001</a></td>

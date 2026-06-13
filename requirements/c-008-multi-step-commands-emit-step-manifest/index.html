@@ -9936,7 +9936,7 @@
   steps: [&quot;backup&quot;, &quot;apply_schema&quot;, &quot;migrate_data&quot;, &quot;verify&quot;]
   exit_codes:
     SUCCESS        (0): description: &quot;Migration completed&quot;,           retryable: false, side_effects: complete
-    PARTIAL_FAILURE(2): description: &quot;Migration failed mid-execution&quot;, retryable: false, side_effects: partial
+    PARTIAL_FAILURE(3): description: &quot;Migration failed mid-execution&quot;, retryable: false, side_effects: partial
     TIMEOUT       (10): description: &quot;Migration timed out&quot;,           retryable: false, side_effects: partial
 
   execute(args, step_tracker):
@@ -9981,7 +9981,7 @@
 <tr>
 <td><a href="../c-001-command-declares-exit-codes/">REQ-C-001</a></td>
 <td>C</td>
-<td>Composes: <code>PARTIAL_FAILURE (2)</code> must be declared in the command's <code>exit_codes</code> map</td>
+<td>Composes: <code>PARTIAL_FAILURE (3)</code> must be declared in the command's <code>exit_codes</code> map</td>
 </tr>
 <tr>
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>

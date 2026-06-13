@@ -9878,7 +9878,7 @@
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Type:</strong> <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a></p>
-<p>When normalization fails, the framework emits an <code>ARG_ERROR (3)</code> response with <code>error.code: "INVALID_JSON"</code> and a <code>corrected_input</code> field in <code>error.detail</code> or as a top-level extension.</p>
+<p>When normalization fails, the framework emits an <code>ARG_ERROR (2)</code> response with <code>error.code: "INVALID_JSON"</code> and a <code>corrected_input</code> field in <code>error.detail</code> or as a top-level extension.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <pre><code class="language-json">{
@@ -9941,7 +9941,7 @@ $ mytool deploy --config '{env prod}' --json
 <tr>
 <td><a href="../f-002-exit-code-2-reserved-for-validation-failures/">REQ-F-002</a></td>
 <td>F</td>
-<td>Enforces: <code>ARG_ERROR (3)</code> exit code guarantees zero side effects for parse failures</td>
+<td>Enforces: <code>ARG_ERROR (2)</code> exit code guarantees zero side effects for parse failures</td>
 </tr>
 <tr>
 <td><a href="../f-015-validate-before-execute-phase-order/">REQ-F-015</a></td>

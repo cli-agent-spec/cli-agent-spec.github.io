@@ -10101,7 +10101,7 @@
 <td>Inspect <code>error.detail</code> — last resort, use a specific code whenever one exists</td>
 </tr>
 <tr>
-<td>2</td>
+<td>3</td>
 <td><code>PARTIAL_FAILURE</code></td>
 <td>no</td>
 <td><strong>partial</strong></td>
@@ -10122,7 +10122,7 @@
 </thead>
 <tbody>
 <tr>
-<td>3</td>
+<td>2</td>
 <td><code>ARG_ERROR</code></td>
 <td><strong>yes</strong></td>
 <td><strong>none</strong></td>
@@ -10286,7 +10286,7 @@
 <p><strong>Using <code>GENERAL_ERROR (1)</code> as the default.</strong> Every condition that maps to a specific code must use that code. <code>GENERAL_ERROR</code> should be rare</p>
 </li>
 <li>
-<p><strong>Emitting <code>ARG_ERROR (3)</code> after a side effect.</strong> Code <code>3</code> carries a hard guarantee of zero side effects. If any write occurred before the error, emit <code>PARTIAL_FAILURE (2)</code> instead. The framework phase boundary (validate → execute) makes this automatic — do not bypass it</p>
+<p><strong>Emitting <code>ARG_ERROR (2)</code> after a side effect.</strong> Code <code>2</code> carries a hard guarantee of zero side effects. If any write occurred before the error, emit <code>PARTIAL_FAILURE (3)</code> instead. The framework phase boundary (validate → execute) makes this automatic — do not bypass it</p>
 </li>
 <li>
 <p><strong>Treating <code>AUTH_REQUIRED (8)</code> as non-retryable.</strong> It is retryable — but only after resolving credentials. An agent that treats it as terminal will unnecessarily give up on auto-refreshable token expiry</p>
@@ -10334,7 +10334,7 @@
 <p><strong>Tests to generate</strong>
 - For each code: a test that emits the code and asserts the correct integer reaches the process exit
 - A negative test: emitting a literal integer (e.g. <code>5</code>) at a call site that only accepts <code>ExitCode</code> must fail at compile/type-check time, not at runtime
-- A test that <code>ARG_ERROR (3)</code> is only emitted before any mock side-effect function is called</p>
+- A test that <code>ARG_ERROR (2)</code> is only emitted before any mock side-effect function is called</p>
 <p><strong>Anti-patterns</strong>
 - Do not generate <code>if code == 7</code> comparisons — always compare against <code>ExitCode.PERMISSION_DENIED</code>
 - Do not generate a fallback <code>except: exit(1)</code> — map every known exception to a specific <code>ExitCode</code>
@@ -10344,8 +10344,8 @@
 <ul>
 <li>Represent as a named constant / enum — never a bare integer at call sites. The framework must reject literal integers at command registration</li>
 <li><code>retryable</code> and <code>side_effects</code> values in this table describe the <em>default</em> agent behavior when no per-command <code>ExitCodeEntry</code> is available. When a command's manifest or <code>--schema</code> output includes an <code>ExitCodeEntry</code> for the received code, that entry takes precedence — the command may declare a code as non-retryable even if this table marks it retryable (e.g. <code>TIMEOUT</code> with partial side effects)</li>
-<li>The hard invariants that commands may not relax: <code>ARG_ERROR (3)</code> is always <code>side_effects: none</code>; <code>PARTIAL_FAILURE (2)</code> is always <code>retryable: false</code>; <code>SUCCESS (0)</code> is the only code with <code>side_effects: complete</code></li>
-<li><code>ARG_ERROR (3)</code> requires a hard phase boundary between validation and execution. No side effect may begin before this code can be emitted</li>
+<li>The hard invariants that commands may not relax: <code>ARG_ERROR (2)</code> is always <code>side_effects: none</code>; <code>PARTIAL_FAILURE (3)</code> is always <code>retryable: false</code>; <code>SUCCESS (0)</code> is the only code with <code>side_effects: complete</code></li>
+<li><code>ARG_ERROR (2)</code> requires a hard phase boundary between validation and execution. No side effect may begin before this code can be emitted</li>
 <li><code>AUTH_REQUIRED (8)</code> intentionally does not distinguish expired from invalid at the exit code level. The distinction is in <code>error.code</code> in the JSON payload — a more controlled channel. See <a href="../response-envelope.json"><code>response-envelope.json</code></a> <code>ErrorDetail.code</code> values: <code>TOKEN_EXPIRED</code>, <code>TOKEN_INVALID</code>, <code>TOKEN_MISSING</code></li>
 <li><code>REDIRECTED (13)</code> requires the <code>error.redirect</code> field in the response. See <a href="../response-envelope.json"><code>response-envelope.json</code></a> <code>Redirect</code> definition</li>
 </ul>

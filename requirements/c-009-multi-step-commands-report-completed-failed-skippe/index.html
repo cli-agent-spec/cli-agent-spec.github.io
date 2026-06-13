@@ -9927,7 +9927,7 @@
   &quot;meta&quot;: { &quot;duration_ms&quot;: 312 }
 }
 </code></pre>
-<p>Exit code: <code>2</code> (<code>PARTIAL_FAILURE</code>).</p>
+<p>Exit code: <code>3</code> (<code>PARTIAL_FAILURE</code>).</p>
 <hr />
 <h2 id="example">Example</h2>
 <p>A batch command iterates items, captures per-item errors, and always returns the structured summary even on partial success.</p>
@@ -9935,8 +9935,8 @@
   danger_level: mutating
   exit_codes:
     SUCCESS        (0): description: &quot;All notifications sent&quot;,       retryable: false, side_effects: complete
-    PARTIAL_FAILURE(2): description: &quot;Some notifications failed&quot;,    retryable: false, side_effects: partial
-    ARG_ERROR      (3): description: &quot;Invalid --users value&quot;,        retryable: true,  side_effects: none
+    PARTIAL_FAILURE(3): description: &quot;Some notifications failed&quot;,    retryable: false, side_effects: partial
+    ARG_ERROR      (2): description: &quot;Invalid --users value&quot;,        retryable: true,  side_effects: none
 
   execute(args):
     results = []
@@ -9976,7 +9976,7 @@
 <tr>
 <td><a href="../f-001-standard-exit-code-table/">REQ-F-001</a></td>
 <td>F</td>
-<td>Provides: <code>PARTIAL_FAILURE (2)</code> is the correct exit code for partial batch success</td>
+<td>Provides: <code>PARTIAL_FAILURE (3)</code> is the correct exit code for partial batch success</td>
 </tr>
 <tr>
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>

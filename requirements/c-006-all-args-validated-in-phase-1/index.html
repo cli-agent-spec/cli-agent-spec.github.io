@@ -9878,7 +9878,7 @@
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Types:</strong> <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a></p>
-<p>Validation failures exit with code <code>3</code> (<code>ARG_ERROR</code>) and carry a structured <code>errors</code> array. Each entry identifies the failing parameter and reason.</p>
+<p>Validation failures exit with code <code>2</code> (<code>ARG_ERROR</code>) and carry a structured <code>errors</code> array. Each entry identifies the failing parameter and reason.</p>
 <pre><code class="language-json">{
   &quot;errors&quot;: {
     &quot;type&quot;: &quot;array&quot;,
@@ -9918,7 +9918,7 @@
   }
 }
 </code></pre>
-<p>Exit code: <code>3</code> (<code>ARG_ERROR</code>) — guaranteed no side effects.</p>
+<p>Exit code: <code>2</code> (<code>ARG_ERROR</code>) — guaranteed no side effects.</p>
 <hr />
 <h2 id="example">Example</h2>
 <p>A command implements validation in its <code>validate()</code> hook, collecting all errors before returning. The <code>execute()</code> hook is never called if validation fails.</p>
@@ -9926,7 +9926,7 @@
   danger_level: mutating
   exit_codes:
     SUCCESS  (0): description: &quot;Deployment completed&quot;,          retryable: false, side_effects: complete
-    ARG_ERROR(3): description: &quot;Argument validation failed&quot;,    retryable: true,  side_effects: none
+    ARG_ERROR(2): description: &quot;Argument validation failed&quot;,    retryable: true,  side_effects: none
 
   validate(args) → []error:
     errors = []
@@ -9961,12 +9961,12 @@
 <tr>
 <td><a href="../f-002-exit-code-2-reserved-for-validation-failures/">REQ-F-002</a></td>
 <td>F</td>
-<td>Provides: <code>ARG_ERROR (3)</code> exit code carries the zero-side-effects guarantee</td>
+<td>Provides: <code>ARG_ERROR (2)</code> exit code carries the zero-side-effects guarantee</td>
 </tr>
 <tr>
 <td><a href="../c-001-command-declares-exit-codes/">REQ-C-001</a></td>
 <td>C</td>
-<td>Composes: <code>ARG_ERROR (3)</code> must be declared in the command's <code>exit_codes</code> map</td>
+<td>Composes: <code>ARG_ERROR (2)</code> must be declared in the command's <code>exit_codes</code> map</td>
 </tr>
 <tr>
 <td><a href="../o-009-validate-only-flag/">REQ-O-009</a></td>
