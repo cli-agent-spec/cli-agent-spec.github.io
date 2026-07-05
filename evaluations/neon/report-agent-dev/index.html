@@ -27,7 +27,7 @@
     
     
       
-        <title>neonctl — Integration Guide for Agent Builders - CLI Agent Spec</title>
+        <title>neon - Agent Developer Integration Guide - CLI Agent Spec</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neonctl-integration-guide-for-agent-builders" class="md-skip">
+        <a href="#neon-agent-developer-integration-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              neonctl — Integration Guide for Agent Builders
+              neon - Agent Developer Integration Guide
             
           </span>
         </div>
@@ -9663,10 +9663,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#invocation" class="md-nav__link">
+  <a href="#invocation-contract" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Invocation
+        Invocation Contract
       
     </span>
   </a>
@@ -9674,10 +9674,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#safe-patterns" class="md-nav__link">
+  <a href="#critical-integration-rules" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Safe Patterns
+        Critical Integration Rules
       
     </span>
   </a>
@@ -9685,10 +9685,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#parse-rules" class="md-nav__link">
+  <a href="#workarounds-by-gap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parse Rules
+        Workarounds by Gap
       
     </span>
   </a>
@@ -9696,21 +9696,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#commands-to-avoid-without-human-approval" class="md-nav__link">
+  <a href="#recommended-adapter-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Commands To Avoid Without Human Approval
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#known-gaps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Known Gaps
+        Recommended Adapter Behavior
       
     </span>
   </a>
@@ -9737,85 +9726,104 @@
   
 
 
-<h1 id="neonctl-integration-guide-for-agent-builders">neonctl — Integration Guide for Agent Builders</h1>
-<p><strong>Date:</strong> 2026-06-06
-<strong>Version:</strong> 2.22.2</p>
-<h2 id="invocation">Invocation</h2>
-<p>Use the absolute binary discovered during audit:</p>
+<h1 id="neon-agent-developer-integration-guide">neon - Agent Developer Integration Guide</h1>
+<p><strong>Generated:</strong> 2026-07-05
+<strong>CLI version:</strong> 2.30.1
+<strong>Scope:</strong> Critical</p>
+<h2 id="invocation-contract">Invocation Contract</h2>
+<p>Use the absolute binary from the environment profile:</p>
 <pre><code class="language-bash">/Users/roman/.hermes/node/bin/neon
 </code></pre>
-<p>For agent runs, always include:</p>
-<pre><code class="language-bash">--config-dir &lt;isolated-temp-dir&gt; --no-analytics --color false
+<p>Recommended wrapper defaults:</p>
+<pre><code class="language-text">ENV:
+  NEON_API_KEY=&lt;provided securely by the runtime&gt;
+  NO_COLOR=1
+
+FLAGS:
+  --output json
+  --no-color
+  --no-analytics
+  --config-dir &lt;agent-owned-temp-dir&gt;
+  --context-file &lt;agent-owned-context-file&gt;
+
+PROCESS:
+  stdin closed unless a command explicitly needs stdin
+  external timeout on every invocation
+  stderr captured and parsed as a possible error source
 </code></pre>
-<p>Prefer credentials in the environment:</p>
-<pre><code class="language-bash">NEON_API_KEY=&lt;token&gt; neon &lt;command&gt; --output json --config-dir &lt;isolated-temp-dir&gt; --no-analytics --color false
-</code></pre>
-<p>Avoid passing <code>--api-key</code> unless you have no other option; it places the secret in argv.</p>
-<h2 id="safe-patterns">Safe Patterns</h2>
-<p>Use <code>link --agent</code> when linking a local directory. It is the one documented JSON state-machine workflow:</p>
-<pre><code class="language-bash">neon link --agent --output json --config-dir &lt;isolated-temp-dir&gt; --no-analytics --color false
-</code></pre>
-<p>Always run commands through a subprocess timeout. The CLI has auth/init paths that can block.</p>
-<p>Set these environment variables around every invocation:</p>
-<pre><code class="language-bash">PAGER=cat
-GIT_PAGER=cat
-MANPAGER=cat
-LESS=-FRX
-EDITOR=true
-VISUAL=true
-NO_COLOR=1
-</code></pre>
-<h2 id="parse-rules">Parse Rules</h2>
-<ul>
-<li>Do not assume <code>--output json</code> means errors are JSON. Check stdout first, then stderr.</li>
-<li>Treat exit code <code>1</code> as generic. There is no semantic exit-code table.</li>
-<li>Treat missing stdout plus prose stderr as an error even if the requested output mode was JSON.</li>
-<li>Redact captured output before storing it; auth-related commands can include URLs and account metadata.</li>
-</ul>
-<h2 id="commands-to-avoid-without-human-approval">Commands To Avoid Without Human Approval</h2>
-<p>Treat these as destructive or mutating unless you have a dry-run-equivalent workflow from the user:</p>
-<pre><code class="language-text">projects create/delete/update
-branches create/delete/reset/restore/rename/add-compute/set-default
-databases create/delete
-roles create/delete
-ip-allow add/remove/reset
-data-api create/update/delete/refresh-schema
-</code></pre>
-<h2 id="known-gaps">Known Gaps</h2>
+<h2 id="critical-integration-rules">Critical Integration Rules</h2>
+<ol>
+<li>Do not call authenticated Neon commands without a valid API key in headless execution. The CLI can enter browser OAuth and wait.</li>
+<li>Do not treat <code>--output json</code> as a guarantee on failure paths. Validate stdout as JSON and fall back to stderr classification.</li>
+<li>Keep credentials out of argv. Prefer <code>NEON_API_KEY</code> over <code>--api-key</code>.</li>
+<li>Isolate state with <code>--config-dir</code> and <code>--context-file</code>; do not let commands discover parent <code>.neon</code> files.</li>
+<li>Never blind-retry mutating commands. No idempotency-key or effect contract was found.</li>
+<li>For destructive commands, require a separate read/confirm step in the agent layer because the CLI lacks a general dry-run contract.</li>
+</ol>
+<h2 id="workarounds-by-gap">Workarounds by Gap</h2>
 <table>
 <thead>
 <tr>
+<th>Section</th>
 <th>Gap</th>
-<th>Agent workaround</th>
+<th>Agent-side workaround</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Browser auth blocks non-TTY</td>
-<td>Use <code>NEON_API_KEY</code>; never call <code>auth</code> unattended.</td>
+<td>§45, §64, §10</td>
+<td>Browser OAuth in headless/no-credential paths</td>
+<td>Preflight <code>NEON_API_KEY</code> before any authenticated call; kill on <code>Awaiting authentication in web browser</code>.</td>
 </tr>
 <tr>
-<td><code>init</code> prompts without <code>--agent</code></td>
-<td>Pass <code>--agent cursor</code>, <code>--agent copilot</code>, or <code>--agent claude</code>, and still use a timeout.</td>
+<td>§1, §2</td>
+<td>Prose errors and generic exit code 1</td>
+<td>Classify stderr patterns and never assume JSON exists on non-zero exit.</td>
 </tr>
 <tr>
-<td>No manifest/schema</td>
-<td>Parse help conservatively; do not infer required scopes or danger level.</td>
+<td>§12</td>
+<td>No idempotency key</td>
+<td>Read state before mutation and after failure; retry only when target state is absent.</td>
 </tr>
 <tr>
-<td>No dry-run for deletes</td>
-<td>Do not execute destructive commands autonomously.</td>
+<td>§23</td>
+<td>No dry-run for destructive operations</td>
+<td>Have the agent list/inspect target resources first and require explicit user confirmation before delete.</td>
 </tr>
 <tr>
-<td>No idempotency key contract</td>
-<td>Query current state before retrying mutating operations.</td>
+<td>§24, §42</td>
+<td>Secret flag accepted</td>
+<td>Inject secrets through environment variables and scrub command logs.</td>
 </tr>
 <tr>
-<td>JSON errors inconsistent</td>
-<td>Build fallback stderr parsing and classify unknown errors as non-retryable.</td>
+<td>§50, §61</td>
+<td>Stdin sentinel bug</td>
+<td>Avoid <code>--data -</code>; use literal JSON or <code>@file</code> only after a small validation probe.</td>
+</tr>
+<tr>
+<td>§74</td>
+<td>No scope manifest</td>
+<td>Maintain your own command-to-scope map and ask users for minimal keys out of band.</td>
+</tr>
+<tr>
+<td>§53, §60, §62</td>
+<td>Indeterminate checks</td>
+<td>Treat credential expiry, long-running streaming, and psql editor paths as unverified risk.</td>
 </tr>
 </tbody>
 </table>
+<h2 id="recommended-adapter-behavior">Recommended Adapter Behavior</h2>
+<p>Return an internal normalized result regardless of Neon CLI output shape:</p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: false,
+  &quot;exit_code&quot;: 1,
+  &quot;stdout_json&quot;: null,
+  &quot;stderr_text&quot;: &quot;ERROR: ...&quot;,
+  &quot;classified_error&quot;: &quot;VALIDATION_ERROR | AUTH_BROWSER_FLOW | AUTH_FAILED | UNKNOWN&quot;,
+  &quot;retryable&quot;: false
+}
+</code></pre>
+<p>The adapter should mark <code>AUTH_BROWSER_FLOW</code> when stderr contains <code>Awaiting authentication in web browser</code> and terminate the child process immediately.</p>
 
 
 

@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neonctl-cli-agent-audit" class="md-skip">
+        <a href="#neon-cli-agent-evaluation" class="md-skip">
           Skip to content
         </a>
       
@@ -913,17 +913,6 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Summary
-      
-    </span>
-  </a>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#scores" class="md-nav__link">
@@ -9754,17 +9743,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Summary
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#scores" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9817,87 +9795,101 @@
   
 
 
-<h1 id="neonctl-cli-agent-audit">neonctl CLI Agent Audit</h1>
-<p><strong>CLI:</strong> neonctl
-<strong>Version:</strong> 2.22.2
-<strong>Date:</strong> 2026-06-06
-<strong>Scope:</strong> Critical failure modes</p>
-<h2 id="summary">Summary</h2>
-<p>Neon CLI is partly agent-ready: it has documented npm installation, API-key auth, global JSON output, config-dir isolation, and an unusually useful <code>link --agent</code> JSON state machine. The problem is that those patterns are not applied across the CLI. Auth and init can still block, common failures are prose stderr even in JSON mode, mutating commands lack dry-run/idempotency contracts, and there is no manifest for agents to inspect.</p>
+<h1 id="neon-cli-agent-evaluation">neon - CLI Agent Evaluation</h1>
+<blockquote>
+<p>Evaluated against the CLI Agent Spec, a specification defining 71 failure modes for CLI tools used under AI agent orchestration.</p>
+</blockquote>
+<p><strong>CLI version:</strong> 2.30.1
+<strong>Evaluated:</strong> 2026-07-05
+<strong>Scope:</strong> Critical (22 of 71 failure modes)</p>
 <h2 id="scores">Scores</h2>
 <table>
 <thead>
 <tr>
-<th>Area</th>
-<th style="text-align: right;">Score</th>
+<th>Metric</th>
+<th>Result</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Critical failure modes</td>
-<td style="text-align: right;">0.38/3</td>
+<td>Failure mode score</td>
+<td>0.4/3 - 0 passing · 7 partial · 12 failing · 3 indeterminate</td>
 </tr>
 <tr>
-<td>Readiness</td>
-<td style="text-align: right;">7/15 [C]</td>
+<td>Readiness score</td>
+<td>8/15 [C]</td>
+</tr>
+<tr>
+<td>Observed bugs</td>
+<td>6 confirmed during live evaluation</td>
+</tr>
+<tr>
+<td>Worst gaps</td>
+<td>§45 Headless Authentication, §10 Interactivity, §1 Exit Codes</td>
 </tr>
 </tbody>
 </table>
 <h2 id="key-findings">Key Findings</h2>
 <ul>
-<li><code>neonctl auth</code> opens browser OAuth and did not exit under non-TTY timeout.</li>
-<li><code>neonctl init</code> prompts for editor selection unless <code>--agent</code> is provided.</li>
-<li>Invalid explicit <code>--api-key</code> auth can delete configured credentials.</li>
-<li><code>--output json</code> does not consistently apply to error paths.</li>
-<li>Destructive commands expose no dry-run/danger-level/confirmation manifest.</li>
+<li>Neon CLI tries browser OAuth in headless/no-credential command paths instead of returning a structured auth-required response.</li>
+<li>The documented <code>link --no-checks</code> offline path still triggered login in the audit probe.</li>
+<li><code>--output json</code> is available, but error paths emit prose stderr rather than a stable JSON envelope.</li>
+<li>Destructive and mutating workflows lack dry-run, idempotency, and machine-readable effect contracts.</li>
+<li>The CLI has useful docs and agent-mode islands, but no CLI-wide schema/manifest for commands, scopes, exit codes, or interactivity.</li>
 </ul>
 <h2 id="files">Files</h2>
 <table>
 <thead>
 <tr>
 <th>File</th>
-<th>Purpose</th>
+<th>What it is</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><a href="report-index/">report-index.md</a></td>
-<td>Score summary and links</td>
+<td>Full scorecard, readiness breakdown, and links to all reports</td>
+</tr>
+<tr>
+<td><a href="report-issues/">report-issues.md</a></td>
+<td>Concrete bugs and gaps agents will hit when using this CLI as-is</td>
+</tr>
+<tr>
+<td><a href="report-runtime/">report-runtime.md</a></td>
+<td>Compact operational brief for agents invoking Neon CLI</td>
+</tr>
+<tr>
+<td><a href="report-agent-dev/">report-agent-dev.md</a></td>
+<td>Integration guide and invocation invariants for agent developers</td>
 </tr>
 <tr>
 <td><a href="report-dev/">report-dev.md</a></td>
 <td>Fix list for CLI authors</td>
 </tr>
 <tr>
-<td><a href="report-agent-dev/">report-agent-dev.md</a></td>
-<td>Integration guide for agent builders</td>
-</tr>
-<tr>
-<td><a href="report-runtime/">report-runtime.md</a></td>
-<td>Operational brief for agents</td>
-</tr>
-<tr>
-<td><a href="report-issues/">report-issues.md</a></td>
-<td>Concrete issues and gaps</td>
-</tr>
-<tr>
 <td><a href="findings/">findings.md</a></td>
-<td>Raw score table</td>
+<td>Raw scorecard, one row per evaluated failure mode</td>
 </tr>
 <tr>
 <td><a href="issues/">issues.md</a></td>
-<td>Observed bugs</td>
+<td>Observed bugs recorded during live evaluation</td>
 </tr>
 <tr>
 <td><a href="trace/">trace.md</a></td>
-<td>Probe trace</td>
+<td>Audit trail with check commands, exit codes, stdout, and stderr</td>
+</tr>
+<tr>
+<td><a href="environment/">environment.md</a></td>
+<td>CLI environment profile</td>
 </tr>
 <tr>
 <td><a href="readiness/">readiness.md</a></td>
-<td>Readiness score</td>
+<td>Proactive readiness scores across 5 dimensions</td>
 </tr>
 </tbody>
 </table>
+<hr />
+<p><em>Generated by cli-agent-audit · CLI Agent Spec</em></p>
 
 
 

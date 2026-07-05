@@ -27,7 +27,7 @@
     
     
       
-        <title>neonctl — CLI Agent Audit Report for CLI Authors - CLI Agent Spec</title>
+        <title>neon - Fix Report - CLI Agent Spec</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neonctl-cli-agent-audit-report-for-cli-authors" class="md-skip">
+        <a href="#neon-fix-report" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              neonctl — CLI Agent Audit Report for CLI Authors
+              neon - Fix Report
             
           </span>
         </div>
@@ -9686,10 +9686,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-make-non-tty-auth-fail-fast-or-emit-json-fallback" class="md-nav__link">
+  <a href="#45-64-10-headless-auth-and-interactivity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Make non-TTY auth fail fast or emit JSON fallback
+        §45 / §64 / §10 - Headless auth and interactivity
       
     </span>
   </a>
@@ -9697,10 +9697,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-apply-agent-semantics-beyond-link" class="md-nav__link">
+  <a href="#1-2-error-envelopes-and-exit-codes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Apply --agent semantics beyond link
+        §1 / §2 - Error envelopes and exit codes
       
     </span>
   </a>
@@ -9708,10 +9708,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-add-a-machine-readable-manifest" class="md-nav__link">
+  <a href="#74-manifest-and-credential-scopes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Add a machine-readable manifest
+        §74 - Manifest and credential scopes
       
     </span>
   </a>
@@ -9719,10 +9719,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-standardize-json-envelopes-and-error-handling" class="md-nav__link">
+  <a href="#23-12-13-mutation-safety-contracts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Standardize JSON envelopes and error handling
+        §23 / §12 / §13 - Mutation safety contracts
       
     </span>
   </a>
@@ -9730,10 +9730,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-make-destructive-operations-previewable" class="md-nav__link">
+  <a href="#50-61-stdin-contract" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Make destructive operations previewable
+        §50 / §61 - Stdin contract
       
     </span>
   </a>
@@ -9746,10 +9746,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#passing-list" class="md-nav__link">
+  <a href="#already-passing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Passing List
+        Already Passing
       
     </span>
   </a>
@@ -9757,32 +9757,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#indeterminate-list" class="md-nav__link">
+  <a href="#could-not-verify" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Indeterminate List
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#observed-bugs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Observed Bugs
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-implementation-order" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recommended Implementation Order
+        Could Not Verify
       
     </span>
   </a>
@@ -9809,75 +9787,66 @@
   
 
 
-<h1 id="neonctl-cli-agent-audit-report-for-cli-authors">neonctl — CLI Agent Audit Report for CLI Authors</h1>
-<p><strong>Date:</strong> 2026-06-06
-<strong>Version:</strong> 2.22.2
-<strong>Scope:</strong> Critical failure modes
-<strong>Findings:</strong> 23</p>
+<h1 id="neon-fix-report">neon - Fix Report</h1>
+<p><strong>Generated:</strong> 2026-07-05
+<strong>CLI version:</strong> 2.30.1
+<strong>Scope:</strong> Critical
+<strong>In findings:</strong> 22 failure modes evaluated</p>
 <h2 id="summary">Summary</h2>
-<p>Neon CLI has useful foundations for agents: global JSON/YAML/table output, <code>NEON_API_KEY</code>, config-dir isolation, and a strong <code>link --agent</code> state-machine workflow. The critical gaps are that these affordances are not framework-wide. Auth, init, destructive commands, common errors, and mutating operations still behave like human terminal workflows.</p>
-<p>Failure mode score: <strong>0.38/3</strong> over scored Critical checks.</p>
 <table>
 <thead>
 <tr>
-<th>Bucket</th>
-<th style="text-align: right;">Count</th>
+<th>Severity</th>
+<th style="text-align: right;">Pass (3/3)</th>
+<th style="text-align: right;">Partial (1-2)</th>
+<th style="text-align: right;">Fail (0)</th>
+<th style="text-align: right;">Indeterminate (?)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Passing (3/3)</td>
+<td>Critical</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr>
+<td>High</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr>
-<td>Partial (1-2/3)</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr>
-<td>Failing (0/3)</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr>
-<td>Indeterminate (?/3)</td>
-<td style="text-align: right;">2</td>
+<td>Medium</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 </tr>
 </tbody>
 </table>
 <h2 id="highest-priority-fixes">Highest Priority Fixes</h2>
-<h3 id="1-make-non-tty-auth-fail-fast-or-emit-json-fallback">1. Make non-TTY auth fail fast or emit JSON fallback</h3>
-<p>Affected: §45, §64, §10.</p>
-<p><code>neonctl auth</code> currently starts browser OAuth and waits. In non-TTY/CI, return a JSON object with <code>code: "AUTH_REQUIRED"</code>, supported <code>auth_methods</code>, and exact next steps. Prefer API-key/env instructions over browser launch.</p>
-<h3 id="2-apply-agent-semantics-beyond-link">2. Apply <code>--agent</code> semantics beyond <code>link</code></h3>
-<p>Affected: §2, §10, §50, §60.</p>
-<p><code>link --agent</code> is the best current pattern. Extend it to <code>auth</code>, <code>init</code>, and mutating workflows so agent invocations get a single parseable JSON object instead of prompts, spinners, and prose stderr.</p>
-<h3 id="3-add-a-machine-readable-manifest">3. Add a machine-readable manifest</h3>
-<p>Affected: §1, §23, §24, §37, §42, §43, §53, §74, §75.</p>
-<p>Implement <code>neonctl --schema</code> or <code>neonctl manifest</code> with commands, flags, output schemas, exit codes, required scopes, danger levels, auth requirements, stdin/editor/GUI requirements, and sensitive flag metadata.</p>
-<h3 id="4-standardize-json-envelopes-and-error-handling">4. Standardize JSON envelopes and error handling</h3>
-<p>Affected: §1, §2, §11, §13, §53.</p>
-<p>Make <code>--output json</code> apply to errors too. Use a stable envelope: <code>ok</code>, <code>data</code>, <code>error</code>, <code>warnings</code>, <code>meta</code>. Include semantic error codes and retryability information.</p>
-<h3 id="5-make-destructive-operations-previewable">5. Make destructive operations previewable</h3>
-<p>Affected: §12, §23, §75.</p>
-<p>Add <code>--dry-run</code> and explicit <code>effect</code> fields for create/update/delete commands. Declare <code>danger_level</code> and require explicit confirmation for irreversible deletes.</p>
-<h2 id="passing-list">Passing List</h2>
-<p>None.</p>
-<h2 id="indeterminate-list">Indeterminate List</h2>
-<p>§61, §62.</p>
-<h2 id="observed-bugs">Observed Bugs</h2>
-<ul>
-<li>Invalid explicit <code>--api-key</code> auth failures printed that credentials were being deleted from the default config path.</li>
-<li><code>neonctl init</code> prompted for editor selection under <code>stdin=DEVNULL</code>.</li>
-<li><code>neonctl auth</code> did not exit within the timeout under non-TTY.</li>
-<li>JSON mode did not apply to common auth errors.</li>
-</ul>
-<h2 id="recommended-implementation-order">Recommended Implementation Order</h2>
-<ol>
-<li>Add non-TTY guards for <code>auth</code> and <code>init</code>.</li>
-<li>Route all failures through JSON when <code>--output json</code> or <code>--agent</code> is active.</li>
-<li>Add manifest/schema output.</li>
-<li>Add dry-run/effect/idempotency support for mutating commands.</li>
-<li>Add required-scope declarations and permission preflight.</li>
-</ol>
+<h3 id="45-64-10-headless-auth-and-interactivity">§45 / §64 / §10 - Headless auth and interactivity</h3>
+<p><strong>Gap:</strong> Unauthenticated commands launched browser OAuth and waited until killed. <code>link --no-checks</code>, expected to be offline, also entered auth.</p>
+<p><strong>Fix:</strong> In non-TTY or CI contexts, never start browser OAuth automatically. Return a structured JSON error with a stable code such as <code>AUTH_REQUIRED</code>, a list of auth methods, and the exact non-interactive next step. Ensure <code>--no-checks</code> truly performs no auth, API calls, or env pull.</p>
+<h3 id="1-2-error-envelopes-and-exit-codes">§1 / §2 - Error envelopes and exit codes</h3>
+<p><strong>Gap:</strong> Validation, missing-argument, and auth failures collapsed to exit code 1 and prose stderr, even with <code>--output json</code>.</p>
+<p><strong>Fix:</strong> Make <code>--output json</code> apply to success and failure paths. Include <code>ok</code>, <code>data</code>, <code>error</code>, <code>warnings</code>, and <code>meta</code>, and embed <code>exit_code</code> plus a stable <code>error.code</code>. Publish the exit-code table in help and the manifest.</p>
+<h3 id="74-manifest-and-credential-scopes">§74 - Manifest and credential scopes</h3>
+<p><strong>Gap:</strong> No schema/manifest command declares commands, flags, exit codes, required scopes, interactivity, or danger level.</p>
+<p><strong>Fix:</strong> Add <code>neon --manifest</code> or <code>neon --schema</code> returning a versioned JSON document with <code>commands</code>, typed <code>flags</code>, <code>exit_codes</code>, <code>required_scopes</code>, <code>requires_auth</code>, <code>requires_interactive</code>, and <code>danger_level</code>.</p>
+<h3 id="23-12-13-mutation-safety-contracts">§23 / §12 / §13 - Mutation safety contracts</h3>
+<p><strong>Gap:</strong> Mutating/destructive workflows lack dry-run, idempotency, effect, partial-failure, and resume contracts.</p>
+<p><strong>Fix:</strong> Add <code>--dry-run</code> and <code>effect</code> to destructive operations, <code>--idempotency-key</code> to mutating operations, and structured <code>partial</code>, <code>completed_steps</code>, <code>failed_step</code>, and <code>resume_from</code> fields for multi-step flows.</p>
+<h3 id="50-61-stdin-contract">§50 / §61 - Stdin contract</h3>
+<p><strong>Gap:</strong> <code>neon api --data -</code> is documented as stdin but was parsed as <code>Unknown command: -</code>.</p>
+<p><strong>Fix:</strong> Accept <code>--data -</code> and <code>--data=-</code> consistently, enforce a stdin size limit, and return structured <code>STDIN_REQUIRED</code> or <code>STDIN_TOO_LARGE</code> errors with file-based alternatives.</p>
+<h2 id="already-passing">Already Passing</h2>
+<p>None in the Critical scope.</p>
+<h2 id="could-not-verify">Could Not Verify</h2>
+<p>§53 Credential Expiry Mid-Session, §60 OS Output Buffer Deadlock, §62 $EDITOR and $VISUAL Trap. Treat these as unverified risk until they can be tested with a controlled credentialed environment.</p>
 
 
 

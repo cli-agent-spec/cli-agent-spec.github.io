@@ -27,7 +27,7 @@
     
     
       
-        <title>neonctl — Readiness - CLI Agent Spec</title>
+        <title>neon - Readiness - CLI Agent Spec</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neonctl-readiness" class="md-skip">
+        <a href="#neon-readiness" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              neonctl — Readiness
+              neon - Readiness
             
           </span>
         </div>
@@ -9675,10 +9675,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-documentation-quality-13" class="md-nav__link">
+  <a href="#1-documentation-quality-23" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Documentation Quality — 1/3
+        1. Documentation Quality - 2/3
       
     </span>
   </a>
@@ -9689,7 +9689,7 @@
   <a href="#2-self-description-13" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Self-Description — 1/3
+        2. Self-Description - 1/3
       
     </span>
   </a>
@@ -9700,7 +9700,7 @@
   <a href="#3-pre-built-integrations-13" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Pre-built Integrations — 1/3
+        3. Pre-built Integrations - 1/3
       
     </span>
   </a>
@@ -9711,7 +9711,7 @@
   <a href="#4-setup-reproducibility-23" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Setup Reproducibility — 2/3
+        4. Setup Reproducibility - 2/3
       
     </span>
   </a>
@@ -9722,7 +9722,7 @@
   <a href="#5-workflow-coverage-23" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Workflow Coverage — 2/3
+        5. Workflow Coverage - 2/3
       
     </span>
   </a>
@@ -9747,10 +9747,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#documentation-quality-currently-13" class="md-nav__link">
+  <a href="#documentation-quality-currently-23" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Documentation Quality — currently 1/3
+        Documentation Quality - currently 2/3
       
     </span>
   </a>
@@ -9761,7 +9761,7 @@
   <a href="#self-description-currently-13" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Self-Description — currently 1/3
+        Self-Description - currently 1/3
       
     </span>
   </a>
@@ -9772,7 +9772,7 @@
   <a href="#pre-built-integrations-currently-13" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pre-built Integrations — currently 1/3
+        Pre-built Integrations - currently 1/3
       
     </span>
   </a>
@@ -9783,7 +9783,7 @@
   <a href="#setup-reproducibility-currently-23" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Setup Reproducibility — currently 2/3
+        Setup Reproducibility - currently 2/3
       
     </span>
   </a>
@@ -9794,7 +9794,7 @@
   <a href="#workflow-coverage-currently-23" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Workflow Coverage — currently 2/3
+        Workflow Coverage - currently 2/3
       
     </span>
   </a>
@@ -9837,11 +9837,11 @@
   
 
 
-<h1 id="neonctl-readiness">neonctl — Readiness</h1>
-<p><strong>CLI version:</strong> 2.22.2
-<strong>Date:</strong> 2026-06-06
+<h1 id="neon-readiness">neon - Readiness</h1>
+<p><strong>CLI version:</strong> 2.30.1
+<strong>Date:</strong> 2026-07-05
 <strong>Depth:</strong> full
-<strong>Total:</strong> 7/15  [C]</p>
+<strong>Total:</strong> 8/15  [C]</p>
 <table>
 <thead>
 <tr>
@@ -9853,64 +9853,63 @@
 <tbody>
 <tr>
 <td>Documentation Quality</td>
-<td>1/3</td>
-<td>README and official docs include install, auth, output, and <code>link --agent</code>; no AGENTS.md with canonical agent invocation.</td>
+<td>2/3</td>
+<td>Official docs and package README include invocation, output formats, API-key auth, and agent-mode guidance, but no local <code>AGENTS.md</code>.</td>
 </tr>
 <tr>
 <td>Self-Description</td>
 <td>1/3</td>
-<td>Help is structured and typed, but <code>--schema</code>, <code>--manifest</code>, and <code>manifest</code> do not return a machine-readable command schema.</td>
+<td>No JSON schema/manifest command; <code>--help</code> is structured enough to parse commands and flag types.</td>
 </tr>
 <tr>
 <td>Pre-built Integrations</td>
 <td>1/3</td>
-<td><code>init</code> references MCP/extension/agent skills, but no co-versioned manifest or integration artifact was found in the package.</td>
+<td>Co-versioned <code>--agent</code> JSON state-machine modes exist for selected workflows, but no complete CLI-wide MCP/OpenAPI/manifest artifact was found.</td>
 </tr>
 <tr>
 <td>Setup Reproducibility</td>
 <td>2/3</td>
-<td><code>npm i -g neonctl</code> is documented and worked non-interactively; package declares Node &gt;=18 and <code>--version</code> verifies.</td>
+<td><code>npm i -g neon</code> is documented, dependencies and Node engine are declared, <code>--version</code> verifies, and a second install succeeded.</td>
 </tr>
 <tr>
 <td>Workflow Coverage</td>
 <td>2/3</td>
-<td><code>link --agent</code> is a documented multi-step JSON workflow; most other workflows remain human-oriented or require auth.</td>
+<td>README/docs include multi-step examples and agent workflows, but several realistic examples require live credentials and a documented offline <code>link --no-checks</code> check entered browser auth.</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="dimension-details">Dimension Details</h2>
-<h3 id="1-documentation-quality-13">1. Documentation Quality — 1/3</h3>
-<p>The installed README and Neon docs document installation, <code>--output</code>, <code>--api-key</code>, <code>NEON_API_KEY</code>, <code>--no-analytics</code>, and <code>link --agent</code>. There is no local AGENTS.md for the CLI package with canonical invocation, non-interactive defaults, input conventions, credential scope guidance, or timeout guidance.</p>
-<h3 id="2-self-description-13">2. Self-Description — 1/3</h3>
-<p><code>neonctl --schema</code> and <code>neonctl --manifest</code> fell back to human help output. <code>neonctl manifest</code> returned <code>ERROR: Unknown command: manifest</code>. Help output is structured enough to parse flags and choices manually, but there is no JSON manifest with commands, flags, exit codes, auth scopes, danger levels, or output schemas.</p>
-<h3 id="3-pre-built-integrations-13">3. Pre-built Integrations — 1/3</h3>
-<p>The README and <code>init</code> command describe MCP/extension/agent setup, and <code>link --agent</code> exposes a JSON state machine. However, no co-versioned MCP manifest, OpenAPI spec, skill artifact, or command schema file was found under the installed <code>neonctl</code> package. <code>init --agent cursor</code> produced terminal progress output and timed out during auth in the probe environment.</p>
-<h3 id="4-setup-reproducibility-23">4. Setup Reproducibility — 2/3</h3>
-<p>The documented npm install command completed non-interactively and <code>neonctl --version</code> returned <code>2.22.2</code>. Dependencies are declared in <code>package.json</code>, including Node <code>&gt;=18</code>. There is no AGENTS.md install recipe or documented health check beyond <code>--version</code>.</p>
-<h3 id="5-workflow-coverage-23">5. Workflow Coverage — 2/3</h3>
-<p><code>link --agent</code> is well documented as a multi-step agent workflow with <code>status</code>, <code>options</code>, and <code>next_command_template</code>. CRUD command examples exist in help and docs, but most commands do not expose agent-specific structured envelopes, idempotency keys, dry-run behavior, or credential-scope preflights.</p>
+<h3 id="1-documentation-quality-23">1. Documentation Quality - 2/3</h3>
+<p>The official Neon CLI documentation and installed package README document the canonical <code>neon</code> invocation, global <code>--output json|yaml|table</code>, <code>--api-key</code>/<code>NEON_API_KEY</code> authentication, <code>--context-file</code>, and agent-oriented <code>neon link --agent</code>. Spot checks against <code>/Users/roman/.hermes/node/bin/neon --help</code> and <code>neon link --help</code> confirmed those flags are present. No <code>AGENTS.md</code> or <code>CODING_AGENTS.md</code> was available in the audit workspace or installed package, which prevents a full score under this rubric.</p>
+<h3 id="2-self-description-13">2. Self-Description - 1/3</h3>
+<p>Tried <code>/Users/roman/.hermes/node/bin/neon --schema</code>, <code>/Users/roman/.hermes/node/bin/neon manifest</code>, and <code>/Users/roman/.hermes/node/bin/neon --manifest</code>. <code>manifest</code> exits non-zero as an unknown command. <code>--schema</code> and <code>--manifest</code> return ordinary help text with exit code 0 rather than a machine-readable <code>ManifestResponse</code>. The help output is structured and includes commands, flag names, types, choices, defaults, and aliases.</p>
+<h3 id="3-pre-built-integrations-13">3. Pre-built Integrations - 1/3</h3>
+<p>No MCP config/server, OpenAPI spec file, Claude skill, LangChain/LlamaIndex wrapper, or complete workflow artifact was found in the installed package at <code>/Users/roman/.hermes/node/lib/node_modules/neon</code> within the scan depth. The package does include co-versioned agent-mode implementations for selected commands (<code>link</code>, <code>bootstrap</code>, <code>init</code>), but they do not cover the full CLI command surface.</p>
+<h3 id="4-setup-reproducibility-23">4. Setup Reproducibility - 2/3</h3>
+<p>Install command documented by official docs and README: <code>npm i -g neon</code>. The installed <code>package.json</code> declares <code>node &gt;=20.19.0</code>, package dependencies, and binary entries for <code>neon</code> and <code>neonctl</code>. <code>/Users/roman/.hermes/node/bin/neon --version</code> returned <code>2.30.1</code>. A second <code>npm install -g neon --no-fund --no-audit</code> completed successfully.</p>
+<h3 id="5-workflow-coverage-23">5. Workflow Coverage - 2/3</h3>
+<p>The README includes examples for linking, checkout, env pull, config/deploy, psql, and agent-mode JSON flows. <code>neon --help</code> was verified as a safe documented read-only example. A documented offline write example using <code>neon link --no-checks --org-id org-abc123 --project-id polished-snowflake-12345678</code> with a temporary context file unexpectedly entered browser authentication and was killed by timeout, so not all non-interactive examples verified.</p>
 <hr />
 <h2 id="recommended-improvements">Recommended Improvements</h2>
-<h3 id="documentation-quality-currently-13">Documentation Quality — currently 1/3</h3>
-<p><strong>To reach 2/3:</strong> Add an AGENTS.md with canonical invocation, non-interactive flags, env vars, and safe config isolation.
-<strong>To reach 3/3:</strong> Include input conventions, timeout policy, credential-scope recipes, and command examples verified against <code>--help</code>.</p>
-<h3 id="self-description-currently-13">Self-Description — currently 1/3</h3>
-<p><strong>To reach 2/3:</strong> Add <code>neonctl --schema</code> or <code>neonctl manifest</code> returning JSON for commands and flags.
-<strong>To reach 3/3:</strong> Include exit codes, required scopes, danger levels, output schemas, and an <code>etag</code>.</p>
-<h3 id="pre-built-integrations-currently-13">Pre-built Integrations — currently 1/3</h3>
-<p><strong>To reach 2/3:</strong> Ship a co-versioned MCP/agent manifest in the npm package.
-<strong>To reach 3/3:</strong> Make the artifact cover all commands and validate that its version matches the CLI binary.</p>
-<h3 id="setup-reproducibility-currently-23">Setup Reproducibility — currently 2/3</h3>
-<p><strong>To reach 3/3:</strong> Document the install and verify commands in AGENTS.md and include a health-check command for agents.</p>
-<h3 id="workflow-coverage-currently-23">Workflow Coverage — currently 2/3</h3>
-<p><strong>To reach 3/3:</strong> Extend the <code>--agent</code> JSON state-machine pattern beyond <code>link</code> to auth, init, create/update/delete, and recovery workflows.</p>
+<h3 id="documentation-quality-currently-23">Documentation Quality - currently 2/3</h3>
+<p><strong>To reach 3/3:</strong> Add an <code>AGENTS.md</code> or equivalent package artifact covering canonical invocation, non-interactive flags, env vars, input conventions, and safe examples for agents.</p>
+<h3 id="self-description-currently-13">Self-Description - currently 1/3</h3>
+<p><strong>To reach 2/3:</strong> Add a <code>neon --manifest</code> or <code>neon --schema</code> command that returns JSON describing commands and flags.
+<strong>To reach 3/3:</strong> Include typed command flags, exit-code mappings, and an <code>etag</code> in the manifest response.</p>
+<h3 id="pre-built-integrations-currently-13">Pre-built Integrations - currently 1/3</h3>
+<p><strong>To reach 2/3:</strong> Ship a complete machine-readable artifact covering at least 80% of commands, such as an MCP server or CLI manifest.
+<strong>To reach 3/3:</strong> Co-version that artifact in the same npm package and validate it in release CI.</p>
+<h3 id="setup-reproducibility-currently-23">Setup Reproducibility - currently 2/3</h3>
+<p><strong>To reach 3/3:</strong> Document the install and health check in an agent-specific file, including <code>neon --version</code> and <code>NEON_API_KEY</code> setup.</p>
+<h3 id="workflow-coverage-currently-23">Workflow Coverage - currently 2/3</h3>
+<p><strong>To reach 3/3:</strong> Provide a fully offline, credential-free workflow example that can be run verbatim in CI and does not enter browser authentication.</p>
 <hr />
 <h2 id="related-failure-modes">Related failure modes</h2>
 <table>
 <thead>
 <tr>
-<th>§N</th>
+<th>Section</th>
 <th>Title</th>
 <th>Severity</th>
 <th>Readiness dimension</th>

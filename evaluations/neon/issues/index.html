@@ -27,7 +27,7 @@
     
     
       
-        <title>neonctl — Issues - CLI Agent Spec</title>
+        <title>neon - Issues - CLI Agent Spec</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neonctl-issues" class="md-skip">
+        <a href="#neon-issues" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              neonctl — Issues
+              neon - Issues
             
           </span>
         </div>
@@ -9663,10 +9663,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#45-64-10-browser-auth-blocks-non-tty-execution" class="md-nav__link">
+  <a href="#45-candidate-browser-oauth-blocks-headless-authenticated-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
-        §45 / §64 / §10 — Browser auth blocks non-TTY execution
+        §45 candidate - browser OAuth blocks headless authenticated commands
       
     </span>
   </a>
@@ -9674,10 +9674,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#50-10-init-prompts-under-stdindevnull" class="md-nav__link">
+  <a href="#64-candidate-headless-auth-has-no-json-url-fallback" class="md-nav__link">
     <span class="md-ellipsis">
       
-        §50 / §10 — init prompts under stdin=DEVNULL
+        §64 candidate - headless auth has no JSON URL fallback
       
     </span>
   </a>
@@ -9685,10 +9685,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#24-invalid-auth-deletes-configured-credentials" class="md-nav__link">
+  <a href="#10-candidate-documented-offline-link-path-still-triggers-login" class="md-nav__link">
     <span class="md-ellipsis">
       
-        §24 — Invalid auth deletes configured credentials
+        §10 candidate - documented offline link path still triggers login
       
     </span>
   </a>
@@ -9696,10 +9696,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-1-json-mode-does-not-apply-to-common-errors" class="md-nav__link">
+  <a href="#50-candidate-documented-stdin-sentinel-is-parsed-as-a-command" class="md-nav__link">
     <span class="md-ellipsis">
       
-        §2 / §1 — JSON mode does not apply to common errors
+        §50 candidate - documented stdin sentinel is parsed as a command
       
     </span>
   </a>
@@ -9707,10 +9707,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#60-progress-output-uses-terminal-control-sequences" class="md-nav__link">
+  <a href="#2-candidate-json-output-mode-does-not-apply-to-error-paths" class="md-nav__link">
     <span class="md-ellipsis">
       
-        §60 — Progress output uses terminal control sequences
+        §2 candidate - JSON output mode does not apply to error paths
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-candidate-distinct-failures-collapse-to-exit-code-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §1 candidate - distinct failures collapse to exit code 1
       
     </span>
   </a>
@@ -9737,32 +9748,25 @@
   
 
 
-<h1 id="neonctl-issues">neonctl — Issues</h1>
-<h2 id="45-64-10-browser-auth-blocks-non-tty-execution">§45 / §64 / §10 — Browser auth blocks non-TTY execution</h2>
-<p><strong>Date:</strong> 2026-06-06
-<strong>Command:</strong> <code>neonctl auth --config-dir &lt;isolated&gt; --no-analytics --color false</code>
-<strong>Observed:</strong> The command emitted <code>Awaiting authentication in web browser</code> and an OAuth URL, then did not exit within the subprocess timeout. The output was prose on stderr, not a JSON <code>AUTH_REQUIRED</code> or <code>headless_behavior</code> response.
-<strong>Impact:</strong> Agents can hang during auth and cannot parse a structured fallback or token/API-key instruction.</p>
-<h2 id="50-10-init-prompts-under-stdindevnull">§50 / §10 — <code>init</code> prompts under stdin=DEVNULL</h2>
-<p><strong>Date:</strong> 2026-06-06
-<strong>Command:</strong> <code>neonctl init --api-key &lt;fake&gt; --config-dir &lt;isolated&gt;</code>
-<strong>Observed:</strong> The command rendered an interactive editor-selection prompt and timed out under <code>stdin=DEVNULL</code>.
-<strong>Impact:</strong> Agents can block unless they know to pass <code>--agent</code>, and the CLI does not fail fast with a structured non-interactive error.</p>
-<h2 id="24-invalid-auth-deletes-configured-credentials">§24 — Invalid auth deletes configured credentials</h2>
-<p><strong>Date:</strong> 2026-06-06
-<strong>Command:</strong> <code>neonctl projects list --output json --api-key &lt;fake&gt; --no-analytics --color false</code>
-<strong>Observed:</strong> The CLI printed <code>Authentication failed, deleting credentials...</code> and referenced the default credentials file path. This happened even though the failing credential came from the explicit <code>--api-key</code> option.
-<strong>Impact:</strong> A bad per-invocation API key can affect stored user credentials, creating cross-session state contamination and recovery work for agents.</p>
-<h2 id="2-1-json-mode-does-not-apply-to-common-errors">§2 / §1 — JSON mode does not apply to common errors</h2>
-<p><strong>Date:</strong> 2026-06-06
-<strong>Command:</strong> <code>neonctl projects list --output json --api-key &lt;fake&gt; --config-dir &lt;isolated&gt;</code>
-<strong>Observed:</strong> stdout was empty and stderr contained prose auth messages; exit code was <code>1</code>.
-<strong>Impact:</strong> Agents requesting JSON still need stderr text parsing for common failure paths.</p>
-<h2 id="60-progress-output-uses-terminal-control-sequences">§60 — Progress output uses terminal control sequences</h2>
-<p><strong>Date:</strong> 2026-06-06
-<strong>Command:</strong> <code>neonctl init --agent cursor --api-key &lt;fake&gt; --config-dir &lt;isolated&gt;</code>
-<strong>Observed:</strong> Captured output included spinner frames and ANSI cursor-control sequences while the command remained running.
-<strong>Impact:</strong> Agents receive noisy, token-heavy terminal UI instead of structured heartbeats.</p>
+<h1 id="neon-issues">neon - Issues</h1>
+<h3 id="45-candidate-browser-oauth-blocks-headless-authenticated-commands">§45 candidate - browser OAuth blocks headless authenticated commands</h3>
+<p><code>neon projects list --output json</code> with an empty temporary config and stdin closed launched browser OAuth, printed an auth URL, and did not exit before the 3 second probe timeout. An agent cannot recover from this without an out-of-band browser login.
+Discovered during §45 evaluation on 2026-07-05.</p>
+<h3 id="64-candidate-headless-auth-has-no-json-url-fallback">§64 candidate - headless auth has no JSON URL fallback</h3>
+<p><code>neon auth</code> with <code>DISPLAY=</code> and stdin closed still launched the browser OAuth path and timed out. The command did not emit a structured JSON response containing the URL and next action.
+Discovered during §64 evaluation on 2026-07-05.</p>
+<h3 id="10-candidate-documented-offline-link-path-still-triggers-login">§10 candidate - documented offline link path still triggers login</h3>
+<p><code>neon link --no-checks --org-id org-abc123 --project-id polished-snowflake-12345678 --no-env-pull --context-file tmp/neon-link-context</code> launched browser OAuth and timed out, despite the README describing <code>--no-checks</code> as an offline write with no API calls.
+Discovered during §10 evaluation on 2026-07-05.</p>
+<h3 id="50-candidate-documented-stdin-sentinel-is-parsed-as-a-command">§50 candidate - documented stdin sentinel is parsed as a command</h3>
+<p><code>neon api /projects --data - --output json --api-key SECRET_CANARY_NEON_AUDIT_12345</code> exited with <code>ERROR: Unknown command: -</code> instead of treating <code>-</code> as stdin as documented by <code>neon api --help</code>.
+Discovered during §50 evaluation on 2026-07-05.</p>
+<h3 id="2-candidate-json-output-mode-does-not-apply-to-error-paths">§2 candidate - JSON output mode does not apply to error paths</h3>
+<p>Commands run with <code>--output json</code> for missing arguments, invalid API keys, and validation errors emitted prose to stderr and empty stdout instead of a parseable JSON error envelope.
+Discovered during §2 evaluation on 2026-07-05.</p>
+<h3 id="1-candidate-distinct-failures-collapse-to-exit-code-1">§1 candidate - distinct failures collapse to exit code 1</h3>
+<p>Invalid output value, missing required positional argument, and invalid API key probes all exited with code 1 and no documented semantic error code in the output body.
+Discovered during §1 evaluation on 2026-07-05.</p>
 
 
 

@@ -27,7 +27,7 @@
     
     
       
-        <title>neonctl — Report Index - CLI Agent Spec</title>
+        <title>neon - Evaluation Index - CLI Agent Spec</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neonctl-report-index" class="md-skip">
+        <a href="#neon-evaluation-index" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              neonctl — Report Index
+              neon - Evaluation Index
             
           </span>
         </div>
@@ -9663,10 +9663,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#scores" class="md-nav__link">
+  <a href="#score-summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Scores
+        Score Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#readiness-score" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Readiness Score
       
     </span>
   </a>
@@ -9685,10 +9696,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#worst-gaps" class="md-nav__link">
+  <a href="#top-issues" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Worst Gaps
+        Top Issues
       
     </span>
   </a>
@@ -9696,10 +9707,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#readiness-detail" class="md-nav__link">
+  <a href="#observed-bugs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Readiness Detail
+        Observed Bugs
       
     </span>
   </a>
@@ -9726,93 +9737,60 @@
   
 
 
-<h1 id="neonctl-report-index">neonctl — Report Index</h1>
-<p><strong>Date:</strong> 2026-06-06
-<strong>Version:</strong> 2.22.2
-<strong>Scope:</strong> Critical failure modes</p>
-<h2 id="scores">Scores</h2>
+<h1 id="neon-evaluation-index">neon - Evaluation Index</h1>
+<p><strong>Generated:</strong> 2026-07-05
+<strong>CLI version:</strong> 2.30.1
+<strong>Scope:</strong> Critical
+<strong>Failure modes evaluated:</strong> 22 of 71 <em>(scope: Critical)</em></p>
+<h2 id="score-summary">Score Summary</h2>
 <table>
 <thead>
 <tr>
-<th>Metric</th>
-<th style="text-align: right;">Score</th>
+<th>Severity</th>
+<th style="text-align: right;">Pass (3/3)</th>
+<th style="text-align: right;">Partial (1-2)</th>
+<th style="text-align: right;">Fail (0)</th>
+<th style="text-align: right;">Indeterminate</th>
+<th style="text-align: right;">Total</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Failure mode average</td>
-<td style="text-align: right;">0.38/3</td>
+<td>Critical</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">22</td>
 </tr>
 <tr>
-<td>Readiness</td>
-<td style="text-align: right;">7/15 [C]</td>
+<td>High</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
-<td>Passing Critical checks</td>
-<td style="text-align: right;">0/23</td>
+<td>Medium</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
-<td>Partial Critical checks</td>
-<td style="text-align: right;">7/23</td>
-</tr>
-<tr>
-<td>Failing Critical checks</td>
-<td style="text-align: right;">14/23</td>
-</tr>
-<tr>
-<td>Indeterminate Critical checks</td>
-<td style="text-align: right;">2/23</td>
+<td><strong>All</strong></td>
+<td style="text-align: right;"><strong>0</strong></td>
+<td style="text-align: right;"><strong>7</strong></td>
+<td style="text-align: right;"><strong>12</strong></td>
+<td style="text-align: right;"><strong>3</strong></td>
+<td style="text-align: right;"><strong>22</strong></td>
 </tr>
 </tbody>
 </table>
-<h2 id="reports">Reports</h2>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Audience</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>report-dev.md</code></td>
-<td>CLI authors</td>
-</tr>
-<tr>
-<td><code>report-agent-dev.md</code></td>
-<td>Developers integrating agents with Neon CLI</td>
-</tr>
-<tr>
-<td><code>report-runtime.md</code></td>
-<td>Agents about to invoke Neon CLI</td>
-</tr>
-<tr>
-<td><code>report-issues.md</code></td>
-<td>Concrete issues and gaps</td>
-</tr>
-<tr>
-<td><code>findings.md</code></td>
-<td>Raw score table</td>
-</tr>
-<tr>
-<td><code>trace.md</code></td>
-<td>Probe details</td>
-</tr>
-<tr>
-<td><code>readiness.md</code></td>
-<td>Proactive readiness scoring</td>
-</tr>
-</tbody>
-</table>
-<h2 id="worst-gaps">Worst Gaps</h2>
-<ul>
-<li>§45 Headless Authentication / OAuth Browser Flow Blocking (0/3)</li>
-<li>§50 Stdin Consumption Deadlock (0/3)</li>
-<li>§23 Side Effects &amp; Destructive Operations (0/3)</li>
-<li>§74 Credential Scope Declaration Absence (0/3)</li>
-<li>§75 Safe-Default Execution Mode Absent (0/3)</li>
-</ul>
-<h2 id="readiness-detail">Readiness Detail</h2>
+<p><strong>Average score:</strong> 0.4 / 3</p>
+<h2 id="readiness-score">Readiness Score</h2>
 <table>
 <thead>
 <tr>
@@ -9823,7 +9801,7 @@
 <tbody>
 <tr>
 <td>Documentation Quality</td>
-<td style="text-align: right;">1/3</td>
+<td style="text-align: right;">2/3</td>
 </tr>
 <tr>
 <td>Self-Description</td>
@@ -9841,8 +9819,54 @@
 <td>Workflow Coverage</td>
 <td style="text-align: right;">2/3</td>
 </tr>
+<tr>
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>8/15 [C]</strong></td>
+</tr>
 </tbody>
 </table>
+<h2 id="reports">Reports</h2>
+<table>
+<thead>
+<tr>
+<th>Report</th>
+<th>Audience</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Issues &amp; Problems</td>
+<td>AI agents and their builders</td>
+<td><a href="../report-issues/">report-issues.md</a></td>
+</tr>
+<tr>
+<td>Runtime Brief</td>
+<td>AI agents at invocation time</td>
+<td><a href="../report-runtime/">report-runtime.md</a></td>
+</tr>
+<tr>
+<td>Integration Guide</td>
+<td>Agent developers</td>
+<td><a href="../report-agent-dev/">report-agent-dev.md</a></td>
+</tr>
+<tr>
+<td>Fix List</td>
+<td>CLI authors</td>
+<td><a href="../report-dev/">report-dev.md</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="top-issues">Top Issues</h2>
+<ul>
+<li>Browser OAuth starts in headless/no-credential flows and blocks agent execution.</li>
+<li><code>link --no-checks</code>, documented as offline, still entered the login path in the probe.</li>
+<li>JSON output mode does not cover error paths, leaving agents with prose stderr and empty stdout.</li>
+<li>Destructive commands expose no dry-run or affected-scope preview contract.</li>
+<li>No manifest/schema declares commands, exit codes, credential scopes, interactivity, or safe defaults.</li>
+</ul>
+<h2 id="observed-bugs">Observed Bugs</h2>
+<p>6 bugs recorded during evaluation - see <a href="../report-issues/">report-issues.md</a> for details.</p>
 
 
 

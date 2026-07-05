@@ -27,7 +27,7 @@
     
     
       
-        <title>neonctl — Issues and Failure-Mode Gaps - CLI Agent Spec</title>
+        <title>neon - Issues Report - CLI Agent Spec</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neonctl-issues-and-failure-mode-gaps" class="md-skip">
+        <a href="#neon-issues-report" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              neonctl — Issues and Failure-Mode Gaps
+              neon - Issues Report
             
           </span>
         </div>
@@ -9675,10 +9675,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#browser-auth-blocks-non-tty-execution" class="md-nav__link">
+  <a href="#45-browser-oauth-blocks-headless-authenticated-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Browser auth blocks non-TTY execution
+        §45 - browser OAuth blocks headless authenticated commands
       
     </span>
   </a>
@@ -9686,10 +9686,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#init-prompts-under-stdindevnull" class="md-nav__link">
+  <a href="#64-headless-auth-has-no-json-url-fallback" class="md-nav__link">
     <span class="md-ellipsis">
       
-        init prompts under stdin=DEVNULL
+        §64 - headless auth has no JSON URL fallback
       
     </span>
   </a>
@@ -9697,10 +9697,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#invalid-explicit-api-key-can-delete-stored-credentials" class="md-nav__link">
+  <a href="#10-documented-offline-link-path-still-triggers-login" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Invalid explicit API key can delete stored credentials
+        §10 - documented offline link path still triggers login
       
     </span>
   </a>
@@ -9708,10 +9708,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#json-mode-does-not-cover-common-errors" class="md-nav__link">
+  <a href="#50-documented-stdin-sentinel-is-parsed-as-a-command" class="md-nav__link">
     <span class="md-ellipsis">
       
-        JSON mode does not cover common errors
+        §50 - documented stdin sentinel is parsed as a command
       
     </span>
   </a>
@@ -9719,10 +9719,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#progress-output-is-terminal-ui-not-machine-readable-heartbeat" class="md-nav__link">
+  <a href="#2-json-output-mode-does-not-apply-to-error-paths" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Progress output is terminal UI, not machine-readable heartbeat
+        §2 - JSON output mode does not apply to error paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-distinct-failures-collapse-to-exit-code-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §1 - distinct failures collapse to exit code 1
       
     </span>
   </a>
@@ -9735,10 +9746,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#gap-table" class="md-nav__link">
+  <a href="#failure-mode-gaps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Gap Table
+        Failure-Mode Gaps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risk-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Summary
       
     </span>
   </a>
@@ -9765,181 +9798,232 @@
   
 
 
-<h1 id="neonctl-issues-and-failure-mode-gaps">neonctl — Issues and Failure-Mode Gaps</h1>
-<p><strong>Date:</strong> 2026-06-06
-<strong>Version:</strong> 2.22.2</p>
+<h1 id="neon-issues-report">neon - Issues Report</h1>
+<p><strong>Generated:</strong> 2026-07-05
+<strong>CLI version:</strong> 2.30.1
+<strong>Scope:</strong> Critical
+<strong>Findings in scope:</strong> 22 failure modes</p>
 <h2 id="observed-bugs">Observed Bugs</h2>
-<h3 id="browser-auth-blocks-non-tty-execution">Browser auth blocks non-TTY execution</h3>
-<p>Tags: §45, §64, §10.</p>
-<p>Trigger: <code>neonctl auth --config-dir &lt;isolated&gt; --no-analytics --color false</code>.</p>
-<p>The command emitted an OAuth URL and waited beyond the timeout instead of exiting with a structured JSON fallback. Agents should avoid this command unless a human is present.</p>
-<h3 id="init-prompts-under-stdindevnull"><code>init</code> prompts under stdin=DEVNULL</h3>
-<p>Tags: §50, §10.</p>
-<p>Trigger: <code>neonctl init --api-key &lt;fake&gt; --config-dir &lt;isolated&gt;</code>.</p>
-<p>The command rendered an interactive editor-selection prompt and timed out. <code>--agent</code> is needed, but even <code>init --agent cursor</code> produced terminal UI and auth progress rather than a stable JSON contract.</p>
-<h3 id="invalid-explicit-api-key-can-delete-stored-credentials">Invalid explicit API key can delete stored credentials</h3>
-<p>Tags: §24.</p>
-<p>Trigger: <code>neonctl projects list --output json --api-key &lt;fake&gt;</code>.</p>
-<p>The CLI printed that authentication failed and credentials were being deleted from the configured credentials path. When the fake key was passed through <code>--api-key</code>, deleting stored credentials is surprising and dangerous for agents.</p>
-<h3 id="json-mode-does-not-cover-common-errors">JSON mode does not cover common errors</h3>
-<p>Tags: §1, §2.</p>
-<p>Trigger: <code>neonctl projects list --output json --api-key &lt;fake&gt; --config-dir &lt;isolated&gt;</code>.</p>
-<p>stdout was empty and stderr contained prose messages. Agents still need text parsing for common failure paths.</p>
-<h3 id="progress-output-is-terminal-ui-not-machine-readable-heartbeat">Progress output is terminal UI, not machine-readable heartbeat</h3>
-<p>Tags: §60.</p>
-<p>Trigger: <code>neonctl init --agent cursor --api-key &lt;fake&gt; --config-dir &lt;isolated&gt;</code>.</p>
-<p>Captured output contained spinner frames and ANSI cursor control. Agents should cap output and use timeouts.</p>
-<h2 id="gap-table">Gap Table</h2>
+<h3 id="45-browser-oauth-blocks-headless-authenticated-commands">§45 - browser OAuth blocks headless authenticated commands</h3>
+<p><strong>Discovered during:</strong> §45 evaluation - 2026-07-05
+<strong>Symptom:</strong> <code>neon projects list --output json</code> with an empty temporary config and stdin closed launched browser OAuth and did not exit before the 3 second probe timeout.
+<strong>Impact:</strong> An agent blocks waiting for an out-of-band browser login and receives no parseable auth-required response.
+<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/neon projects list --output json --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code></p>
+<h3 id="64-headless-auth-has-no-json-url-fallback">§64 - headless auth has no JSON URL fallback</h3>
+<p><strong>Discovered during:</strong> §64 evaluation - 2026-07-05
+<strong>Symptom:</strong> <code>neon auth</code> with <code>DISPLAY=</code> and stdin closed still launched browser OAuth and timed out.
+<strong>Impact:</strong> Headless environments cannot recover programmatically; the URL is buried in stderr prose.
+<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/neon auth --config-dir tmp/neon-auth-config --no-color --no-analytics</code></p>
+<h3 id="10-documented-offline-link-path-still-triggers-login">§10 - documented offline link path still triggers login</h3>
+<p><strong>Discovered during:</strong> §10 evaluation - 2026-07-05
+<strong>Symptom:</strong> <code>neon link --no-checks --org-id org-abc123 --project-id polished-snowflake-12345678 --no-env-pull --context-file tmp/neon-link-context</code> launched browser OAuth and timed out.
+<strong>Impact:</strong> Agents cannot rely on the documented offline write path for CI or reproducible setup.
+<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/neon link --no-checks --org-id org-abc123 --project-id polished-snowflake-12345678 --no-env-pull --context-file tmp/neon-link-context --no-color --no-analytics</code></p>
+<h3 id="50-documented-stdin-sentinel-is-parsed-as-a-command">§50 - documented stdin sentinel is parsed as a command</h3>
+<p><strong>Discovered during:</strong> §50 evaluation - 2026-07-05
+<strong>Symptom:</strong> <code>neon api /projects --data - --output json --api-key SECRET_CANARY_NEON_AUDIT_12345</code> exited with <code>ERROR: Unknown command: -</code>.
+<strong>Impact:</strong> Agents following help text for stdin input hit an argument parser failure instead of a structured stdin contract.
+<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/neon api /projects --data - --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --no-color --no-analytics</code></p>
+<h3 id="2-json-output-mode-does-not-apply-to-error-paths">§2 - JSON output mode does not apply to error paths</h3>
+<p><strong>Discovered during:</strong> §2 evaluation - 2026-07-05
+<strong>Symptom:</strong> Commands run with <code>--output json</code> for missing arguments, invalid credentials, and validation errors emitted prose stderr and empty stdout.
+<strong>Impact:</strong> Agent parsers must branch into brittle stderr parsing for common failures.
+<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/neon projects get --output json --no-color --no-analytics</code></p>
+<h3 id="1-distinct-failures-collapse-to-exit-code-1">§1 - distinct failures collapse to exit code 1</h3>
+<p><strong>Discovered during:</strong> §1 evaluation - 2026-07-05
+<strong>Symptom:</strong> Invalid output value, missing required argument, and invalid API key probes all exited with code 1.
+<strong>Impact:</strong> Agents cannot distinguish validation, auth, not-found, timeout, or permission failures from exit code alone.
+<strong>Trigger:</strong> multiple probes; see <a href="../trace/">trace.md</a></p>
+<h2 id="failure-mode-gaps">Failure-Mode Gaps</h2>
 <table>
 <thead>
 <tr>
-<th>§</th>
-<th>Title</th>
+<th>Section</th>
 <th style="text-align: right;">Score</th>
+<th>What fails</th>
 <th>Workaround exists</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>§1</td>
-<td>Exit Codes &amp; Status Signaling</td>
 <td style="text-align: right;">0/3</td>
-<td>Partial</td>
-</tr>
-<tr>
-<td>§2</td>
-<td>Output Format &amp; Parseability</td>
-<td style="text-align: right;">1/3</td>
+<td>No semantic exit-code table or JSON error body.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§10</td>
-<td>Interactivity &amp; TTY Requirements</td>
 <td style="text-align: right;">0/3</td>
+<td>Non-TTY paths entered OAuth instead of suppressing prompts.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§11</td>
-<td>Timeouts &amp; Hanging Processes</td>
 <td style="text-align: right;">0/3</td>
+<td>No general user-facing timeout or structured timeout response.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§12</td>
-<td>Idempotency &amp; Safe Retries</td>
 <td style="text-align: right;">0/3</td>
+<td>No idempotency-key or effect contract on mutating commands.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§13</td>
-<td>Partial Failure &amp; Atomicity</td>
 <td style="text-align: right;">0/3</td>
+<td>No partial-failure or resume contract for multi-step flows.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§23</td>
-<td>Side Effects &amp; Destructive Operations</td>
 <td style="text-align: right;">0/3</td>
-<td>Partial</td>
-</tr>
-<tr>
-<td>§24</td>
-<td>Authentication &amp; Secret Handling</td>
-<td style="text-align: right;">1/3</td>
+<td>Destructive command help exposes no dry-run or affected scope preview.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§25</td>
-<td>Prompt Injection via Output</td>
 <td style="text-align: right;">0/3</td>
-<td>Partial</td>
-</tr>
-<tr>
-<td>§34</td>
-<td>Shell Injection via Agent-Constructed Commands</td>
-<td style="text-align: right;">1/3</td>
+<td>External API content is not wrapped as untrusted data.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§37</td>
-<td>REPL / Interactive Mode Accidental Triggering</td>
-<td style="text-align: right;">1/3</td>
-<td>Partial</td>
-</tr>
-<tr>
-<td>§42</td>
-<td>Debug / Trace Mode Secret Leakage</td>
-<td style="text-align: right;">1/3</td>
+<td style="text-align: right;">0/3</td>
+<td>REPL-like <code>psql</code> path could not reach an interactive guard before auth.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§43</td>
-<td>Tool Output Result Size Unboundedness</td>
 <td style="text-align: right;">0/3</td>
+<td>No output truncation contract or max-output flag was found.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§45</td>
-<td>Headless Authentication / OAuth Browser Flow Blocking</td>
 <td style="text-align: right;">0/3</td>
+<td>Browser OAuth blocks headless commands.</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td>§64</td>
+<td style="text-align: right;">0/3</td>
+<td>Headless auth lacks structured URL fallback.</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td>§74</td>
+<td style="text-align: right;">0/3</td>
+<td>No schema/manifest or permission scope declaration exists.</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td>§2</td>
+<td style="text-align: right;">1/3</td>
+<td>JSON mode exists but not for errors or envelopes.</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td>§24</td>
+<td style="text-align: right;">1/3</td>
+<td>Env auth exists, but <code>--api-key</code> accepts secrets in argv.</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td>§34</td>
+<td style="text-align: right;">1/3</td>
+<td>Validation is type/choice oriented, not structured hardening.</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td>§42</td>
+<td style="text-align: right;">1/3</td>
+<td>Canary not echoed, but no safe trace/schema sensitive-field contract.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§50</td>
-<td>Stdin Consumption Deadlock</td>
-<td style="text-align: right;">0/3</td>
-<td>Partial</td>
-</tr>
-<tr>
-<td>§53</td>
-<td>Credential Expiry Mid-Session</td>
-<td style="text-align: right;">0/3</td>
-<td>Partial</td>
-</tr>
-<tr>
-<td>§60</td>
-<td>OS Output Buffer Deadlock</td>
 <td style="text-align: right;">1/3</td>
+<td>Stdin sentinel failed as a parser error.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§61</td>
-<td>Bidirectional Pipe Payload Deadlock</td>
-<td style="text-align: right;">?/3</td>
-<td>Unknown</td>
-</tr>
-<tr>
-<td>§62</td>
-<td>$EDITOR and $VISUAL Trap</td>
-<td style="text-align: right;">?/3</td>
-<td>Unknown</td>
-</tr>
-<tr>
-<td>§64</td>
-<td>Headless Display and GUI Launch Blocking</td>
-<td style="text-align: right;">0/3</td>
+<td style="text-align: right;">1/3</td>
+<td>Large stdin failed early with no size-limit contract.</td>
 <td>Partial</td>
 </tr>
 <tr>
 <td>§71</td>
-<td>Non-Interactive Installation Absence</td>
 <td style="text-align: right;">2/3</td>
+<td>Install is documented and idempotent, but not in agent-specific docs.</td>
 <td>Yes</td>
 </tr>
 <tr>
-<td>§74</td>
-<td>Credential Scope Declaration Absence</td>
-<td style="text-align: right;">0/3</td>
+<td>§53</td>
+<td style="text-align: right;">?/3</td>
+<td>Expired credential behavior was not safely mockable.</td>
 <td>Partial</td>
 </tr>
 <tr>
-<td>§75</td>
-<td>Safe-Default Execution Mode Absent</td>
-<td style="text-align: right;">0/3</td>
+<td>§60</td>
+<td style="text-align: right;">?/3</td>
+<td>Long-running streaming behavior was not safely testable.</td>
+<td>Partial</td>
+</tr>
+<tr>
+<td>§62</td>
+<td style="text-align: right;">?/3</td>
+<td>Editor behavior requires a live psql session.</td>
 <td>Partial</td>
 </tr>
 </tbody>
 </table>
+<h2 id="passing">Passing</h2>
+<p>None in the Critical scope.</p>
+<h2 id="risk-summary">Risk Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th style="text-align: right;">Count</th>
+<th>Sections</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Observed bugs</td>
+<td style="text-align: right;">6</td>
+<td>§1, §2, §10, §45, §50, §64</td>
+</tr>
+<tr>
+<td>Score 0 - complete failure</td>
+<td style="text-align: right;">12</td>
+<td>§1, §10, §11, §12, §13, §23, §25, §37, §43, §45, §64, §74</td>
+</tr>
+<tr>
+<td>Score 1 - major gap</td>
+<td style="text-align: right;">6</td>
+<td>§2, §24, §34, §42, §50, §61</td>
+</tr>
+<tr>
+<td>Score 2 - minor gap</td>
+<td style="text-align: right;">1</td>
+<td>§71</td>
+</tr>
+<tr>
+<td>Score 3 - passing</td>
+<td style="text-align: right;">0</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Indeterminate</td>
+<td style="text-align: right;">3</td>
+<td>§53, §60, §62</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Highest-risk combination:</strong> headless browser auth, prose-only error handling, and absent machine-readable schema make naive agent integrations brittle unless they wrap Neon CLI defensively.</p>
 
 
 

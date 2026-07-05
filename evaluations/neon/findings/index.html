@@ -27,7 +27,7 @@
     
     
       
-        <title>neonctl — Findings - CLI Agent Spec</title>
+        <title>neon - Findings - CLI Agent Spec</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neonctl-findings" class="md-skip">
+        <a href="#neon-findings" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              neonctl — Findings
+              neon - Findings
             
           </span>
         </div>
@@ -9674,7 +9674,7 @@
   
 
 
-<h1 id="neonctl-findings">neonctl — Findings</h1>
+<h1 id="neon-findings">neon - Findings</h1>
 <table>
 <thead>
 <tr>
@@ -9692,184 +9692,176 @@
 <td>Shell Injection via Agent-Constructed Commands</td>
 <td>Critical</td>
 <td>1/3</td>
-<td>2026-06-06</td>
-<td>Uses typed/choice validation for some flags, but no structured <code>VALIDATION_ERROR</code>; metacharacter hardening is not declared in schema.</td>
+<td>2026-07-05</td>
+<td><code>projects create --name acme%2Fwidgets --output ../../etc/test</code> rejected only the output enum in prose; no structured validation error or traversal/metacharacter hardening was observed.</td>
 </tr>
 <tr>
 <td>§37</td>
 <td>REPL / Interactive Mode Accidental Triggering</td>
 <td>Critical</td>
-<td>1/3</td>
-<td>2026-06-06</td>
-<td><code>psql</code>/interactive-adjacent commands exist but no manifest declares interactive requirements; no structured <code>INTERACTIVE_REQUIRED</code> contract.</td>
+<td>0/3</td>
+<td>2026-07-05</td>
+<td><code>psql</code> in non-TTY with no credentials entered browser OAuth and timed out instead of emitting a structured interactive-required error.</td>
 </tr>
 <tr>
 <td>§42</td>
 <td>Debug / Trace Mode Secret Leakage</td>
 <td>Critical</td>
 <td>1/3</td>
-<td>2026-06-06</td>
-<td>Invalid secret was not echoed in tested errors, but credentials are accepted as <code>--api-key</code> argv and no schema marks sensitive fields.</td>
+<td>2026-07-05</td>
+<td>Invalid <code>--api-key</code> did not echo the canary in output, but secrets are accepted as CLI args and no safe trace/schema sensitive-field support was found.</td>
 </tr>
 <tr>
 <td>§43</td>
 <td>Tool Output Result Size Unboundedness</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td>No <code>--max-output</code>, <code>meta.truncated</code>, <code>meta.total_bytes</code>, or schema-declared output limits found.</td>
+<td>2026-07-05</td>
+<td>Help and docs expose no <code>--max-output</code> or truncation metadata contract such as <code>meta.truncated</code> and <code>meta.total_bytes</code>.</td>
 </tr>
 <tr>
 <td>§45</td>
 <td>Headless Authentication / OAuth Browser Flow Blocking</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td><code>neonctl auth</code> in non-TTY emitted a browser auth URL and did not exit within the timeout; no JSON <code>AUTH_REQUIRED</code> response.</td>
+<td>2026-07-05</td>
+<td>Authenticated commands without credentials launch browser OAuth and hang until killed; no JSON <code>AUTH_REQUIRED</code> response was emitted.</td>
 </tr>
 <tr>
 <td>§50</td>
 <td>Stdin Consumption Deadlock</td>
 <td>Critical</td>
-<td>0/3</td>
-<td>2026-06-06</td>
-<td><code>neonctl init</code> without <code>--agent</code> prompted for editor selection and timed out under <code>stdin=DEVNULL</code>.</td>
+<td>1/3</td>
+<td>2026-07-05</td>
+<td>Documented <code>api --data -</code> syntax exits immediately as <code>Unknown command: -</code>; no structured <code>STDIN_REQUIRED</code> code or hint is emitted.</td>
 </tr>
 <tr>
 <td>§53</td>
 <td>Credential Expiry Mid-Session</td>
 <td>Critical</td>
-<td>0/3</td>
-<td>2026-06-06</td>
-<td>Auth failures are generic/prose and no <code>CREDENTIALS_EXPIRED</code>, <code>expired_at</code>, <code>reauth_command</code>, or distinct expiry exit code is declared.</td>
+<td>?/3</td>
+<td>2026-07-05</td>
+<td>Could not safely mock an expired Neon credential; invalid API key produced only prose auth failure, not enough to score expiry behavior.</td>
 </tr>
 <tr>
 <td>§60</td>
 <td>OS Output Buffer Deadlock</td>
 <td>Critical</td>
-<td>1/3</td>
-<td>2026-06-06</td>
-<td>Long-running <code>init --agent</code> produced terminal spinner/progress output with ANSI control sequences, not structured JSON heartbeats.</td>
+<td>?/3</td>
+<td>2026-07-05</td>
+<td>No safe credential-free long-running Neon command was available after login-triggering probes were stopped.</td>
 </tr>
 <tr>
 <td>§61</td>
 <td>Bidirectional Pipe Payload Deadlock</td>
 <td>Critical</td>
-<td>?/3</td>
-<td>2026-06-06</td>
-<td>No stdin payload command was identified for a safe large-payload test; no manifest declares stdin limits or <code>--input-file</code>.</td>
+<td>1/3</td>
+<td>2026-07-05</td>
+<td>Large stdin to documented <code>api --data -</code> path failed early with <code>Unknown command: -</code> and probe-side EPIPE; no stdin size limit or <code>STDIN_TOO_LARGE</code> response was observed.</td>
 </tr>
 <tr>
 <td>§62</td>
 <td>$EDITOR and $VISUAL Trap</td>
 <td>Critical</td>
 <td>?/3</td>
-<td>2026-06-06</td>
-<td>No editor-requiring command was identified for a direct test; no manifest declares editor requirements or alternatives.</td>
+<td>2026-07-05</td>
+<td>Editor paths appear inside embedded psql, but exercising them requires a live psql session; no safe credential-free check was available.</td>
 </tr>
 <tr>
 <td>§64</td>
 <td>Headless Display and GUI Launch Blocking</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td>Auth launches a browser flow in non-TTY/headless conditions and does not return a structured JSON URL/fallback.</td>
+<td>2026-07-05</td>
+<td><code>neon auth</code> with <code>DISPLAY=</code> still launched browser OAuth and timed out instead of returning a headless JSON fallback URL.</td>
 </tr>
 <tr>
 <td>§71</td>
 <td>Non-Interactive Installation Absence</td>
 <td>Critical</td>
 <td>2/3</td>
-<td>2026-06-06</td>
-<td><code>npm i -g neonctl</code> is documented and worked; install is not documented in AGENTS.md and no dedicated health-check docs were found.</td>
+<td>2026-07-05</td>
+<td><code>npm i -g neon</code> is documented and idempotent, and <code>--version</code> verifies; install guidance is not in an agent-specific <code>AGENTS.md</code>.</td>
 </tr>
 <tr>
 <td>§10</td>
 <td>Interactivity &amp; TTY Requirements</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td><code>auth</code> and <code>init</code> have interactive paths that block or timeout in non-TTY contexts.</td>
+<td>2026-07-05</td>
+<td>Non-TTY <code>link --no-checks</code> and <code>psql</code> probes entered browser OAuth and timed out rather than suppressing prompts automatically.</td>
 </tr>
 <tr>
 <td>§11</td>
 <td>Timeouts &amp; Hanging Processes</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td>No user-facing <code>--timeout</code> or heartbeat control; auth/init paths exceeded subprocess timeouts. API client has a hardcoded 60s timeout.</td>
+<td>2026-07-05</td>
+<td>No user-facing <code>--timeout</code> was found, and no-credential auth paths exceeded the probe timeout without a CLI-produced timeout error.</td>
 </tr>
 <tr>
 <td>§12</td>
 <td>Idempotency &amp; Safe Retries</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td>No idempotency key, effect field, or all-mutating-command dry-run contract found.</td>
+<td>2026-07-05</td>
+<td>Mutating command help exposes no <code>--idempotency-key</code>, no <code>effect</code> field contract, and no framework-level retry idempotency signal.</td>
 </tr>
 <tr>
 <td>§13</td>
 <td>Partial Failure &amp; Atomicity</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td>No structured <code>partial</code>, <code>completed_steps</code>, <code>failed_step</code>, <code>resume_from</code>, or rollback contract found.</td>
+<td>2026-07-05</td>
+<td>Multi-step workflows do not expose a general <code>partial</code>, <code>completed_steps</code>, <code>failed_step</code>, or resume token contract in help or manifest output.</td>
 </tr>
 <tr>
 <td>§23</td>
 <td>Side Effects &amp; Destructive Operations</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td>Destructive commands such as project/branch/database/role delete expose no <code>--dry-run</code>, danger level, or required confirm flag in help.</td>
+<td>2026-07-05</td>
+<td><code>projects delete</code> exposes no <code>--dry-run</code>, no machine-readable danger level, and no affected-scope preview contract.</td>
 </tr>
 <tr>
 <td>§24</td>
 <td>Authentication &amp; Secret Handling</td>
 <td>Critical</td>
 <td>1/3</td>
-<td>2026-06-06</td>
-<td><code>NEON_API_KEY</code> exists and invalid secrets were not echoed, but <code>--api-key</code> accepts secrets in argv and failed auth can delete configured credentials.</td>
+<td>2026-07-05</td>
+<td><code>NEON_API_KEY</code> exists, and the invalid canary was not echoed, but <code>--api-key</code> accepts secrets on the command line and auth failures are prose with exit 1.</td>
 </tr>
 <tr>
 <td>§25</td>
 <td>Prompt Injection via Output</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td>JSON writer emits raw command data without trusted/untrusted annotations or structural wrapping of external fields.</td>
+<td>2026-07-05</td>
+<td>No response envelope or <code>trusted: false</code> convention was observed; <code>api</code> is designed to return external API content directly.</td>
 </tr>
 <tr>
 <td>§74</td>
 <td>Credential Scope Declaration Absence</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td>OAuth scopes appear in auth URL, but commands do not declare per-command <code>required_scopes</code>; no <code>check-permissions</code> preflight.</td>
-</tr>
-<tr>
-<td>§75</td>
-<td>Safe-Default Execution Mode Absent</td>
-<td>Critical</td>
-<td>0/3</td>
-<td>2026-06-06</td>
-<td>No <code>safe_default</code>, default dry-run mode, <code>--live</code>, or <code>meta.dry_run</code> contract found.</td>
+<td>2026-07-05</td>
+<td>No CLI manifest/schema or <code>check-permissions</code> command exists, so commands do not declare machine-readable required scopes.</td>
 </tr>
 <tr>
 <td>§1</td>
 <td>Exit Codes &amp; Status Signaling</td>
 <td>Critical</td>
 <td>0/3</td>
-<td>2026-06-06</td>
-<td>Failures observed as exit 1 with prose stderr; no semantic exit code table or JSON error body with exit code.</td>
+<td>2026-07-05</td>
+<td>Validation, missing-argument, and auth failures all exited 1 with prose stderr and no JSON exit-code body or documented semantic code table.</td>
 </tr>
 <tr>
 <td>§2</td>
 <td>Output Format &amp; Parseability</td>
 <td>Critical</td>
 <td>1/3</td>
-<td>2026-06-06</td>
-<td><code>--output json</code> exists, and <code>link --agent</code> emits JSON, but errors often go to prose stderr and normal JSON lacks a consistent <code>ok</code>/<code>data</code>/<code>error</code> envelope.</td>
+<td>2026-07-05</td>
+<td><code>--output json</code> exists globally, but errors still emit prose stderr with empty stdout and no consistent <code>ok</code>/<code>data</code>/<code>error</code> envelope.</td>
 </tr>
 </tbody>
 </table>
