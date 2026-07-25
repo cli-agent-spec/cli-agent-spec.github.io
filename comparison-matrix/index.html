@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="67 failure modes + 147 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="74 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -295,7 +295,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../skills/" class="md-tabs__link">
+      <a href="../skills.md" class="md-tabs__link">
         
   
   
@@ -1028,7 +1028,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../skills/" class="md-nav__link">
+      <a href="../skills.md" class="md-nav__link">
         
   
   
@@ -11953,7 +11953,7 @@
 </table>
 <hr />
 <h2 id="part-1-failure-mode-coverage-matrix">Part 1: Failure Mode Coverage Matrix</h2>
-<p>Rows are the 71 active failure modes (severity and frequency for priority context). Columns are the twelve solutions. Failure modes §36, §39, and §48 were merged into §10, §3, and §2 respectively and are omitted.</p>
+<p>Rows are the 71 currently mapped failure modes (severity and frequency for priority context). Columns are the twelve solutions. Failure modes §36, §39, and §48 were merged into §10, §3, and §2 respectively and are omitted.</p>
 <table>
 <thead>
 <tr>
@@ -13607,7 +13607,7 @@
 - <strong>OpenAPI rises to #3</strong> (was tied #4) — earns the only ✓ for §74 (Credential Scope Declaration) via native <code>securitySchemes</code> + per-operation <code>security</code> declarations.
 - <strong>MCP extends to #1 at 58.5%</strong> — earns ✓ for §69 (argument ordering irrelevant in JSON invocation), §72 and §73 (tool definitions are the artifact; drift is structurally impossible), keeping its structural advantage.
 - <strong>Cobra and Clap gain ✓ for §71</strong> (static binary releases are non-interactive by construction) but lose ground on §72/§73 (no artifact generation).
-- No solution exceeds 59% coverage across 71 failure modes. The space remains wide open.
+- No solution exceeds 59% coverage across 71 currently mapped failure modes. The space remains wide open.
 - <strong>Pydantic jumps to #2</strong> (33% → 45%) because the §34–68 challenges include many where pydantic's type system, SecretStr, and immutable-by-default model behaviour provide structural protection (buffer safety, locale invariance, no stdout output, no subprocess invocation, no GUI operations).
 - <strong>MCP extends its lead</strong> (52% → 58%) — protocol-level design protects against most I/O, subprocess, GUI, and locale failure modes structurally.
 - <strong>Cobra and Clap gain ground</strong> due to Go/Rust type-system and stdlib advantages in §60/§61/§51/§57/§56.
@@ -14457,7 +14457,7 @@
 - Composition / piping
 - Timeouts (recommended but not enforced)
 - Tool schema versioning and drift detection</p>
-<p><strong>Unique position:</strong> MCP scores highest (57.7%) because it solves the hardest problems structurally. Its remaining gaps are in operational reliability (retries, timeouts, concurrency) and completeness (working directory, composition, schema versioning).</p>
+<p><strong>Unique position:</strong> MCP scores highest (58.5%) because it solves the hardest problems structurally. Its remaining gaps are in operational reliability (retries, timeouts, concurrency) and completeness (working directory, composition, schema versioning).</p>
 <hr />
 <h3 id="agent-first-clis-agentyper">Agent-First CLIs (agentyper)</h3>
 <p><strong>What it's good at:</strong>
@@ -15107,7 +15107,7 @@
 </li>
 </ol>
 <hr />
-<p><em>CLI Agent Spec v1.6 — 71 active failure modes, 12 solutions evaluated. Updated 2026-05-07.</em></p>
+<p><em>CLI Agent Spec v1.6 — 71 currently mapped failure modes, 12 solutions evaluated. Updated 2026-05-07.</em></p>
 
 
 
@@ -15166,7 +15166,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
