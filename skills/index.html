@@ -13,8 +13,10 @@
         <link rel="canonical" href="https://cli-agent-spec.github.io/skills/">
       
       
-        <link rel="prev" href="../schemas/response-envelope/">
+        <link rel="prev" href="../agent-builders/">
       
+      
+        <link rel="next" href="../IMPLEMENTING/">
       
       
         
@@ -291,15 +293,17 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../skills.md" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
     
   
-  Skills
+  Skills — Technical Reference
 
       </a>
     </li>
@@ -1021,17 +1025,44 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../skills.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skills — Technical Reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Skills
+    Skills — Technical Reference
   
 
     
@@ -1040,6 +1071,225 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#skill-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill Inventory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skill-relations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill Relations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Skill Relations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#call-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Call graph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifact-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artifact flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifact-reference-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artifact reference table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skill-descriptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill Descriptions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Skill Descriptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cli-agent-onboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cli-agent-onboard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli-agent-evaluate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cli-agent-evaluate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli-agent-evaluate-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cli-agent-evaluate-batch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli-agent-readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cli-agent-readiness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli-agent-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cli-agent-report
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli-agent-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cli-agent-audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli-agent-implement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cli-agent-implement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli-agent-diagnose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cli-agent-diagnose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fixlayer-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fixlayer-report
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate-links" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        validate-links
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference-which-skill-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick-Reference: Which Skill to Use
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
