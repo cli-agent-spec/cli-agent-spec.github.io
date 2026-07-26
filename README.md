@@ -1,2 +1,149 @@
-# cli-agent-spec.github.io
-A specification for building CLI tools that work reliably under AI agent orchestration
+# CLI Agent Spec
+
+**Your CLI tool works perfectly for humans. For AI agents, it silently hangs, corrupts data, leaks secrets, and exhausts context windows — and you would never know.**
+
+This is a specification for building CLI tools that AI agents can call reliably: **74 documented failure modes**, **158 requirements** to eliminate them, machine-readable schemas an agent can consume directly, and design guides for CLI authors.
+
+> **No existing CLI framework covers more than 59% of the currently mapped failure modes.**
+
+---
+
+## What's going wrong right now
+
+AI agents call CLI tools constantly — to deploy infrastructure, query APIs, manage files, run pipelines. Most tools were never designed for this. Here is what agents actually encounter:
+
+```bash
+# Agent calls a list command. The tool pages output and waits for keypress.
+# The agent never receives a response. The pipeline stalls. Forever.
+$ kubectl get pods   # opens less, waits for input
+
+# Agent deploys to staging. The command times out at 30s, returns exit 1.
+# exit 1 means "error" — but does it mean "nothing happened" or "half-deployed"?
+# The agent retries. Now it's deployed twice.
+$ deploy --env staging   # exit 1 — but why? safe to retry?
+
+# Agent reads a list of users. One username contains an emoji.
+# The JSON serializer crashes on non-ASCII. The agent gets no output, no error.
+$ tool users list   # silent failure on emoji in username
+
+# Agent passes a flag after the subcommand — natural LLM ordering.
+# The parser silently treats --output as a positional argument value.
+# The agent receives plain text it can't parse. Exit code: 0.
+$ tool list users --output json   # parsed as: list "users" "--output" "json"
+```
+
+These are not edge cases. They are the **default behavior** of most CLI tools today — including tools from major companies. The cost falls on the agent: wasted tokens, stalled pipelines, data corruption from blind retries, cascading failures with no root cause.
+
+---
+
+## What this spec defines
+
+**74 failure modes** — each documented with severity, frequency, detectability, token cost, time cost, and context cost from the agent's perspective. Grouped into 7 parts: ecosystem/runtime, execution, security, output, environment, errors, and observability.
+
+**158 requirements** across 3 tiers:
+
+| Tier | Count | Who implements it |
+|------|-------|------------------|
+| **F** — Framework-Automatic | 78 | The framework enforces it; command authors get it for free |
+| **C** — Command Contract | 29 | Command authors declare it at registration |
+| **O** — Opt-In | 50 | Applications enable it explicitly |
+
+**5 JSON schemas** — machine-readable type definitions for exit codes, response envelopes, tool manifests, dispatch requests, and error details. Generate typed structs for your language directly from the schemas.
+
+**A comparison matrix** — 12 existing frameworks (argparse, Click, Cobra, Clap, Typer, Commander.js, and more) scored against 71 currently mapped failure modes. No framework exceeds 59%.
+
+---
+
+## The three contracts that matter most
+
+**Exit codes** — 14 named codes (0–13) with machine-readable guarantees per code: `retryable: true/false`, `side_effects: "none" | "partial" | "complete"`. An agent receiving exit 11 (`CONFLICT`) knows the operation is safe to retry. Receiving exit 6 (`PARTIAL_FAILURE`) knows it must inspect state before retrying. See [`exit-code.json`](schemas/exit-code.json).
+
+**Response envelope** — every command wraps its output in `{ ok, data, error, warnings, meta }`. The same keys are always present. Agents never parse free-text to determine success or failure. See [`response-envelope.json`](schemas/response-envelope.json).
+
+**Tool manifest** — `tool manifest --output json` returns the complete command tree: every subcommand, flag, type, description, exit code map, and example. One call replaces O(N) `--help` iterations and eliminates trial-and-error argument discovery. See [`manifest-response.json`](schemas/manifest-response.json).
+
+---
+
+## What's in this repo
+
+| Path | Contents |
+|------|----------|
+| [`challenges/`](challenges/index.md) | 74 failure modes, each with problem, impact, solutions, 0–3 evaluation rubric, and agent workaround |
+| [`requirements/`](requirements/index.md) | 158 requirements with acceptance criteria, wire format, and examples |
+| [`schemas/`](schemas/index.md) | JSON Schema draft-07 definitions for all 5 types |
+| [`guides/`](guides/index.md) | Design guides: positive conventions that cannot be expressed as enforceable requirements |
+| [`IMPLEMENTING.md`](IMPLEMENTING.md) | Implementation guide: wave-based order, goal-based paths, invariants, codegen |
+| [`comparison-matrix.md`](comparison-matrix.md) | 71 currently mapped failure modes × 12 frameworks coverage table |
+| [`research/`](research/index.md) | Per-framework analysis and competitive landscape (MCP, OpenAPI, function calling) |
+| [Agent skills](skills/index.md) | Agent skills for evaluating CLIs and guiding implementation |
+| `website/` | MkDocs website source; canonical specification content remains in the root sections above |
+
+---
+
+## Where this fits
+
+The field is converging on **Agent Experience (AX)** as the term for "how well is a system designed to be consumed by an AI agent" — the machine-facing analog of Developer Experience (DX) or User Experience (UX). It applies across APIs, databases, SDKs, web services, and CLIs.
+
+This spec is AX research applied to the CLI layer. CLIs are the most underserved slice of the problem: they are the primary interface through which agents interact with infrastructure, but they were designed for human terminal sessions. The gap between CLI defaults and agent requirements is where the 74 failure modes live.
+
+**What distinguishes this project from other AX work:**
+
+- **It names failure** — most AX guidance is prescriptive ("do this"). The failure mode taxonomy is a named, scored, reproducible catalog of what goes wrong and why, making automated evaluation possible
+- **It formalizes retry semantics** — the `retryable: true` / `side_effects: "none"` pairing in `ExitCodeEntry` encodes agent-safe re-execution as a machine-checkable constraint, which we have not seen formalized elsewhere at this precision
+- **It operates at the implementation layer** — requirements have acceptance criteria, schemas have typed wire formats, and evaluation rubrics score 0–3. The output is designed to generate code, not frame discussions
+
+**Relation to MCP:** Anthropic's [Model Context Protocol](https://modelcontextprotocol.io) defines a transport and capability-discovery layer between agents and tools. This spec defines the behavioral contracts for what a tool must do once invoked. The two are complementary.
+
+**What this spec does not yet cover:** Streaming output ergonomics for agents: partial JSON, progress tokens, and incremental structured data from long-running commands. This remains an open AX problem for CLIs.
+
+---
+
+## Start here
+
+**I want to understand the problem** → [`challenges/index.md`](challenges/index.md) — browse by severity. Start with §10 (interactive blocking), §43 (output size), §50 (stdin deadlock), §62 (editor trap).
+
+**I want to implement this in my framework** → [`IMPLEMENTING.md`](IMPLEMENTING.md) — wave-based implementation order, or pick a goal-based path:
+- [Fewer agent retries](IMPLEMENTING.md#path-a-fewer-retries) — 15 requirements
+- [Less context consumed](IMPLEMENTING.md#path-b-less-context-consumed) — 14 requirements
+- [Less token spend](IMPLEMENTING.md#path-c-less-token-spend) — 12 requirements
+
+**I want to evaluate my existing CLI** → use the agent skills below, or read [`challenges/checklist.md`](challenges/checklist.md) for a self-assessment.
+
+**I want to audit any interface for agent-friendliness** → the failure mode taxonomy applies beyond CLIs. REST APIs, SDKs, MCP servers, and RPC interfaces share the same failure categories: ambiguous error signaling (§1), interactive blocking (§10), missing machine-readable schemas (§21), over-verbose output (§43), credential leakage (§30). Use [`challenges/index.md`](challenges/index.md) as a lens and substitute "interface" for "CLI" — the problem statement holds. For subprocess-callable tools, run `cli-agent-audit` directly; for other interfaces, apply the `### Evaluation` rubrics manually against your integration layer.
+
+**I want to add a failure mode or requirement** → [`AGENTS.md`](AGENTS.md)
+
+---
+
+## Agent skills
+
+Installable skills for Agent Skills-compatible agents (Claude Code, Cursor, Gemini CLI, Copilot, and others):
+
+| Skill | Purpose |
+|-------|---------|
+| [`cli-agent-audit`](https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-audit/SKILL.md) | Autonomous end-to-end pipeline: install → onboard → readiness → evaluate → report |
+| [`cli-agent-onboard`](https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-onboard/SKILL.md) | Profile a CLI tool once — detects runtime, binary, flags, timeout method |
+| [`cli-agent-evaluate`](https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-evaluate/SKILL.md) | Score a CLI against a single failure mode (0–3), with applicable agent workaround |
+| [`cli-agent-implement`](https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-implement/SKILL.md) | Guide implementing the spec in a CLI framework, tier by tier |
+| [`cli-agent-diagnose`](https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-diagnose/SKILL.md) | Classify a failed CLI call against §N taxonomy, return workaround + memory string |
+
+```bash
+# Install (run inside your agent)
+npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-audit
+npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-onboard
+npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-evaluate
+npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-implement
+npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-diagnose
+```
+
+---
+
+## Contributing
+
+The spec is a living document. New failure modes are documented when confirmed against real tooling. New requirements follow from new failure modes.
+
+Before contributing, read [`AGENTS.md`](AGENTS.md) for conventions: file format, required sections, naming rules, and how to run `/validate-links` to verify cross-references after any edit.
+
+---
+
+*CLI Agent Spec v1.6 — 74 failure modes · 158 requirements · 5 schemas · 12 frameworks evaluated*

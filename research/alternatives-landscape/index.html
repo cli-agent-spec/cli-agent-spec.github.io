@@ -11261,7 +11261,7 @@
 
 <h1 id="alternative-solutions-landscape">Alternative Solutions Landscape</h1>
 <blockquote>
-<p>A comprehensive comparison of existing approaches to the agent-CLI integration problem, evaluated against the 73 failure modes in this specification.</p>
+<p>A comprehensive comparison of existing approaches to the agent-CLI integration problem, evaluated against the 74 failure modes in this specification.</p>
 </blockquote>
 <p>Researched March 2026.</p>
 <hr />
@@ -11862,7 +11862,7 @@
 <p>EvidenceRun emphasizes that failure modes compound in production: prompt injection (#4) + wrong system access (#9) = an attacker with write access to billing; hidden retries (#2) + silent failure (#8) = three invoices sent, system reports one. The spec's <code>side_effects</code> declarations and structured exit codes allow agents to implement defense-in-depth before a call lands — earlier in the stack than any audit can intervene.</p>
 <h4 id="relationship-to-this-spec_3">Relationship to this spec</h4>
 <p>EvidenceRun is post-hoc audit; this spec is design-time prevention. EvidenceRun instruments one workflow, maps failures to the 12-mode taxonomy, and packages the evidence for enterprise buyers. This spec provides the behavioral contracts that make most of those failures structurally impossible or detectable at call time. A CLI built to this spec would score better on modes #1, #2, #8, #10, #11, and #12 by construction — not because the audit rubric changed, but because the failure mode was eliminated at the source.</p>
-<p><strong>The spec as the substrate that makes EvidenceRun findings fixable:</strong> EvidenceRun's 12 modes are high-level; the spec's 73 failure modes are granular sub-cases. "#1 Tool misuse" in EvidenceRun decomposes into at least 8 §N failure modes in the spec. An EvidenceRun audit tells a team which high-level mode fired. The spec tells CLI authors which specific behavioral contract to implement to prevent it from firing again.</p>
+<p><strong>The spec as the substrate that makes EvidenceRun findings fixable:</strong> EvidenceRun's 12 modes are high-level; the spec's 74 failure modes are granular sub-cases. "#1 Tool misuse" in EvidenceRun decomposes into at least 8 §N failure modes in the spec. An EvidenceRun audit tells a team which high-level mode fired. The spec tells CLI authors which specific behavioral contract to implement to prevent it from firing again.</p>
 <hr />
 <h2 id="7-skillopt-text-space-skill-optimization">7. SkillOpt — Text-Space Skill Optimization</h2>
 <p><strong>Source:</strong> arXiv:2605.23904 — "SkillOpt: Executive Strategy for Self-Evolving Agent Skills" (Yang et al., Microsoft Research + Shanghai Jiao Tong / Tongji / Fudan universities, May 2026)</p>
