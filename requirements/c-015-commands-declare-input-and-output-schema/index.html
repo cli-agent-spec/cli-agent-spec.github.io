@@ -10175,6 +10175,7 @@
 <li><code>tool &lt;cmd&gt; --schema</code> returns valid JSON containing <code>parameters</code> and <code>output_schema</code></li>
 <li><code>tool --schema</code> returns a manifest of all commands with their parameter and output schemas</li>
 <li>Adding a parameter to a command automatically appears in <code>--schema</code> without separate documentation effort</li>
+<li>Positional arguments appear in the command's <code>positionals</code> array in call order, never only in its <code>description</code></li>
 <li>The <code>output_schema</code> is a valid JSON Schema object</li>
 </ul>
 <hr />
@@ -10193,7 +10194,12 @@
 <tr>
 <td><code>parameters</code></td>
 <td><code>Record&lt;string, FlagEntry&gt;</code></td>
-<td>Identical to <code>CommandEntry.flags</code> — one entry per declared argument</td>
+<td>Identical to <code>CommandEntry.flags</code> — one entry per declared option</td>
+</tr>
+<tr>
+<td><code>positionals</code></td>
+<td><code>PositionalEntry[]</code></td>
+<td>Identical to <code>CommandEntry.positionals</code> — positional arguments in call order</td>
 </tr>
 <tr>
 <td><code>output_schema</code></td>

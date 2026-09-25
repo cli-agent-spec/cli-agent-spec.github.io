@@ -9373,6 +9373,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#positionalentry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PositionalEntry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#supporting-types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10206,6 +10217,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#positionalentry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PositionalEntry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#supporting-types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10335,9 +10357,9 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tbody>
 <tr>
 <td><code>schema_version</code></td>
-<td>string <code>MAJOR.MINOR</code></td>
+<td>string <code>3.MINOR</code></td>
 <td>yes</td>
-<td>Version of this schema</td>
+<td>Contract version; <code>3.x</code> for this schema. From <code>3.0</code>, global options live in the root <code>flags</code></td>
 </tr>
 <tr>
 <td><code>framework_version</code></td>
@@ -10411,6 +10433,12 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td><code>Record&lt;string, FlagEntry&gt;</code></td>
 <td>yes</td>
 <td>Command-local flags keyed by name without <code>--</code>; never repeats a name or short alias from the root <code>flags</code></td>
+</tr>
+<tr>
+<td><code>positionals</code></td>
+<td><code>PositionalEntry[]</code></td>
+<td>no</td>
+<td>Positional arguments in call order; absent when there are none (REQ-C-015)</td>
 </tr>
 <tr>
 <td><code>exit_codes</code></td>
@@ -10644,6 +10672,55 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 </tbody>
 </table>
+<h3 id="positionalentry">PositionalEntry</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Name shown in help and errors; the caller never types it</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>"string"</code> | <code>"integer"</code> | <code>"number"</code> | <code>"enum"</code></td>
+<td>yes</td>
+<td>Value type</td>
+</tr>
+<tr>
+<td><code>required</code></td>
+<td>boolean</td>
+<td>yes</td>
+<td>Must be given; an optional positional never precedes a required one</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>yes</td>
+<td>What the argument selects, including range or format</td>
+</tr>
+<tr>
+<td><code>enum_values</code></td>
+<td>string[]</td>
+<td>when <code>type</code> is <code>"enum"</code></td>
+<td>Exhaustive list of accepted values</td>
+</tr>
+<tr>
+<td><code>variadic</code></td>
+<td>boolean</td>
+<td>no</td>
+<td>Takes every remaining value; last entry only</td>
+</tr>
+</tbody>
+</table>
 <h3 id="supporting-types">Supporting types</h3>
 <table>
 <thead>
@@ -10679,7 +10756,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <h2 id="examples">Examples</h2>
 <p><strong>Valid — two commands with declared contracts</strong></p>
 <pre><code class="language-json">{
-  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;schema_version&quot;: &quot;3.0&quot;,
   &quot;framework_version&quot;: &quot;2.1.0&quot;,
   &quot;etag&quot;: &quot;sha256:a3f9c1&quot;,
   &quot;flags&quot;: {
@@ -10710,7 +10787,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
       &quot;danger_level&quot;: &quot;destructive&quot;,
       &quot;required_scopes&quot;: [&quot;deploy:write&quot;],
       &quot;safe_default&quot;: true,
-      &quot;flags&quot;: { &quot;target&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: true, &quot;description&quot;: &quot;Target environment&quot; } },
+      &quot;flags&quot;: {},
+      &quot;positionals&quot;: [{ &quot;name&quot;: &quot;target&quot;, &quot;type&quot;: &quot;enum&quot;, &quot;required&quot;: true, &quot;enum_values&quot;: [&quot;staging&quot;, &quot;prod&quot;], &quot;description&quot;: &quot;Environment to roll back&quot; }],
       &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Rollback completed or previewed&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
     }
   }
@@ -10718,7 +10796,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </code></pre>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
-  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;schema_version&quot;: &quot;3.0&quot;,
   &quot;framework_version&quot;: &quot;2.1.0&quot;,
   &quot;etag&quot;: &quot;sha256:a3f9c1&quot;,
   &quot;commands&quot;: {
@@ -10729,7 +10807,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <p>Violation: <code>danger_level</code> and <code>required_scopes</code> are required on every command; an agent cannot tell whether the call is safe.</p>
 <p><strong>Invalid — editor command without alternatives</strong></p>
 <pre><code class="language-json">{
-  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;schema_version&quot;: &quot;3.0&quot;,
   &quot;framework_version&quot;: &quot;2.1.0&quot;,
   &quot;etag&quot;: &quot;sha256:a3f9c1&quot;,
   &quot;commands&quot;: {
@@ -10755,6 +10833,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <h2 id="agent-interpretation">Agent interpretation</h2>
 <p>Rules for agents consuming <code>ManifestResponse</code> to plan and execute command calls.</p>
 <p><strong>Fetching the manifest</strong>
+- Read <code>schema_version</code> first. A <code>2.x</code> manifest repeats global options inside each <code>CommandEntry.flags</code> and has no root <code>flags</code>; a <code>3.x</code> manifest lists them once in root <code>flags</code>
 - Fetch once per session, not per call — the manifest is expensive to generate and stable between command registrations
 - Cache using <code>etag</code>: on subsequent fetches pass the previous etag; if <code>meta.not_modified: true</code>, reuse the cached manifest
 - If <code>tool manifest</code> itself is unavailable (exit code <code>5</code> or <code>12</code>) — fall back to per-command <code>--help</code> calls; this is O(N) but safe</p>
@@ -10765,6 +10844,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <p><strong>Building a call from <code>FlagEntry</code></strong>
 - A command's accepted flags are the root <code>flags</code> plus its own <code>flags</code>; a name in neither produces <code>ARG_ERROR (2)</code>
 - Emit tokens in the canonical order <code>tool &lt;global options&gt; &lt;command path&gt; &lt;local options&gt; [--] &lt;positionals&gt;</code>; every parser mode and both <code>option_placement</code> values accept it
+- Give <code>positionals</code> in array order; a <code>required</code> entry must be present, and only a <code>variadic</code> last entry takes more than one value
 - Put <code>--</code> before any positional that starts with <code>-</code>
 - Pass each option once; a scalar option repeated with a different value produces <code>ARG_ERROR (2)</code>
 - <code>required: true</code> flags must always be present; absence will produce <code>ARG_ERROR (2)</code>
@@ -10800,6 +10880,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert every command's effective <code>exit_codes</code> table (root table overlaid with the entry's own map) matches its <code>ExitCodeEntry</code> declarations exactly — no additions, no omissions
 - Assert an entry's own <code>exit_codes</code> map never repeats a root-table entry unchanged
 - Assert no <code>CommandEntry.flags</code> key or <code>short</code> value equals a root <code>flags</code> key or <code>short</code> value
+- Assert <code>positionals</code> lists every positional the parser accepts, in order, with no required entry after an optional one and <code>variadic</code> only on the last
 - Assert <code>etag</code> changes when any command registration changes, and is stable across identical registrations (determinism test)</p>
 <p><strong>Tests to generate</strong>
 - A test that <code>tool manifest</code> returns all registered commands including built-ins
@@ -10838,6 +10919,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a></td>
 <td>Sources: <code>exit_codes</code> per command</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a></td>
+<td>Sources: <code>flags</code> and <code>positionals</code> per command</td>
 </tr>
 <tr>
 <td><a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a></td>

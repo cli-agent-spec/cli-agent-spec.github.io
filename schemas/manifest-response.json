@@ -9,8 +9,8 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "pattern": "^\\d+\\.\\d+$",
-      "description": "Version of the ManifestResponse schema itself. Increment the major when field shape changes in a breaking way."
+      "pattern": "^3\\.(0|[1-9][0-9]*)$",
+      "description": "Contract version of this ManifestResponse, 3.x for this schema. A consumer reads it before anything else: from 3.0 on, global options live in the root flags map, not in each CommandEntry.flags."
     },
     "framework_version": {
       "type": "string",
@@ -71,6 +71,11 @@
           "type": "object",
           "description": "Command-local flags: map from flag name (without leading --) to FlagEntry. Global options live in the root flags map and are never repeated here. Sourced from REQ-C-015.",
           "additionalProperties": { "$ref": "#/definitions/FlagEntry" }
+        },
+        "positionals": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/PositionalEntry" },
+          "description": "Positional arguments in the order they are given after the command path. Absent or empty when the command takes none. Only the last entry may be variadic. Sourced from REQ-C-015."
         },
         "exit_codes": {
           "type": "object",
@@ -267,6 +272,42 @@
         }
       },
       "not": { "required": ["pattern", "pattern_type"] }
+    },
+    "PositionalEntry": {
+      "type": "object",
+      "required": ["name", "type", "required", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "description": "Name used in help and errors. Never typed by the caller; position alone identifies the argument."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["string", "integer", "number", "enum"],
+          "description": "Value type of the argument."
+        },
+        "required": {
+          "type": "boolean",
+          "description": "True if the argument must be given. An optional positional never precedes a required one."
+        },
+        "description": {
+          "type": "string",
+          "description": "What the argument selects, including valid range or format constraints."
+        },
+        "enum_values": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Exhaustive list of accepted values. Required when type is 'enum'."
+        },
+        "variadic": {
+          "type": "boolean",
+          "description": "True if the argument takes every remaining value. Allowed on the last entry only."
+        }
+      },
+      "if": { "properties": { "type": { "const": "enum" } } },
+      "then": { "required": ["enum_values"] }
     },
     "Example": {
       "type": "object",

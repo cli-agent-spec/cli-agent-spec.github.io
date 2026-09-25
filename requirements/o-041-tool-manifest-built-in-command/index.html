@@ -10169,7 +10169,7 @@
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: High / Time: Medium / Context: High</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST provide a <code>tool manifest</code> built-in command that returns the complete command tree — every subcommand, flag, type, description, and example — as a single JSON response. This replaces the O(N) pattern of calling <code>tool &lt;cmd&gt; --help</code> for each subcommand individually. The manifest MUST include: all command names and aliases, all flags per command with type, default, required status, and description, all exit codes per command, schema version, and the framework version. The manifest MUST be cacheable; <code>tool manifest --etag &lt;prev&gt;</code> returns 304-equivalent (<code>exit 0</code>, <code>data: null</code>, <code>meta.not_modified: true</code>) if unchanged.</p>
+<p>The framework MUST provide a <code>tool manifest</code> built-in command that returns the complete command tree — every subcommand, flag, type, description, and example — as a single JSON response. This replaces the O(N) pattern of calling <code>tool &lt;cmd&gt; --help</code> for each subcommand individually. The manifest MUST include: all command names and aliases, all flags per command with type, default, required status, and description, all positional arguments per command in call order, all exit codes per command, schema version, and the framework version. The manifest MUST be cacheable; <code>tool manifest --etag &lt;prev&gt;</code> returns 304-equivalent (<code>exit 0</code>, <code>data: null</code>, <code>meta.not_modified: true</code>) if unchanged.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li><code>tool manifest</code> returns a single JSON object containing all commands and their full flag schemas</li>
@@ -10194,7 +10194,7 @@
 <pre><code class="language-json">{
   &quot;ok&quot;: true,
   &quot;data&quot;: {
-    &quot;schema_version&quot;: &quot;1.0&quot;,
+    &quot;schema_version&quot;: &quot;3.0&quot;,
     &quot;framework_version&quot;: &quot;2.1.0&quot;,
     &quot;etag&quot;: &quot;sha256:a3f9c1...&quot;,
     &quot;commands&quot;: {
