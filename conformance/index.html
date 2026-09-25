@@ -10233,7 +10233,7 @@
 </tbody>
 </table>
 <h2 id="fixtures">Fixtures</h2>
-<p>The benchmark mocks double as fixtures. <a href="profiles/democli-good.json"><code>democli-good.json</code></a> passes every check; <a href="profiles/democli-bad.json"><code>democli-bad.json</code></a> fails the output and safety checks. <code>tests/fixtures/conformance/hangcli</code> covers hangs and illegal exit codes; <code>lastwinscli</code> lets a subcommand default replace a global option given before the command path and keeps the last of two conflicting values. <code>tests/test_conformance.py</code> asserts every outcome.</p>
+<p>The benchmark mocks double as fixtures. <a href="profiles/democli-good.json"><code>democli-good.json</code></a> passes every check; <a href="profiles/democli-bad.json"><code>democli-bad.json</code></a> fails the output and safety checks. <code>tests/fixtures/conformance/hangcli</code> covers hangs and illegal exit codes; <code>lastwinscli</code> lets a subcommand default replace a global option given before the command path and keeps the last of two conflicting values. <code>posixcli</code> stops option parsing at the first positional, so an option after it is silently ignored. <code>tests/test_conformance.py</code> asserts every outcome.</p>
 
 
 

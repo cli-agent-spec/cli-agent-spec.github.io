@@ -10196,7 +10196,7 @@
     &quot;framework_version&quot;: &quot;2.1.0&quot;,
     &quot;etag&quot;: &quot;sha256:4b7e21&quot;,
     &quot;flags&quot;: {
-      &quot;format&quot;: { &quot;type&quot;: &quot;enum&quot;, &quot;required&quot;: false, &quot;default&quot;: &quot;json&quot;, &quot;enum_values&quot;: [&quot;json&quot;, &quot;jsonl&quot;, &quot;tsv&quot;, &quot;plain&quot;], &quot;description&quot;: &quot;Output representation&quot; },
+      &quot;format&quot;: { &quot;type&quot;: &quot;enum&quot;, &quot;required&quot;: false, &quot;enum_values&quot;: [&quot;json&quot;, &quot;jsonl&quot;, &quot;tsv&quot;, &quot;plain&quot;], &quot;description&quot;: &quot;Output representation; json when stdout is not a terminal, plain in a terminal&quot; },
       &quot;quiet&quot;:  { &quot;type&quot;: &quot;boolean&quot;, &quot;required&quot;: false, &quot;default&quot;: false, &quot;short&quot;: &quot;q&quot;, &quot;description&quot;: &quot;Suppress warnings on stderr&quot; }
     },
     &quot;commands&quot;: {

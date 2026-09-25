@@ -10683,7 +10683,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
   &quot;framework_version&quot;: &quot;2.1.0&quot;,
   &quot;etag&quot;: &quot;sha256:a3f9c1&quot;,
   &quot;flags&quot;: {
-    &quot;format&quot;: { &quot;type&quot;: &quot;enum&quot;, &quot;required&quot;: false, &quot;default&quot;: &quot;json&quot;, &quot;enum_values&quot;: [&quot;json&quot;, &quot;jsonl&quot;, &quot;tsv&quot;, &quot;plain&quot;], &quot;description&quot;: &quot;Output representation&quot; }
+    &quot;format&quot;: { &quot;type&quot;: &quot;enum&quot;, &quot;required&quot;: false, &quot;enum_values&quot;: [&quot;json&quot;, &quot;jsonl&quot;, &quot;tsv&quot;, &quot;plain&quot;], &quot;description&quot;: &quot;Output representation; json when stdout is not a terminal, plain in a terminal&quot; }
   },
   &quot;commands&quot;: {
     &quot;deploy&quot;: {
@@ -10744,6 +10744,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Emitting <code>commands</code> as an array.</strong> The map keyed by dot path is what enables O(1) lookup; arrays force a scan and invite duplicate names</li>
 <li><strong>Listing a path in <code>subcommands</code> without a matching <code>commands</code> entry.</strong> Every registered command, including children and built-ins, appears in the flat map</li>
 <li><strong>Adding ad-hoc fields to <code>CommandEntry</code>.</strong> Entries are closed; a new contract field belongs in this schema with a sourcing requirement, not as an undocumented extension</li>
+<li><strong>Declaring a static <code>default</code> for a flag whose default depends on the environment.</strong> <code>--format</code> resolves to <code>json</code> without a terminal and <code>plain</code> in one (REQ-F-003); omit <code>default</code> and state the rule in <code>description</code>, so an agent passes the value it needs</li>
 <li><strong>Setting <code>default: null</code> for flags without a default.</strong> Omit the key; <code>null</code> reads as "the default value is null"</li>
 <li><strong>Declaring <code>retryable: true</code> with partial side effects in <code>exit_codes</code>.</strong> The <code>ExitCodeEntry</code> invariant rejects it; timeouts that may have written are <code>retryable: false</code></li>
 <li><strong>Repeating global options in every <code>CommandEntry.flags</code>.</strong> A global option appears once, in the root <code>flags</code>; a copy inside a command reads as a local flag that happens to share the name, and hides whether it is accepted before the command path</li>

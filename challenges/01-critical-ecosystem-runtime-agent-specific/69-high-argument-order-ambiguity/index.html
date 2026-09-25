@@ -10252,10 +10252,26 @@ fmt = getattr(args, &quot;format&quot;, &quot;json&quot;)    # default applied o
 // interspersed parsing is the default, so do not call SetInterspersed(false)
 rootCmd.PersistentFlags().String(&quot;format&quot;, &quot;json&quot;, &quot;Output representation&quot;)
 </code></pre>
-<pre><code class="language-python"># Click: group options are not visible to subcommands; attach the shared
-# option to every command instead of the group
-def global_options(f):
-    return click.option(&quot;--format&quot;, default=&quot;json&quot;)(f)
+<pre><code class="language-python"># Click: group options are invisible to subcommands. Declare the option on the group and
+# on every command with default=None, then resolve it once: a conflict is a usage error,
+# otherwise the given value wins, then the real default
+format_option = click.option(&quot;--format&quot;, type=click.Choice([&quot;json&quot;, &quot;text&quot;]), default=None)
+
+def resolve_format(ctx: click.Context, local: str | None) -&gt; str:
+    root = ctx.find_root().params[&quot;format&quot;]
+    if root and local and root != local:
+        raise click.UsageError(f&quot;--format given twice with different values: {root}, {local}&quot;)
+    return local or root or &quot;json&quot;
+
+@click.group()
+@format_option
+def cli(format): ...
+
+@cli.command()
+@format_option
+@click.pass_context
+def ls(ctx, format):
+    fmt = resolve_format(ctx, format)
 </code></pre>
 <p><strong>Reject ambiguity instead of resolving it silently:</strong>
 - A command-local flag that reuses a global option's long name or short alias fails registration at startup
@@ -10310,13 +10326,16 @@ def global_options(f):
 <p><strong>Classify each flag as global or local, then emit the canonical order:</strong></p>
 <p><code>tool &lt;global options&gt; &lt;command path&gt; &lt;local options&gt; [--] &lt;positionals&gt;</code></p>
 <p>Global options go before the command path, which every parser accepts. Local options go right after the command path and before any positional, which also satisfies <code>option_placement: "strict"</code>. A positional that starts with <code>-</code> goes after <code>--</code>.</p>
-<pre><code class="language-python">def build_argv(tool: str, manifest: dict, path: list[str], flags: dict[str, str], positionals: list[str]) -&gt; list[str]:
-    &quot;&quot;&quot;Order tokens so that every common parser mode accepts them.&quot;&quot;&quot;
+<pre><code class="language-python">def build_argv(tool: str, manifest: dict, path: list[str], flags: dict[str, str | bool], positionals: list[str]) -&gt; list[str]:
+    &quot;&quot;&quot;Order tokens so that every common parser mode accepts them; True is a bare switch, False omits it.&quot;&quot;&quot;
     global_names = set(manifest.get(&quot;flags&quot;, {}))
     global_args: list[str] = []
     local_args: list[str] = []
     for name, value in flags.items():
-        (global_args if name in global_names else local_args).extend([f&quot;--{name}&quot;, value])
+        if value is False:
+            continue
+        tokens = [f&quot;--{name}&quot;] if value is True else [f&quot;--{name}&quot;, value]
+        (global_args if name in global_names else local_args).extend(tokens)
     separator = [&quot;--&quot;] if any(p.startswith(&quot;-&quot;) for p in positionals) else []
     return [tool, *global_args, *path, *local_args, *separator, *positionals]
 </code></pre>
