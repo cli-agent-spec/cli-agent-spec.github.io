@@ -9998,6 +9998,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#argumentorder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ArgumentOrder
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10135,6 +10146,12 @@
 <td>Arguments that print the manifest; omit to skip <code>manifest_valid</code></td>
 </tr>
 <tr>
+<td><code>argument_order</code></td>
+<td><code>ArgumentOrder</code></td>
+<td>no</td>
+<td>A read command and a global option to move around it; omit to skip <code>argument_order</code></td>
+</tr>
+<tr>
 <td><code>probes</code></td>
 <td><code>Probe[]</code></td>
 <td>yes</td>
@@ -10179,6 +10196,50 @@
 </tr>
 </tbody>
 </table>
+<h3 id="argumentorder">ArgumentOrder</h3>
+<p>The kit runs <code>command_path</code> with <code>local_args</code>, placing <code>global_flag</code> before the command path, between the path and the local option, and after the local option. Every placement must exit <code>0</code> with the same result; <code>alternate_value</code> must change stdout identically in every placement; the flag given twice with <code>value</code> and then <code>alternate_value</code> must exit <code>2</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>command_path</code></td>
+<td>string[]</td>
+<td>yes</td>
+<td>Path of a side-effect-free command</td>
+</tr>
+<tr>
+<td><code>local_args</code></td>
+<td>string[]</td>
+<td>yes</td>
+<td>A command-local option and its value</td>
+</tr>
+<tr>
+<td><code>global_flag</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Long name of a global option, usually <code>--format</code></td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Value whose stdout is a <code>ResponseEnvelope</code>, usually <code>json</code></td>
+</tr>
+<tr>
+<td><code>alternate_value</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Another accepted value with different stdout, such as <code>plain</code>; must differ from <code>value</code></td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="examples">Examples</h2>
 <p><strong>Valid</strong></p>
@@ -10188,6 +10249,7 @@
   &quot;command&quot;: [&quot;../../benchmark/harness/cli/good/democli&quot;],
   &quot;timeout_seconds&quot;: 5,
   &quot;manifest&quot;: [&quot;manifest&quot;],
+  &quot;argument_order&quot;: { &quot;command_path&quot;: [&quot;deployments&quot;, &quot;list&quot;], &quot;local_args&quot;: [&quot;--limit&quot;, &quot;5&quot;], &quot;global_flag&quot;: &quot;--format&quot;, &quot;value&quot;: &quot;json&quot;, &quot;alternate_value&quot;: &quot;plain&quot; },
   &quot;probes&quot;: [
     { &quot;name&quot;: &quot;list deployments&quot;, &quot;argv&quot;: [&quot;deployments&quot;, &quot;list&quot;], &quot;kind&quot;: &quot;read&quot; },
     { &quot;name&quot;: &quot;unknown flag&quot;, &quot;argv&quot;: [&quot;deployments&quot;, &quot;list&quot;, &quot;--no-such-flag&quot;], &quot;kind&quot;: &quot;invalid&quot; },
@@ -10213,7 +10275,8 @@
 <li><strong>Putting <code>--yes</code> or <code>--force</code> in a destructive probe.</strong> The kit then executes the deletion for real; confirmation flags never belong in a profile</li>
 <li><strong>Marking a mutating command as <code>read</code>.</strong> Read probes run several times (stdin closed, stdin open, <code>NO_COLOR</code>); anything that writes will write repeatedly</li>
 <li><strong>Pointing a profile at production credentials.</strong> Probes call the real tool; use a sandbox account or a mock</li>
-<li><strong>Adding <code>--format json</code> to probe argv.</strong> The envelope check exists to prove JSON activates in a non-TTY without flags (REQ-F-003)</li>
+<li><strong>Adding <code>--format json</code> to probe argv.</strong> The envelope check exists to prove JSON activates in a non-TTY without flags (REQ-F-003); <code>argument_order</code> is the one place a profile names the format flag</li>
+<li><strong>Choosing an <code>alternate_value</code> that renders like the default.</strong> The overwrite check compares stdout; an alternate that prints the same bytes as <code>value</code> reads as an ignored option</li>
 </ul>
 <hr />
 <h2 id="agent-interpretation">Agent interpretation</h2>

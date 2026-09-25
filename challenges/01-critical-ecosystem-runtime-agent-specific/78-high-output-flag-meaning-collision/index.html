@@ -10248,6 +10248,7 @@ tool export --format csv --output report.csv  # CSV in the file, envelope on std
 <p>A command that writes to disk names the absolute path in the envelope (<code>data.path</code>, REQ-F-040), so an agent that did not expect a file can still see that one was created.</p>
 <p><strong>Framework design:</strong>
 - Register <code>--format</code> as the global representation flag; never register <code>--output</code> or <code>-o</code> as an alias for it (REQ-O-001)
+- Declare <code>--format</code> once as a global option (REQ-F-079), so no command can register a local <code>--format</code> or reuse its short alias with a different meaning such as a template or a file type
 - Apply the format-name guard to every path-typed flag named <code>--output</code>, <code>-o</code>, or <code>--output-dir</code> at the framework level, not per command</p>
 <h3 id="evaluation">Evaluation</h3>
 <table>

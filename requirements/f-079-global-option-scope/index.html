@@ -10165,7 +10165,7 @@
 
 <h1 id="req-f-079-global-option-scope">REQ-F-079: Global Option Scope</h1>
 <p><strong>Tier:</strong> Framework-Automatic | <strong>Priority:</strong> P1</p>
-<p><strong>Source:</strong> <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/69-high-argument-order-ambiguity/">§69 Argument Order Ambiguity</a></p>
+<p><strong>Source:</strong> <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/69-high-argument-order-ambiguity/">§69 Argument Order Ambiguity</a> · <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/78-high-output-flag-meaning-collision/">§78 Output Flag Meaning Collision</a></p>
 <p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: Medium / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
@@ -10173,7 +10173,7 @@
 <p>Three rules keep a global option unambiguous for an agent that cannot see the parser:</p>
 <ol>
 <li><strong>Declared once.</strong> <code>tool manifest</code> lists global options in the root <code>flags</code> map. A <code>CommandEntry.flags</code> map lists only the command's local flags, so an agent builds a call from two lookups: root <code>flags</code> plus the command's <code>flags</code></li>
-<li><strong>Reserved names.</strong> A command-local flag MUST NOT reuse a global option's long name or short alias. The framework rejects such a registration at startup, before any command runs, so <code>-f</code> never means <code>--format</code> on one command and <code>--force</code> on another</li>
+<li><strong>Reserved names.</strong> A command-local flag MUST NOT reuse a global option's long name or short alias. The framework rejects such a registration at startup, before any command runs, so <code>-f</code> never means <code>--format</code> on one command and <code>--force</code> on another, and no command redefines <code>--format</code> as a template or file type (§78)</li>
 <li><strong>Position-independent value.</strong> A global option's value is the value the caller passed, wherever it appeared. A subcommand's defaults MUST NOT overwrite a value given before the command path. This is the default behavior of argparse subparsers that copy the parent's options, which turns <code>tool --format json list</code> into plain text with exit <code>0</code></li>
 </ol>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>

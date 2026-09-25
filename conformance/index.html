@@ -10224,10 +10224,16 @@
 <td>REQ-O-041</td>
 <td>§52, §21</td>
 </tr>
+<tr>
+<td><code>argument_order</code></td>
+<td>3</td>
+<td>REQ-F-067, REQ-F-079</td>
+<td>§69</td>
+</tr>
 </tbody>
 </table>
 <h2 id="fixtures">Fixtures</h2>
-<p>The benchmark mocks double as fixtures. <a href="profiles/democli-good.json"><code>democli-good.json</code></a> passes every check; <a href="profiles/democli-bad.json"><code>democli-bad.json</code></a> fails the output and safety checks. <code>tests/fixtures/conformance/hangcli</code> covers hangs and illegal exit codes. <code>tests/test_conformance.py</code> asserts all three outcomes.</p>
+<p>The benchmark mocks double as fixtures. <a href="profiles/democli-good.json"><code>democli-good.json</code></a> passes every check; <a href="profiles/democli-bad.json"><code>democli-bad.json</code></a> fails the output and safety checks. <code>tests/fixtures/conformance/hangcli</code> covers hangs and illegal exit codes; <code>lastwinscli</code> lets a subcommand default replace a global option given before the command path and keeps the last of two conflicting values. <code>tests/test_conformance.py</code> asserts every outcome.</p>
 
 
 

@@ -10390,7 +10390,13 @@
 <li>ManifestResponse 2.1 adds the optional root <code>flags</code> map; <code>CommandEntry.flags</code> holds command-local flags only</li>
 <li>REQ-F-067 adds two acceptance criteria: <code>--</code> ends option parsing, and a scalar option repeated with different values exits <code>2</code>. Its framework examples are corrected: argparse and Click already accept options after positionals; their real gap is root options after the subcommand, which <code>parse_intermixed_args()</code> does not fix</li>
 <li>REQ-C-027 gives <code>strict</code> one meaning: every option, global or local, precedes the first positional and may follow the command path. The criterion that a strict command rejects later options with exit <code>2</code> is removed; those tokens are forwarded to the child, which is what <code>strict</code> declares</li>
-<li>§69 is rewritten around four modes (global option after the command path, local option before it, option read as a positional, value overwritten or duplicated). The Agent Workaround moves from "front-load every flag", which breaks local flags, to the canonical order <code>tool &lt;global&gt; &lt;command path&gt; &lt;local&gt; [--] &lt;positionals&gt;</code>, and from Tier A to Tier B</li>
+<li>
+<p>§69 is rewritten around four modes (global option after the command path, local option before it, option read as a positional, value overwritten or duplicated). The Agent Workaround moves from "front-load every flag", which breaks local flags, to the canonical order <code>tool &lt;global&gt; &lt;command path&gt; &lt;local&gt; [--] &lt;positionals&gt;</code>, and from Tier A to Tier B</p>
+</li>
+<li>
+<p>The conformance kit adds <code>argument_order</code> (level 3, REQ-F-067, REQ-F-079): a profile's optional <code>argument_order</code> names a read command and a global option; the kit moves the option around the command path, detects a value overwritten by a subcommand default, and expects exit <code>2</code> for a conflicting repeat. The good democli mock parses <code>--format json|plain</code> globally and lists it in its manifest root <code>flags</code></p>
+</li>
+<li><code>cli-agent-diagnose</code> routes to §69: a flag error followed by the same tokens succeeding in another order is §69, not §52; exit <code>2</code> after a long option repeated with different values is §69; <code>runner.preflight</code> flags that repeat before the call</li>
 </ul>
 <p><strong>Why:</strong> "front-load all flags" traded Mode 1 for Mode 2, and nothing in the manifest told an agent which flags were global. The argparse default-overwrite case exits <code>0</code> with the wrong format.</p>
 <p><strong>Migration:</strong> move framework flags from each <code>CommandEntry.flags</code> into the root <code>flags</code>; register global options with parent parsers using <code>SUPPRESS</code> defaults (argparse) or persistent flags (Cobra); rename any local flag that shadows a global name or short alias.</p>
