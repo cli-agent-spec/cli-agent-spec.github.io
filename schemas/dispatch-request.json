@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "DispatchRequest",
+  "$id": "dispatch-request.json",
   "title": "DispatchRequest",
   "description": "One line in the JSONL stream accepted by the built-in exec command. Routes to a subcommand by _cmd, applies per-line flag overrides from _opts, and forwards remaining fields as the --input JSON payload to the dispatched command.",
   "type": "object",
@@ -16,7 +16,7 @@
       "type": "object",
       "description": "Per-line flag overrides applied to the dispatched command. Boolean true emits a bare flag (--flag); string or number emits --flag=value",
       "additionalProperties": {
-        "oneOf": [
+        "anyOf": [
           { "type": "boolean" },
           { "type": "string" },
           { "type": "integer" },

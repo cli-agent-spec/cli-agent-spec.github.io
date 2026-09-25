@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="74 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -394,6 +394,25 @@
   
   
   
+  
+    <li class="md-tabs__item">
+      <a href="../../conformance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Conformance Kit
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
     
   
   
@@ -455,6 +474,25 @@
         </a>
       </li>
     
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../CHANGELOG/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
   
 
       
@@ -1284,6 +1322,8 @@
       
         
           
+        
+      
         
       
         
@@ -2527,6 +2567,34 @@
     
   
     73 high documentation accuracy drift
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/78-high-output-flag-meaning-collision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    78 high output flag meaning collision
   
 
     
@@ -4126,6 +4194,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -7529,6 +7601,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../requirements/f-079-global-option-scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/levels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conformance Levels
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../requirements/o-001-output-format-flag/" class="md-nav__link">
         
   
@@ -7536,7 +7664,7 @@
   <span class="md-ellipsis">
     
   
-    REQ-O-001: --output Format Flag
+    REQ-O-001: --format Output Format Flag
   
 
     
@@ -7620,7 +7748,7 @@
   <span class="md-ellipsis">
     
   
-    REQ-O-004: --output jsonl / --stream Flag
+    REQ-O-004: --format jsonl / --stream Flag
   
 
     
@@ -7648,7 +7776,7 @@
   <span class="md-ellipsis">
     
   
-    REQ-O-005: --output id Extraction Mode
+    REQ-O-005: --format id Extraction Mode
   
 
     
@@ -8933,6 +9061,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../conformance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conformance Kit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -8970,7 +9125,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -8992,14 +9147,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="">
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_9">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -9162,6 +9317,111 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Values
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Values">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#commandentry-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CommandEntry — core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commandentry-declared-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CommandEntry — declared contracts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flagentry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FlagEntry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supporting-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supporting types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common mistakes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent interpretation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#coding-agent-notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9266,7 +9526,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -9288,14 +9548,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -9396,7 +9656,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -9418,14 +9678,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_12" id="__nav_12_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -9836,6 +10096,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHANGELOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -9861,6 +10148,111 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Values
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Values">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#commandentry-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CommandEntry — core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commandentry-declared-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CommandEntry — declared contracts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flagentry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FlagEntry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supporting-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supporting types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common mistakes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent interpretation
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#coding-agent-notes" class="md-nav__link">
@@ -9918,45 +10310,74 @@
 <h1 id="schema-manifestresponse">Schema: ManifestResponse</h1>
 <p><strong>File:</strong> <a href="../manifest-response.json"><code>manifest-response.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a>
+<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a>
 Returned as the <code>data</code> field of a <a href="../response-envelope/"><code>ResponseEnvelope</code></a>.</p>
 </blockquote>
+<hr />
+<h2 id="purpose">Purpose</h2>
+<p><code>tool manifest</code> returns every command, flag, exit code, and declared contract in one response. It replaces the O(N) loop of <code>--help</code> calls (§52) and is the only place an agent learns, before calling, whether a command mutates state, needs credentials, prompts, opens an editor, forwards arguments verbatim, or runs asynchronously.</p>
+<p>Two decisions shape the type:</p>
+<ul>
+<li><strong>Flat map, not a tree.</strong> <code>commands</code> is keyed by dot-separated path so lookup is O(1); <code>subcommands</code> arrays carry hierarchy</li>
+<li><strong>Closed entries.</strong> <code>CommandEntry</code> and <code>FlagEntry</code> reject unknown fields. Every field a Command Contract requirement declares is named here, so a manifest that validates is a manifest an agent can fully read</li>
+</ul>
+<hr />
+<h2 id="values">Values</h2>
 <table>
 <thead>
 <tr>
 <th>Field</th>
 <th>Type</th>
+<th>Required</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>schema_version</code></td>
-<td>string</td>
-<td>Version of this schema (e.g. <code>"1.0"</code>)</td>
+<td>string <code>MAJOR.MINOR</code></td>
+<td>yes</td>
+<td>Version of this schema</td>
 </tr>
 <tr>
 <td><code>framework_version</code></td>
 <td>string</td>
+<td>yes</td>
 <td>Version of the tool binary</td>
 </tr>
 <tr>
 <td><code>etag</code></td>
 <td>string</td>
+<td>yes</td>
 <td>Deterministic content hash. Changes only when registrations change</td>
 </tr>
 <tr>
 <td><code>commands</code></td>
 <td><code>Record&lt;string, CommandEntry&gt;</code></td>
-<td>Flat map keyed by dot-separated path (e.g. <code>"deploy.rollback"</code>)</td>
+<td>yes</td>
+<td>Flat map keyed by dot-separated path such as <code>"deploy.rollback"</code></td>
 </tr>
 <tr>
-<td>### CommandEntry</td>
-<td></td>
-<td></td>
+<td><code>flags</code></td>
+<td><code>Record&lt;string, FlagEntry&gt;</code></td>
+<td>no</td>
+<td>Global options every command accepts in any position, keyed by name without <code>--</code> (REQ-F-079)</td>
+</tr>
+<tr>
+<td><code>exit_codes</code></td>
+<td><code>Record&lt;string, ExitCodeEntry&gt;</code></td>
+<td>no</td>
+<td>Shared exit-code table every command inherits</td>
+</tr>
+<tr>
+<td><code>dependencies</code></td>
+<td><code>DependencyEntry[]</code></td>
+<td>no</td>
+<td>External runtime dependencies checked by <code>tool doctor</code> (REQ-O-031)</td>
 </tr>
 </tbody>
 </table>
+<h3 id="commandentry-core">CommandEntry — core</h3>
 <table>
 <thead>
 <tr>
@@ -9974,67 +10395,195 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td>One-sentence summary</td>
 </tr>
 <tr>
+<td><code>danger_level</code></td>
+<td><code>"safe"</code> | <code>"mutating"</code> | <code>"destructive"</code></td>
+<td>yes</td>
+<td>Mutation risk level (REQ-C-002)</td>
+</tr>
+<tr>
+<td><code>required_scopes</code></td>
+<td>string[]</td>
+<td>yes</td>
+<td>Minimal permission strings, most critical first; empty when no auth is needed (REQ-C-029)</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td><code>Record&lt;string, FlagEntry&gt;</code></td>
+<td>yes</td>
+<td>Command-local flags keyed by name without <code>--</code>; never repeats a name or short alias from the root <code>flags</code></td>
+</tr>
+<tr>
+<td><code>exit_codes</code></td>
+<td><code>Record&lt;string, ExitCodeEntry&gt;</code></td>
+<td>yes</td>
+<td>Keyed by integer code as string (REQ-C-001). With a root <code>exit_codes</code> table present, holds only the command's additions and overrides; the effective table is root overlaid with this map, and <code>tool &lt;cmd&gt; --schema</code> prints it in full</td>
+</tr>
+<tr>
 <td><code>aliases</code></td>
 <td>string[]</td>
 <td>no</td>
 <td>Alternative invocation names</td>
 </tr>
 <tr>
-<td><code>danger_level</code></td>
-<td><code>"safe"</code> | <code>"mutating"</code> | <code>"destructive"</code></td>
-<td>yes</td>
-<td>Mutation risk level of the command. Sourced from REQ-C-002</td>
-</tr>
-<tr>
-<td><code>required_scopes</code></td>
-<td>string[]</td>
-<td>yes</td>
-<td>Minimal permission strings needed from the active credential. Empty array if no auth required. Sourced from REQ-C-029</td>
-</tr>
-<tr>
-<td><code>flags</code></td>
-<td><code>Record&lt;string, FlagEntry&gt;</code></td>
-<td>yes</td>
-<td>Keyed by flag name without <code>--</code></td>
-</tr>
-<tr>
-<td><code>exit_codes</code></td>
-<td><code>Record&lt;string, ExitCodeEntry&gt;</code></td>
-<td>yes</td>
-<td>Keyed by code as string (e.g. <code>"0"</code>). Sourced from REQ-C-001</td>
-</tr>
-<tr>
 <td><code>output_schema</code></td>
-<td>object (JSONSchema draft-07)</td>
+<td>object</td>
 <td>no</td>
-<td>Shape of the command's stdout payload on success. Agents use this to validate responses and detect schema drift</td>
+<td>JSON Schema for <code>data</code> on success (REQ-C-015)</td>
 </tr>
 <tr>
 <td><code>output_formats</code></td>
 <td>string[]</td>
 <td>no</td>
-<td>Additional format values accepted by <code>--output</code> or <code>--format</code> beyond the framework defaults (<code>json</code>, <code>jsonl</code>, <code>tsv</code>, <code>plain</code>). Omit when only defaults are supported. <code>json</code> is always assumed available. Sourced from REQ-O-049</td>
+<td>Formats beyond the framework defaults (REQ-O-049)</td>
 </tr>
 <tr>
 <td><code>examples</code></td>
 <td><code>Example[]</code></td>
 <td>no</td>
-<td>Ready-to-use invocation strings</td>
+<td>Verbatim invocations</td>
 </tr>
 <tr>
 <td><code>subcommands</code></td>
 <td>string[]</td>
 <td>no</td>
-<td>Dot-separated paths of direct children. Resolve via top-level <code>commands</code></td>
-</tr>
-<tr>
-<td>### FlagEntry</td>
-<td></td>
-<td></td>
-<td></td>
+<td>Dot-separated paths of direct children</td>
 </tr>
 </tbody>
 </table>
+<h3 id="commandentry-declared-contracts">CommandEntry — declared contracts</h3>
+<p>Present only when the command declares them.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>option_placement</code></td>
+<td><code>"any"</code> | <code>"strict"</code></td>
+<td><code>strict</code>: every option, global or local, precedes the first positional; absent means <code>any</code> (REQ-C-027)</td>
+</tr>
+<tr>
+<td><code>interactive</code></td>
+<td>boolean</td>
+<td>Command may prompt in a TTY; <code>--yes</code> and <code>--non-interactive</code> exist (REQ-C-005)</td>
+</tr>
+<tr>
+<td><code>has_network_io</code></td>
+<td>boolean</td>
+<td>Command performs network or long blocking I/O; <code>--timeout</code> exists (REQ-C-012)</td>
+</tr>
+<tr>
+<td><code>steps</code></td>
+<td>string[]</td>
+<td>Ordered step names of a multi-step command (REQ-C-008)</td>
+</tr>
+<tr>
+<td><code>spawns_background_process</code></td>
+<td>boolean</td>
+<td>Command starts a child that outlives it (REQ-C-010)</td>
+</tr>
+<tr>
+<td><code>cleanup_command</code></td>
+<td>string</td>
+<td>Exact command that stops that child (REQ-C-010)</td>
+</tr>
+<tr>
+<td><code>max_lifetime_seconds</code></td>
+<td>integer</td>
+<td>Upper bound on the child's lifetime (REQ-C-010)</td>
+</tr>
+<tr>
+<td><code>filesystem_side_effects</code></td>
+<td><code>FilesystemSideEffect[]</code></td>
+<td>Paths the command may write, with category and TTL (REQ-C-011)</td>
+</tr>
+<tr>
+<td><code>secret_env_vars</code></td>
+<td>string[]</td>
+<td>Environment variables that supply secrets (REQ-C-016)</td>
+</tr>
+<tr>
+<td><code>platform</code></td>
+<td>string[]</td>
+<td>Supported OS names; absent means all (REQ-C-018)</td>
+</tr>
+<tr>
+<td><code>required_tools</code></td>
+<td><code>Record&lt;string, string&gt;</code></td>
+<td>External binaries and minimum versions (REQ-C-018)</td>
+</tr>
+<tr>
+<td><code>subprocess</code></td>
+<td><code>SubprocessDeclaration</code></td>
+<td>Child binary and which flags reach its argv (REQ-C-019)</td>
+</tr>
+<tr>
+<td><code>headless_supported</code></td>
+<td>boolean</td>
+<td>Auth command works without a TTY (REQ-C-021)</td>
+</tr>
+<tr>
+<td><code>token_env_vars</code></td>
+<td>string[]</td>
+<td>Pre-acquired token variables; required when <code>headless_supported</code> is <code>false</code> (REQ-C-021)</td>
+</tr>
+<tr>
+<td><code>async</code></td>
+<td>boolean</td>
+<td>Command returns a job descriptor (REQ-C-022)</td>
+</tr>
+<tr>
+<td><code>job_descriptor_schema</code></td>
+<td>object</td>
+<td>JSON Schema of that job descriptor (REQ-C-022)</td>
+</tr>
+<tr>
+<td><code>requires_editor</code></td>
+<td>boolean</td>
+<td>Command opens <code>$EDITOR</code> unless an alternative is given (REQ-C-023)</td>
+</tr>
+<tr>
+<td><code>non_interactive_alternatives</code></td>
+<td>string[]</td>
+<td>Flags that bypass the editor; required with <code>requires_editor</code> (REQ-C-023)</td>
+</tr>
+<tr>
+<td><code>gui_operations</code></td>
+<td>string[]</td>
+<td>Display operations performed (REQ-C-024)</td>
+</tr>
+<tr>
+<td><code>headless_behavior</code></td>
+<td><code>"emit_in_output"</code> | <code>"skip"</code> | <code>"error"</code></td>
+<td>Headless handling of <code>gui_operations</code>; required with them (REQ-C-024)</td>
+</tr>
+<tr>
+<td><code>config_write_scope</code></td>
+<td><code>"local"</code> | <code>"global"</code> | <code>"session"</code></td>
+<td>Scope of config files written (REQ-C-025)</td>
+</tr>
+<tr>
+<td><code>requires</code></td>
+<td><code>ConditionalRule[]</code></td>
+<td>Conditional argument dependencies (REQ-C-026)</td>
+</tr>
+<tr>
+<td><code>streaming_default</code></td>
+<td>boolean</td>
+<td>Command streams JSONL unless <code>--no-stream</code> (REQ-O-004)</td>
+</tr>
+<tr>
+<td><code>safe_default</code></td>
+<td>boolean</td>
+<td>Command dry-runs unless <code>--live</code> (REQ-O-048)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="flagentry">FlagEntry</h3>
 <table>
 <thead>
 <tr>
@@ -10049,19 +10598,19 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td><code>type</code></td>
 <td><code>"string"</code> | <code>"integer"</code> | <code>"number"</code> | <code>"boolean"</code> | <code>"array"</code> | <code>"enum"</code></td>
 <td>yes</td>
-<td></td>
+<td>Value type</td>
 </tr>
 <tr>
 <td><code>required</code></td>
 <td>boolean</td>
 <td>yes</td>
-<td></td>
+<td>Flag must be present</td>
 </tr>
 <tr>
 <td><code>description</code></td>
 <td>string</td>
 <td>yes</td>
-<td></td>
+<td>What the flag controls, including range or format</td>
 </tr>
 <tr>
 <td><code>default</code></td>
@@ -10082,39 +10631,127 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td>Single-character shorthand</td>
 </tr>
 <tr>
-<td>### Example</td>
-<td></td>
-<td></td>
-<td></td>
+<td><code>pattern</code></td>
+<td>string</td>
+<td>no</td>
+<td>Anchored regex the value must match; exclusive with <code>pattern_type</code> (REQ-C-020)</td>
+</tr>
+<tr>
+<td><code>pattern_type</code></td>
+<td><code>"alphanumeric_id"</code> | <code>"uuid"</code> | <code>"semver"</code> | <code>"filepath"</code> | <code>"url"</code></td>
+<td>no</td>
+<td>Built-in validation preset (REQ-C-020)</td>
 </tr>
 </tbody>
 </table>
+<h3 id="supporting-types">Supporting types</h3>
 <table>
 <thead>
 <tr>
-<th>Field</th>
 <th>Type</th>
-<th>Description</th>
+<th>Fields</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>description</code></td>
-<td>string</td>
-<td>What this example demonstrates</td>
+<td><code>Example</code></td>
+<td><code>description</code>, <code>command</code> (both required)</td>
 </tr>
 <tr>
-<td><code>command</code></td>
-<td>string</td>
-<td>Full invocation an agent can use verbatim</td>
+<td><code>FilesystemSideEffect</code></td>
+<td><code>path</code>, <code>type</code> (<code>cache</code> | <code>log</code> | <code>temp</code> | <code>credential</code> | <code>config</code>) required; <code>ttl_seconds</code>, <code>clearable_with</code> optional</td>
 </tr>
 <tr>
-<td>## Agent interpretation</td>
-<td></td>
-<td></td>
+<td><code>SubprocessDeclaration</code></td>
+<td><code>binary</code> required; <code>user_controlled_args</code>, <code>hardcoded_args</code> optional</td>
+</tr>
+<tr>
+<td><code>ConditionalRule</code></td>
+<td>One of <code>{ if_flag, if_value, then_required }</code>, <code>{ if_flag, prohibited }</code>, <code>{ if_flag, target_flag, default }</code></td>
+</tr>
+<tr>
+<td><code>DependencyEntry</code></td>
+<td><code>name</code>, <code>check_command</code>, <code>min_version</code> required; <code>version_regex</code>, <code>fix_command</code> optional</td>
 </tr>
 </tbody>
 </table>
+<hr />
+<h2 id="examples">Examples</h2>
+<p><strong>Valid — two commands with declared contracts</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;framework_version&quot;: &quot;2.1.0&quot;,
+  &quot;etag&quot;: &quot;sha256:a3f9c1&quot;,
+  &quot;flags&quot;: {
+    &quot;format&quot;: { &quot;type&quot;: &quot;enum&quot;, &quot;required&quot;: false, &quot;default&quot;: &quot;json&quot;, &quot;enum_values&quot;: [&quot;json&quot;, &quot;jsonl&quot;, &quot;tsv&quot;, &quot;plain&quot;], &quot;description&quot;: &quot;Output representation&quot; }
+  },
+  &quot;commands&quot;: {
+    &quot;deploy&quot;: {
+      &quot;description&quot;: &quot;Deploy a build to a target environment&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [&quot;deploy:write&quot;],
+      &quot;has_network_io&quot;: true,
+      &quot;flags&quot;: {
+        &quot;target&quot;:  { &quot;type&quot;: &quot;enum&quot;, &quot;required&quot;: true, &quot;enum_values&quot;: [&quot;staging&quot;, &quot;prod&quot;], &quot;description&quot;: &quot;Target environment&quot; },
+        &quot;dry-run&quot;: { &quot;type&quot;: &quot;boolean&quot;, &quot;required&quot;: false, &quot;default&quot;: false, &quot;short&quot;: &quot;n&quot;, &quot;description&quot;: &quot;Validate without executing&quot; },
+        &quot;build-id&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: true, &quot;pattern_type&quot;: &quot;alphanumeric_id&quot;, &quot;description&quot;: &quot;Build to deploy&quot; }
+      },
+      &quot;exit_codes&quot;: {
+        &quot;0&quot;:  { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Deployment completed&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; },
+        &quot;2&quot;:  { &quot;name&quot;: &quot;ARG_ERROR&quot;, &quot;description&quot;: &quot;Invalid target or build id&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; },
+        &quot;10&quot;: { &quot;name&quot;: &quot;TIMEOUT&quot;, &quot;description&quot;: &quot;Deployment timed out; partial writes may have occurred&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;partial&quot; }
+      },
+      &quot;requires&quot;: [{ &quot;if_flag&quot;: &quot;target&quot;, &quot;if_value&quot;: &quot;prod&quot;, &quot;then_required&quot;: [&quot;build-id&quot;] }],
+      &quot;examples&quot;: [{ &quot;description&quot;: &quot;Preview a staging deploy&quot;, &quot;command&quot;: &quot;tool deploy --target staging --build-id b42 --dry-run&quot; }],
+      &quot;subcommands&quot;: [&quot;deploy.rollback&quot;]
+    },
+    &quot;deploy.rollback&quot;: {
+      &quot;description&quot;: &quot;Roll back the most recent deployment&quot;,
+      &quot;danger_level&quot;: &quot;destructive&quot;,
+      &quot;required_scopes&quot;: [&quot;deploy:write&quot;],
+      &quot;safe_default&quot;: true,
+      &quot;flags&quot;: { &quot;target&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: true, &quot;description&quot;: &quot;Target environment&quot; } },
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Rollback completed or previewed&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    }
+  }
+}
+</code></pre>
+<p><strong>Invalid — command entry without required contract fields</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;framework_version&quot;: &quot;2.1.0&quot;,
+  &quot;etag&quot;: &quot;sha256:a3f9c1&quot;,
+  &quot;commands&quot;: {
+    &quot;deploy&quot;: { &quot;description&quot;: &quot;Deploy a build&quot;, &quot;flags&quot;: {}, &quot;exit_codes&quot;: {} }
+  }
+}
+</code></pre>
+<p>Violation: <code>danger_level</code> and <code>required_scopes</code> are required on every command; an agent cannot tell whether the call is safe.</p>
+<p><strong>Invalid — editor command without alternatives</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;framework_version&quot;: &quot;2.1.0&quot;,
+  &quot;etag&quot;: &quot;sha256:a3f9c1&quot;,
+  &quot;commands&quot;: {
+    &quot;commit&quot;: { &quot;description&quot;: &quot;Record a change&quot;, &quot;danger_level&quot;: &quot;mutating&quot;, &quot;required_scopes&quot;: [], &quot;requires_editor&quot;: true, &quot;flags&quot;: {}, &quot;exit_codes&quot;: {} }
+  }
+}
+</code></pre>
+<p>Violation: <code>requires_editor: true</code> requires <code>non_interactive_alternatives</code>; otherwise the agent has no path that avoids the editor trap (§62).</p>
+<hr />
+<h2 id="common-mistakes">Common mistakes</h2>
+<ul>
+<li><strong>Emitting <code>commands</code> as an array.</strong> The map keyed by dot path is what enables O(1) lookup; arrays force a scan and invite duplicate names</li>
+<li><strong>Listing a path in <code>subcommands</code> without a matching <code>commands</code> entry.</strong> Every registered command, including children and built-ins, appears in the flat map</li>
+<li><strong>Adding ad-hoc fields to <code>CommandEntry</code>.</strong> Entries are closed; a new contract field belongs in this schema with a sourcing requirement, not as an undocumented extension</li>
+<li><strong>Setting <code>default: null</code> for flags without a default.</strong> Omit the key; <code>null</code> reads as "the default value is null"</li>
+<li><strong>Declaring <code>retryable: true</code> with partial side effects in <code>exit_codes</code>.</strong> The <code>ExitCodeEntry</code> invariant rejects it; timeouts that may have written are <code>retryable: false</code></li>
+<li><strong>Repeating global options in every <code>CommandEntry.flags</code>.</strong> A global option appears once, in the root <code>flags</code>; a copy inside a command reads as a local flag that happens to share the name, and hides whether it is accepted before the command path</li>
+<li><strong>Reusing a global short alias for a local flag.</strong> <code>-f</code> meaning <code>--format</code> at the root and <code>--force</code> on one command changes meaning with position; the framework rejects it at registration</li>
+<li><strong>Generating the manifest from a static file.</strong> It must be computed from live registrations or the <code>etag</code> lies</li>
+</ul>
+<hr />
+<h2 id="agent-interpretation">Agent interpretation</h2>
 <p>Rules for agents consuming <code>ManifestResponse</code> to plan and execute command calls.</p>
 <p><strong>Fetching the manifest</strong>
 - Fetch once per session, not per call — the manifest is expensive to generate and stable between command registrations
@@ -10125,6 +10762,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - If the key is not in <code>commands</code> — do not guess; emit <code>REDIRECTED</code> behavior: try <code>tool manifest</code> again in case it was stale, then escalate
 - Check <code>aliases</code> before concluding a command does not exist — the agent may be using an alias that maps to a different primary key</p>
 <p><strong>Building a call from <code>FlagEntry</code></strong>
+- A command's accepted flags are the root <code>flags</code> plus its own <code>flags</code>; a name in neither produces <code>ARG_ERROR (2)</code>
+- Emit tokens in the canonical order <code>tool &lt;global options&gt; &lt;command path&gt; &lt;local options&gt; [--] &lt;positionals&gt;</code>; every parser mode and both <code>option_placement</code> values accept it
+- Put <code>--</code> before any positional that starts with <code>-</code>
+- Pass each option once; a scalar option repeated with a different value produces <code>ARG_ERROR (2)</code>
 - <code>required: true</code> flags must always be present; absence will produce <code>ARG_ERROR (2)</code>
 - <code>type: "enum"</code> — only values in <code>enum_values</code> are accepted; sending any other value produces <code>ARG_ERROR (2)</code>
 - <code>default</code> absent — the flag is optional but has no fallback; omitting it changes behavior; include explicitly if the outcome matters
@@ -10136,6 +10777,13 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <p><strong>Pre-planning retries from <code>exit_codes</code></strong>
 - Before the first call, read the command's <code>exit_codes</code> map and identify which codes are retryable
 - Build the retry/rollback plan before calling, not reactively — this avoids ambiguity about whether a retry is safe after a partial failure</p>
+<p><strong>Reading declared contracts before calling</strong>
+- <code>danger_level</code> other than <code>safe</code> — prefer <code>--dry-run</code> first; <code>safe_default: true</code> means the command previews until <code>--live</code> is passed
+- <code>option_placement: "strict"</code> — place every option, global or local, before the first positional argument; anything after it is forwarded to the child process
+- <code>requires</code> — evaluate each rule against the flags you plan to send before calling; a violated rule produces <code>ARG_ERROR (2)</code>
+- <code>interactive: true</code> or <code>requires_editor: true</code> — always pass <code>--yes</code> / <code>--non-interactive</code> or one of <code>non_interactive_alternatives</code>
+- <code>async: true</code> — the response is a job descriptor; poll with its <code>status_command</code> instead of waiting on the call
+- <code>required_scopes</code> not covered by the active credential — expect <code>AUTH_REQUIRED (8)</code>; do not call until credentials change</p>
 <p><strong>Manifest staleness</strong>
 - If a command call returns <code>REDIRECTED (13)</code> for a path that exists in the manifest — the manifest is stale; re-fetch unconditionally and update the cache
 - If a call returns <code>ARG_ERROR (2)</code> for a flag shown as valid in the manifest — possible version skew; re-fetch manifest before retrying</p>
@@ -10148,7 +10796,9 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - <code>commands</code> keys must be dot-separated strings matching the command's full invocation path — generate the key from the command's registration name, not from its handler function name</p>
 <p><strong>Validation to generate</strong>
 - Assert every command in the registry appears in <code>commands</code> — missing commands are a silent discovery failure
-- Assert every <code>exit_codes</code> entry in the manifest matches the corresponding command's <code>ExitCodeEntry</code> declarations exactly — no additions, no omissions
+- Assert every command's effective <code>exit_codes</code> table (root table overlaid with the entry's own map) matches its <code>ExitCodeEntry</code> declarations exactly — no additions, no omissions
+- Assert an entry's own <code>exit_codes</code> map never repeats a root-table entry unchanged
+- Assert no <code>CommandEntry.flags</code> key or <code>short</code> value equals a root <code>flags</code> key or <code>short</code> value
 - Assert <code>etag</code> changes when any command registration changes, and is stable across identical registrations (determinism test)</p>
 <p><strong>Tests to generate</strong>
 - A test that <code>tool manifest</code> returns all registered commands including built-ins
@@ -10195,6 +10845,22 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a></td>
 <td>Sources: <code>required_scopes</code> per command</td>
+</tr>
+<tr>
+<td><a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a></td>
+<td>Sources: top-level <code>flags</code> (global options)</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a></td>
+<td>Sources: <code>option_placement</code> per command</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a></td>
+<td>Sources: <code>requires</code> conditional rules</td>
+</tr>
+<tr>
+<td><a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a></td>
+<td>Sources: top-level <code>dependencies</code></td>
 </tr>
 <tr>
 <td><a href="../exit-code-entry/">schemas/exit-code-entry.md</a></td>
