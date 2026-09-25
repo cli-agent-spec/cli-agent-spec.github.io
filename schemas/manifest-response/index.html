@@ -10833,7 +10833,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <h2 id="agent-interpretation">Agent interpretation</h2>
 <p>Rules for agents consuming <code>ManifestResponse</code> to plan and execute command calls.</p>
 <p><strong>Fetching the manifest</strong>
-- Read <code>schema_version</code> first. A <code>2.x</code> manifest repeats global options inside each <code>CommandEntry.flags</code> and has no root <code>flags</code>; a <code>3.x</code> manifest lists them once in root <code>flags</code>
+- Read <code>schema_version</code> first. A <code>3.x</code> manifest lists global options once in root <code>flags</code>; treat any other value as pre-3.0, where global options may repeat inside each <code>CommandEntry.flags</code> and root <code>flags</code> is absent. Pre-3.0 producers commonly emit <code>1.0</code>, the value every 2.x example showed, so never test for a <code>2.</code> prefix
 - Fetch once per session, not per call — the manifest is expensive to generate and stable between command registrations
 - Cache using <code>etag</code>: on subsequent fetches pass the previous etag; if <code>meta.not_modified: true</code>, reuse the cached manifest
 - If <code>tool manifest</code> itself is unavailable (exit code <code>5</code> or <code>12</code>) — fall back to per-command <code>--help</code> calls; this is O(N) but safe</p>
