@@ -10224,7 +10224,7 @@ Error: unrecognized arguments: --limit
 $ tool --format json list             # exit 0, plain text
 
 # the same option in two positions: most parsers keep the last one silently
-$ tool --format json list --format text
+$ tool --format json list --format plain
 </code></pre>
 <p>Agents cannot predict which mode applies without probing. Modes 1 and 2 fail loudly but contradict each other, so neither "flags first" nor "flags last" is safe everywhere. Modes 3 and 4 exit <code>0</code>, which makes them the hardest to detect.</p>
 <h3 id="impact">Impact</h3>
@@ -10318,7 +10318,7 @@ def ls(ctx, format):
 1. <code>tool &lt;cmd&gt; &lt;positional&gt; --format json</code> and <code>tool --format json &lt;cmd&gt; &lt;positional&gt;</code> both succeed with identical output and exit code
 2. <code>tool --format json &lt;cmd&gt;</code> emits JSON (catches the subparser default overwrite)
 3. <code>tool &lt;cmd&gt; &lt;positional&gt; --&lt;local-flag&gt; &lt;value&gt;</code> takes effect (catches Mode 3)
-4. <code>tool --format json &lt;cmd&gt; --format text</code> exits <code>2</code></p>
+4. <code>tool --format json &lt;cmd&gt; --format plain</code> exits <code>2</code></p>
 <hr />
 <h3 id="agent-workaround">Agent Workaround</h3>
 <p><strong>Signature:</strong> <code>unrecognized arguments</code> or <code>unknown flag</code> naming a flag that exists in the manifest or <code>--help</code>; the same flag succeeds in another position; or <code>exit 0</code> with plain-text output despite <code>--format json</code></p>
