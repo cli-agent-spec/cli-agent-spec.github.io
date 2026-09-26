@@ -10344,7 +10344,7 @@
 <h1 id="schema-responseenvelope">Schema: ResponseEnvelope</h1>
 <p><strong>File:</strong> <a href="../response-envelope.json"><code>response-envelope.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/f-004-consistent-json-response-envelope/">REQ-F-004</a> · <a href="../../requirements/f-018-pagination-metadata-on-list-commands/">REQ-F-018</a> · <a href="../../requirements/c-009-multi-step-commands-report-completed-failed-skippe/">REQ-C-009</a> · <a href="../../requirements/c-013-error-responses-include-code-and-message/">REQ-C-013</a> · <a href="../../requirements/c-014-error-responses-include-retryable-and-retry-after-/">REQ-C-014</a> · <a href="../../requirements/c-028-already-exists-response-pattern/">REQ-C-028</a> · <a href="../../requirements/c-030-error-responses-include-fix-command/">REQ-C-030</a> · <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-050-tool-exec-built-in-command/">REQ-O-050</a> · all commands in JSON output mode</p>
+<p><strong>Used by:</strong> <a href="../../requirements/f-004-consistent-json-response-envelope/">REQ-F-004</a> · <a href="../../requirements/f-018-pagination-metadata-on-list-commands/">REQ-F-018</a> · <a href="../../requirements/f-023-tool-version-in-every-response/">REQ-F-023</a> · <a href="../../requirements/f-024-request-id-and-trace-id-in-every-response/">REQ-F-024</a> · <a href="../../requirements/c-009-multi-step-commands-report-completed-failed-skippe/">REQ-C-009</a> · <a href="../../requirements/c-013-error-responses-include-code-and-message/">REQ-C-013</a> · <a href="../../requirements/c-014-error-responses-include-retryable-and-retry-after-/">REQ-C-014</a> · <a href="../../requirements/c-028-already-exists-response-pattern/">REQ-C-028</a> · <a href="../../requirements/c-030-error-responses-include-fix-command/">REQ-C-030</a> · <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-050-tool-exec-built-in-command/">REQ-O-050</a> · all commands in JSON output mode</p>
 </blockquote>
 <hr />
 <h2 id="purpose">Purpose</h2>
@@ -10617,10 +10617,40 @@
 <td>Correlation ID for logs and traces</td>
 </tr>
 <tr>
+<td><code>trace_id</code></td>
+<td>string</td>
+<td>when <code>TOOL_TRACE_ID</code> is set</td>
+<td>Trace ID propagated verbatim from <code>TOOL_TRACE_ID</code> (REQ-F-024)</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>string</td>
+<td>no</td>
+<td>Name of the invoked command (REQ-F-024)</td>
+</tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>string ISO 8601 date-time</td>
+<td>no</td>
+<td>Invocation start time (REQ-F-024)</td>
+</tr>
+<tr>
 <td><code>schema_version</code></td>
 <td>string <code>MAJOR.MINOR</code></td>
 <td>no</td>
 <td>Version of this command's output contract (REQ-F-022)</td>
+</tr>
+<tr>
+<td><code>tool_version</code></td>
+<td>string semver</td>
+<td>no</td>
+<td>Version of the running binary, matching <code>tool --version</code> (REQ-F-023)</td>
+</tr>
+<tr>
+<td><code>update_available</code></td>
+<td>string semver</td>
+<td>no</td>
+<td>Latest newer release; absent (never <code>null</code>) when there is none, the check failed, or <code>--no-update-check</code> is set (REQ-F-023, REQ-O-020)</td>
 </tr>
 <tr>
 <td><code>not_modified</code></td>
