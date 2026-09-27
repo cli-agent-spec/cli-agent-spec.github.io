@@ -11979,7 +11979,7 @@
 
 
 <h1 id="cli-framework-comparison-matrix">CLI Framework Comparison Matrix</h1>
-<p>This document compares twelve CLI-related solutions against the 71 agent-compatibility failure modes catalogued in <em>CLI Agent Spec: Complete Failure Mode Reference</em> (v1.6). Each cell records how well a solution addresses that failure mode — natively, partially, or not at all. Use this matrix to quickly identify which solutions cover which failure modes, where universal gaps exist, and what a new framework must build from scratch.</p>
+<p>This document compares twelve CLI-related solutions against the 75 agent-compatibility failure modes catalogued in <em>CLI Agent Spec: Complete Failure Mode Reference</em> (v1.7). Each cell records how well a solution addresses that failure mode — natively, partially, or not at all. Use this matrix to quickly identify which solutions cover which failure modes, where universal gaps exist, and what a new framework must build from scratch.</p>
 <p>How to read: Part 1 is the primary reference table. Parts 2–7 derive analysis from it. The ratings come directly from the per-solution research files; where a research file provided explicit rationale, that rationale is summarised in Part 3.</p>
 <p><strong>Per-solution source files</strong> (evidence and rationale behind each column's ratings):</p>
 <table>
@@ -12165,7 +12165,7 @@
 </table>
 <hr />
 <h2 id="part-1-failure-mode-coverage-matrix">Part 1: Failure Mode Coverage Matrix</h2>
-<p>Rows are the 71 currently mapped failure modes (severity and frequency for priority context). Columns are the twelve solutions. Failure modes §36, §39, and §48 were merged into §10, §3, and §2 respectively and are omitted.</p>
+<p>Rows are the 75 currently mapped failure modes (severity and frequency for priority context). Columns are the twelve solutions. Failure modes §36, §39, and §48 were merged into §10, §3, and §2 respectively and are omitted.</p>
 <table>
 <thead>
 <tr>
@@ -12727,6 +12727,78 @@
 <td>~</td>
 <td>~</td>
 <td>~</td>
+</tr>
+<tr>
+<td>75</td>
+<td>Safe-Default Execution Mode Absent</td>
+<td>Crit</td>
+<td>Sit.</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>~</td>
+<td>✗</td>
+<td>~</td>
+</tr>
+<tr>
+<td>76</td>
+<td>Streaming-Default JSONL Incompatibility</td>
+<td>High</td>
+<td>Sit.</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>~</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✓</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>77</td>
+<td>No Batch Command Dispatch</td>
+<td>High</td>
+<td>Common</td>
+<td>✗</td>
+<td>✗</td>
+<td>~</td>
+<td>~</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>~</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>78</td>
+<td>Output Flag Meaning Collision</td>
+<td>High</td>
+<td>Common</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✓</td>
+<td>~</td>
+<td>✗</td>
 </tr>
 <tr>
 <td><strong>Part V: Environment &amp; State</strong></td>
@@ -13603,10 +13675,14 @@
 - §70 (Single-Argument Arity): All frameworks ~ except python-fire ✗ — <code>nargs="+"</code> is available in every parser but not enforced; python-fire maps Python function signatures and lacks explicit arity declaration support.
 - §71 (Non-Interactive Installation): Go (cobra) and Rust (clap) ✓ — static binary releases are naturally non-interactive. MCP ✗ — protocol, does not govern installation. pydantic ✗ — validation library, not a distribution mechanism.
 - §72/§73 (Artifact Drift / Documentation Drift): MCP ✓ — tool definitions ARE the integration artifact and documentation, structurally co-versioned. All file-based artifact solutions are ~ at best (code-first generation) or ✗ (no generation capability).
-- §74 (Credential Scope Declaration): OpenAPI ✓ — <code>securitySchemes</code> and per-operation <code>security</code> requirements are native OpenAPI features. MCP ~ — auth layer present at server level but per-tool scope declaration is not yet a built-in primitive.</p>
+- §74 (Credential Scope Declaration): OpenAPI ✓ — <code>securitySchemes</code> and per-operation <code>security</code> requirements are native OpenAPI features. MCP ~ — auth layer present at server level but per-tool scope declaration is not yet a built-in primitive.
+- §75 (Safe-Default Execution): No solution previews by default. MCP ~ — <code>destructiveHint</code> tells the host to confirm, but the call still runs live. jpoehnelt-scale ~ — its Safety Rails axis rewards <code>--dry-run</code> without requiring it as the default. Click's <code>confirmation_option</code> is the confirmation gate §75 calls insufficient, so ✗.
+- §76 (Streaming-Default JSONL): MCP ✓ — a tool call returns one JSON-RPC result; progress travels as separate notifications, never as bare JSONL on the result channel. OpenAPI ~ — a response can declare an NDJSON content type, but nothing requires a buffered alternative. Parser frameworks leave the default format and any <code>streaming_default</code> declaration to the author.
+- §77 (No Batch Dispatch): Click ~ (<code>chain=True</code> groups run several subcommands in one process) and python-fire ~ (method chaining in one invocation), but neither reads a JSONL plan from stdin or reports per-line results. MCP ~ — one server process serves every call in a session, removing per-call startup, but the protocol has no batch request since JSON-RPC batching was dropped.
+- §78 (Output Flag Meaning Collision): MCP ✓ — typed JSON parameters have no <code>--output</code>/<code>-o</code> to misread. agentyper ~ — injects <code>--format</code> for representation, but path-typed flags accept <code>json</code> unguarded. Parser path types (<code>click.Path</code>, <code>PathBuf</code>, argparse <code>type=Path</code>) accept a bare format name, and the Cobra ecosystem's <code>-o json</code> convention reinforces the collision.</p>
 <hr />
 <h2 id="part-2-coverage-scores">Part 2: Coverage Scores</h2>
-<p>Coverage % = (✓ + 0.5 × ~) / 71 × 100, rounded to one decimal place.</p>
+<p>Coverage % = (✓ + 0.5 × ~) / 75 × 100, rounded to one decimal place.</p>
 <table>
 <thead>
 <tr>
@@ -13621,86 +13697,86 @@
 <tr>
 <td>mcp</td>
 <td>28</td>
-<td>27</td>
-<td>16</td>
-<td><strong>58.5%</strong></td>
-</tr>
-<tr>
-<td>pydantic</td>
-<td>18</td>
-<td>26</td>
-<td>27</td>
-<td><strong>43.7%</strong></td>
+<td>30</td>
+<td>17</td>
+<td><strong>57.3%</strong></td>
 </tr>
 <tr>
 <td>openapi</td>
 <td>17</td>
-<td>27</td>
-<td>27</td>
-<td><strong>43.0%</strong></td>
+<td>29</td>
+<td>29</td>
+<td><strong>42.0%</strong></td>
+</tr>
+<tr>
+<td>pydantic</td>
+<td>18</td>
+<td>25</td>
+<td>32</td>
+<td><strong>40.7%</strong></td>
 </tr>
 <tr>
 <td>clap</td>
-<td>14</td>
-<td>32</td>
-<td>25</td>
-<td><strong>42.3%</strong></td>
+<td>13</td>
+<td>33</td>
+<td>29</td>
+<td><strong>39.3%</strong></td>
 </tr>
 <tr>
 <td>cobra</td>
 <td>11</td>
 <td>36</td>
-<td>24</td>
-<td><strong>40.8%</strong></td>
-</tr>
-<tr>
-<td>jpoehnelt-scale</td>
-<td>12</td>
-<td>20</td>
-<td>39</td>
-<td><strong>31.0%</strong></td>
+<td>28</td>
+<td><strong>38.7%</strong></td>
 </tr>
 <tr>
 <td>agentyper</td>
 <td>10</td>
-<td>24</td>
-<td>37</td>
-<td><strong>31.0%</strong></td>
+<td>25</td>
+<td>40</td>
+<td><strong>30.0%</strong></td>
+</tr>
+<tr>
+<td>jpoehnelt-scale</td>
+<td>12</td>
+<td>21</td>
+<td>42</td>
+<td><strong>30.0%</strong></td>
 </tr>
 <tr>
 <td>argparse</td>
-<td>10</td>
-<td>19</td>
-<td>42</td>
-<td><strong>27.5%</strong></td>
+<td>9</td>
+<td>18</td>
+<td>48</td>
+<td><strong>24.0%</strong></td>
 </tr>
 <tr>
 <td>click</td>
 <td>2</td>
-<td>30</td>
-<td>39</td>
-<td><strong>23.9%</strong></td>
+<td>32</td>
+<td>41</td>
+<td><strong>24.0%</strong></td>
 </tr>
 <tr>
 <td>commander-js</td>
 <td>1</td>
-<td>29</td>
-<td>41</td>
-<td><strong>21.8%</strong></td>
+<td>30</td>
+<td>44</td>
+<td><strong>21.3%</strong></td>
 </tr>
 <tr>
 <td>typer</td>
 <td>3</td>
-<td>22</td>
-<td>46</td>
-<td><strong>19.7%</strong></td>
+<td>23</td>
+<td>49</td>
+<td><strong>19.3%</strong></td>
 </tr>
 <tr>
 <td>python-fire</td>
 <td>1</td>
-<td>8</td>
-<td>62</td>
-<td><strong>7.0%</strong></td>
+<td>9</td>
+<td>65</td>
+<td><strong>7.3%</strong></td>
 </tr>
 </tbody>
 </table>
@@ -13721,100 +13797,106 @@
 <td>1</td>
 <td>mcp</td>
 <td>28</td>
-<td>27</td>
-<td>16</td>
-<td><strong>58.5%</strong></td>
+<td>30</td>
+<td>17</td>
+<td><strong>57.3%</strong></td>
 </tr>
 <tr>
 <td>2</td>
-<td>pydantic</td>
-<td>18</td>
-<td>26</td>
-<td>27</td>
-<td><strong>43.7%</strong></td>
+<td>openapi</td>
+<td>17</td>
+<td>29</td>
+<td>29</td>
+<td><strong>42.0%</strong></td>
 </tr>
 <tr>
 <td>3</td>
-<td>openapi</td>
-<td>17</td>
-<td>27</td>
-<td>27</td>
-<td><strong>43.0%</strong></td>
+<td>pydantic</td>
+<td>18</td>
+<td>25</td>
+<td>32</td>
+<td><strong>40.7%</strong></td>
 </tr>
 <tr>
 <td>4</td>
 <td>clap</td>
-<td>14</td>
-<td>32</td>
-<td>25</td>
-<td><strong>42.3%</strong></td>
+<td>13</td>
+<td>33</td>
+<td>29</td>
+<td><strong>39.3%</strong></td>
 </tr>
 <tr>
 <td>5</td>
 <td>cobra</td>
 <td>11</td>
 <td>36</td>
-<td>24</td>
-<td><strong>40.8%</strong></td>
-</tr>
-<tr>
-<td>6</td>
-<td>jpoehnelt-scale</td>
-<td>12</td>
-<td>20</td>
-<td>39</td>
-<td><strong>31.0%</strong></td>
+<td>28</td>
+<td><strong>38.7%</strong></td>
 </tr>
 <tr>
 <td>6</td>
 <td>agentyper</td>
 <td>10</td>
-<td>24</td>
-<td>37</td>
-<td><strong>31.0%</strong></td>
+<td>25</td>
+<td>40</td>
+<td><strong>30.0%</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>jpoehnelt-scale</td>
+<td>12</td>
+<td>21</td>
+<td>42</td>
+<td><strong>30.0%</strong></td>
 </tr>
 <tr>
 <td>8</td>
 <td>argparse</td>
-<td>10</td>
-<td>19</td>
-<td>42</td>
-<td><strong>27.5%</strong></td>
+<td>9</td>
+<td>18</td>
+<td>48</td>
+<td><strong>24.0%</strong></td>
 </tr>
 <tr>
-<td>9</td>
+<td>8</td>
 <td>click</td>
 <td>2</td>
-<td>30</td>
-<td>39</td>
-<td><strong>23.9%</strong></td>
+<td>32</td>
+<td>41</td>
+<td><strong>24.0%</strong></td>
 </tr>
 <tr>
 <td>10</td>
 <td>commander-js</td>
 <td>1</td>
-<td>29</td>
-<td>41</td>
-<td><strong>21.8%</strong></td>
+<td>30</td>
+<td>44</td>
+<td><strong>21.3%</strong></td>
 </tr>
 <tr>
 <td>11</td>
 <td>typer</td>
 <td>3</td>
-<td>22</td>
-<td>46</td>
-<td><strong>19.7%</strong></td>
+<td>23</td>
+<td>49</td>
+<td><strong>19.3%</strong></td>
 </tr>
 <tr>
 <td>12</td>
 <td>python-fire</td>
 <td>1</td>
-<td>8</td>
-<td>62</td>
-<td><strong>7.0%</strong></td>
+<td>9</td>
+<td>65</td>
+<td><strong>7.3%</strong></td>
 </tr>
 </tbody>
 </table>
+<p><strong>Key observations (§75–78 update, current scores):</strong>
+- <strong>Scores are now computed from the Part 1 cells.</strong> The previous table had drifted from the matrix (it credited MCP with 28 ✓ / 27 ~ when its column held 26 / 28, and ranked pydantic above openapi); both tables above are regenerated from the rows
+- <strong>MCP stays #1 at 57.3%</strong> — earns ✓ for §76 (one JSON-RPC result per call, never bare JSONL) and §78 (typed parameters have no <code>--output</code> to misread), ~ for §75 and §77
+- <strong>Every parser framework loses ground</strong>: §75, §76, and §78 are ✗ for all of them, and only click (<code>chain=True</code>) and python-fire (method chaining) earn ~ for §77
+- <strong>§75 and §77 join the universally missing list</strong>: no solution previews destructive commands by default, and none dispatches a heterogeneous JSONL plan in one process
+- No solution exceeds 58% coverage across 75 currently mapped failure modes</p>
 <p><strong>Key observations (v1.7 update — §69–74):</strong>
 - <strong>OpenAPI rises to #3</strong> (was tied #4) — earns the only ✓ for §74 (Credential Scope Declaration) via native <code>securitySchemes</code> + per-operation <code>security</code> declarations.
 - <strong>MCP extends to #1 at 58.5%</strong> — earns ✓ for §69 (argument ordering irrelevant in JSON invocation), §72 and §73 (tool definitions are the artifact; drift is structurally impossible), keeping its structural advantage.
@@ -14491,6 +14573,18 @@
 <td>High</td>
 <td>No framework accepts JSON5 for structured input flags</td>
 </tr>
+<tr>
+<td>75</td>
+<td>Safe-Default Execution Mode Absent</td>
+<td>Critical</td>
+<td>No framework routes a declared high-stakes command through its dry-run path unless <code>--live</code> is passed</td>
+</tr>
+<tr>
+<td>77</td>
+<td>No Batch Command Dispatch</td>
+<td>High</td>
+<td>No framework reads a JSONL plan from stdin and dispatches each line in-process with per-line results</td>
+</tr>
 </tbody>
 </table>
 <h3 id="partially-covered-everywhere-in-most-solutions-no">Partially Covered Everywhere (~ in most solutions, no ✓)</h3>
@@ -14669,7 +14763,7 @@
 - Composition / piping
 - Timeouts (recommended but not enforced)
 - Tool schema versioning and drift detection</p>
-<p><strong>Unique position:</strong> MCP scores highest (58.5%) because it solves the hardest problems structurally. Its remaining gaps are in operational reliability (retries, timeouts, concurrency) and completeness (working directory, composition, schema versioning).</p>
+<p><strong>Unique position:</strong> MCP scores highest (57.3%) because it solves the hardest problems structurally. Its remaining gaps are in operational reliability (retries, timeouts, concurrency) and completeness (working directory, composition, schema versioning).</p>
 <hr />
 <h3 id="agent-first-clis-agentyper">Agent-First CLIs (agentyper)</h3>
 <p><strong>What it's good at:</strong>
@@ -14683,7 +14777,7 @@
 - All operational reliability concerns (timeouts, signals, idempotency, partial failure)
 - All concurrency, credential expiry, and input syntax concerns
 - Observability, pagination, config precedence</p>
-<p><strong>Unique position:</strong> agentyper is the only Python framework explicitly designed for agent ergonomics, yet at v0.1.4 scores 29.2%. It is the right philosophical foundation but needs the execution-reliability, security, and environment layers.</p>
+<p><strong>Unique position:</strong> agentyper is the only Python framework explicitly designed for agent ergonomics, yet at v0.1.4 scores 30.0%. It is the right philosophical foundation but needs the execution-reliability, security, and environment layers.</p>
 <hr />
 <h3 id="evaluation-rubrics-jpoehnelt-scale">Evaluation Rubrics (jpoehnelt-scale)</h3>
 <p><strong>What it's good at:</strong>
@@ -15319,7 +15413,7 @@
 </li>
 </ol>
 <hr />
-<p><em>CLI Agent Spec v1.6 — 71 currently mapped failure modes, 12 solutions evaluated. Updated 2026-05-07.</em></p>
+<p><em>CLI Agent Spec v1.7 — 75 currently mapped failure modes, 12 solutions evaluated. Updated 2026-09-26.</em></p>
 
 
 
