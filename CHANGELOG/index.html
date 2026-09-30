@@ -9974,6 +9974,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-31-built-in-commands-are-marked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.1: built-in commands are marked
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10279,6 +10290,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-31-built-in-commands-are-marked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.1: built-in commands are marked
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10554,6 +10576,12 @@
 <li>REQ-F-042: the same wording for the framework logger's defaults (100 MB, 5 files, 30 days); it states the derived bound and that its defaults do not apply to the audit log</li>
 </ul>
 <p><strong>Why:</strong> both requirements put the defaults in parentheses inside a MUST sentence and no criterion tested them, so a framework could not tell whether smaller defaults conformed. Frameworks also read REQ-F-042's defaults (600 MB bound) as the audit log's (#7).</p>
+<h3 id="manifestresponse-31-built-in-commands-are-marked">ManifestResponse 3.1: built-in commands are marked</h3>
+<ul>
+<li><code>CommandEntry.builtin</code> (optional boolean, default <code>false</code>) is <code>true</code> for commands the framework registers itself, such as <code>manifest</code>, <code>doctor</code>, and <code>audit-log</code>, and for their subcommands; an application command that replaces a built-in's name is <code>false</code> (REQ-O-041)</li>
+<li>Agents filter on <code>builtin</code> when building a task list or skill set instead of matching a hard-coded list of built-in names</li>
+<li>A producer that sets <code>builtin</code> emits <code>schema_version</code> <code>3.1</code>; a <code>3.0</code> manifest stays valid and reads as having no marked built-ins (#9)</li>
+</ul>
 <h2 id="180-2026-09-30">1.8.0 — 2026-09-30</h2>
 <h3 id="breaking-format-selects-output-representation">Breaking: <code>--format</code> selects output representation</h3>
 <ul>

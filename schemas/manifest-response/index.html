@@ -10446,6 +10446,12 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td>no</td>
 <td>Dot-separated paths of direct children</td>
 </tr>
+<tr>
+<td><code>builtin</code></td>
+<td>boolean</td>
+<td>no</td>
+<td><code>true</code> when the framework registers the command, not the application; also <code>true</code> on a built-in's subcommands, <code>false</code> on an application command that replaces a built-in's name. Absent means <code>false</code> (REQ-O-041)</td>
+</tr>
 </tbody>
 </table>
 <h3 id="commandentry-declared-contracts">CommandEntry — declared contracts</h3>
@@ -10764,6 +10770,33 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
   }
 }
 </code></pre>
+<p><strong>Valid — application command next to a built-in</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.1&quot;,
+  &quot;framework_version&quot;: &quot;2.1.0&quot;,
+  &quot;etag&quot;: &quot;sha256:c71e08&quot;,
+  &quot;commands&quot;: {
+    &quot;deploy&quot;: {
+      &quot;description&quot;: &quot;Deploy a build to a target environment&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [&quot;deploy:write&quot;],
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Deployment completed&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    },
+    &quot;manifest&quot;: {
+      &quot;description&quot;: &quot;Print the full command tree as JSON&quot;,
+      &quot;danger_level&quot;: &quot;safe&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;builtin&quot;: true,
+      &quot;flags&quot;: {
+        &quot;etag&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Etag of a cached manifest; returns meta.not_modified when unchanged&quot; }
+      },
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Manifest returned or unchanged&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; } }
+    }
+  }
+}
+</code></pre>
+<p><code>deploy</code> omits <code>builtin</code>, so it is an application command; an agent building a task list keeps it and drops <code>manifest</code>.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -10798,6 +10831,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Repeating global options in every <code>CommandEntry.flags</code>.</strong> A global option appears once, in the root <code>flags</code>; a copy inside a command reads as a local flag that happens to share the name, and hides whether it is accepted before the command path</li>
 <li><strong>Reusing a global short alias for a local flag.</strong> <code>-f</code> meaning <code>--format</code> at the root and <code>--force</code> on one command changes meaning with position; the framework rejects it at registration</li>
 <li><strong>Generating the manifest from a static file.</strong> It must be computed from live registrations or the <code>etag</code> lies</li>
+<li><strong>Separating built-ins by a hard-coded name list.</strong> Frameworks differ in which built-ins they register (<code>doctor</code>, <code>manifest</code>, <code>audit-log</code>, ...), and an application may replace one with its own command; read <code>builtin</code> instead</li>
+<li><strong>Marking an application command that replaces a built-in's name as <code>builtin: true</code>.</strong> The flag follows who registered the command, not its name; the replacement is <code>false</code></li>
 </ul>
 <hr />
 <h2 id="agent-interpretation">Agent interpretation</h2>
@@ -10811,6 +10846,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Key format is dot-separated (e.g. <code>"deploy.rollback"</code>); split the user-intended subcommand path on spaces and join with <code>.</code> to construct the key
 - If the key is not in <code>commands</code> — do not guess; emit <code>REDIRECTED</code> behavior: try <code>tool manifest</code> again in case it was stale, then escalate
 - Check <code>aliases</code> before concluding a command does not exist — the agent may be using an alias that maps to a different primary key</p>
+<p><strong>Separating application commands from built-ins</strong>
+- When building a task list, a skill set, or a summary of what the tool does, drop entries with <code>builtin: true</code>; they are framework plumbing (<code>manifest</code>, <code>doctor</code>, <code>audit-log</code>) present in every conforming CLI
+- Treat an absent <code>builtin</code> as <code>false</code>. A pre-3.1 manifest never sets it, so every command there reads as an application command
+- Keep built-ins in the lookup table: they are still callable, and <code>doctor</code> or <code>audit-log</code> is the right call when diagnosing a failure</p>
 <p><strong>Building a call from <code>FlagEntry</code></strong>
 - A command's accepted flags are the root <code>flags</code> plus its own <code>flags</code>; a name in neither produces <code>ARG_ERROR (2)</code>
 - Emit tokens in the canonical order <code>tool &lt;global options&gt; &lt;command path&gt; &lt;local options&gt; [--] &lt;positionals&gt;</code>; every parser mode and both <code>option_placement</code> values accept it
@@ -10851,6 +10890,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert an entry's own <code>exit_codes</code> map never repeats a root-table entry unchanged
 - Assert no <code>CommandEntry.flags</code> key or <code>short</code> value equals a root <code>flags</code> key or <code>short</code> value
 - Assert <code>positionals</code> lists every positional the parser accepts, in order, with no required entry after an optional one and <code>variadic</code> only on the last
+- Assert every command the framework registers, and each of its subcommands, carries <code>builtin: true</code>, and no application command does
 - Assert <code>etag</code> changes when any command registration changes, and is stable across identical registrations (determinism test)</p>
 <p><strong>Tests to generate</strong>
 - A test that <code>tool manifest</code> returns all registered commands including built-ins

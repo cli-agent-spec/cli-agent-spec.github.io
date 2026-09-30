@@ -10147,6 +10147,7 @@
 <li>Global options appear once, in the root <code>flags</code> map; each <code>CommandEntry.flags</code> lists only that command's local flags (REQ-F-079)</li>
 <li><code>tool manifest --etag &lt;hash&gt;</code> returns <code>meta.not_modified: true</code> when the manifest is unchanged</li>
 <li>An agent can construct a valid call to any subcommand using only the manifest output, without calling <code>--help</code> on any subcommand</li>
+<li>Every command the framework registers, and each of its subcommands, carries <code>builtin: true</code>; no application command does, including one that replaces a built-in's name</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
@@ -10154,6 +10155,7 @@
 <p>Requirement-specific constraints:</p>
 <ul>
 <li><code>commands</code> must include every registered command, including built-ins</li>
+<li><code>builtin</code> is set from the registering party, not the command name: <code>true</code> for framework built-ins and their subcommands, omitted or <code>false</code> for application commands</li>
 <li><code>exit_codes</code> per command must be sourced from REQ-C-001 declarations — never hand-written in the manifest</li>
 <li><code>etag</code> must be deterministic: identical registrations always produce the same value</li>
 </ul>
