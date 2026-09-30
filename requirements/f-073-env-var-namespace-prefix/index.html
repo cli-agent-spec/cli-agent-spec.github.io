@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,8 +4516,6 @@
       
         
       
-        
-      
     
     
     
@@ -6102,34 +6100,6 @@
     
   
     REQ-F-025: TOOL_TRACE_ID Environment Variable Propagation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../f-026-append-only-audit-log/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    REQ-F-026: Append-Only Audit Log
   
 
     
@@ -8587,14 +8557,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../o-030-tool-audit-log-built-in-command/" class="md-nav__link">
+      <a href="../o-030-opt-in-audit-log/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    REQ-O-030: tool audit-log Built-In Command
+    REQ-O-030: Opt-In Audit Log and audit-log Command
   
 
     
@@ -10170,7 +10140,7 @@
 <hr />
 <h2 id="description">Description</h2>
 <p>The framework MUST require a tool-scoped prefix for all environment variables the tool reads. The prefix MUST be the tool's binary name uppercased with hyphens replaced by underscores, followed by <code>_</code>. For example, a tool named <code>my-tool</code> uses prefix <code>MY_TOOL_</code>. The framework MUST document the full list of environment variables under this prefix in the manifest response.</p>
-<p>Exceptions (read without prefix, per universal convention): <code>NO_COLOR</code>, <code>CI</code>, <code>HOME</code>, <code>USER</code>, <code>PATH</code>, <code>SHELL</code>, <code>TERM</code>, <code>XDG_CONFIG_HOME</code>, <code>XDG_DATA_HOME</code>, <code>XDG_CACHE_HOME</code>, <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, <code>NO_PROXY</code>.</p>
+<p>Exceptions (read without prefix, per universal convention): <code>NO_COLOR</code>, <code>CI</code>, <code>HOME</code>, <code>USER</code>, <code>PATH</code>, <code>SHELL</code>, <code>TERM</code>, <code>XDG_CONFIG_HOME</code>, <code>XDG_DATA_HOME</code>, <code>XDG_CACHE_HOME</code>, <code>XDG_STATE_HOME</code>, <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, <code>NO_PROXY</code>.</p>
 <p>An agent setting <code>DEBUG=1</code> to enable verbose output in one tool must not accidentally enable debug mode in every other tool in the same session. Unprefixed env vars are a cross-tool contamination vector in multi-tool agent pipelines.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>

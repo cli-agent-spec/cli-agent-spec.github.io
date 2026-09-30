@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,8 +4516,6 @@
       
         
       
-        
-      
     
     
     
@@ -6102,34 +6100,6 @@
     
   
     REQ-F-025: TOOL_TRACE_ID Environment Variable Propagation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="f-026-append-only-audit-log/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    REQ-F-026: Append-Only Audit Log
   
 
     
@@ -8474,14 +8444,14 @@
   
   
     <li class="md-nav__item">
-      <a href="o-030-tool-audit-log-built-in-command/" class="md-nav__link">
+      <a href="o-030-opt-in-audit-log/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    REQ-O-030: tool audit-log Built-In Command
+    REQ-O-030: Opt-In Audit Log and audit-log Command
   
 
     
@@ -10021,12 +9991,12 @@
 <blockquote>
 <p>All requirements for an agent-compatible CLI framework, derived from the CLI Agent Spec's 75 documented failure modes.</p>
 </blockquote>
-<p><strong>159 total</strong> &nbsp;|&nbsp; 79 Framework-Automatic · 30 Command Contract · 50 Opt-In — amended 2026-09-25</p>
-<p><strong>By priority:</strong> P0: 51 · P1: 64 · P2: 35 · P3: 9 — REQ-F-079 added: global option scope (§69)</p>
-<p><strong>By level</strong> (<a href="levels/"><code>levels.md</code></a>): Level 1: 12 · Level 2: 51 · Level 3: 159</p>
+<p><strong>158 total</strong> &nbsp;|&nbsp; 78 Framework-Automatic · 30 Command Contract · 50 Opt-In — amended 2026-09-30</p>
+<p><strong>By priority:</strong> P0: 51 · P1: 64 · P2: 34 · P3: 9 — REQ-F-026 (append-only audit log) merged into opt-in REQ-O-030; the ID is retired</p>
+<p><strong>By level</strong> (<a href="levels/"><code>levels.md</code></a>): Level 1: 12 · Level 2: 51 · Level 3: 158</p>
 <hr />
 <h2 id="framework-automatic-f">Framework-Automatic (F)</h2>
-<p><strong>79 requirements</strong> &nbsp;|&nbsp; P0: 33 · P1: 30 · P2: 15 · P3: 1</p>
+<p><strong>78 requirements</strong> &nbsp;|&nbsp; P0: 33 · P1: 30 · P2: 14 · P3: 1</p>
 <table>
 <thead>
 <tr>
@@ -10210,13 +10180,6 @@
 <td><a href="f-025-tool-trace-id-environment-variable-propagation/">REQ-F-025</a></td>
 <td>P2</td>
 <td>TOOL_TRACE_ID Environment Variable Propagation</td>
-<td><a href="../challenges/07-medium-observability/33-medium-observability/">§33</a></td>
-<td>3</td>
-</tr>
-<tr>
-<td><a href="f-026-append-only-audit-log/">REQ-F-026</a></td>
-<td>P2</td>
-<td>Append-Only Audit Log</td>
 <td><a href="../challenges/07-medium-observability/33-medium-observability/">§33</a></td>
 <td>3</td>
 </tr>
@@ -11037,9 +11000,9 @@
 <td>3</td>
 </tr>
 <tr>
-<td><a href="o-030-tool-audit-log-built-in-command/">REQ-O-030</a></td>
+<td><a href="o-030-opt-in-audit-log/">REQ-O-030</a></td>
 <td>P2</td>
-<td>tool audit-log Built-In Command</td>
+<td>Opt-In Audit Log and audit-log Command</td>
 <td><a href="../challenges/07-medium-observability/33-medium-observability/">§33</a></td>
 <td>3</td>
 </tr>
@@ -11186,7 +11149,7 @@
 </tbody>
 </table>
 <hr />
-<p><em>CLI Agent Spec v1.7 — 159 requirements (79 REQ-F + 30 REQ-C + 50 REQ-O). Updated 2026-09-26.</em></p>
+<p><em>CLI Agent Spec v1.7 — 158 requirements (78 REQ-F + 30 REQ-C + 50 REQ-O). Updated 2026-09-30.</em></p>
 
 
 

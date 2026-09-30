@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -16,7 +16,7 @@
         <link rel="prev" href="../f-024-request-id-and-trace-id-in-every-response/">
       
       
-        <link rel="next" href="../f-026-append-only-audit-log/">
+        <link rel="next" href="../f-027-cwd-in-response-meta/">
       
       
         
@@ -4516,8 +4516,6 @@
       
         
       
-        
-      
     
     
     
@@ -6223,34 +6221,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../f-026-append-only-audit-log/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    REQ-F-026: Append-Only Audit Log
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -8587,14 +8557,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../o-030-tool-audit-log-built-in-command/" class="md-nav__link">
+      <a href="../o-030-opt-in-audit-log/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    REQ-O-030: tool audit-log Built-In Command
+    REQ-O-030: Opt-In Audit Log and audit-log Command
   
 
     
@@ -10169,12 +10139,12 @@
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: Medium / Time: High / Context: Medium</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST read <code>TOOL_TRACE_ID</code> from the environment at startup and associate it with the current invocation. The framework MUST also pass <code>TOOL_TRACE_ID</code> to all child processes spawned during the command. All internal framework log entries written to stderr and the audit log MUST include the trace ID when set.</p>
+<p>The framework MUST read <code>TOOL_TRACE_ID</code> from the environment at startup and associate it with the current invocation. The framework MUST also pass <code>TOOL_TRACE_ID</code> to all child processes spawned during the command. All internal framework log entries written to stderr and to the audit log (when enabled) MUST include the trace ID when set.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A child process spawned by the framework inherits <code>TOOL_TRACE_ID</code></li>
 <li>Framework-emitted log lines (stderr) include the trace ID when <code>TOOL_TRACE_ID</code> is set</li>
-<li>Audit log entries include the trace ID</li>
+<li>Audit log entries include the trace ID when the audit log is enabled</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
@@ -10231,8 +10201,8 @@ TOOL_TRACE_ID=span-pipeline-42
 <td>Provides: captures <code>TOOL_TRACE_ID</code> into <code>meta.trace_id</code>; this requirement extends propagation to children and logs</td>
 </tr>
 <tr>
-<td><a href="../f-026-append-only-audit-log/">REQ-F-026</a></td>
-<td>F</td>
+<td><a href="../o-030-opt-in-audit-log/">REQ-O-030</a></td>
+<td>O</td>
 <td>Consumes: audit log entries include the trace ID propagated by this requirement</td>
 </tr>
 <tr>

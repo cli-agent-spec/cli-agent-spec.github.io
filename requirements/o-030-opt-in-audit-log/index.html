@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
       
       
       
-        <link rel="canonical" href="https://cli-agent-spec.github.io/requirements/f-026-append-only-audit-log/">
+        <link rel="canonical" href="https://cli-agent-spec.github.io/requirements/o-030-opt-in-audit-log/">
       
       
-        <link rel="prev" href="../f-025-tool-trace-id-environment-variable-propagation/">
+        <link rel="prev" href="../o-029-tool-changelog-built-in-command/">
       
       
-        <link rel="next" href="../f-027-cwd-in-response-meta/">
+        <link rel="next" href="../o-031-dependency-version-matrix-declaration/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>REQ-F-026: Append-Only Audit Log - CLI Agent Spec</title>
+        <title>REQ-O-030: Opt-In Audit Log and audit-log Command - CLI Agent Spec</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#req-f-026-append-only-audit-log" class="md-skip">
+        <a href="#req-o-030-opt-in-audit-log-and-audit-log-command" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              REQ-F-026: Append-Only Audit Log
+              REQ-O-030: Opt-In Audit Log and audit-log Command
             
           </span>
         </div>
@@ -4516,8 +4516,6 @@
       
         
       
-        
-      
     
     
     
@@ -6110,147 +6108,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    REQ-F-026: Append-Only Audit Log
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    REQ-F-026: Append-Only Audit Log
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Description
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#acceptance-criteria" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Acceptance Criteria
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#schema" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Schema
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#wire-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Wire Format
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#related" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Related
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -8584,17 +8441,44 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../o-030-tool-audit-log-built-in-command/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-O-030: Opt-In Audit Log and audit-log Command
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    REQ-O-030: tool audit-log Built-In Command
+    REQ-O-030: Opt-In Audit Log and audit-log Command
   
 
     
@@ -8603,6 +8487,92 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acceptance-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Acceptance Criteria
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wire-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wire Format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -10163,26 +10133,39 @@
   
 
 
-<h1 id="req-f-026-append-only-audit-log">REQ-F-026: Append-Only Audit Log</h1>
-<p><strong>Tier:</strong> Framework-Automatic | <strong>Priority:</strong> P2</p>
+<h1 id="req-o-030-opt-in-audit-log-and-audit-log-command">REQ-O-030: Opt-In Audit Log and audit-log Command</h1>
+<p><strong>Tier:</strong> Opt-In | <strong>Priority:</strong> P2</p>
 <p><strong>Source:</strong> <a href="../../challenges/07-medium-observability/33-medium-observability/">§33 Observability &amp; Audit Trail</a></p>
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: Medium / Time: High / Context: Medium</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST write an append-only audit log entry for every command invocation to a JSONL file at a well-known, configurable path (default: <code>~/.local/share/&lt;toolname&gt;/audit.jsonl</code>). Each entry MUST include: timestamp, command name, sanitized arguments (with secret fields redacted), exit code, duration_ms, trace_id, and request_id. The audit log MUST be written regardless of whether the command succeeded or failed.</p>
+<p>The framework MUST provide a persistent audit log that is <strong>off by default</strong>. It is enabled either by the application (<code>app.enable_audit_log()</code>) or by the operator through the prefixed environment variable <code>&lt;PREFIX&gt;AUDIT_LOG</code> (REQ-F-073): <code>1</code> enables it at the default path, an absolute path enables it at that path, and <code>0</code> disables it even when the application enabled it. The operator setting takes precedence, so an agent runtime can turn the log on for a CLI whose author never did, and off for one that did. When the log is disabled, the framework MUST NOT create any file or directory for it.</p>
+<p>When enabled, the framework MUST append one JSONL entry per command invocation, whether the command succeeded or failed. Each entry MUST include: <code>timestamp</code>, <code>command</code>, <code>args</code> (the parsed argument map after REQ-F-034 redaction, never the raw argv), <code>exit_code</code>, <code>duration_ms</code>, <code>trace_id</code>, and <code>request_id</code>; <code>operator</code> is included when a session identifier is available. Invocations that do no work are not logged: <code>--help</code>, <code>--version</code>, shell completion, schema or manifest introspection, and <code>audit-log</code> itself.</p>
+<p>The log MUST be bounded by the framework, not by the operator: it rotates when the active file exceeds a maximum size (default: 10 MB), keeps a maximum number of rotated files (default: 5), and prunes rotated files older than a maximum age (default: 30 days). Entries are append-only within a file; rotation and pruning are the only operations that remove data. Each entry MUST be written as a single <code>O_APPEND</code> write of one complete line so that concurrent invocations never interleave, and rotation MUST be safe under concurrent invocations.</p>
+<p>The default path is <code>$XDG_STATE_HOME/&lt;toolname&gt;/audit.jsonl</code> (falling back to <code>~/.local/state/&lt;toolname&gt;/audit.jsonl</code>), or the platform's per-user log directory outside XDG systems. The framework MUST list the audit log path in the manifest's filesystem side effects as type <code>log</code> (REQ-C-011) whenever it is enabled.</p>
+<p>A failed audit write (read-only filesystem, full disk, permission error) MUST NOT change the command's exit code or output data; the framework adds an <code>AUDIT_LOG_UNAVAILABLE</code> entry to <code>warnings[]</code> instead.</p>
+<p>The framework MUST provide a built-in <code>tool audit-log</code> command that queries the log across the active and rotated files. The command MUST accept <code>--since &lt;duration or ISO datetime&gt;</code>, <code>--command &lt;name&gt;</code>, <code>--trace-id &lt;id&gt;</code>, <code>--format jsonl</code>, and <code>--limit &lt;n&gt;</code>.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
-<li>After any command invocation, the audit log file contains a new JSONL entry</li>
+<li>With the log not enabled by the application or the operator, running any command creates no audit file or directory</li>
+<li><code>&lt;PREFIX&gt;AUDIT_LOG=1 tool deploy</code> appends one entry to the default path; <code>&lt;PREFIX&gt;AUDIT_LOG=0</code> suppresses the log for an application that enabled it</li>
+<li>An entry is appended for a command that exits non-zero</li>
+<li><code>tool --help</code>, <code>tool --version</code>, and shell completion append no entry</li>
 <li>The entry for a command invoked with a secret argument does not contain the secret value</li>
-<li>The audit log is valid JSONL (one JSON object per line, newline-delimited)</li>
-<li>The audit log is written even when the command exits non-zero</li>
+<li>The audit log is valid JSONL after concurrent invocations from parallel sessions</li>
+<li>Total audit log disk usage stays bounded by the configured size and retention across unlimited invocations</li>
+<li>With the log path unwritable, the command exits with its normal exit code and <code>warnings[]</code> contains <code>AUDIT_LOG_UNAVAILABLE</code></li>
+<li><code>tool audit-log --since 1h --format jsonl</code> returns all invocations from the past hour, one per line</li>
+<li><code>tool audit-log --trace-id abc123</code> returns only entries with that trace ID</li>
+<li><code>--limit 100</code> returns at most 100 entries</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
-<p>No dedicated schema type — this requirement governs audit log file writes without adding new wire-format fields to the response envelope beyond <code>meta.audit_log_path</code></p>
+<p><strong>Types:</strong> <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a></p>
+<p><code>meta.audit_log_path</code> is present on every response while the log is enabled. The <code>audit-log</code> command returns <code>data.entries</code>, an array of audit log entry objects with <code>timestamp</code>, <code>command</code>, <code>args</code>, <code>exit_code</code>, <code>duration_ms</code>, <code>trace_id</code>, and <code>request_id</code>.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
-<p><code>meta.audit_log_path</code> in the response envelope when the log is active:</p>
+<p><code>meta.audit_log_path</code> in the response envelope when the log is enabled:</p>
 <pre><code class="language-json">{
   &quot;ok&quot;: true,
   &quot;data&quot;: { &quot;deployed&quot;: true },
@@ -10192,24 +10175,29 @@
     &quot;exit_code&quot;: 0,
     &quot;duration_ms&quot;: 412,
     &quot;request_id&quot;: &quot;req_01HZ&quot;,
-    &quot;audit_log_path&quot;: &quot;/home/user/.local/share/mytool/audit.jsonl&quot;
+    &quot;audit_log_path&quot;: &quot;/home/user/.local/state/mytool/audit.jsonl&quot;
   }
 }
 </code></pre>
-<p>Corresponding JSONL entry written to the audit log:</p>
-<pre><code class="language-json">{&quot;timestamp&quot;:&quot;2024-06-01T12:00:00Z&quot;,&quot;command&quot;:&quot;deploy&quot;,&quot;args&quot;:{&quot;env&quot;:&quot;prod&quot;,&quot;token&quot;:&quot;[REDACTED]&quot;},&quot;exit_code&quot;:0,&quot;duration_ms&quot;:412,&quot;trace_id&quot;:&quot;trace_abc&quot;,&quot;request_id&quot;:&quot;req_01HZ&quot;}
+<p>Querying the log:</p>
+<pre><code class="language-bash">$ tool audit-log --since 1h --format jsonl
+</code></pre>
+<pre><code>{&quot;timestamp&quot;:&quot;2026-03-17T14:00:01Z&quot;,&quot;command&quot;:&quot;deploy&quot;,&quot;args&quot;:{&quot;env&quot;:&quot;prod&quot;,&quot;token&quot;:&quot;[REDACTED]&quot;},&quot;exit_code&quot;:0,&quot;duration_ms&quot;:1247,&quot;trace_id&quot;:&quot;abc123&quot;,&quot;request_id&quot;:&quot;req-001&quot;}
+{&quot;timestamp&quot;:&quot;2026-03-17T14:05:22Z&quot;,&quot;command&quot;:&quot;delete&quot;,&quot;args&quot;:{&quot;resource_id&quot;:&quot;r-42&quot;},&quot;exit_code&quot;:5,&quot;duration_ms&quot;:8,&quot;trace_id&quot;:&quot;def456&quot;,&quot;request_id&quot;:&quot;req-002&quot;}
 </code></pre>
 <hr />
 <h2 id="example">Example</h2>
-<p>Framework-Automatic: no command author action needed. The framework opens the audit log file in append mode before dispatching any command and writes one JSONL entry after the command exits, regardless of exit code.</p>
-<pre><code>$ tool deploy --env prod --token abc123
-→ audit.jsonl appended:
-  {&quot;timestamp&quot;:&quot;2024-06-01T12:00:00Z&quot;,&quot;command&quot;:&quot;deploy&quot;,&quot;args&quot;:{&quot;env&quot;:&quot;prod&quot;,&quot;token&quot;:&quot;[REDACTED]&quot;},&quot;exit_code&quot;:0,&quot;duration_ms&quot;:412,...}
+<p>Enabled by the application, with the default bounds made explicit:</p>
+<pre><code>app = Framework(&quot;tool&quot;)
+app.enable_audit_log(max_size_mb=10, max_rotated_files=5, max_age_days=30)
+</code></pre>
+<p>Enabled by the operator for a CLI that never opted in:</p>
+<pre><code>$ TOOL_AUDIT_LOG=1 tool deploy --env prod --token abc123
+→ ~/.local/state/tool/audit.jsonl appended:
+  {&quot;timestamp&quot;:&quot;2026-03-17T14:00:01Z&quot;,&quot;command&quot;:&quot;deploy&quot;,&quot;args&quot;:{&quot;env&quot;:&quot;prod&quot;,&quot;token&quot;:&quot;[REDACTED]&quot;},&quot;exit_code&quot;:0,...}
 
-$ tool deploy --env bad
-→ exit code: 3
-→ audit.jsonl appended:
-  {&quot;timestamp&quot;:&quot;2024-06-01T12:00:01Z&quot;,&quot;command&quot;:&quot;deploy&quot;,&quot;args&quot;:{&quot;env&quot;:&quot;bad&quot;},&quot;exit_code&quot;:3,&quot;duration_ms&quot;:5,...}
+$ tool deploy --env prod
+→ no audit file written (not enabled)
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>
@@ -10223,9 +10211,14 @@ $ tool deploy --env bad
 </thead>
 <tbody>
 <tr>
-<td><a href="../f-034-secret-field-auto-redaction-in-logs/">REQ-F-034</a></td>
+<td><a href="../f-024-request-id-and-trace-id-in-every-response/">REQ-F-024</a></td>
 <td>F</td>
-<td>Enforces: secret fields are redacted in every audit log entry</td>
+<td>Provides: <code>request_id</code> and <code>trace_id</code> values written to each audit log entry</td>
+</tr>
+<tr>
+<td><a href="../f-025-tool-trace-id-environment-variable-propagation/">REQ-F-025</a></td>
+<td>F</td>
+<td>Provides: the caller-supplied trace ID recorded in each entry</td>
 </tr>
 <tr>
 <td><a href="../f-039-duration-tracking-in-response-meta/">REQ-F-039</a></td>
@@ -10233,14 +10226,29 @@ $ tool deploy --env bad
 <td>Provides: <code>duration_ms</code> value written to each audit log entry</td>
 </tr>
 <tr>
-<td><a href="../f-024-request-id-and-trace-id-in-every-response/">REQ-F-024</a></td>
+<td><a href="../f-034-secret-field-auto-redaction-in-logs/">REQ-F-034</a></td>
 <td>F</td>
-<td>Provides: <code>request_id</code> and <code>trace_id</code> values written to each audit log entry</td>
+<td>Enforces: secret fields are redacted in every audit log entry and query result</td>
+</tr>
+<tr>
+<td><a href="../f-042-log-rotation-in-framework-logger/">REQ-F-042</a></td>
+<td>F</td>
+<td>Composes: the audit log uses the same rotation mechanism with its own bounds</td>
+</tr>
+<tr>
+<td><a href="../f-073-env-var-namespace-prefix/">REQ-F-073</a></td>
+<td>F</td>
+<td>Consumes: <code>&lt;PREFIX&gt;AUDIT_LOG</code> follows the tool env var prefix</td>
+</tr>
+<tr>
+<td><a href="../c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a></td>
+<td>C</td>
+<td>Extends: the enabled audit log appears in the declared filesystem side effects</td>
 </tr>
 <tr>
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>
 <td>F</td>
-<td>Composes: <code>meta.audit_log_path</code> is an extension of the standard response meta</td>
+<td>Extends: <code>meta.audit_log_path</code> is added to the standard response meta</td>
 </tr>
 </tbody>
 </table>

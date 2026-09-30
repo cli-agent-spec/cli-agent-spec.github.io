@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -5647,8 +5647,6 @@
       
         
       
-        
-      
     
     
     
@@ -7230,34 +7228,6 @@
     
   
     REQ-F-025: TOOL_TRACE_ID Environment Variable Propagation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../requirements/f-026-append-only-audit-log/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    REQ-F-026: Append-Only Audit Log
   
 
     
@@ -9602,14 +9572,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../requirements/o-030-tool-audit-log-built-in-command/" class="md-nav__link">
+      <a href="../requirements/o-030-opt-in-audit-log/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    REQ-O-030: tool audit-log Built-In Command
+    REQ-O-030: Opt-In Audit Log and audit-log Command
   
 
     
@@ -14389,8 +14359,8 @@
 <ul>
 <li><strong>Best covered by:</strong> None achieves ✓.</li>
 <li><strong>Partially covered by:</strong> cobra, clap, mcp</li>
-<li><strong>Gap in all solutions:</strong> Yes. No framework injects <code>meta.request_id</code>, <code>meta.trace_id</code>, or <code>meta.duration_ms</code> automatically, and none writes an append-only audit log by default.</li>
-<li><strong>Key insight:</strong> Generating a UUID <code>request_id</code> per invocation and writing a JSONL audit log entry costs zero application developer effort if the framework handles it automatically.</li>
+<li><strong>Gap in all solutions:</strong> Yes. No framework injects <code>meta.request_id</code>, <code>meta.trace_id</code>, or <code>meta.duration_ms</code> automatically, and none offers a bounded, opt-in audit log.</li>
+<li><strong>Key insight:</strong> Generating a UUID <code>request_id</code> per invocation costs zero application developer effort if the framework handles it automatically. A persistent audit log belongs behind an opt-in switch: written unconditionally, it fills the disk of every user of every CLI built on the framework.</li>
 </ul>
 <hr />
 <h3 id="34-shell-injection-via-agent-constructed-commands">§34. Shell Injection via Agent-Constructed Commands</h3>
@@ -15597,7 +15567,7 @@
 <p><strong>Request ID, trace ID, and duration in every response</strong> (REQ-F-024, REQ-F-039): Generate UUID <code>request_id</code> per invocation; read <code>TOOL_TRACE_ID</code> from env; measure <code>duration_ms</code>.</p>
 </li>
 <li>
-<p><strong>Append-only audit log</strong> (REQ-F-026): Write JSONL audit entries with secret redaction to <code>~/.local/share/&lt;toolname&gt;/audit.jsonl</code> after every invocation.</p>
+<p><strong>Opt-in audit log</strong> (REQ-O-030): When the application or the operator enables it (<code>&lt;PREFIX&gt;AUDIT_LOG=1</code>), write size-bounded JSONL audit entries with secret redaction to <code>~/.local/state/&lt;toolname&gt;/audit.jsonl</code>; write nothing otherwise.</p>
 </li>
 <li>
 <p><strong>Secret field auto-redaction</strong> (REQ-F-034): Pattern-match argument and field names against <code>token|secret|password|key|credential|auth</code>; replace values with <code>"[REDACTED]"</code> in logs and audit output.</p>

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4657,8 +4657,6 @@
       
         
       
-        
-      
     
     
     
@@ -6240,34 +6238,6 @@
     
   
     REQ-F-025: TOOL_TRACE_ID Environment Variable Propagation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../requirements/f-026-append-only-audit-log/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    REQ-F-026: Append-Only Audit Log
   
 
     
@@ -8612,14 +8582,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../requirements/o-030-tool-audit-log-built-in-command/" class="md-nav__link">
+      <a href="../../../requirements/o-030-opt-in-audit-log/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    REQ-O-030: tool audit-log Built-In Command
+    REQ-O-030: Opt-In Audit Log and audit-log Command
   
 
     
@@ -10249,7 +10219,7 @@
 <p><strong>For framework design:</strong>
 - Every response includes <code>meta.request_id</code> (server-assigned) and <code>meta.trace_id</code> (caller-supplied)
 - <code>TOOL_TRACE_ID</code> env var propagated automatically
-- Framework writes append-only audit log to <code>~/.local/share/tool/audit.jsonl</code></p>
+- Framework offers an opt-in, size-bounded audit log at <code>~/.local/state/tool/audit.jsonl</code>, enabled by the application or by the operator via <code>TOOL_AUDIT_LOG=1</code>; it is never written unless enabled</p>
 <h3 id="evaluation">Evaluation</h3>
 <table>
 <thead>
@@ -10273,7 +10243,7 @@
 </tr>
 <tr>
 <td>3</td>
-<td><code>meta.trace_id</code> accepts caller-supplied value; <code>tool audit-log --format jsonl</code> available; append-only audit log written automatically</td>
+<td><code>meta.trace_id</code> accepts caller-supplied value; an opt-in audit log can be enabled and is bounded in size; <code>tool audit-log --format jsonl</code> queries it</td>
 </tr>
 </tbody>
 </table>
