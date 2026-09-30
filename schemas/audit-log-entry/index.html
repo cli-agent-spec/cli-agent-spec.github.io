@@ -10078,7 +10078,7 @@
 <td><code>command</code></td>
 <td>string</td>
 <td>yes</td>
-<td>Space-separated command path, matching <code>meta.command</code> (<code>config set</code>)</td>
+<td>Command path equal to <code>meta.command</code>, space- or dot-separated as the framework spells it (<code>config set</code>, <code>config.set</code>)</td>
 </tr>
 <tr>
 <td><code>args</code></td>
@@ -10113,8 +10113,8 @@
 <tr>
 <td><code>session_id</code></td>
 <td>string</td>
-<td>when <code>&lt;PREFIX&gt;SESSION_ID</code> is set</td>
-<td>Agent session identifier, recorded verbatim</td>
+<td>when the session variable is set</td>
+<td>Agent session identifier, recorded verbatim from the framework's one documented session variable (<code>&lt;PREFIX&gt;SESSION_ID</code> unless it already reads a prefixed one)</td>
 </tr>
 <tr>
 <td><code>warnings</code></td>
@@ -10152,7 +10152,7 @@
 <li><strong>Writing <code>trace_id: null</code> when <code>TOOL_TRACE_ID</code> is unset.</strong> Omit the field, as <code>meta.trace_id</code> does</li>
 <li><strong>Copying full warning objects.</strong> <code>warnings</code> holds codes only; message text is for humans and bloats every line</li>
 <li><strong>Truncating the serialized line.</strong> Cutting the JSON text produces an invalid line; replace values in <code>args</code> and set <code>truncated</code></li>
-<li><strong>Using a dot path in <code>command</code>.</strong> The entry uses the space-separated form of <code>meta.command</code>; the dot form belongs to <code>DispatchRequest._cmd</code></li>
+<li><strong><code>command</code> differs from <code>meta.command</code>.</strong> The entry repeats <code>meta.command</code> exactly; a framework that answers <code>config.set</code> in <code>meta.command</code> must not log <code>config set</code>, or the reverse, and must not mix both spellings in one log</li>
 </ul>
 <hr />
 <h2 id="agent-interpretation">Agent interpretation</h2>
@@ -10182,7 +10182,7 @@
 <li><code>additionalProperties: false</code> keeps the entry shape predictable for <code>tool audit-log</code> filters and external log shippers; command-specific facts belong in <code>args</code></li>
 <li>The 16 KiB cap keeps each entry a single <code>O_APPEND</code> write well under common pipe and filesystem atomicity limits</li>
 <li>The log file is created with mode <code>0600</code>; entries still carry unredacted hostnames, ids, and paths</li>
-<li>The entry is not wrapped in a <code>ResponseEnvelope</code>; <code>tool audit-log --format json</code> returns entries inside <code>data.entries</code> of a normal envelope</li>
+<li>The entry is not wrapped in a <code>ResponseEnvelope</code>; the buffered <code>tool audit-log</code> answer (the default, or <code>--no-stream</code> when the command is streaming-default) returns entries inside <code>data.entries</code> of a normal envelope with <code>meta.pagination</code></li>
 </ul>
 <hr />
 <h2 id="related">Related</h2>

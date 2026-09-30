@@ -10167,11 +10167,11 @@
 <p><strong>What is logged.</strong> When enabled, the framework MUST append one entry per invocation that resolves to a command, whatever its outcome. This includes argument errors raised after the command resolves, <code>--validate-only</code> (REQ-O-009), <code>--dry-run</code> (REQ-C-004, REQ-O-048), and a destructive command refused for lacking <code>--confirm-destructive</code> (REQ-O-021): an incident review needs exactly these. An invocation that never resolves to a command (an unknown command or group) is not logged, because its arguments cannot be redacted without a declared schema and raw argv is never written. Invocations that do no work are not logged: <code>--help</code>, <code>--version</code>, shell completion, schema or manifest introspection, and <code>audit-log</code> itself.</p>
 <p><strong>Entry.</strong> Each entry is one line of JSON matching <a href="../../schemas/audit-log-entry.json"><code>audit-log-entry.json</code></a>:</p>
 <ul>
-<li><code>timestamp</code>, <code>command</code> (the space-separated command path, as in <code>meta.command</code>), <code>exit_code</code>, <code>duration_ms</code>, and <code>request_id</code> are always present</li>
+<li><code>timestamp</code>, <code>command</code>, <code>exit_code</code>, <code>duration_ms</code>, and <code>request_id</code> are always present. <code>command</code> MUST equal the invocation's <code>meta.command</code> exactly, in whichever spelling the framework uses consistently for it: space-separated (<code>config set</code>) or dot-separated (<code>config.set</code>)</li>
 <li><code>args</code> is the parsed argument map after REQ-F-034 redaction, never the raw argv. Framework flags that change what the invocation did (<code>--dry-run</code>, <code>--validate-only</code>, <code>--confirm-destructive</code>, <code>--no-injection-protection</code>) appear in it under their flag names</li>
 <li><code>warnings</code> lists the <code>code</code> of every entry in the response's <code>warnings[]</code>, so an over-privileged credential (<code>CREDENTIAL_OVER_PRIVILEGED</code>, REQ-O-047) or disabled injection protection (<code>INJECTION_PROTECTION_DISABLED</code>, REQ-O-023) is recorded as a queryable code</li>
 <li><code>trace_id</code> is present when <code>TOOL_TRACE_ID</code> is set (REQ-F-025)</li>
-<li><code>session_id</code> is present when the agent runtime sets <code>&lt;PREFIX&gt;SESSION_ID</code>; the framework records the value verbatim and derives it from nothing else</li>
+<li><code>session_id</code> is present when the agent runtime sets the framework's session variable. A framework that already reads an agent session id from a prefixed environment variable (for example to scope REQ-C-007 idempotency keys) uses that variable; otherwise the session variable is <code>&lt;PREFIX&gt;SESSION_ID</code>. The framework reads exactly one variable, records its value verbatim, derives <code>session_id</code> from nothing else, and documents the variable's name</li>
 </ul>
 <p>Each entry MUST NOT exceed 16 KiB. When a serialized entry would, the framework replaces values in <code>args</code>, largest first, with the string <code>[TRUNCATED]</code> until it fits, and sets <code>truncated: true</code> on the entry. A command taking a large payload therefore still produces one bounded entry that fits a single write.</p>
 <p><strong>Bounds.</strong> The log MUST be bounded by the framework, not by the operator. It rotates when the active file exceeds a maximum size, keeps a maximum number of rotated files, and removes data older than a maximum age; the application MUST be able to configure all three. The defaults SHOULD be 10 MB, 5 rotated files, and 30 days. A framework MAY ship smaller defaults, but its default size bound, <code>max_size × (max_rotated_files + 1)</code>, SHOULD NOT exceed 60 MB, so a log the operator turns on for a CLI whose author configured nothing has a predictable footprint. The defaults of REQ-F-042 do not apply to the audit log. The maximum age applies to entries, not only to rotated files: before appending, the framework rotates the active file when its first entry is older than the maximum age, then deletes rotated files whose last modification is older than the maximum age. Total disk usage therefore never exceeds <code>max_size × (max_rotated_files + 1)</code> plus one entry. Entries are append-only within a file; rotation and pruning are the only operations that remove data. Each entry MUST be written as a single <code>O_APPEND</code> write of one complete line so that concurrent invocations never interleave, and rotation MUST be safe under concurrent invocations. Rotation and pruning run only while the log is enabled; <code>tool cleanup</code> (REQ-O-027) never removes the audit log, so the files of a log that is later disabled remain until the operator deletes them.</p>
@@ -10181,12 +10181,21 @@
 <p><strong>Querying.</strong> The framework MUST register a built-in <code>tool audit-log</code> command on every CLI, since the operator can enable the log for any of them. It reads across the active and rotated files and accepts:</p>
 <ul>
 <li><code>--since &lt;duration or ISO datetime&gt;</code>: a duration is a positive integer followed by <code>s</code>, <code>m</code>, <code>h</code>, or <code>d</code> (<code>30s</code>, <code>15m</code>, <code>1h</code>, <code>7d</code>); a datetime is ISO 8601 with a UTC offset. Any other value exits <code>2</code></li>
-<li><code>--command &lt;path&gt;</code>: matches a command path in the same space-separated form as the entry (<code>config set</code>), exactly or as a whole-word prefix, so <code>config</code> matches <code>config set</code> and <code>config get</code> but not <code>configure</code></li>
+<li><code>--command &lt;path&gt;</code>: matches a command path exactly or as a whole-word prefix, and MUST accept both spellings, space-separated (<code>config set</code>) and dot-separated (<code>config.set</code>), whichever one the entries use. The prefix rule holds in each spelling: <code>config</code> matches <code>config set</code> and <code>config.set</code> but never <code>configure</code></li>
 <li><code>--trace-id &lt;id&gt;</code>: matches <code>trace_id</code> exactly</li>
 <li><code>--limit &lt;n&gt;</code>: keeps the newest <code>n</code> matching entries</li>
-<li><code>--format jsonl</code>: one entry per line; the default JSON format returns the entries in <code>data.entries</code></li>
+<li><code>--cursor &lt;token&gt;</code>: continues from the <code>meta.pagination.next_cursor</code> of a previous <code>audit-log</code> answer made with the same filters, returning the next-older batch of up to <code>n</code> matching entries. The token is opaque and stateless (REQ-O-003); an invalid token fails with a structured error</li>
+<li><code>--format jsonl</code>: one entry per line, followed by the pagination summary line</li>
 </ul>
-<p>Filters combine with AND. Entries are always returned oldest first. With the log disabled, <code>audit-log</code> exits <code>4</code> (<code>PRECONDITION</code>) with error code <code>AUDIT_LOG_DISABLED</code> and a <code>fix_required</code> naming <code>&lt;PREFIX&gt;AUDIT_LOG</code>, so an agent can tell "nothing was recorded" from "nothing happened".</p>
+<p>Filters combine with AND. Entries are always returned oldest first.</p>
+<p><code>audit-log</code> is a list command and MUST accept <code>--cursor</code> as well as <code>--limit</code>, so it satisfies REQ-F-018 in full. Its default answer is one buffered envelope with the entries in <code>data.entries</code> and <code>meta.pagination</code>:</p>
+<ul>
+<li><code>returned</code> is the number of entries in the response, and <code>total</code> is the number of entries that matched the filters, or <code>null</code> when the framework does not count them</li>
+<li>When <code>--limit</code> left out older matching entries, <code>truncated</code> and <code>has_more</code> are <code>true</code> and <code>next_cursor</code> is a non-null opaque token. Passing it as <code>--cursor</code> with the same filters returns the next-older batch of up to <code>n</code> matching entries, still oldest first within the page</li>
+<li>When no older entry matches, <code>truncated</code> and <code>has_more</code> are <code>false</code> and <code>next_cursor</code> is <code>null</code></li>
+</ul>
+<p>A framework MAY make <code>audit-log</code> streaming-default under REQ-O-004, declaring <code>streaming_default: true</code> in the manifest; <code>--no-stream</code> then MUST return the buffered <code>data.entries</code> envelope. In streaming mode (<code>--format jsonl</code> or the streaming default) the same pagination fields go on the final summary line, as REQ-O-004 requires.</p>
+<p>With the log disabled, <code>audit-log</code> exits <code>4</code> (<code>PRECONDITION</code>) with error code <code>AUDIT_LOG_DISABLED</code> and a <code>fix_required</code> naming <code>&lt;PREFIX&gt;AUDIT_LOG</code>, so an agent can tell "nothing was recorded" from "nothing happened".</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>With the log not enabled by the application or the operator, running any command creates no audit file or directory, <code>meta.audit_log_path</code> is absent, and the manifest lists no <code>log</code> side effect for it</li>
@@ -10199,7 +10208,8 @@
 <li><code>tool --help</code>, <code>tool --version</code>, shell completion, <code>tool manifest</code>, <code>--schema</code>, and <code>tool audit-log</code> append no entry</li>
 <li>The entry for a command invoked with a secret argument does not contain the secret value</li>
 <li>An invocation that emits <code>CREDENTIAL_OVER_PRIVILEGED</code> has that code in the entry's <code>warnings</code></li>
-<li>With <code>&lt;PREFIX&gt;SESSION_ID=s-1</code> set, the entry has <code>session_id: "s-1"</code>; without it, the entry has no <code>session_id</code></li>
+<li>With the framework's session variable set to <code>s-1</code>, the entry has <code>session_id: "s-1"</code>; without it, the entry has no <code>session_id</code></li>
+<li>A framework that has no other session variable uses <code>&lt;PREFIX&gt;SESSION_ID</code>, and its documentation names the session variable it reads</li>
 <li>Every entry validates against <code>audit-log-entry.json</code></li>
 <li>An invocation with a 50 MB argument appends one entry of at most 16 KiB with <code>truncated: true</code></li>
 <li>With a umask of <code>0022</code>, a freshly created audit log file has mode <code>0600</code> and a directory created for it has mode <code>0700</code></li>
@@ -10210,9 +10220,17 @@
 <li>With the log path unwritable, the command exits with its normal exit code and <code>warnings[]</code> contains <code>AUDIT_LOG_UNAVAILABLE</code>; with <code>--format plain</code>, the warning appears on stderr</li>
 <li><code>tool audit-log --since 1h --format jsonl</code> returns all invocations from the past hour, one per line, oldest first</li>
 <li><code>tool audit-log --since 2026-03-17T14:00:00Z</code> returns only entries at or after that time; <code>--since 1w</code> exits <code>2</code></li>
+<li>Every entry's <code>command</code> equals the <code>meta.command</code> of the invocation it records</li>
 <li><code>tool audit-log --command config</code> returns entries for <code>config set</code> and <code>config get</code> but not <code>configure</code></li>
+<li>For a framework whose <code>meta.command</code> is dot-separated, entries record <code>config.set</code>; <code>tool audit-log --command config</code> and <code>--command "config set"</code> both return it, and neither returns <code>configure</code></li>
 <li><code>tool audit-log --trace-id abc123</code> returns only entries with that trace ID</li>
 <li>With more than 100 matching entries, <code>--limit 100</code> returns the newest 100, oldest first</li>
+<li><code>tool audit-log</code> without <code>--format jsonl</code> returns one envelope with the entries in <code>data.entries</code> and <code>meta.pagination</code></li>
+<li>With 250 matching entries, <code>--limit 100</code> returns the newest 100 with <code>returned: 100</code>, <code>truncated: true</code>, <code>has_more: true</code>, and a non-null <code>next_cursor</code>; <code>total</code> is <code>250</code> or <code>null</code></li>
+<li>Passing that <code>next_cursor</code> as <code>--cursor</code> with the same filters and <code>--limit 100</code> returns the 100 entries before those, oldest first; passing the second page's <code>next_cursor</code> returns the oldest 50 with <code>returned: 50</code>, <code>truncated: false</code>, <code>has_more: false</code>, and <code>next_cursor: null</code></li>
+<li>An invalid <code>--cursor</code> value fails with a structured error</li>
+<li>With <code>--format jsonl</code>, the final line is a summary line carrying the same pagination fields</li>
+<li>When <code>audit-log</code> declares <code>streaming_default: true</code> in the manifest, <code>tool audit-log --no-stream</code> returns the buffered <code>data.entries</code> envelope</li>
 <li>With the log disabled, <code>tool audit-log</code> exits <code>4</code> with error code <code>AUDIT_LOG_DISABLED</code></li>
 </ul>
 <hr />
@@ -10240,6 +10258,7 @@
 </code></pre>
 <pre><code>{&quot;timestamp&quot;:&quot;2026-03-17T14:00:01Z&quot;,&quot;command&quot;:&quot;deploy&quot;,&quot;args&quot;:{&quot;env&quot;:&quot;prod&quot;,&quot;token&quot;:&quot;[REDACTED]&quot;},&quot;exit_code&quot;:0,&quot;duration_ms&quot;:1247,&quot;request_id&quot;:&quot;req-001&quot;,&quot;trace_id&quot;:&quot;abc123&quot;,&quot;warnings&quot;:[]}
 {&quot;timestamp&quot;:&quot;2026-03-17T14:05:22Z&quot;,&quot;command&quot;:&quot;delete&quot;,&quot;args&quot;:{&quot;resource_id&quot;:&quot;r-42&quot;,&quot;dry_run&quot;:true},&quot;exit_code&quot;:0,&quot;duration_ms&quot;:8,&quot;request_id&quot;:&quot;req-002&quot;,&quot;trace_id&quot;:&quot;def456&quot;,&quot;session_id&quot;:&quot;s-1&quot;,&quot;warnings&quot;:[&quot;CREDENTIAL_OVER_PRIVILEGED&quot;]}
+{&quot;_summary&quot;:true,&quot;total&quot;:2,&quot;returned&quot;:2,&quot;truncated&quot;:false,&quot;has_more&quot;:false,&quot;next_cursor&quot;:null,&quot;duration_ms&quot;:14}
 </code></pre>
 <p>Querying a disabled log:</p>
 <pre><code class="language-json">{
@@ -10311,7 +10330,22 @@ $ TOOL_AUDIT_LOG=yes tool deploy --env prod
 <tr>
 <td><a href="../f-073-env-var-namespace-prefix/">REQ-F-073</a></td>
 <td>F</td>
-<td>Consumes: <code>&lt;PREFIX&gt;AUDIT_LOG</code> and <code>&lt;PREFIX&gt;SESSION_ID</code> follow the tool env var prefix</td>
+<td>Consumes: <code>&lt;PREFIX&gt;AUDIT_LOG</code> and the session variable (<code>&lt;PREFIX&gt;SESSION_ID</code> unless the framework already reads a prefixed one) follow the tool env var prefix</td>
+</tr>
+<tr>
+<td><a href="../f-018-pagination-metadata-on-list-commands/">REQ-F-018</a></td>
+<td>F</td>
+<td>Provides: <code>meta.pagination</code> on every <code>audit-log</code> answer</td>
+</tr>
+<tr>
+<td><a href="../o-003-limit-and-cursor-pagination-flags/">REQ-O-003</a></td>
+<td>O</td>
+<td>Consumes: <code>--limit</code> and the stateless <code>--cursor</code> token that pages through <code>audit-log</code></td>
+</tr>
+<tr>
+<td><a href="../o-004-output-jsonl-stream-flag/">REQ-O-004</a></td>
+<td>O</td>
+<td>Extends: <code>audit-log</code> MAY be streaming-default, with <code>--no-stream</code> returning the buffered envelope</td>
 </tr>
 <tr>
 <td><a href="../c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a></td>

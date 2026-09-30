@@ -9985,6 +9985,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#audit-log-accepts-framework-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit log accepts framework conventions
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10301,6 +10312,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#audit-log-accepts-framework-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit log accepts framework conventions
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10582,6 +10604,14 @@
 <li>Agents filter on <code>builtin</code> when building a task list or skill set instead of matching a hard-coded list of built-in names</li>
 <li>A producer that sets <code>builtin</code> emits <code>schema_version</code> <code>3.1</code>; a <code>3.0</code> manifest stays valid and reads as having no marked built-ins (#9)</li>
 </ul>
+<h3 id="audit-log-accepts-framework-conventions">Audit log accepts framework conventions</h3>
+<ul>
+<li>REQ-O-030: an entry's <code>command</code> equals <code>meta.command</code> exactly, space-separated (<code>config set</code>) or dot-separated (<code>config.set</code>) as the framework spells it consistently; <code>audit-log --command</code> accepts both spellings and keeps the whole-word prefix rule in each. New acceptance criteria cover the dot form and <code>command</code> matching <code>meta.command</code></li>
+<li>REQ-O-030: <code>audit-log</code> is a list command. Its default buffered answer carries <code>data.entries</code> and <code>meta.pagination</code> (REQ-F-018); <code>total</code> is the matched count or <code>null</code>. It accepts <code>--cursor</code>: when <code>--limit</code> leaves out older matching entries, <code>truncated</code> and <code>has_more</code> are <code>true</code> and <code>next_cursor</code> returns the next-older page, oldest first within it; the last page has <code>next_cursor: null</code>. A framework may make it streaming-default under REQ-O-004, and <code>--no-stream</code> then returns the buffered envelope; streamed output carries the pagination on its final summary line</li>
+<li>REQ-O-030: <code>session_id</code> comes from the framework's one session variable, a prefixed variable it already reads for the agent session id (for example for REQ-C-007 idempotency keys), else <code>&lt;PREFIX&gt;SESSION_ID</code>; the framework documents its name</li>
+<li><code>AuditLogEntry</code> changes descriptions only (<code>command</code>, <code>session_id</code>): no instance valid before becomes invalid, so its contract version is unchanged</li>
+</ul>
+<p><strong>Why:</strong> a framework implementing REQ-O-030 (treaty) already spells <code>meta.command</code> as a dot path, streams list output, and reads a session id for idempotency keys. REQ-F-024 never pins <code>meta.command</code>'s separator, so requiring the space form forced two spellings of one command in one CLI, and a second session variable would record a different value from the one the framework already trusts (#12).</p>
 <h2 id="180-2026-09-30">1.8.0 — 2026-09-30</h2>
 <h3 id="breaking-format-selects-output-representation">Breaking: <code>--format</code> selects output representation</h3>
 <ul>
