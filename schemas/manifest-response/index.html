@@ -10720,7 +10720,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><code>ConditionalRule</code></td>
-<td>One of <code>{ if_flag, if_value, then_required }</code>, <code>{ if_flag, prohibited }</code>, <code>{ if_flag, target_flag, default }</code></td>
+<td>One of <code>{ if_flag, if_value, then_required }</code>, <code>{ if_flag, prohibited }</code>, <code>{ if_flag, target_flag, default }</code>, <code>{ any_of }</code> (at least one listed flag present), <code>{ one_of }</code> (exactly one listed flag present); <code>any_of</code> and <code>one_of</code> list at least two distinct flags</td>
 </tr>
 <tr>
 <td><code>DependencyEntry</code></td>
@@ -10797,6 +10797,29 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p><code>deploy</code> omits <code>builtin</code>, so it is an application command; an agent building a task list keeps it and drops <code>manifest</code>.</p>
+<p><strong>Valid — command that needs exactly one identifier flag</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.2&quot;,
+  &quot;framework_version&quot;: &quot;2.1.0&quot;,
+  &quot;etag&quot;: &quot;sha256:5d20b4&quot;,
+  &quot;commands&quot;: {
+    &quot;quote&quot;: {
+      &quot;description&quot;: &quot;Fetch the latest quote for one instrument&quot;,
+      &quot;danger_level&quot;: &quot;safe&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;has_network_io&quot;: true,
+      &quot;flags&quot;: {
+        &quot;isin&quot;:   { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Instrument ISIN&quot; },
+        &quot;figi&quot;:   { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Instrument FIGI&quot; },
+        &quot;symbol&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Instrument ticker symbol&quot; }
+      },
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Quote returned&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; } },
+      &quot;requires&quot;: [{ &quot;one_of&quot;: [&quot;isin&quot;, &quot;figi&quot;, &quot;symbol&quot;] }]
+    }
+  }
+}
+</code></pre>
+<p>Each flag is optional on its own; the <code>one_of</code> rule makes exactly one of them mandatory. <code>tool quote --symbol AAPL</code> passes, while <code>tool quote</code> and <code>tool quote --isin US0378331005 --symbol AAPL</code> exit <code>2</code>.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -10833,6 +10856,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Generating the manifest from a static file.</strong> It must be computed from live registrations or the <code>etag</code> lies</li>
 <li><strong>Separating built-ins by a hard-coded name list.</strong> Frameworks differ in which built-ins they register (<code>doctor</code>, <code>manifest</code>, <code>audit-log</code>, ...), and an application may replace one with its own command; read <code>builtin</code> instead</li>
 <li><strong>Marking an application command that replaces a built-in's name as <code>builtin: true</code>.</strong> The flag follows who registered the command, not its name; the replacement is <code>false</code></li>
+<li><strong>Marking every flag of an "exactly one of" group <code>required: true</code>.</strong> No call can then satisfy the command; keep each flag <code>required: false</code> and declare the group as a <code>one_of</code> rule</li>
+<li><strong>Emitting pairwise <code>prohibited</code> rules next to a <code>one_of</code> group.</strong> <code>one_of</code> already forbids combining its members; the extra rules repeat the constraint and let the two drift apart</li>
 </ul>
 <hr />
 <h2 id="agent-interpretation">Agent interpretation</h2>
@@ -10871,6 +10896,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - <code>danger_level</code> other than <code>safe</code> — prefer <code>--dry-run</code> first; <code>safe_default: true</code> means the command previews until <code>--live</code> is passed
 - <code>option_placement: "strict"</code> — place every option, global or local, before the first positional argument; anything after it is forwarded to the child process
 - <code>requires</code> — evaluate each rule against the flags you plan to send before calling; a violated rule produces <code>ARG_ERROR (2)</code>
+- <code>any_of</code> and <code>one_of</code> groups — send at least one flag of an <code>any_of</code> group and exactly one flag of a <code>one_of</code> group, choosing the one whose value you already hold; a declared <code>default</code> never satisfies either rule
 - <code>interactive: true</code> or <code>requires_editor: true</code> — always pass <code>--yes</code> / <code>--non-interactive</code> or one of <code>non_interactive_alternatives</code>
 - <code>async: true</code> — the response is a job descriptor; poll with its <code>status_command</code> instead of waiting on the call
 - <code>required_scopes</code> not covered by the active credential — expect <code>AUTH_REQUIRED (8)</code>; do not call until credentials change</p>

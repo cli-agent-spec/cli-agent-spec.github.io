@@ -9952,6 +9952,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreleased
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manifestresponse-32-group-rules-in-requires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.2: group rules in requires
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#190-2026-09-30" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10279,6 +10307,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreleased
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manifestresponse-32-group-rules-in-requires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.2: group rules in requires
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#190-2026-09-30" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10591,6 +10647,15 @@
 <li>A contract <code>MAJOR</code> increment always ships in a spec <code>MINOR</code> release with a migration section in this file</li>
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
+<h2 id="unreleased">Unreleased</h2>
+<h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
+<ul>
+<li><code>ConditionalRule</code> gains two shapes: <code>{ "any_of": [...] }</code> (at least one listed flag is present) and <code>{ "one_of": [...] }</code> (exactly one listed flag is present). Each lists at least two distinct flag names (REQ-C-026)</li>
+<li>REQ-C-026 defines "present": the caller supplies the flag on the command line or through another explicit input channel the framework treats as supplied; a declared default does not count. New acceptance criteria: an <code>any_of</code> group with no flag present and a <code>one_of</code> group with two or more present exit 2 before any I/O, a <code>one_of</code> group with exactly one present passes, and the <code>ARG_ERROR</code> message and details name every flag in the group</li>
+<li>A <code>one_of</code> group replaces pairwise <code>prohibited</code> rules between its members</li>
+<li>A producer that emits a group rule emits <code>schema_version</code> <code>3.2</code>; the three existing shapes are unchanged, so a <code>3.0</code> or <code>3.1</code> manifest stays valid</li>
+</ul>
+<p><strong>Why:</strong> a command that takes one identifier from several flags (<code>--isin</code>, <code>--figi</code>, <code>--symbol</code>) could not declare that one is needed, so <code>--schema</code> did not reveal every required flag and REQ-C-026's own criterion failed for it (#14).</p>
 <h2 id="190-2026-09-30">1.9.0 — 2026-09-30</h2>
 <h3 id="audit-log-and-logger-rotation-defaults-are-recommendations">Audit log and logger rotation defaults are recommendations</h3>
 <ul>

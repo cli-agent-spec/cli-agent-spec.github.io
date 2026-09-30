@@ -10139,13 +10139,17 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: High / Time: Medium / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Commands MUST declare all conditional argument requirements in their registration metadata using a <code>requires</code> clause, rather than discovering them at runtime. The <code>requires</code> clause specifies: when flag A has value V, flag B is required; when flag A is present, flag B is prohibited (mutual exclusion); when flag A is absent, flag B has a different default. The framework validates all declared <code>requires</code> relationships during the validate-before-execute phase (Phase 1), before any side effects. The <code>--schema</code> output MUST include the full <code>requires</code> graph so agents can construct valid calls without trial-and-error discovery.</p>
+<p>Commands MUST declare all conditional argument requirements in their registration metadata using a <code>requires</code> clause, rather than discovering them at runtime. The <code>requires</code> clause specifies: when flag A has value V, flag B is required; when flag A is present, flag B is prohibited (mutual exclusion); when flag A is absent, flag B has a different default; at least one flag of a group is present; exactly one flag of a group is present. The framework validates all declared <code>requires</code> relationships during the validate-before-execute phase (Phase 1), before any side effects. The <code>--schema</code> output MUST include the full <code>requires</code> graph so agents can construct valid calls without trial-and-error discovery.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A command with <code>requires: [{if: "--format=csv", then: "--separator"}]</code> exits 2 with a structured error when <code>--format csv</code> is passed without <code>--separator</code></li>
 <li>The <code>--schema</code> output includes the full conditional dependency graph</li>
 <li>Mutually exclusive flags are enforced in Phase 1: passing both produces exit 2 before any I/O</li>
 <li>An agent calling <code>--schema</code> can determine all required flags for a given combination of values without making a failing call first</li>
+<li>A command with an <code>any_of</code> rule exits 2 before any I/O when no flag of the group is present</li>
+<li>A command with a <code>one_of</code> rule exits 2 before any I/O when two or more flags of the group are present</li>
+<li>A command with a <code>one_of</code> rule passes Phase 1 validation when exactly one flag of the group is present</li>
+<li>The <code>ARG_ERROR</code> message and its error details name every flag in a violated <code>any_of</code> or <code>one_of</code> group</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
@@ -10192,8 +10196,19 @@
 <td><code>if_flag</code>, <code>target_flag</code>, <code>default</code></td>
 <td>When <code>if_flag</code> is absent, <code>target_flag</code> uses this <code>default</code> instead of its declared default</td>
 </tr>
+<tr>
+<td><code>any_of</code></td>
+<td><code>any_of</code></td>
+<td>At least one flag in <code>any_of</code> is present</td>
+</tr>
+<tr>
+<td><code>one_of</code></td>
+<td><code>one_of</code></td>
+<td>Exactly one flag in <code>one_of</code> is present</td>
+</tr>
 </tbody>
 </table>
+<p>A flag is present when the caller supplies it: on the command line, or through any other explicit input channel the framework treats as supplied. A declared <code>default</code> does not make a flag present. <code>any_of</code> and <code>one_of</code> each list at least two distinct flag names. A <code>one_of</code> group already forbids combining its members, so it replaces pairwise <code>if_flag</code>/<code>prohibited</code> rules between them rather than adding to them.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <pre><code class="language-bash">$ tool export --schema
@@ -10216,6 +10231,22 @@
   }
 }
 </code></pre>
+<p>A group rule declares that exactly one identifier flag is present:</p>
+<pre><code class="language-bash">$ tool quote --schema
+</code></pre>
+<pre><code class="language-json">{
+  &quot;parameters&quot;: {
+    &quot;isin&quot;:   { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Instrument ISIN&quot; },
+    &quot;figi&quot;:   { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Instrument FIGI&quot; },
+    &quot;symbol&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Instrument ticker symbol&quot; }
+  },
+  &quot;requires&quot;: [{ &quot;one_of&quot;: [&quot;isin&quot;, &quot;figi&quot;, &quot;symbol&quot;] }],
+  &quot;exit_codes&quot;: {
+    &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;,   &quot;description&quot;: &quot;Quote returned&quot;,                     &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; },
+    &quot;2&quot;: { &quot;name&quot;: &quot;ARG_ERROR&quot;, &quot;description&quot;: &quot;Conditional argument rule violated&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; }
+  }
+}
+</code></pre>
 <hr />
 <h2 id="example">Example</h2>
 <pre><code>register command &quot;export&quot;:
@@ -10234,6 +10265,20 @@
 
 # tool export --format json --output report.json --stdout
 #  → exit 2: ARG_ERROR: --output and --stdout are mutually exclusive
+</code></pre>
+<pre><code>register command &quot;quote&quot;:
+  parameters:
+    isin:   type=string, required=false
+    figi:   type=string, required=false
+    symbol: type=string, required=false
+  requires:
+    - exactly one of isin, figi, symbol is present
+
+# tool quote --isin US0378331005 --symbol AAPL
+#  → exit 2: ARG_ERROR: pass exactly one of --isin, --figi, --symbol (got --isin, --symbol)
+
+# tool quote
+#  → exit 2: ARG_ERROR: pass exactly one of --isin, --figi, --symbol (got none)
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>
