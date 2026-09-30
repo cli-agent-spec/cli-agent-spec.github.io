@@ -9974,6 +9974,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cursor-errors-and-audit-log-paging-are-defined" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cursor errors and audit-log paging are defined
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10329,6 +10340,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cursor-errors-and-audit-log-paging-are-defined" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cursor errors and audit-log paging are defined
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10656,6 +10678,13 @@
 <li>A producer that emits a group rule emits <code>schema_version</code> <code>3.2</code>; the three existing shapes are unchanged, so a <code>3.0</code> or <code>3.1</code> manifest stays valid</li>
 </ul>
 <p><strong>Why:</strong> a command that takes one identifier from several flags (<code>--isin</code>, <code>--figi</code>, <code>--symbol</code>) could not declare that one is needed, so <code>--schema</code> did not reveal every required flag and REQ-C-026's own criterion failed for it (#14).</p>
+<h3 id="cursor-errors-and-audit-log-paging-are-defined">Cursor errors and audit-log paging are defined</h3>
+<ul>
+<li>REQ-O-003: a <code>--cursor</code> the framework cannot honor (malformed or expired) exits <code>2</code> (<code>ARG_ERROR</code>) with error code <code>INVALID_CURSOR</code>, <code>retryable: false</code>, and a <code>fix_required</code> to rerun without <code>--cursor</code>, the same on every list command. New wire example and acceptance criteria</li>
+<li>REQ-O-003: a token binds the query that produced it (filters and sort order); reusing it with a different query fails as <code>INVALID_CURSOR</code>. <code>--limit</code> is not part of the query and may change between pages</li>
+<li>REQ-O-030: the <code>audit-log</code> cursor anchors on the last returned entry's <code>timestamp</code> plus <code>request_id</code>, never a file offset or rotated-file index. After pruning, the next page returns the older matches that remain, without error, and <code>total</code> may shrink; entries appended after the first page never appear on later pages. The invalid-cursor criterion now names exit <code>2</code> and <code>INVALID_CURSOR</code>, and new criteria cover a token reused with other filters, pruning between pages, and an entry appended between pages</li>
+</ul>
+<p><strong>Why:</strong> both requirements said an invalid cursor "fails with a structured error" without an exit or error code, and left undefined what a token means under different filters or after rotation removes entries between pages, so frameworks would diverge and an agent could not branch on the failure (#15).</p>
 <h2 id="190-2026-09-30">1.9.0 — 2026-09-30</h2>
 <h3 id="audit-log-and-logger-rotation-defaults-are-recommendations">Audit log and logger rotation defaults are recommendations</h3>
 <ul>
