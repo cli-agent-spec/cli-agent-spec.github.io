@@ -10139,11 +10139,12 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: High / Time: High / Context: High</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework's external data trust tagging (REQ-F-035) MAY be bypassed for a specific invocation by passing <code>--no-injection-protection</code>. This escape hatch is intended for trusted sources (e.g., reading internal configuration authored by the operator). When this flag is passed, external data is not wrapped with trust markers. When the audit log is enabled (REQ-O-030), use of the flag MUST be recorded in it. The flag MUST require explicit acknowledgment in non-interactive mode.</p>
+<p>The framework's external data trust tagging (REQ-F-035) MAY be bypassed for a specific invocation by passing <code>--no-injection-protection</code>. This escape hatch is intended for trusted sources (e.g., reading internal configuration authored by the operator). When this flag is passed, external data is not wrapped with trust markers. The framework MUST add an <code>INJECTION_PROTECTION_DISABLED</code> warning to <code>warnings[]</code> whenever the flag is used, so the audit log (REQ-O-030), when enabled, records it in the entry's <code>warnings</code>. The flag MUST require explicit acknowledgment in non-interactive mode.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li><code>--no-injection-protection</code> causes external data to be returned without <code>_trusted: false</code> tagging</li>
-<li>With the audit log enabled, use of this flag is recorded in it with a warning</li>
+<li><code>--no-injection-protection</code> adds an <code>INJECTION_PROTECTION_DISABLED</code> warning to <code>warnings[]</code></li>
+<li>With the audit log enabled, the entry for that invocation has <code>INJECTION_PROTECTION_DISABLED</code> in its <code>warnings</code></li>
 <li>The flag is documented with a security warning in <code>--help</code> output</li>
 </ul>
 <hr />
@@ -10205,7 +10206,7 @@ app.enable_injection_protection()
 <tr>
 <td><a href="../o-030-opt-in-audit-log/">REQ-O-030</a></td>
 <td>O</td>
-<td>Consumes: flag usage is recorded as a security-relevant audit event when the log is enabled</td>
+<td>Consumes: <code>INJECTION_PROTECTION_DISABLED</code> is recorded in the entry's <code>warnings</code> when the log is enabled</td>
 </tr>
 <tr>
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>

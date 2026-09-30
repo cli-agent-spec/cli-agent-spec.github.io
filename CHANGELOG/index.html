@@ -9964,6 +9964,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#req-o-030-audit-log-gaps-closed-auditlogentry-10-responseenvelope-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REQ-O-030 audit log: gaps closed, AuditLogEntry 1.0, ResponseEnvelope 2.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#breaking-format-selects-output-representation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10175,6 +10186,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#req-o-030-audit-log-gaps-closed-auditlogentry-10-responseenvelope-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REQ-O-030 audit log: gaps closed, AuditLogEntry 1.0, ResponseEnvelope 2.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#breaking-format-selects-output-representation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10360,6 +10382,20 @@
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
 <h2 id="unreleased">Unreleased</h2>
+<h3 id="req-o-030-audit-log-gaps-closed-auditlogentry-10-responseenvelope-21">REQ-O-030 audit log: gaps closed, AuditLogEntry 1.0, ResponseEnvelope 2.1</h3>
+<ul>
+<li><code>&lt;PREFIX&gt;AUDIT_LOG</code> accepts only <code>1</code>, <code>0</code>, or an absolute path; any other value exits <code>2</code> with <code>INVALID_AUDIT_LOG_SETTING</code>. <code>1</code> keeps the application's path and falls back to the default; an absolute path overrides both</li>
+<li><code>tool audit-log</code> is registered on every CLI; with the log disabled it exits <code>4</code> with <code>AUDIT_LOG_DISABLED</code> instead of returning an empty list</li>
+<li>Every invocation that resolves to a command is logged, including argument errors after resolution, <code>--validate-only</code>, <code>--dry-run</code>, and refused destructive commands; unresolved commands are not</li>
+<li><code>operator</code> becomes <code>session_id</code>, read verbatim from <code>&lt;PREFIX&gt;SESSION_ID</code>; <code>trace_id</code> is present only when <code>TOOL_TRACE_ID</code> is set; a new <code>warnings</code> field records warning codes, so REQ-O-023 and REQ-O-047 events are queryable</li>
+<li>Entries are capped at 16 KiB (oversized <code>args</code> values become <code>[TRUNCATED]</code>, with <code>truncated: true</code>); the maximum age applies to the active file as well as rotated ones; <code>tool cleanup</code> never removes the log</li>
+<li>The log file is created <code>0600</code> and its directory <code>0700</code>; existing modes are left unchanged</li>
+<li><code>AUDIT_LOG_UNAVAILABLE</code> goes to stderr when the output has no envelope; the entry is written before the response is emitted</li>
+<li><code>audit-log</code> returns entries oldest first, <code>--limit n</code> keeps the newest <code>n</code>, <code>--since</code> accepts <code>&lt;n&gt;s|m|h|d</code> or an ISO 8601 datetime, and <code>--command</code> matches a space-separated path or a whole-word prefix</li>
+<li>New canonical schema <code>AuditLogEntry</code> 1.0 (<code>schemas/audit-log-entry.json</code>); <code>ResponseEnvelope</code> 2.1 adds the optional <code>meta.audit_log_path</code></li>
+<li>REQ-O-023 emits an <code>INJECTION_PROTECTION_DISABLED</code> warning whenever <code>--no-injection-protection</code> is used; it and <code>AUDIT_LOG_UNAVAILABLE</code> join the standard warning codes</li>
+</ul>
+<p><strong>Why:</strong> two conforming frameworks could disagree on every point above, the size and age bounds did not hold for large arguments or rarely used tools, and the log was readable by every local user under a default umask.</p>
 <h3 id="breaking-format-selects-output-representation">Breaking: <code>--format</code> selects output representation</h3>
 <ul>
 <li>REQ-O-001 makes <code>--format &lt;format&gt;</code> the canonical representation flag; <code>--output</code> and <code>-o</code> must not select a format</li>

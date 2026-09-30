@@ -1753,6 +1753,10 @@
          <lastmod>2026-09-30</lastmod>
     </url>
     <url>
+         <loc>https://cli-agent-spec.github.io/schemas/audit-log-entry/</loc>
+         <lastmod>2026-09-30</lastmod>
+    </url>
+    <url>
          <loc>https://cli-agent-spec.github.io/schemas/codegen-guide/</loc>
          <lastmod>2026-09-30</lastmod>
     </url>
