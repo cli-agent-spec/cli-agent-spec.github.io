@@ -9952,6 +9952,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreleased
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#audit-log-and-logger-rotation-defaults-are-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit log and logger rotation defaults are recommendations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#180-2026-09-30" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10229,6 +10257,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreleased
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#audit-log-and-logger-rotation-defaults-are-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit log and logger rotation defaults are recommendations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#180-2026-09-30" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10491,6 +10547,13 @@
 <li>A contract <code>MAJOR</code> increment always ships in a spec <code>MINOR</code> release with a migration section in this file</li>
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
+<h2 id="unreleased">Unreleased</h2>
+<h3 id="audit-log-and-logger-rotation-defaults-are-recommendations">Audit log and logger rotation defaults are recommendations</h3>
+<ul>
+<li>REQ-O-030: configuring the maximum size, rotated file count, and maximum age stays MUST; the default values (10 MB, 5 files, 30 days) become SHOULD. A framework may ship smaller defaults, but its default size bound <code>max_size × (max_rotated_files + 1)</code> should not exceed 60 MB. New acceptance criterion: the application can set all three bounds</li>
+<li>REQ-F-042: the same wording for the framework logger's defaults (100 MB, 5 files, 30 days); it states the derived bound and that its defaults do not apply to the audit log</li>
+</ul>
+<p><strong>Why:</strong> both requirements put the defaults in parentheses inside a MUST sentence and no criterion tested them, so a framework could not tell whether smaller defaults conformed. Frameworks also read REQ-F-042's defaults (600 MB bound) as the audit log's (#7).</p>
 <h2 id="180-2026-09-30">1.8.0 — 2026-09-30</h2>
 <h3 id="breaking-format-selects-output-representation">Breaking: <code>--format</code> selects output representation</h3>
 <ul>

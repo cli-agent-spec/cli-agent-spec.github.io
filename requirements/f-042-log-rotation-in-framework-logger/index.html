@@ -10139,7 +10139,7 @@
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: Low / Time: Low / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework's internal logger MUST automatically rotate log files when they exceed a configurable maximum size (default: 100 MB) and MUST retain a configurable maximum number of rotated files (default: 5). The framework MUST prune log files older than a configurable maximum age (default: 30 days). These defaults MUST be configurable via framework-level configuration, not requiring per-command implementation.</p>
+<p>The framework's internal logger MUST automatically rotate log files when they exceed a maximum size and MUST retain at most a maximum number of rotated files. The framework MUST prune log files older than a maximum age. All three MUST be configurable via framework-level configuration, not requiring per-command implementation. The defaults SHOULD be 100 MB, 5 rotated files, and 30 days; a framework MAY ship smaller defaults. Disk usage is then bounded by <code>max_size × (max_rotated_files + 1)</code>. These defaults govern the framework's internal logger only; the audit log (REQ-O-030) has its own, smaller defaults.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A log file that exceeds the size limit is rotated and a new file is started</li>
@@ -10191,7 +10191,7 @@ framework.logger:
 <tr>
 <td><a href="../o-030-opt-in-audit-log/">REQ-O-030</a></td>
 <td>O</td>
-<td>Composes: the opt-in audit log rotates with this mechanism under its own size and retention bounds</td>
+<td>Composes: the opt-in audit log rotates with this mechanism under its own size and retention bounds, not the defaults above</td>
 </tr>
 <tr>
 <td><a href="../f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a></td>
