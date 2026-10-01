@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4514,6 +4514,8 @@
       
         
       
+        
+      
     
     
     
@@ -5395,6 +5397,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10302,7 +10332,7 @@
 <h1 id="schema-manifestresponse">Schema: ManifestResponse</h1>
 <p><strong>File:</strong> <a href="../manifest-response.json"><code>manifest-response.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a> · <a href="../../requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/">REQ-F-054</a>
+<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a> · <a href="../../requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/">REQ-F-054</a> · <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>
 Returned as the <code>data</code> field of a <a href="../response-envelope/"><code>ResponseEnvelope</code></a>.</p>
 </blockquote>
 <hr />
@@ -10490,6 +10520,16 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td><code>option_placement</code></td>
 <td><code>"any"</code> | <code>"strict"</code></td>
 <td><code>strict</code>: every option, global or local, precedes the first positional; absent means <code>any</code> (REQ-C-027)</td>
+</tr>
+<tr>
+<td><code>arguments</code></td>
+<td><code>"declared"</code> | <code>"passthrough"</code></td>
+<td><code>passthrough</code>: every token after the command path goes verbatim to another tool, which owns stdout and the exit code; the envelope is the last line of stderr. Requires <code>option_placement: "strict"</code>, empty <code>flags</code>, and no <code>positionals</code>, and excludes <code>danger_level: "destructive"</code>; absent means <code>declared</code> (REQ-C-031)</td>
+</tr>
+<tr>
+<td><code>help_argv</code></td>
+<td>string[]</td>
+<td>Passthrough only: the argv forwarded in place of a lone <code>--help</code> or <code>-h</code> after the command path; absent means the token is forwarded unchanged (REQ-C-031)</td>
 </tr>
 <tr>
 <td><code>interactive</code></td>
@@ -11091,6 +11131,40 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Violation: <code>records</code> mode requires <code>record_schema</code>; without it an agent cannot tell which producers fit, and a command that checks nothing per line is <code>lines</code> mode.</p>
+<p><strong>Valid — passthrough command that wraps another tool's parser</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.9&quot;,
+  &quot;framework_version&quot;: &quot;1.4.0&quot;,
+  &quot;etag&quot;: &quot;sha256:c41d07&quot;,
+  &quot;commands&quot;: {
+    &quot;ingest&quot;: {
+      &quot;description&quot;: &quot;Run beangulp on bank statements; every argument goes to beangulp&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;arguments&quot;: &quot;passthrough&quot;,
+      &quot;help_argv&quot;: [&quot;extract&quot;, &quot;--help&quot;],
+      &quot;option_placement&quot;: &quot;strict&quot;,
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: {
+        &quot;2&quot;:  { &quot;name&quot;: &quot;ARG_ERROR&quot;, &quot;description&quot;: &quot;A framework option before the command path is invalid; the tool did not start&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; },
+        &quot;10&quot;: { &quot;name&quot;: &quot;TIMEOUT&quot;, &quot;description&quot;: &quot;The delegated tool ran past the timeout; partial writes may have occurred&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;partial&quot; }
+      }
+    }
+  }
+}
+</code></pre>
+<p><code>ledger --format json ingest extract a.csv</code> hands <code>extract a.csv</code> to beangulp; beangulp writes stdout and chooses the exit code, and the envelope is the last line of stderr. <code>ledger ingest --help</code> runs beangulp with <code>extract --help</code>.</p>
+<p><strong>Invalid — passthrough command with interspersed options</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.9&quot;,
+  &quot;framework_version&quot;: &quot;1.4.0&quot;,
+  &quot;etag&quot;: &quot;sha256:c41d07&quot;,
+  &quot;commands&quot;: {
+    &quot;ingest&quot;: { &quot;description&quot;: &quot;Run beangulp&quot;, &quot;danger_level&quot;: &quot;mutating&quot;, &quot;required_scopes&quot;: [], &quot;arguments&quot;: &quot;passthrough&quot;, &quot;option_placement&quot;: &quot;any&quot;, &quot;flags&quot;: {}, &quot;exit_codes&quot;: {} }
+  }
+}
+</code></pre>
+<p>Violation: <code>arguments: "passthrough"</code> requires <code>option_placement: "strict"</code>; every token after the command path belongs to the delegated tool, so no option can follow it.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -11147,6 +11221,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Listing a secret in <code>env_vars</code>.</strong> A token or password is not a flag value (REQ-C-016); declare its variable in <code>secret_env_vars</code></li>
 <li><strong>Declaring <code>stdin: {mode: "buffered"}</code> on a command that consumes a record stream.</strong> The 64 KiB total cap then rejects any real pipeline; a command that handles one line at a time declares <code>lines</code> or <code>records</code></li>
 <li><strong>Declaring <code>max_bytes</code> on a <code>lines</code> or <code>records</code> command.</strong> Line mode has no total cap, so the field is rejected; the per-line cap is <code>max_line_bytes</code></li>
+<li><strong>Marking a passthrough command only through <code>option_placement: "strict"</code> and its <code>description</code>.</strong> <code>strict</code> also fits a command that parses its own options and forwards the rest; only <code>arguments: "passthrough"</code> tells an agent that stdout, the exit code, and every token after the path belong to another tool</li>
+<li><strong>Declaring <code>help_argv</code> on a declared command.</strong> The framework answers <code>--help</code> itself there; <code>help_argv</code> exists only where a lone <code>--help</code> would otherwise reach the delegated tool</li>
 <li><strong>Listing a borrowed name before the tool-prefixed one.</strong> <code>CLOUDFALL_PROJECT</code> ahead of <code>TOOL_PROJECT</code> lets a variable set for another tool override the one set for this tool (REQ-F-073)</li>
 <li><strong>Reading a variable the manifest never names.</strong> <code>TOOL_DEBUG</code> or <code>TOOL_AUDIT_LOG</code> backs no flag, so it belongs in root <code>env_vars</code>; documenting it only in a README leaves an agent unable to see that it changes the tool's behavior</li>
 <li><strong>Listing one variable in two places.</strong> A name in root <code>env_vars</code> appears in no flag's <code>env_vars</code> and no <code>secret_env_vars</code>; a variable that supplies a flag's value is declared on that flag only</li>
@@ -11215,6 +11291,12 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - <code>interactive: true</code> or <code>requires_editor: true</code> — always pass <code>--yes</code> / <code>--non-interactive</code> or one of <code>non_interactive_alternatives</code>
 - <code>async: true</code> — the response is a job descriptor; poll with its <code>status_command</code> instead of waiting on the call
 - <code>required_scopes</code> not covered by the active credential — expect <code>AUTH_REQUIRED (8)</code>; do not call until credentials change</p>
+<p><strong>Calling a passthrough command (<code>arguments: "passthrough"</code>)</strong>
+- Put every global option and framework flag (<code>--format</code>, <code>--output</code>, <code>--timeout</code>) before the command path; every token after it goes to the delegated tool, <code>--help</code> and <code>--</code> included
+- Read stdout as the delegated tool's output, not as an envelope. The envelope is the last line of stderr; when that line is not an envelope, the framework rejected its own options before the tool started and the envelope is on stdout
+- Classify by <code>error.code</code>: <code>DELEGATED_EXIT</code> means the tool chose the exit code, and <code>data.exit_code</code> repeats it. A delegated <code>2</code> is the tool's usage error and does not rule out side effects; decide from <code>retryable</code>, which is <code>false</code>, not from the code
+- For the tool's own help, call <code>tool &lt;cmd&gt; --help</code>; the framework forwards <code>help_argv</code> when the command declares it
+- An absent <code>arguments</code> means <code>declared</code>, including on a pre-3.9 manifest; such a manifest cannot mark a passthrough command, so treat a <code>strict</code> command whose <code>description</code> says its arguments go to another tool as one</p>
 <p><strong>Manifest staleness</strong>
 - If a command call returns <code>REDIRECTED (13)</code> for a path that exists in the manifest — the manifest is stale; re-fetch unconditionally and update the cache
 - If a call returns <code>ARG_ERROR (2)</code> for a flag shown as valid in the manifest — possible version skew; re-fetch manifest before retrying</p>
@@ -11235,6 +11317,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert <code>output_file</code> is present on exactly the commands that register <code>--output &lt;path&gt;</code>, and is <code>"binary"</code> exactly when the command's result is a binary value, <code>"handler"</code> exactly when the handler writes the file, and <code>"envelope"</code> exactly when the framework writes the final envelope to it
 - Assert <code>output_file_base</code> appears only with <code>output_file</code>, and that a relative <code>--output</code> path lands under the declared base from a working directory other than that base
 - Assert every <code>type: "object"</code> flag carries a <code>schema</code> the parser enforces, and prefer <code>type: "object"</code> for every flag whose value the parser reads as a JSON object
+- Assert every <code>arguments: "passthrough"</code> command has <code>option_placement: "strict"</code>, empty <code>flags</code>, no <code>positionals</code>, and a <code>danger_level</code> other than <code>destructive</code>, and that <code>help_argv</code> appears only on such commands
 - Assert every flag's <code>env_vars</code> lists exactly the variables its parser reads, in the order it reads them, with the tool-prefixed name first whenever a name without the prefix is listed, and no name from <code>secret_env_vars</code>
 - Assert root <code>env_vars</code> lists every other variable the tool reads outside the universal exceptions, each with the tool prefix and a <code>description</code>, and no name that also appears in a flag's <code>env_vars</code> or a <code>secret_env_vars</code>
 - Assert <code>stdin</code> is present on exactly the commands that declare stdin input, with the <code>mode</code> the handler reads in, <code>record_schema</code> equal to the registered record type, and no <code>max_bytes</code> outside <code>buffered</code> mode
@@ -11325,6 +11408,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a></td>
 <td>Sources: <code>requires</code> conditional rules</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>Sources: <code>arguments</code> and <code>help_argv</code> per command</td>
 </tr>
 <tr>
 <td><a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a></td>

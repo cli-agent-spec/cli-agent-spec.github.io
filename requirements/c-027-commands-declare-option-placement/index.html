@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5513,6 +5515,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10141,6 +10171,7 @@
 <h2 id="description">Description</h2>
 <p>Commands that cannot support interspersed option parsing (typically because they forward trailing arguments verbatim to a subprocess) MUST declare <code>option_placement: "strict"</code> in their manifest registration. Commands that support interspersed parsing (the default per REQ-F-067) declare <code>option_placement: "any"</code> or omit the field. This allows agents to construct invocations correctly without probing.</p>
 <p><code>strict</code> has one meaning: every option, global or local, precedes the first positional argument. Options may follow the command path; they need not precede it. Parsing stops at the first positional or at <code>--</code>, whichever comes first, and every later token reaches the child process unparsed. An option the agent places after that point is not an error; it is forwarded to the child, which is why the declaration is required rather than discovered.</p>
+<p>A command that hands every argument to another tool's parser declares <code>arguments: "passthrough"</code> as well (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>); it has no local options, so all options precede the command path, and the delegated tool owns stdout and the exit code.</p>
 <p>The declaration is consumed by <code>tool manifest</code> (REQ-O-041) and <code>--schema</code> (REQ-O-013).</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
@@ -10232,6 +10263,11 @@ def run(target: str, extra_args: list[str]):
 <td><a href="../o-013-schema-output-schema-flag/">REQ-O-013</a></td>
 <td>O</td>
 <td>Exposes: <code>--schema</code> output includes <code>option_placement</code> for the command</td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Specializes: a passthrough command is always <code>strict</code> and also hands over stdout and the exit code</td>
 </tr>
 </tbody>
 </table>

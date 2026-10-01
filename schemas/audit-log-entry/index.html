@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4514,6 +4514,8 @@
       
         
       
+        
+      
     
     
     
@@ -5395,6 +5397,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10045,7 +10075,7 @@
 <h1 id="schema-auditlogentry">Schema: AuditLogEntry</h1>
 <p><strong>File:</strong> <a href="../audit-log-entry.json"><code>audit-log-entry.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a></p>
+<p><strong>Used by:</strong> <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></p>
 </blockquote>
 <hr />
 <h2 id="purpose">Purpose</h2>
@@ -10084,7 +10114,7 @@
 <td><code>args</code></td>
 <td>object</td>
 <td>yes</td>
-<td>Parsed argument map after REQ-F-034 redaction; never the raw argv</td>
+<td>Parsed argument map after REQ-F-034 redaction; never the raw argv. A passthrough command (REQ-C-031) records its forwarded argv as <code>"argv": "[OMITTED]"</code></td>
 </tr>
 <tr>
 <td><code>exit_code</code></td>
@@ -10141,6 +10171,10 @@
 <p><strong>Large payload truncated to fit the entry cap</strong></p>
 <pre><code class="language-json">{&quot;timestamp&quot;: &quot;2026-03-17T14:07:00Z&quot;, &quot;command&quot;: &quot;import&quot;, &quot;args&quot;: {&quot;source&quot;: &quot;s3://bucket/data.json&quot;, &quot;raw_payload&quot;: &quot;[TRUNCATED]&quot;}, &quot;exit_code&quot;: 0, &quot;duration_ms&quot;: 5310, &quot;request_id&quot;: &quot;req-003&quot;, &quot;warnings&quot;: [], &quot;truncated&quot;: true}
 </code></pre>
+<p><strong>Valid: passthrough command, forwarded argv omitted</strong></p>
+<pre><code class="language-json">{&quot;timestamp&quot;: &quot;2026-03-17T14:09:30Z&quot;, &quot;command&quot;: &quot;ingest&quot;, &quot;args&quot;: {&quot;argv&quot;: &quot;[OMITTED]&quot;}, &quot;exit_code&quot;: 2, &quot;duration_ms&quot;: 412, &quot;request_id&quot;: &quot;req-004&quot;, &quot;warnings&quot;: []}
+</code></pre>
+<p><code>ingest</code> hands its arguments to another tool's parser (REQ-C-031). Without a schema for them the framework cannot redact them, so it records none; <code>exit_code</code> <code>2</code> is the delegated tool's own.</p>
 <p><strong>Invalid: raw argv instead of the parsed map</strong></p>
 <pre><code class="language-json">{&quot;timestamp&quot;: &quot;2026-03-17T14:00:01Z&quot;, &quot;command&quot;: &quot;deploy&quot;, &quot;args&quot;: [&quot;--env&quot;, &quot;prod&quot;, &quot;--token&quot;, &quot;abc123&quot;], &quot;exit_code&quot;: 0, &quot;duration_ms&quot;: 1247, &quot;request_id&quot;: &quot;req-001&quot;, &quot;warnings&quot;: []}
 </code></pre>
@@ -10160,6 +10194,7 @@
 <li>Join an entry to a response or trace by <code>request_id</code> or <code>trace_id</code>, never by <code>timestamp</code></li>
 <li><code>exit_code</code> non-zero with <code>args.dry_run</code> or <code>args.validate_only</code> set means nothing was changed; the entry still shows what was attempted</li>
 <li><code>truncated: true</code> means some <code>args</code> values are <code>[TRUNCATED]</code>; do not replay the invocation from the entry</li>
+<li><code>args.argv</code> equal to <code>[OMITTED]</code> marks a passthrough command (REQ-C-031): the forwarded arguments were never written, and its <code>exit_code</code> is the delegated tool's, so a <code>2</code> does not rule out side effects</li>
 <li>A <code>[REDACTED]</code> value is a declared secret; never try to recover it from other sources</li>
 <li><code>warnings</code> containing <code>INJECTION_PROTECTION_DISABLED</code> marks an invocation whose external data was returned untagged; treat its outputs as untrusted during review</li>
 <li>An empty result from <code>tool audit-log</code> means no matching invocation was recorded while the log was enabled; a disabled log fails with <code>AUDIT_LOG_DISABLED</code> instead</li>
@@ -10197,6 +10232,10 @@
 <tr>
 <td><a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a></td>
 <td>Consumes: defines the audit log and the <code>audit-log</code> command that emit this type</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>Consumes: a passthrough command records its forwarded argv as <code>[OMITTED]</code></td>
 </tr>
 <tr>
 <td><a href="../response-envelope/">schemas/response-envelope.md</a></td>

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5513,6 +5515,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10139,7 +10169,7 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: Medium / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Command authors MUST implement all argument and precondition validation within the command's <code>validate()</code> hook, not within <code>execute()</code>. The <code>validate()</code> hook MUST be free of side effects. Validation MUST check all arguments at once, collecting all errors before returning (not fail-fast on the first error). The framework enforces phase ordering (REQ-F-015) but depends on command authors correctly placing validation logic.</p>
+<p>Command authors MUST implement all argument and precondition validation within the command's <code>validate()</code> hook, not within <code>execute()</code>. The <code>validate()</code> hook MUST be free of side effects. Validation MUST check all arguments at once, collecting all errors before returning (not fail-fast on the first error). The framework enforces phase ordering (REQ-F-015) but depends on command authors correctly placing validation logic. For a passthrough command (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>), phase 1 covers only the framework's own options; the delegated tool validates its arguments after it starts.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A command with multiple invalid arguments reports all validation errors in a single invocation</li>
@@ -10245,6 +10275,11 @@
 <td><a href="../o-009-validate-only-flag/">REQ-O-009</a></td>
 <td>O</td>
 <td>Extends: <code>--validate-only</code> runs the <code>validate()</code> hook in isolation without proceeding to <code>execute()</code></td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Specializes: a passthrough command's forwarded arguments are validated by the delegated tool</td>
 </tr>
 </tbody>
 </table>

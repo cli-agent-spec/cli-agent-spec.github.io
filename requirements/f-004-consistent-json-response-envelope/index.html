@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5400,6 +5402,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10139,7 +10169,7 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: High / Time: Medium / Context: High</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST wrap all command output in a standard JSON envelope. The envelope MUST always contain: <code>ok</code> (boolean), <code>data</code> (the command's primary output — present even when null or empty array), <code>error</code> (null on success, structured object on failure), <code>warnings</code> (array of <code>WarningDetail</code> objects, may be empty), and <code>meta</code> (object with framework-populated fields, always including <code>exit_code</code> and <code>duration_ms</code>). The schema of this envelope MUST NOT vary based on result count, command type, or success/failure state — the same top-level keys MUST always be present.</p>
+<p>The framework MUST wrap all command output in a standard JSON envelope. The envelope MUST always contain: <code>ok</code> (boolean), <code>data</code> (the command's primary output — present even when null or empty array), <code>error</code> (null on success, structured object on failure), <code>warnings</code> (array of <code>WarningDetail</code> objects, may be empty), and <code>meta</code> (object with framework-populated fields, always including <code>exit_code</code> and <code>duration_ms</code>). The schema of this envelope MUST NOT vary based on result count, command type, or success/failure state — the same top-level keys MUST always be present. A passthrough command (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>) keeps this shape but writes the envelope as the last line of stderr, because the delegated tool owns stdout.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A JSON schema validator for the envelope passes on every command's stdout output in JSON mode</li>
@@ -10227,6 +10257,11 @@ Framework wraps:
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
 <td>O</td>
 <td>Wraps: manifest output uses this envelope as its outer container</td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Specializes: a passthrough command writes the envelope as the last line of stderr</td>
 </tr>
 </tbody>
 </table>

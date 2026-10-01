@@ -10,29 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://cli-agent-spec.github.io/">
+        <link rel="canonical" href="https://cli-agent-spec.github.io/requirements/c-031-passthrough-commands-delegate-to-another-parser/">
       
       
+        <link rel="prev" href="../c-030-error-responses-include-fix-command/">
       
-        <link rel="next" href="evaluations/">
+      
+        <link rel="next" href="../f-001-standard-exit-code-table/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>CLI Agent Spec</title>
+        <title>REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser - CLI Agent Spec</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cli-agent-spec" class="md-skip">
+        <a href="#req-c-031-passthrough-commands-delegate-to-another-tools-parser" class="md-skip">
           Skip to content
         </a>
       
@@ -90,7 +92,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="CLI Agent Spec" class="md-header__button md-logo" aria-label="CLI Agent Spec" data-md-component="logo">
+    <a href="../.." title="CLI Agent Spec" class="md-header__button md-logo" aria-label="CLI Agent Spec" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -110,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
             
           </span>
         </div>
@@ -231,11 +233,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -256,7 +256,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="evaluations/" class="md-tabs__link">
+        <a href="../../evaluations/" class="md-tabs__link">
           
   
   
@@ -276,7 +276,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="agent-builders/" class="md-tabs__link">
+      <a href="../../agent-builders/" class="md-tabs__link">
         
   
   
@@ -295,7 +295,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="skills/" class="md-tabs__link">
+      <a href="../../skills/" class="md-tabs__link">
         
   
   
@@ -314,7 +314,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="IMPLEMENTING/" class="md-tabs__link">
+      <a href="../../IMPLEMENTING/" class="md-tabs__link">
         
   
   
@@ -333,7 +333,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="comparison-matrix/" class="md-tabs__link">
+      <a href="../../comparison-matrix/" class="md-tabs__link">
         
   
   
@@ -354,7 +354,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="challenges/" class="md-tabs__link">
+        <a href="../../challenges/" class="md-tabs__link">
           
   
   
@@ -372,11 +372,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="requirements/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -396,7 +398,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="conformance/" class="md-tabs__link">
+      <a href="../../conformance/" class="md-tabs__link">
         
   
   
@@ -417,7 +419,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="schemas/" class="md-tabs__link">
+        <a href="../../schemas/" class="md-tabs__link">
           
   
   
@@ -439,7 +441,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="guides/" class="md-tabs__link">
+        <a href="../../guides/" class="md-tabs__link">
           
   
   
@@ -461,7 +463,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="research/" class="md-tabs__link">
+        <a href="../../research/" class="md-tabs__link">
           
   
   
@@ -481,7 +483,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="CHANGELOG/" class="md-tabs__link">
+      <a href="../../CHANGELOG/" class="md-tabs__link">
         
   
   
@@ -516,7 +518,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="CLI Agent Spec" class="md-nav__button md-logo" aria-label="CLI Agent Spec" data-md-component="logo">
+    <a href="../.." title="CLI Agent Spec" class="md-nav__button md-logo" aria-label="CLI Agent Spec" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -543,37 +545,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -589,114 +564,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#whats-going-wrong-right-now" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What's going wrong right now
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-this-spec-defines" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What this spec defines
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-three-contracts-that-matter-most" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The three contracts that matter most
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-in-this-repo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What's in this repo
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-this-fits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where this fits
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#start-here" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Start here
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#agent-skills" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Agent skills
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Contributing
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -759,7 +626,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="evaluations/" class="md-nav__link ">
+            <a href="../../evaluations/" class="md-nav__link ">
               
   
   
@@ -803,7 +670,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/cube/" class="md-nav__link">
+      <a href="../../evaluations/cube/" class="md-nav__link">
         
   
   
@@ -831,7 +698,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/docuseal/" class="md-nav__link">
+      <a href="../../evaluations/docuseal/" class="md-nav__link">
         
   
   
@@ -859,7 +726,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/dokploy/" class="md-nav__link">
+      <a href="../../evaluations/dokploy/" class="md-nav__link">
         
   
   
@@ -887,7 +754,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/firecrawl/" class="md-nav__link">
+      <a href="../../evaluations/firecrawl/" class="md-nav__link">
         
   
   
@@ -915,7 +782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/gh/" class="md-nav__link">
+      <a href="../../evaluations/gh/" class="md-nav__link">
         
   
   
@@ -943,7 +810,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/gws/" class="md-nav__link">
+      <a href="../../evaluations/gws/" class="md-nav__link">
         
   
   
@@ -971,7 +838,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/hevn/" class="md-nav__link">
+      <a href="../../evaluations/hevn/" class="md-nav__link">
         
   
   
@@ -999,7 +866,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/langfuse/" class="md-nav__link">
+      <a href="../../evaluations/langfuse/" class="md-nav__link">
         
   
   
@@ -1027,7 +894,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/link/" class="md-nav__link">
+      <a href="../../evaluations/link/" class="md-nav__link">
         
   
   
@@ -1055,7 +922,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/neon/" class="md-nav__link">
+      <a href="../../evaluations/neon/" class="md-nav__link">
         
   
   
@@ -1083,7 +950,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/omd/" class="md-nav__link">
+      <a href="../../evaluations/omd/" class="md-nav__link">
         
   
   
@@ -1111,7 +978,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/resend/" class="md-nav__link">
+      <a href="../../evaluations/resend/" class="md-nav__link">
         
   
   
@@ -1139,7 +1006,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/shopify/" class="md-nav__link">
+      <a href="../../evaluations/shopify/" class="md-nav__link">
         
   
   
@@ -1167,7 +1034,7 @@
   
   
     <li class="md-nav__item">
-      <a href="evaluations/temporal/" class="md-nav__link">
+      <a href="../../evaluations/temporal/" class="md-nav__link">
         
   
   
@@ -1202,7 +1069,7 @@
   
   
     <li class="md-nav__item">
-      <a href="agent-builders/" class="md-nav__link">
+      <a href="../../agent-builders/" class="md-nav__link">
         
   
   
@@ -1229,7 +1096,7 @@
   
   
     <li class="md-nav__item">
-      <a href="skills/" class="md-nav__link">
+      <a href="../../skills/" class="md-nav__link">
         
   
   
@@ -1256,7 +1123,7 @@
   
   
     <li class="md-nav__item">
-      <a href="IMPLEMENTING/" class="md-nav__link">
+      <a href="../../IMPLEMENTING/" class="md-nav__link">
         
   
   
@@ -1283,7 +1150,7 @@
   
   
     <li class="md-nav__item">
-      <a href="comparison-matrix/" class="md-nav__link">
+      <a href="../../comparison-matrix/" class="md-nav__link">
         
   
   
@@ -1351,7 +1218,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="challenges/" class="md-nav__link ">
+            <a href="../../challenges/" class="md-nav__link ">
               
   
   
@@ -1395,7 +1262,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/checklist/" class="md-nav__link">
+      <a href="../../challenges/checklist/" class="md-nav__link">
         
   
   
@@ -1423,7 +1290,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/sources/" class="md-nav__link">
+      <a href="../../challenges/sources/" class="md-nav__link">
         
   
   
@@ -1556,7 +1423,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="challenges/01-critical-ecosystem-runtime-agent-specific/" class="md-nav__link ">
+            <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/" class="md-nav__link ">
               
   
   
@@ -1600,7 +1467,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/34-critical-shell-injection/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/34-critical-shell-injection/" class="md-nav__link">
         
   
   
@@ -1628,7 +1495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/35-high-hallucination-inputs/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/35-high-hallucination-inputs/" class="md-nav__link">
         
   
   
@@ -1656,7 +1523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/36-critical-pager-blocking/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/36-critical-pager-blocking/" class="md-nav__link">
         
   
   
@@ -1684,7 +1551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/37-critical-repl-triggering/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/37-critical-repl-triggering/" class="md-nav__link">
         
   
   
@@ -1712,7 +1579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/38-high-dependency-version-mismatch/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/38-high-dependency-version-mismatch/" class="md-nav__link">
         
   
   
@@ -1740,7 +1607,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/39-high-help-to-stdout/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/39-high-help-to-stdout/" class="md-nav__link">
         
   
   
@@ -1768,7 +1635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/40-high-async-race-condition/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/40-high-async-race-condition/" class="md-nav__link">
         
   
   
@@ -1796,7 +1663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/41-high-update-notifier/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/41-high-update-notifier/" class="md-nav__link">
         
   
   
@@ -1824,7 +1691,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/42-critical-debug-secret-leakage/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/42-critical-debug-secret-leakage/" class="md-nav__link">
         
   
   
@@ -1852,7 +1719,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/43-critical-output-size-unboundedness/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/43-critical-output-size-unboundedness/" class="md-nav__link">
         
   
   
@@ -1880,7 +1747,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/44-medium-knowledge-packaging/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/44-medium-knowledge-packaging/" class="md-nav__link">
         
   
   
@@ -1908,7 +1775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/45-critical-headless-auth/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/45-critical-headless-auth/" class="md-nav__link">
         
   
   
@@ -1936,7 +1803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/46-high-api-translation-loss/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/46-high-api-translation-loss/" class="md-nav__link">
         
   
   
@@ -1964,7 +1831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/47-high-mcp-schema-staleness/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/47-high-mcp-schema-staleness/" class="md-nav__link">
         
   
   
@@ -1992,7 +1859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/48-high-output-envelope/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/48-high-output-envelope/" class="md-nav__link">
         
   
   
@@ -2020,7 +1887,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/49-high-async-job-polling/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/49-high-async-job-polling/" class="md-nav__link">
         
   
   
@@ -2048,7 +1915,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/50-critical-stdin-deadlock/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/50-critical-stdin-deadlock/" class="md-nav__link">
         
   
   
@@ -2076,7 +1943,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/51-high-glob-expansion/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/51-high-glob-expansion/" class="md-nav__link">
         
   
   
@@ -2104,7 +1971,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/52-medium-command-tree-discovery/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/52-medium-command-tree-discovery/" class="md-nav__link">
         
   
   
@@ -2132,7 +1999,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/53-critical-credential-expiry/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/53-critical-credential-expiry/" class="md-nav__link">
         
   
   
@@ -2160,7 +2027,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/54-high-conditional-args/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/54-high-conditional-args/" class="md-nav__link">
         
   
   
@@ -2188,7 +2055,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/55-high-silent-truncation/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/55-high-silent-truncation/" class="md-nav__link">
         
   
   
@@ -2216,7 +2083,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/56-high-pipeline-exit-masking/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/56-high-pipeline-exit-masking/" class="md-nav__link">
         
   
   
@@ -2244,7 +2111,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/57-medium-locale-errors/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/57-medium-locale-errors/" class="md-nav__link">
         
   
   
@@ -2272,7 +2139,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/58-high-multiagent-conflict/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/58-high-multiagent-conflict/" class="md-nav__link">
         
   
   
@@ -2300,7 +2167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/59-high-high-entropy-tokens/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/59-high-high-entropy-tokens/" class="md-nav__link">
         
   
   
@@ -2328,7 +2195,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/60-critical-output-buffer-deadlock/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/60-critical-output-buffer-deadlock/" class="md-nav__link">
         
   
   
@@ -2356,7 +2223,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/61-critical-pipe-payload-deadlock/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/61-critical-pipe-payload-deadlock/" class="md-nav__link">
         
   
   
@@ -2384,7 +2251,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/62-critical-editor-trap/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/62-critical-editor-trap/" class="md-nav__link">
         
   
   
@@ -2412,7 +2279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/63-medium-column-width-corruption/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/63-medium-column-width-corruption/" class="md-nav__link">
         
   
   
@@ -2440,7 +2307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/64-critical-headless-gui/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/64-critical-headless-gui/" class="md-nav__link">
         
   
   
@@ -2468,7 +2335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/65-high-global-config-contamination/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/65-high-global-config-contamination/" class="md-nav__link">
         
   
   
@@ -2496,7 +2363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/66-high-symlink-loop/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/66-high-symlink-loop/" class="md-nav__link">
         
   
   
@@ -2524,7 +2391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/67-high-json5-input/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/67-high-json5-input/" class="md-nav__link">
         
   
   
@@ -2552,7 +2419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/68-high-stdout-pollution/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/68-high-stdout-pollution/" class="md-nav__link">
         
   
   
@@ -2580,7 +2447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/69-high-argument-order-ambiguity/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/69-high-argument-order-ambiguity/" class="md-nav__link">
         
   
   
@@ -2608,7 +2475,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/70-high-single-argument-arity/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/70-high-single-argument-arity/" class="md-nav__link">
         
   
   
@@ -2636,7 +2503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/71-critical-noninteractive-installation/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/71-critical-noninteractive-installation/" class="md-nav__link">
         
   
   
@@ -2664,7 +2531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/72-high-integration-artifact-drift/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/72-high-integration-artifact-drift/" class="md-nav__link">
         
   
   
@@ -2692,7 +2559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/73-high-documentation-accuracy-drift/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/73-high-documentation-accuracy-drift/" class="md-nav__link">
         
   
   
@@ -2720,7 +2587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/01-critical-ecosystem-runtime-agent-specific/78-high-output-flag-meaning-collision/" class="md-nav__link">
+      <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/78-high-output-flag-meaning-collision/" class="md-nav__link">
         
   
   
@@ -2797,7 +2664,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="challenges/02-critical-execution-and-reliability/" class="md-nav__link ">
+            <a href="../../challenges/02-critical-execution-and-reliability/" class="md-nav__link ">
               
   
   
@@ -2841,7 +2708,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/02-critical-execution-and-reliability/10-critical-interactivity/" class="md-nav__link">
+      <a href="../../challenges/02-critical-execution-and-reliability/10-critical-interactivity/" class="md-nav__link">
         
   
   
@@ -2869,7 +2736,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/02-critical-execution-and-reliability/11-critical-timeouts/" class="md-nav__link">
+      <a href="../../challenges/02-critical-execution-and-reliability/11-critical-timeouts/" class="md-nav__link">
         
   
   
@@ -2897,7 +2764,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/02-critical-execution-and-reliability/12-critical-idempotency/" class="md-nav__link">
+      <a href="../../challenges/02-critical-execution-and-reliability/12-critical-idempotency/" class="md-nav__link">
         
   
   
@@ -2925,7 +2792,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/02-critical-execution-and-reliability/13-critical-partial-failure/" class="md-nav__link">
+      <a href="../../challenges/02-critical-execution-and-reliability/13-critical-partial-failure/" class="md-nav__link">
         
   
   
@@ -2953,7 +2820,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/02-critical-execution-and-reliability/14-high-arg-validation/" class="md-nav__link">
+      <a href="../../challenges/02-critical-execution-and-reliability/14-high-arg-validation/" class="md-nav__link">
         
   
   
@@ -2981,7 +2848,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/02-critical-execution-and-reliability/15-high-race-conditions/" class="md-nav__link">
+      <a href="../../challenges/02-critical-execution-and-reliability/15-high-race-conditions/" class="md-nav__link">
         
   
   
@@ -3009,7 +2876,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/02-critical-execution-and-reliability/16-high-signal-handling/" class="md-nav__link">
+      <a href="../../challenges/02-critical-execution-and-reliability/16-high-signal-handling/" class="md-nav__link">
         
   
   
@@ -3037,7 +2904,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/02-critical-execution-and-reliability/17-medium-child-process-leakage/" class="md-nav__link">
+      <a href="../../challenges/02-critical-execution-and-reliability/17-medium-child-process-leakage/" class="md-nav__link">
         
   
   
@@ -3065,7 +2932,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/02-critical-execution-and-reliability/77-high-no-batch-dispatch/" class="md-nav__link">
+      <a href="../../challenges/02-critical-execution-and-reliability/77-high-no-batch-dispatch/" class="md-nav__link">
         
   
   
@@ -3134,7 +3001,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="challenges/03-critical-security/" class="md-nav__link ">
+            <a href="../../challenges/03-critical-security/" class="md-nav__link ">
               
   
   
@@ -3178,7 +3045,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/03-critical-security/23-critical-destructive-ops/" class="md-nav__link">
+      <a href="../../challenges/03-critical-security/23-critical-destructive-ops/" class="md-nav__link">
         
   
   
@@ -3206,7 +3073,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/03-critical-security/24-critical-auth-secrets/" class="md-nav__link">
+      <a href="../../challenges/03-critical-security/24-critical-auth-secrets/" class="md-nav__link">
         
   
   
@@ -3234,7 +3101,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/03-critical-security/25-critical-prompt-injection/" class="md-nav__link">
+      <a href="../../challenges/03-critical-security/25-critical-prompt-injection/" class="md-nav__link">
         
   
   
@@ -3262,7 +3129,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/03-critical-security/74-critical-credential-scope-declaration/" class="md-nav__link">
+      <a href="../../challenges/03-critical-security/74-critical-credential-scope-declaration/" class="md-nav__link">
         
   
   
@@ -3290,7 +3157,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/03-critical-security/75-critical-safe-default-execution/" class="md-nav__link">
+      <a href="../../challenges/03-critical-security/75-critical-safe-default-execution/" class="md-nav__link">
         
   
   
@@ -3369,7 +3236,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="challenges/04-critical-output-and-parsing/" class="md-nav__link ">
+            <a href="../../challenges/04-critical-output-and-parsing/" class="md-nav__link ">
               
   
   
@@ -3413,7 +3280,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/04-critical-output-and-parsing/01-critical-exit-codes/" class="md-nav__link">
+      <a href="../../challenges/04-critical-output-and-parsing/01-critical-exit-codes/" class="md-nav__link">
         
   
   
@@ -3441,7 +3308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/04-critical-output-and-parsing/02-critical-output-format/" class="md-nav__link">
+      <a href="../../challenges/04-critical-output-and-parsing/02-critical-output-format/" class="md-nav__link">
         
   
   
@@ -3469,7 +3336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/04-critical-output-and-parsing/03-high-stderr-stdout/" class="md-nav__link">
+      <a href="../../challenges/04-critical-output-and-parsing/03-high-stderr-stdout/" class="md-nav__link">
         
   
   
@@ -3497,7 +3364,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/04-critical-output-and-parsing/04-medium-verbosity/" class="md-nav__link">
+      <a href="../../challenges/04-critical-output-and-parsing/04-medium-verbosity/" class="md-nav__link">
         
   
   
@@ -3525,7 +3392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/04-critical-output-and-parsing/05-high-pagination/" class="md-nav__link">
+      <a href="../../challenges/04-critical-output-and-parsing/05-high-pagination/" class="md-nav__link">
         
   
   
@@ -3553,7 +3420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/04-critical-output-and-parsing/06-medium-command-composition/" class="md-nav__link">
+      <a href="../../challenges/04-critical-output-and-parsing/06-medium-command-composition/" class="md-nav__link">
         
   
   
@@ -3581,7 +3448,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/04-critical-output-and-parsing/07-medium-output-nondeterminism/" class="md-nav__link">
+      <a href="../../challenges/04-critical-output-and-parsing/07-medium-output-nondeterminism/" class="md-nav__link">
         
   
   
@@ -3609,7 +3476,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/04-critical-output-and-parsing/08-high-ansi-leakage/" class="md-nav__link">
+      <a href="../../challenges/04-critical-output-and-parsing/08-high-ansi-leakage/" class="md-nav__link">
         
   
   
@@ -3637,7 +3504,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/04-critical-output-and-parsing/09-high-binary-encoding/" class="md-nav__link">
+      <a href="../../challenges/04-critical-output-and-parsing/09-high-binary-encoding/" class="md-nav__link">
         
   
   
@@ -3665,7 +3532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/04-critical-output-and-parsing/76-high-streaming-default-incompatibility/" class="md-nav__link">
+      <a href="../../challenges/04-critical-output-and-parsing/76-high-streaming-default-incompatibility/" class="md-nav__link">
         
   
   
@@ -3738,7 +3605,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="challenges/05-high-environment-and-state/" class="md-nav__link ">
+            <a href="../../challenges/05-high-environment-and-state/" class="md-nav__link ">
               
   
   
@@ -3782,7 +3649,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/05-high-environment-and-state/26-high-session-management/" class="md-nav__link">
+      <a href="../../challenges/05-high-environment-and-state/26-high-session-management/" class="md-nav__link">
         
   
   
@@ -3810,7 +3677,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/05-high-environment-and-state/27-medium-platform-portability/" class="md-nav__link">
+      <a href="../../challenges/05-high-environment-and-state/27-medium-platform-portability/" class="md-nav__link">
         
   
   
@@ -3838,7 +3705,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/05-high-environment-and-state/28-high-config-shadowing/" class="md-nav__link">
+      <a href="../../challenges/05-high-environment-and-state/28-high-config-shadowing/" class="md-nav__link">
         
   
   
@@ -3866,7 +3733,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/05-high-environment-and-state/29-medium-working-directory/" class="md-nav__link">
+      <a href="../../challenges/05-high-environment-and-state/29-medium-working-directory/" class="md-nav__link">
         
   
   
@@ -3894,7 +3761,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/05-high-environment-and-state/30-medium-filesystem-side-effects/" class="md-nav__link">
+      <a href="../../challenges/05-high-environment-and-state/30-medium-filesystem-side-effects/" class="md-nav__link">
         
   
   
@@ -3922,7 +3789,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/05-high-environment-and-state/31-high-network-proxy/" class="md-nav__link">
+      <a href="../../challenges/05-high-environment-and-state/31-high-network-proxy/" class="md-nav__link">
         
   
   
@@ -3950,7 +3817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/05-high-environment-and-state/32-high-self-update/" class="md-nav__link">
+      <a href="../../challenges/05-high-environment-and-state/32-high-self-update/" class="md-nav__link">
         
   
   
@@ -4019,7 +3886,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="challenges/06-high-errors-and-discoverability/" class="md-nav__link ">
+            <a href="../../challenges/06-high-errors-and-discoverability/" class="md-nav__link ">
               
   
   
@@ -4063,7 +3930,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/06-high-errors-and-discoverability/18-high-error-quality/" class="md-nav__link">
+      <a href="../../challenges/06-high-errors-and-discoverability/18-high-error-quality/" class="md-nav__link">
         
   
   
@@ -4091,7 +3958,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/06-high-errors-and-discoverability/19-high-retry-hints/" class="md-nav__link">
+      <a href="../../challenges/06-high-errors-and-discoverability/19-high-retry-hints/" class="md-nav__link">
         
   
   
@@ -4119,7 +3986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/06-high-errors-and-discoverability/20-medium-dependency-discovery/" class="md-nav__link">
+      <a href="../../challenges/06-high-errors-and-discoverability/20-medium-dependency-discovery/" class="md-nav__link">
         
   
   
@@ -4147,7 +4014,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/06-high-errors-and-discoverability/21-medium-schema-discoverability/" class="md-nav__link">
+      <a href="../../challenges/06-high-errors-and-discoverability/21-medium-schema-discoverability/" class="md-nav__link">
         
   
   
@@ -4175,7 +4042,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/06-high-errors-and-discoverability/22-high-schema-versioning/" class="md-nav__link">
+      <a href="../../challenges/06-high-errors-and-discoverability/22-high-schema-versioning/" class="md-nav__link">
         
   
   
@@ -4236,7 +4103,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="challenges/07-medium-observability/" class="md-nav__link ">
+            <a href="../../challenges/07-medium-observability/" class="md-nav__link ">
               
   
   
@@ -4280,7 +4147,7 @@
   
   
     <li class="md-nav__item">
-      <a href="challenges/07-medium-observability/33-medium-observability/" class="md-nav__link">
+      <a href="../../challenges/07-medium-observability/33-medium-observability/" class="md-nav__link">
         
   
   
@@ -4320,6 +4187,8 @@
       
   
   
+    
+  
   
   
     
@@ -4653,20 +4522,23 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="requirements/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -4684,13 +4556,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             
@@ -4710,7 +4582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-001-command-declares-exit-codes/" class="md-nav__link">
+      <a href="../c-001-command-declares-exit-codes/" class="md-nav__link">
         
   
   
@@ -4738,7 +4610,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-002-command-declares-danger-level/" class="md-nav__link">
+      <a href="../c-002-command-declares-danger-level/" class="md-nav__link">
         
   
   
@@ -4766,7 +4638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-003-mutating-commands-declare-effect-field/" class="md-nav__link">
+      <a href="../c-003-mutating-commands-declare-effect-field/" class="md-nav__link">
         
   
   
@@ -4794,7 +4666,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-004-destructive-commands-must-support-dry-run/" class="md-nav__link">
+      <a href="../c-004-destructive-commands-must-support-dry-run/" class="md-nav__link">
         
   
   
@@ -4822,7 +4694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-005-interactive-commands-must-support-yes-non-interact/" class="md-nav__link">
+      <a href="../c-005-interactive-commands-must-support-yes-non-interact/" class="md-nav__link">
         
   
   
@@ -4850,7 +4722,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-006-all-args-validated-in-phase-1/" class="md-nav__link">
+      <a href="../c-006-all-args-validated-in-phase-1/" class="md-nav__link">
         
   
   
@@ -4878,7 +4750,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-007-mutating-commands-accept-idempotency-key/" class="md-nav__link">
+      <a href="../c-007-mutating-commands-accept-idempotency-key/" class="md-nav__link">
         
   
   
@@ -4906,7 +4778,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-008-multi-step-commands-emit-step-manifest/" class="md-nav__link">
+      <a href="../c-008-multi-step-commands-emit-step-manifest/" class="md-nav__link">
         
   
   
@@ -4934,7 +4806,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-009-multi-step-commands-report-completed-failed-skippe/" class="md-nav__link">
+      <a href="../c-009-multi-step-commands-report-completed-failed-skippe/" class="md-nav__link">
         
   
   
@@ -4962,7 +4834,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-010-background-process-commands-declare-metadata/" class="md-nav__link">
+      <a href="../c-010-background-process-commands-declare-metadata/" class="md-nav__link">
         
   
   
@@ -4990,7 +4862,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-011-commands-declare-filesystem-side-effects/" class="md-nav__link">
+      <a href="../c-011-commands-declare-filesystem-side-effects/" class="md-nav__link">
         
   
   
@@ -5018,7 +4890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-012-commands-with-network-i-o-support-timeout/" class="md-nav__link">
+      <a href="../c-012-commands-with-network-i-o-support-timeout/" class="md-nav__link">
         
   
   
@@ -5046,7 +4918,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-013-error-responses-include-code-and-message/" class="md-nav__link">
+      <a href="../c-013-error-responses-include-code-and-message/" class="md-nav__link">
         
   
   
@@ -5074,7 +4946,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-014-error-responses-include-retryable-and-retry-after-/" class="md-nav__link">
+      <a href="../c-014-error-responses-include-retryable-and-retry-after-/" class="md-nav__link">
         
   
   
@@ -5102,7 +4974,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-015-commands-declare-input-and-output-schema/" class="md-nav__link">
+      <a href="../c-015-commands-declare-input-and-output-schema/" class="md-nav__link">
         
   
   
@@ -5130,7 +5002,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-016-secrets-accepted-only-via-env-var-or-file/" class="md-nav__link">
+      <a href="../c-016-secrets-accepted-only-via-env-var-or-file/" class="md-nav__link">
         
   
   
@@ -5158,7 +5030,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-017-commands-register-cleanup-hook/" class="md-nav__link">
+      <a href="../c-017-commands-register-cleanup-hook/" class="md-nav__link">
         
   
   
@@ -5186,7 +5058,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-018-commands-declare-platform-requirements/" class="md-nav__link">
+      <a href="../c-018-commands-declare-platform-requirements/" class="md-nav__link">
         
   
   
@@ -5214,7 +5086,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-019-subprocess-invoking-commands-declare-argument-sche/" class="md-nav__link">
+      <a href="../c-019-subprocess-invoking-commands-declare-argument-sche/" class="md-nav__link">
         
   
   
@@ -5242,7 +5114,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-020-resource-id-fields-declare-validation-pattern/" class="md-nav__link">
+      <a href="../c-020-resource-id-fields-declare-validation-pattern/" class="md-nav__link">
         
   
   
@@ -5270,7 +5142,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-021-auth-commands-declare-headless-mode-support/" class="md-nav__link">
+      <a href="../c-021-auth-commands-declare-headless-mode-support/" class="md-nav__link">
         
   
   
@@ -5298,7 +5170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-022-async-commands-declare-job-descriptor-schema/" class="md-nav__link">
+      <a href="../c-022-async-commands-declare-job-descriptor-schema/" class="md-nav__link">
         
   
   
@@ -5326,7 +5198,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-023-editor-requiring-commands-declare-non-interactive-/" class="md-nav__link">
+      <a href="../c-023-editor-requiring-commands-declare-non-interactive-/" class="md-nav__link">
         
   
   
@@ -5354,7 +5226,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-024-gui-launching-commands-declare-headless-behavior/" class="md-nav__link">
+      <a href="../c-024-gui-launching-commands-declare-headless-behavior/" class="md-nav__link">
         
   
   
@@ -5382,7 +5254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-025-config-writing-commands-declare-write-scope/" class="md-nav__link">
+      <a href="../c-025-config-writing-commands-declare-write-scope/" class="md-nav__link">
         
   
   
@@ -5410,7 +5282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-026-commands-declare-conditional-argument-dependencies/" class="md-nav__link">
+      <a href="../c-026-commands-declare-conditional-argument-dependencies/" class="md-nav__link">
         
   
   
@@ -5438,7 +5310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-027-commands-declare-option-placement/" class="md-nav__link">
+      <a href="../c-027-commands-declare-option-placement/" class="md-nav__link">
         
   
   
@@ -5466,7 +5338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-028-already-exists-response-pattern/" class="md-nav__link">
+      <a href="../c-028-already-exists-response-pattern/" class="md-nav__link">
         
   
   
@@ -5494,7 +5366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-029-command-declares-required-scopes/" class="md-nav__link">
+      <a href="../c-029-command-declares-required-scopes/" class="md-nav__link">
         
   
   
@@ -5522,7 +5394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/c-030-error-responses-include-fix-command/" class="md-nav__link">
+      <a href="../c-030-error-responses-include-fix-command/" class="md-nav__link">
         
   
   
@@ -5547,10 +5419,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="requirements/c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -5566,6 +5465,92 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acceptance-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Acceptance Criteria
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wire-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wire Format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -5578,7 +5563,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-001-standard-exit-code-table/" class="md-nav__link">
+      <a href="../f-001-standard-exit-code-table/" class="md-nav__link">
         
   
   
@@ -5606,7 +5591,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-002-exit-code-2-reserved-for-validation-failures/" class="md-nav__link">
+      <a href="../f-002-exit-code-2-reserved-for-validation-failures/" class="md-nav__link">
         
   
   
@@ -5634,7 +5619,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-003-json-output-mode-auto-activation/" class="md-nav__link">
+      <a href="../f-003-json-output-mode-auto-activation/" class="md-nav__link">
         
   
   
@@ -5662,7 +5647,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-004-consistent-json-response-envelope/" class="md-nav__link">
+      <a href="../f-004-consistent-json-response-envelope/" class="md-nav__link">
         
   
   
@@ -5690,7 +5675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-005-locale-invariant-serialization/" class="md-nav__link">
+      <a href="../f-005-locale-invariant-serialization/" class="md-nav__link">
         
   
   
@@ -5718,7 +5703,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-006-stdout-stderr-stream-enforcement/" class="md-nav__link">
+      <a href="../f-006-stdout-stderr-stream-enforcement/" class="md-nav__link">
         
   
   
@@ -5746,7 +5731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-007-ansi-color-code-suppression/" class="md-nav__link">
+      <a href="../f-007-ansi-color-code-suppression/" class="md-nav__link">
         
   
   
@@ -5774,7 +5759,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-008-no-color-and-ci-environment-detection/" class="md-nav__link">
+      <a href="../f-008-no-color-and-ci-environment-detection/" class="md-nav__link">
         
   
   
@@ -5802,7 +5787,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-009-non-interactive-mode-auto-detection/" class="md-nav__link">
+      <a href="../f-009-non-interactive-mode-auto-detection/" class="md-nav__link">
         
   
   
@@ -5830,7 +5815,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-010-pager-suppression/" class="md-nav__link">
+      <a href="../f-010-pager-suppression/" class="md-nav__link">
         
   
   
@@ -5858,7 +5843,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-011-default-timeout-per-command/" class="md-nav__link">
+      <a href="../f-011-default-timeout-per-command/" class="md-nav__link">
         
   
   
@@ -5886,7 +5871,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-012-timeout-exit-code-and-json-error/" class="md-nav__link">
+      <a href="../f-012-timeout-exit-code-and-json-error/" class="md-nav__link">
         
   
   
@@ -5914,7 +5899,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-013-sigterm-handler-installation/" class="md-nav__link">
+      <a href="../f-013-sigterm-handler-installation/" class="md-nav__link">
         
   
   
@@ -5942,7 +5927,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-014-sigpipe-handler-installation/" class="md-nav__link">
+      <a href="../f-014-sigpipe-handler-installation/" class="md-nav__link">
         
   
   
@@ -5970,7 +5955,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-015-validate-before-execute-phase-order/" class="md-nav__link">
+      <a href="../f-015-validate-before-execute-phase-order/" class="md-nav__link">
         
   
   
@@ -5998,7 +5983,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-016-utf-8-sanitization-before-serialization/" class="md-nav__link">
+      <a href="../f-016-utf-8-sanitization-before-serialization/" class="md-nav__link">
         
   
   
@@ -6026,7 +6011,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-017-binary-field-base64-encoding/" class="md-nav__link">
+      <a href="../f-017-binary-field-base64-encoding/" class="md-nav__link">
         
   
   
@@ -6054,7 +6039,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-018-pagination-metadata-on-list-commands/" class="md-nav__link">
+      <a href="../f-018-pagination-metadata-on-list-commands/" class="md-nav__link">
         
   
   
@@ -6082,7 +6067,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-019-default-output-limit/" class="md-nav__link">
+      <a href="../f-019-default-output-limit/" class="md-nav__link">
         
   
   
@@ -6110,7 +6095,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-020-stable-array-sorting-in-json-output/" class="md-nav__link">
+      <a href="../f-020-stable-array-sorting-in-json-output/" class="md-nav__link">
         
   
   
@@ -6138,7 +6123,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-021-data-meta-separation-in-response-envelope/" class="md-nav__link">
+      <a href="../f-021-data-meta-separation-in-response-envelope/" class="md-nav__link">
         
   
   
@@ -6166,7 +6151,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-022-schema-version-in-every-response/" class="md-nav__link">
+      <a href="../f-022-schema-version-in-every-response/" class="md-nav__link">
         
   
   
@@ -6194,7 +6179,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-023-tool-version-in-every-response/" class="md-nav__link">
+      <a href="../f-023-tool-version-in-every-response/" class="md-nav__link">
         
   
   
@@ -6222,7 +6207,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-024-request-id-and-trace-id-in-every-response/" class="md-nav__link">
+      <a href="../f-024-request-id-and-trace-id-in-every-response/" class="md-nav__link">
         
   
   
@@ -6250,7 +6235,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-025-tool-trace-id-environment-variable-propagation/" class="md-nav__link">
+      <a href="../f-025-tool-trace-id-environment-variable-propagation/" class="md-nav__link">
         
   
   
@@ -6278,7 +6263,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-027-cwd-in-response-meta/" class="md-nav__link">
+      <a href="../f-027-cwd-in-response-meta/" class="md-nav__link">
         
   
   
@@ -6306,7 +6291,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-028-config-source-tracking-in-response-meta/" class="md-nav__link">
+      <a href="../f-028-config-source-tracking-in-response-meta/" class="md-nav__link">
         
   
   
@@ -6334,7 +6319,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-029-auto-update-suppression-in-non-interactive-mode/" class="md-nav__link">
+      <a href="../f-029-auto-update-suppression-in-non-interactive-mode/" class="md-nav__link">
         
   
   
@@ -6362,7 +6347,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-030-child-process-session-tracking/" class="md-nav__link">
+      <a href="../f-030-child-process-session-tracking/" class="md-nav__link">
         
   
   
@@ -6390,7 +6375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-031-sigterm-forwarding-to-tracked-children/" class="md-nav__link">
+      <a href="../f-031-sigterm-forwarding-to-tracked-children/" class="md-nav__link">
         
   
   
@@ -6418,7 +6403,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-032-session-scoped-temp-directory/" class="md-nav__link">
+      <a href="../f-032-session-scoped-temp-directory/" class="md-nav__link">
         
   
   
@@ -6446,7 +6431,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-033-lock-acquisition-with-timeout-and-retry-after-ms/" class="md-nav__link">
+      <a href="../f-033-lock-acquisition-with-timeout-and-retry-after-ms/" class="md-nav__link">
         
   
   
@@ -6474,7 +6459,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-034-secret-field-auto-redaction-in-logs/" class="md-nav__link">
+      <a href="../f-034-secret-field-auto-redaction-in-logs/" class="md-nav__link">
         
   
   
@@ -6502,7 +6487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-035-external-data-trust-tagging/" class="md-nav__link">
+      <a href="../f-035-external-data-trust-tagging/" class="md-nav__link">
         
   
   
@@ -6530,7 +6515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-036-http-client-proxy-environment-variable-compliance/" class="md-nav__link">
+      <a href="../f-036-http-client-proxy-environment-variable-compliance/" class="md-nav__link">
         
   
   
@@ -6558,7 +6543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-037-network-error-context-block/" class="md-nav__link">
+      <a href="../f-037-network-error-context-block/" class="md-nav__link">
         
   
   
@@ -6586,7 +6571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-038-verbosity-auto-quiet-in-non-tty-context/" class="md-nav__link">
+      <a href="../f-038-verbosity-auto-quiet-in-non-tty-context/" class="md-nav__link">
         
   
   
@@ -6614,7 +6599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-039-duration-tracking-in-response-meta/" class="md-nav__link">
+      <a href="../f-039-duration-tracking-in-response-meta/" class="md-nav__link">
         
   
   
@@ -6642,7 +6627,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-040-absolute-path-output-enforcement/" class="md-nav__link">
+      <a href="../f-040-absolute-path-output-enforcement/" class="md-nav__link">
         
   
   
@@ -6670,7 +6655,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-041-process-cwd-immutability/" class="md-nav__link">
+      <a href="../f-041-process-cwd-immutability/" class="md-nav__link">
         
   
   
@@ -6698,7 +6683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-042-log-rotation-in-framework-logger/" class="md-nav__link">
+      <a href="../f-042-log-rotation-in-framework-logger/" class="md-nav__link">
         
   
   
@@ -6726,7 +6711,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-043-temp-file-session-scoped-auto-cleanup/" class="md-nav__link">
+      <a href="../f-043-temp-file-session-scoped-auto-cleanup/" class="md-nav__link">
         
   
   
@@ -6754,7 +6739,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-044-shell-argument-escaping-enforcement/" class="md-nav__link">
+      <a href="../f-044-shell-argument-escaping-enforcement/" class="md-nav__link">
         
   
   
@@ -6782,7 +6767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-045-agent-hallucination-input-pattern-rejection/" class="md-nav__link">
+      <a href="../f-045-agent-hallucination-input-pattern-rejection/" class="md-nav__link">
         
   
   
@@ -6810,7 +6795,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-046-pager-environment-variable-suppression/" class="md-nav__link">
+      <a href="../f-046-pager-environment-variable-suppression/" class="md-nav__link">
         
   
   
@@ -6838,7 +6823,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-047-repl-mode-prohibition-in-non-tty-context/" class="md-nav__link">
+      <a href="../f-047-repl-mode-prohibition-in-non-tty-context/" class="md-nav__link">
         
   
   
@@ -6866,7 +6851,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-048-help-output-routing-to-stderr-in-non-tty-mode/" class="md-nav__link">
+      <a href="../f-048-help-output-routing-to-stderr-in-non-tty-mode/" class="md-nav__link">
         
   
   
@@ -6894,7 +6879,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-049-async-command-handler-enforcement/" class="md-nav__link">
+      <a href="../f-049-async-command-handler-enforcement/" class="md-nav__link">
         
   
   
@@ -6922,7 +6907,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-050-update-notifier-side-channel-suppression/" class="md-nav__link">
+      <a href="../f-050-update-notifier-side-channel-suppression/" class="md-nav__link">
         
   
   
@@ -6950,7 +6935,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-051-debug-and-trace-mode-secret-redaction/" class="md-nav__link">
+      <a href="../f-051-debug-and-trace-mode-secret-redaction/" class="md-nav__link">
         
   
   
@@ -6978,7 +6963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-052-response-size-hard-cap-with-truncation-indicator/" class="md-nav__link">
+      <a href="../f-052-response-size-hard-cap-with-truncation-indicator/" class="md-nav__link">
         
   
   
@@ -7006,7 +6991,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-053-stdout-unbuffering-in-non-tty-mode/" class="md-nav__link">
+      <a href="../f-053-stdout-unbuffering-in-non-tty-mode/" class="md-nav__link">
         
   
   
@@ -7034,7 +7019,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/" class="md-nav__link">
+      <a href="../f-054-stdin-payload-size-cap-with-input-file-fallback/" class="md-nav__link">
         
   
   
@@ -7062,7 +7047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-055-editor-and-visual-no-op-in-non-tty-mode/" class="md-nav__link">
+      <a href="../f-055-editor-and-visual-no-op-in-non-tty-mode/" class="md-nav__link">
         
   
   
@@ -7090,7 +7075,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-056-terminal-width-wrapping-disabled-in-json-mode/" class="md-nav__link">
+      <a href="../f-056-terminal-width-wrapping-disabled-in-json-mode/" class="md-nav__link">
         
   
   
@@ -7118,7 +7103,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-057-headless-environment-detection-and-gui-suppression/" class="md-nav__link">
+      <a href="../f-057-headless-environment-detection-and-gui-suppression/" class="md-nav__link">
         
   
   
@@ -7146,7 +7131,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-058-high-entropy-field-masking/" class="md-nav__link">
+      <a href="../f-058-high-entropy-field-masking/" class="md-nav__link">
         
   
   
@@ -7174,7 +7159,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-059-json5-input-normalization/" class="md-nav__link">
+      <a href="../f-059-json5-input-normalization/" class="md-nav__link">
         
   
   
@@ -7202,7 +7187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-060-third-party-stdout-interception/" class="md-nav__link">
+      <a href="../f-060-third-party-stdout-interception/" class="md-nav__link">
         
   
   
@@ -7230,7 +7215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-061-symlink-loop-detection-in-traversal-utilities/" class="md-nav__link">
+      <a href="../f-061-symlink-loop-detection-in-traversal-utilities/" class="md-nav__link">
         
   
   
@@ -7258,7 +7243,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-062-glob-expansion-and-word-splitting-prevention/" class="md-nav__link">
+      <a href="../f-062-glob-expansion-and-word-splitting-prevention/" class="md-nav__link">
         
   
   
@@ -7286,7 +7271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-063-credential-expiry-structured-error/" class="md-nav__link">
+      <a href="../f-063-credential-expiry-structured-error/" class="md-nav__link">
         
   
   
@@ -7314,7 +7299,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-064-output-truncation-detection-and-warning/" class="md-nav__link">
+      <a href="../f-064-output-truncation-detection-and-warning/" class="md-nav__link">
         
   
   
@@ -7342,7 +7327,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-065-pipeline-exit-code-propagation/" class="md-nav__link">
+      <a href="../f-065-pipeline-exit-code-propagation/" class="md-nav__link">
         
   
   
@@ -7370,7 +7355,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-066-subprocess-locale-normalization/" class="md-nav__link">
+      <a href="../f-066-subprocess-locale-normalization/" class="md-nav__link">
         
   
   
@@ -7398,7 +7383,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-067-interspersed-option-parsing/" class="md-nav__link">
+      <a href="../f-067-interspersed-option-parsing/" class="md-nav__link">
         
   
   
@@ -7426,7 +7411,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-068-help-and-version-flag-purity/" class="md-nav__link">
+      <a href="../f-068-help-and-version-flag-purity/" class="md-nav__link">
         
   
   
@@ -7454,7 +7439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-069-sigint-handler-installation/" class="md-nav__link">
+      <a href="../f-069-sigint-handler-installation/" class="md-nav__link">
         
   
   
@@ -7482,7 +7467,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-070-atomic-write-via-rename/" class="md-nav__link">
+      <a href="../f-070-atomic-write-via-rename/" class="md-nav__link">
         
   
   
@@ -7510,7 +7495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-071-file-descriptor-leak-prevention/" class="md-nav__link">
+      <a href="../f-071-file-descriptor-leak-prevention/" class="md-nav__link">
         
   
   
@@ -7538,7 +7523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-072-lf-line-ending-enforcement/" class="md-nav__link">
+      <a href="../f-072-lf-line-ending-enforcement/" class="md-nav__link">
         
   
   
@@ -7566,7 +7551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-073-env-var-namespace-prefix/" class="md-nav__link">
+      <a href="../f-073-env-var-namespace-prefix/" class="md-nav__link">
         
   
   
@@ -7594,7 +7579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-074-json-null-absent-empty-convention/" class="md-nav__link">
+      <a href="../f-074-json-null-absent-empty-convention/" class="md-nav__link">
         
   
   
@@ -7622,7 +7607,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-075-subcommand-additive-stability/" class="md-nav__link">
+      <a href="../f-075-subcommand-additive-stability/" class="md-nav__link">
         
   
   
@@ -7650,7 +7635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-076-first-run-init-isolation/" class="md-nav__link">
+      <a href="../f-076-first-run-init-isolation/" class="md-nav__link">
         
   
   
@@ -7678,7 +7663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-077-telemetry-non-blocking/" class="md-nav__link">
+      <a href="../f-077-telemetry-non-blocking/" class="md-nav__link">
         
   
   
@@ -7706,7 +7691,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-078-retry-count-in-response-meta/" class="md-nav__link">
+      <a href="../f-078-retry-count-in-response-meta/" class="md-nav__link">
         
   
   
@@ -7734,7 +7719,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/f-079-global-option-scope/" class="md-nav__link">
+      <a href="../f-079-global-option-scope/" class="md-nav__link">
         
   
   
@@ -7762,7 +7747,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/levels/" class="md-nav__link">
+      <a href="../levels/" class="md-nav__link">
         
   
   
@@ -7790,7 +7775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-001-output-format-flag/" class="md-nav__link">
+      <a href="../o-001-output-format-flag/" class="md-nav__link">
         
   
   
@@ -7818,7 +7803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-002-fields-selector/" class="md-nav__link">
+      <a href="../o-002-fields-selector/" class="md-nav__link">
         
   
   
@@ -7846,7 +7831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-003-limit-and-cursor-pagination-flags/" class="md-nav__link">
+      <a href="../o-003-limit-and-cursor-pagination-flags/" class="md-nav__link">
         
   
   
@@ -7874,7 +7859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-004-output-jsonl-stream-flag/" class="md-nav__link">
+      <a href="../o-004-output-jsonl-stream-flag/" class="md-nav__link">
         
   
   
@@ -7902,7 +7887,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-005-output-id-extraction-mode/" class="md-nav__link">
+      <a href="../o-005-output-id-extraction-mode/" class="md-nav__link">
         
   
   
@@ -7930,7 +7915,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-006-stdin-as-id-source/" class="md-nav__link">
+      <a href="../o-006-stdin-as-id-source/" class="md-nav__link">
         
   
   
@@ -7958,7 +7943,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-007-stable-output-flag/" class="md-nav__link">
+      <a href="../o-007-stable-output-flag/" class="md-nav__link">
         
   
   
@@ -7986,7 +7971,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-008-quiet-verbose-debug-verbosity-flags/" class="md-nav__link">
+      <a href="../o-008-quiet-verbose-debug-verbosity-flags/" class="md-nav__link">
         
   
   
@@ -8014,7 +7999,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-009-validate-only-flag/" class="md-nav__link">
+      <a href="../o-009-validate-only-flag/" class="md-nav__link">
         
   
   
@@ -8042,7 +8027,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-010-resume-from-flag-for-multi-step-commands/" class="md-nav__link">
+      <a href="../o-010-resume-from-flag-for-multi-step-commands/" class="md-nav__link">
         
   
   
@@ -8070,7 +8055,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-011-rollback-on-failure-flag/" class="md-nav__link">
+      <a href="../o-011-rollback-on-failure-flag/" class="md-nav__link">
         
   
   
@@ -8098,7 +8083,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-012-heartbeat-interval-flag/" class="md-nav__link">
+      <a href="../o-012-heartbeat-interval-flag/" class="md-nav__link">
         
   
   
@@ -8126,7 +8111,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-013-schema-output-schema-flag/" class="md-nav__link">
+      <a href="../o-013-schema-output-schema-flag/" class="md-nav__link">
         
   
   
@@ -8154,7 +8139,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-014-schema-version-compatibility-flag/" class="md-nav__link">
+      <a href="../o-014-schema-version-compatibility-flag/" class="md-nav__link">
         
   
   
@@ -8182,7 +8167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-015-show-config-flag/" class="md-nav__link">
+      <a href="../o-015-show-config-flag/" class="md-nav__link">
         
   
   
@@ -8210,7 +8195,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-016-no-config-flag/" class="md-nav__link">
+      <a href="../o-016-no-config-flag/" class="md-nav__link">
         
   
   
@@ -8238,7 +8223,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-017-cwd-root-flag/" class="md-nav__link">
+      <a href="../o-017-cwd-root-flag/" class="md-nav__link">
         
   
   
@@ -8266,7 +8251,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-018-no-cache-and-cache-ttl-flags/" class="md-nav__link">
+      <a href="../o-018-no-cache-and-cache-ttl-flags/" class="md-nav__link">
         
   
   
@@ -8294,7 +8279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-019-proxy-and-no-proxy-flags/" class="md-nav__link">
+      <a href="../o-019-proxy-and-no-proxy-flags/" class="md-nav__link">
         
   
   
@@ -8322,7 +8307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-020-no-update-check-flag/" class="md-nav__link">
+      <a href="../o-020-no-update-check-flag/" class="md-nav__link">
         
   
   
@@ -8350,7 +8335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-021-confirm-destructive-flag/" class="md-nav__link">
+      <a href="../o-021-confirm-destructive-flag/" class="md-nav__link">
         
   
   
@@ -8378,7 +8363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-022-secret-from-env-secret-from-file-flags/" class="md-nav__link">
+      <a href="../o-022-secret-from-env-secret-from-file-flags/" class="md-nav__link">
         
   
   
@@ -8406,7 +8391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-023-no-injection-protection-flag/" class="md-nav__link">
+      <a href="../o-023-no-injection-protection-flag/" class="md-nav__link">
         
   
   
@@ -8434,7 +8419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-024-context-config-override-flag/" class="md-nav__link">
+      <a href="../o-024-context-config-override-flag/" class="md-nav__link">
         
   
   
@@ -8462,7 +8447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-025-warnings-as-errors-flag/" class="md-nav__link">
+      <a href="../o-025-warnings-as-errors-flag/" class="md-nav__link">
         
   
   
@@ -8490,7 +8475,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-026-tool-doctor-built-in-command/" class="md-nav__link">
+      <a href="../o-026-tool-doctor-built-in-command/" class="md-nav__link">
         
   
   
@@ -8518,7 +8503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-027-tool-cleanup-built-in-command/" class="md-nav__link">
+      <a href="../o-027-tool-cleanup-built-in-command/" class="md-nav__link">
         
   
   
@@ -8546,7 +8531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-028-tool-status-built-in-command/" class="md-nav__link">
+      <a href="../o-028-tool-status-built-in-command/" class="md-nav__link">
         
   
   
@@ -8574,7 +8559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-029-tool-changelog-built-in-command/" class="md-nav__link">
+      <a href="../o-029-tool-changelog-built-in-command/" class="md-nav__link">
         
   
   
@@ -8602,7 +8587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-030-opt-in-audit-log/" class="md-nav__link">
+      <a href="../o-030-opt-in-audit-log/" class="md-nav__link">
         
   
   
@@ -8630,7 +8615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-031-dependency-version-matrix-declaration/" class="md-nav__link">
+      <a href="../o-031-dependency-version-matrix-declaration/" class="md-nav__link">
         
   
   
@@ -8658,7 +8643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-032-raw-payload-flag-for-mutating-commands/" class="md-nav__link">
+      <a href="../o-032-raw-payload-flag-for-mutating-commands/" class="md-nav__link">
         
   
   
@@ -8686,7 +8671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-033-headless-and-token-env-var-flags-for-auth-commands/" class="md-nav__link">
+      <a href="../o-033-headless-and-token-env-var-flags-for-auth-commands/" class="md-nav__link">
         
   
   
@@ -8714,7 +8699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-034-tool-generate-skills-built-in-command/" class="md-nav__link">
+      <a href="../o-034-tool-generate-skills-built-in-command/" class="md-nav__link">
         
   
   
@@ -8742,7 +8727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-035-tool-mcp-validate-built-in-command/" class="md-nav__link">
+      <a href="../o-035-tool-mcp-validate-built-in-command/" class="md-nav__link">
         
   
   
@@ -8770,7 +8755,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-036-instance-id-flag-for-agent-state-namespacing/" class="md-nav__link">
+      <a href="../o-036-instance-id-flag-for-agent-state-namespacing/" class="md-nav__link">
         
   
   
@@ -8798,7 +8783,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-037-unmask-flag-for-high-entropy-fields/" class="md-nav__link">
+      <a href="../o-037-unmask-flag-for-high-entropy-fields/" class="md-nav__link">
         
   
   
@@ -8826,7 +8811,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-038-heartbeat-ms-flag-for-long-running-commands/" class="md-nav__link">
+      <a href="../o-038-heartbeat-ms-flag-for-long-running-commands/" class="md-nav__link">
         
   
   
@@ -8854,7 +8839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-039-input-file-flag-for-stdin-commands/" class="md-nav__link">
+      <a href="../o-039-input-file-flag-for-stdin-commands/" class="md-nav__link">
         
   
   
@@ -8882,7 +8867,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-040-no-follow-symlinks-flag-for-traversal-commands/" class="md-nav__link">
+      <a href="../o-040-no-follow-symlinks-flag-for-traversal-commands/" class="md-nav__link">
         
   
   
@@ -8910,7 +8895,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-041-tool-manifest-built-in-command/" class="md-nav__link">
+      <a href="../o-041-tool-manifest-built-in-command/" class="md-nav__link">
         
   
   
@@ -8938,7 +8923,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-042-output-format-env-var-default/" class="md-nav__link">
+      <a href="../o-042-output-format-env-var-default/" class="md-nav__link">
         
   
   
@@ -8966,7 +8951,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-043-agents-md-content-spec/" class="md-nav__link">
+      <a href="../o-043-agents-md-content-spec/" class="md-nav__link">
         
   
   
@@ -8994,7 +8979,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-044-noninteractive-install-command/" class="md-nav__link">
+      <a href="../o-044-noninteractive-install-command/" class="md-nav__link">
         
   
   
@@ -9022,7 +9007,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-045-integration-artifact-version-declaration/" class="md-nav__link">
+      <a href="../o-045-integration-artifact-version-declaration/" class="md-nav__link">
         
   
   
@@ -9050,7 +9035,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-046-agents-md-ci-validation/" class="md-nav__link">
+      <a href="../o-046-agents-md-ci-validation/" class="md-nav__link">
         
   
   
@@ -9078,7 +9063,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-047-tool-check-permissions-built-in-command/" class="md-nav__link">
+      <a href="../o-047-tool-check-permissions-built-in-command/" class="md-nav__link">
         
   
   
@@ -9106,7 +9091,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-048-destructive-commands-default-dry-run/" class="md-nav__link">
+      <a href="../o-048-destructive-commands-default-dry-run/" class="md-nav__link">
         
   
   
@@ -9134,7 +9119,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-049-llm-token-budget-flags/" class="md-nav__link">
+      <a href="../o-049-llm-token-budget-flags/" class="md-nav__link">
         
   
   
@@ -9162,7 +9147,7 @@
   
   
     <li class="md-nav__item">
-      <a href="requirements/o-050-tool-exec-built-in-command/" class="md-nav__link">
+      <a href="../o-050-tool-exec-built-in-command/" class="md-nav__link">
         
   
   
@@ -9197,7 +9182,7 @@
   
   
     <li class="md-nav__item">
-      <a href="conformance/" class="md-nav__link">
+      <a href="../../conformance/" class="md-nav__link">
         
   
   
@@ -9257,7 +9242,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="schemas/" class="md-nav__link ">
+            <a href="../../schemas/" class="md-nav__link ">
               
   
   
@@ -9301,7 +9286,7 @@
   
   
     <li class="md-nav__item">
-      <a href="schemas/exit-code/" class="md-nav__link">
+      <a href="../../schemas/exit-code/" class="md-nav__link">
         
   
   
@@ -9329,7 +9314,7 @@
   
   
     <li class="md-nav__item">
-      <a href="schemas/exit-code-entry/" class="md-nav__link">
+      <a href="../../schemas/exit-code-entry/" class="md-nav__link">
         
   
   
@@ -9357,7 +9342,7 @@
   
   
     <li class="md-nav__item">
-      <a href="schemas/response-envelope/" class="md-nav__link">
+      <a href="../../schemas/response-envelope/" class="md-nav__link">
         
   
   
@@ -9385,7 +9370,7 @@
   
   
     <li class="md-nav__item">
-      <a href="schemas/manifest-response/" class="md-nav__link">
+      <a href="../../schemas/manifest-response/" class="md-nav__link">
         
   
   
@@ -9413,7 +9398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="schemas/codegen-guide/" class="md-nav__link">
+      <a href="../../schemas/codegen-guide/" class="md-nav__link">
         
   
   
@@ -9473,7 +9458,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="guides/" class="md-nav__link ">
+            <a href="../../guides/" class="md-nav__link ">
               
   
   
@@ -9517,7 +9502,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/unix-naming-conventions/" class="md-nav__link">
+      <a href="../../guides/unix-naming-conventions/" class="md-nav__link">
         
   
   
@@ -9603,7 +9588,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="research/" class="md-nav__link ">
+            <a href="../../research/" class="md-nav__link ">
               
   
   
@@ -9647,7 +9632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/agentyper/" class="md-nav__link">
+      <a href="../../research/agentyper/" class="md-nav__link">
         
   
   
@@ -9675,7 +9660,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/alternatives-landscape/" class="md-nav__link">
+      <a href="../../research/alternatives-landscape/" class="md-nav__link">
         
   
   
@@ -9703,7 +9688,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/argparse/" class="md-nav__link">
+      <a href="../../research/argparse/" class="md-nav__link">
         
   
   
@@ -9731,7 +9716,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/clap/" class="md-nav__link">
+      <a href="../../research/clap/" class="md-nav__link">
         
   
   
@@ -9759,7 +9744,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/click/" class="md-nav__link">
+      <a href="../../research/click/" class="md-nav__link">
         
   
   
@@ -9787,7 +9772,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/cobra/" class="md-nav__link">
+      <a href="../../research/cobra/" class="md-nav__link">
         
   
   
@@ -9815,7 +9800,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/commander-js/" class="md-nav__link">
+      <a href="../../research/commander-js/" class="md-nav__link">
         
   
   
@@ -9843,7 +9828,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/emerging-solutions/" class="md-nav__link">
+      <a href="../../research/emerging-solutions/" class="md-nav__link">
         
   
   
@@ -9871,7 +9856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/jpoehnelt-skills/" class="md-nav__link">
+      <a href="../../research/jpoehnelt-skills/" class="md-nav__link">
         
   
   
@@ -9899,7 +9884,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/mcp/" class="md-nav__link">
+      <a href="../../research/mcp/" class="md-nav__link">
         
   
   
@@ -9927,7 +9912,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/openapi/" class="md-nav__link">
+      <a href="../../research/openapi/" class="md-nav__link">
         
   
   
@@ -9955,7 +9940,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/pydantic/" class="md-nav__link">
+      <a href="../../research/pydantic/" class="md-nav__link">
         
   
   
@@ -9983,7 +9968,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/python-fire/" class="md-nav__link">
+      <a href="../../research/python-fire/" class="md-nav__link">
         
   
   
@@ -10011,7 +9996,7 @@
   
   
     <li class="md-nav__item">
-      <a href="research/typer/" class="md-nav__link">
+      <a href="../../research/typer/" class="md-nav__link">
         
   
   
@@ -10046,7 +10031,7 @@
   
   
     <li class="md-nav__item">
-      <a href="CHANGELOG/" class="md-nav__link">
+      <a href="../../CHANGELOG/" class="md-nav__link">
         
   
   
@@ -10093,10 +10078,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#whats-going-wrong-right-now" class="md-nav__link">
+  <a href="#description" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's going wrong right now
+        Description
       
     </span>
   </a>
@@ -10104,10 +10089,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-this-spec-defines" class="md-nav__link">
+  <a href="#acceptance-criteria" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What this spec defines
+        Acceptance Criteria
       
     </span>
   </a>
@@ -10115,10 +10100,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-three-contracts-that-matter-most" class="md-nav__link">
+  <a href="#schema" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The three contracts that matter most
+        Schema
       
     </span>
   </a>
@@ -10126,10 +10111,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#whats-in-this-repo" class="md-nav__link">
+  <a href="#wire-format" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's in this repo
+        Wire Format
       
     </span>
   </a>
@@ -10137,10 +10122,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-this-fits" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where this fits
+        Example
       
     </span>
   </a>
@@ -10148,32 +10133,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#start-here" class="md-nav__link">
+  <a href="#related" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Start here
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#agent-skills" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Agent skills
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Contributing
+        Related
       
     </span>
   </a>
@@ -10200,192 +10163,175 @@
   
 
 
-<h1 id="cli-agent-spec">CLI Agent Spec</h1>
-<p><strong>Your CLI tool works perfectly for humans. For AI agents, it silently hangs, corrupts data, leaks secrets, and exhausts context windows — and you would never know.</strong></p>
-<p>This is a specification for building CLI tools that AI agents can call reliably: <strong>75 documented failure modes</strong>, <strong>159 requirements</strong> to eliminate them, machine-readable schemas an agent can consume directly, and design guides for CLI authors.</p>
-<blockquote>
-<p><strong>No existing CLI framework covers more than 59% of the currently mapped failure modes.</strong></p>
-</blockquote>
+<h1 id="req-c-031-passthrough-commands-delegate-to-another-tools-parser">REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser</h1>
+<p><strong>Tier:</strong> Command Contract | <strong>Priority:</strong> P1</p>
+<p><strong>Source:</strong> <a href="../../challenges/01-critical-ecosystem-runtime-agent-specific/69-high-argument-order-ambiguity/">§69 Argument Order Ambiguity</a> · <a href="../../challenges/04-critical-output-and-parsing/01-critical-exit-codes/">§1 Exit Codes &amp; Status Signaling</a> · <a href="../../challenges/04-critical-output-and-parsing/03-high-stderr-stdout/">§3 Stderr vs Stdout Discipline</a></p>
+<p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: Medium / Context: Medium</p>
 <hr />
-<h2 id="whats-going-wrong-right-now">What's going wrong right now</h2>
-<p>AI agents call CLI tools constantly — to deploy infrastructure, query APIs, manage files, run pipelines. Most tools were never designed for this. Here is what agents actually encounter:</p>
-<pre><code class="language-bash"># Agent calls a list command. The tool pages output and waits for keypress.
-# The agent never receives a response. The pipeline stalls. Forever.
-$ kubectl get pods   # opens less, waits for input
-
-# Agent deploys to staging. The command times out at 30s, returns exit 1.
-# exit 1 means &quot;error&quot; — but does it mean &quot;nothing happened&quot; or &quot;half-deployed&quot;?
-# The agent retries. Now it's deployed twice.
-$ deploy --env staging   # exit 1 — but why? safe to retry?
-
-# Agent reads a list of users. One username contains an emoji.
-# The JSON serializer crashes on non-ASCII. The agent gets no output, no error.
-$ tool users list   # silent failure on emoji in username
-
-# Agent passes a flag after the subcommand — natural LLM ordering.
-# The parser silently treats --format as a positional argument value.
-# The agent receives plain text it can't parse. Exit code: 0.
-$ tool list users --format json   # parsed as: list &quot;users&quot; &quot;--format&quot; &quot;json&quot;
-</code></pre>
-<p>These are not edge cases. They are the <strong>default behavior</strong> of most CLI tools today — including tools from major companies. The cost falls on the agent: wasted tokens, stalled pipelines, data corruption from blind retries, cascading failures with no root cause.</p>
-<hr />
-<h2 id="what-this-spec-defines">What this spec defines</h2>
-<p><strong>75 failure modes</strong> — each documented with severity, frequency, detectability, token cost, time cost, and context cost from the agent's perspective. Grouped into 7 parts: ecosystem/runtime, execution, security, output, environment, errors, and observability.</p>
-<p><strong>159 requirements</strong> across 3 tiers:</p>
-<table>
-<thead>
-<tr>
-<th>Tier</th>
-<th>Count</th>
-<th>Who implements it</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>F</strong> — Framework-Automatic</td>
-<td>78</td>
-<td>The framework enforces it; command authors get it for free</td>
-</tr>
-<tr>
-<td><strong>C</strong> — Command Contract</td>
-<td>31</td>
-<td>Command authors declare it at registration</td>
-</tr>
-<tr>
-<td><strong>O</strong> — Opt-In</td>
-<td>50</td>
-<td>Applications enable it explicitly</td>
-</tr>
-</tbody>
-</table>
-<p><strong>6 canonical JSON schemas</strong> — machine-readable type definitions for <code>ExitCode</code>, <code>ExitCodeEntry</code>, <code>ResponseEnvelope</code>, <code>ManifestResponse</code>, <code>DispatchRequest</code>, and <code>AuditLogEntry</code>. Generate typed structs for your language directly from the schemas. Every JSON example in the spec prose is validated against them in CI.</p>
-<p><strong>A comparison matrix</strong> — 12 existing frameworks (argparse, Click, Cobra, Clap, Typer, Commander.js, and more) scored against 71 currently mapped failure modes. No framework exceeds 59%.</p>
-<hr />
-<h2 id="the-three-contracts-that-matter-most">The three contracts that matter most</h2>
-<p><strong>Exit codes</strong> — 14 named codes (0–13) with machine-readable guarantees per code: <code>retryable: true/false</code>, <code>side_effects: "none" | "partial" | "complete"</code>. An agent receiving exit 11 (<code>RATE_LIMITED</code>) knows nothing was written and the call is safe to retry after back-off. Receiving exit 3 (<code>PARTIAL_FAILURE</code>) knows some writes happened and it must inspect state before retrying. Receiving exit 6 (<code>CONFLICT</code>) knows the resource already exists and a retry cannot succeed. See <a href="schemas/exit-code.json"><code>exit-code.json</code></a>.</p>
-<p><strong>Response envelope</strong> — every command wraps its output in <code>{ ok, data, error, warnings, meta }</code>. The same keys are always present, and <code>meta.exit_code</code> repeats the process exit code so an agent holding only stdout can still classify the outcome. Errors and warnings carry stable codes; agents never parse free text to determine success or failure. See <a href="schemas/response-envelope.json"><code>response-envelope.json</code></a>.</p>
-<p><strong>Tool manifest</strong> — <code>tool manifest --format json</code> returns the complete command tree: every subcommand, flag, type, description, exit code map, and example. One call replaces O(N) <code>--help</code> iterations and eliminates trial-and-error argument discovery. See <a href="schemas/manifest-response.json"><code>manifest-response.json</code></a>.</p>
-<hr />
-<h2 id="whats-in-this-repo">What's in this repo</h2>
-<table>
-<thead>
-<tr>
-<th>Path</th>
-<th>Contents</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="challenges/"><code>challenges/</code></a></td>
-<td>75 failure modes, each with problem, impact, solutions, 0–3 evaluation rubric, and agent workaround; <a href="challenges/index.json"><code>index.json</code></a> carries the same taxonomy as data</td>
-</tr>
-<tr>
-<td><a href="requirements/"><code>requirements/</code></a></td>
-<td>159 requirements with acceptance criteria, wire format, and examples, grouped into three <a href="requirements/levels/">conformance levels</a></td>
-</tr>
-<tr>
-<td><a href="conformance/"><code>conformance/</code></a></td>
-<td>Deterministic conformance kit: probes a CLI and reports pass or fail per check and per level</td>
-</tr>
-<tr>
-<td><a href="schemas/"><code>schemas/</code></a></td>
-<td>JSON Schema draft-07 definitions for all 5 types</td>
-</tr>
-<tr>
-<td><a href="guides/"><code>guides/</code></a></td>
-<td>Design guides: positive conventions that cannot be expressed as enforceable requirements</td>
-</tr>
-<tr>
-<td><a href="IMPLEMENTING/"><code>IMPLEMENTING.md</code></a></td>
-<td>Implementation guide: wave-based order, goal-based paths, invariants, codegen</td>
-</tr>
-<tr>
-<td><a href="comparison-matrix/"><code>comparison-matrix.md</code></a></td>
-<td>71 currently mapped failure modes × 12 frameworks coverage table</td>
-</tr>
-<tr>
-<td><a href="research/"><code>research/</code></a></td>
-<td>Per-framework analysis and competitive landscape (MCP, OpenAPI, function calling)</td>
-</tr>
-<tr>
-<td><a href="skills/">Agent skills</a></td>
-<td>Agent skills for evaluating CLIs and guiding implementation</td>
-</tr>
-<tr>
-<td><code>website/</code></td>
-<td>MkDocs website source; canonical specification content remains in the root sections above</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="where-this-fits">Where this fits</h2>
-<p>The field is converging on <strong>Agent Experience (AX)</strong> as the term for "how well is a system designed to be consumed by an AI agent" — the machine-facing analog of Developer Experience (DX) or User Experience (UX). It applies across APIs, databases, SDKs, web services, and CLIs.</p>
-<p>This spec is AX research applied to the CLI layer. CLIs are the most underserved slice of the problem: they are the primary interface through which agents interact with infrastructure, but they were designed for human terminal sessions. The gap between CLI defaults and agent requirements is where the 75 failure modes live.</p>
-<p><strong>What distinguishes this project from other AX work:</strong></p>
+<h2 id="description">Description</h2>
+<p>Some commands wrap another tool's own argument parser: an <code>ingest</code> command that hands its arguments to beangulp, a <code>lint</code> command that runs a linter with whatever flags the caller gives. The wrapped tool owns the arguments, writes its own output to stdout, and chooses its own exit code. A command of this kind MUST declare <code>arguments: "passthrough"</code> at registration; every other command is <code>"declared"</code>, the default. The rules below apply only to a command whose manifest entry carries <code>arguments: "passthrough"</code>; a declared command keeps every requirement this one exempts.</p>
+<p><strong>Arguments.</strong> A passthrough command declares no local flags and no positionals. Every token after its command path reaches the delegated tool verbatim, including <code>--</code>, <code>--help</code>, and tokens spelled like the framework's own options, so global options and framework flags (<code>--format</code>, <code>--output</code>, <code>--timeout</code>, <code>--schema</code>) go before the command path. A passthrough command therefore also declares <code>option_placement: "strict"</code> (REQ-C-027). When the command declares <code>help_argv</code>, a lone <code>--help</code> or <code>-h</code> after the command path is forwarded as that argv instead, such as <code>["extract", "--help"]</code>; without it, the lone token is forwarded unchanged.</p>
+<p><strong>Never destructive.</strong> A passthrough command MUST NOT declare <code>danger_level: "destructive"</code>, and the framework refuses that registration. The framework cannot preview what the delegated tool would change, so it cannot offer the dry run (REQ-C-004) or the confirmation preview (REQ-O-021) a destructive command owes the caller. A passthrough command declares <code>safe</code> or <code>mutating</code>; a tool that can delete or irreversibly change state is wrapped by a declared command that validates its own arguments instead.</p>
+<p><strong>The envelope.</strong> In JSON mode, once the framework's own options pass validation, the delegated tool owns stdout (file descriptor 1 included) and the framework writes the final <code>ResponseEnvelope</code> as the last line of stderr, after the tool exits. When <code>--output &lt;path&gt;</code> is given before the command path, the same envelope also goes to that file (<code>output_file: "envelope"</code>). An error found while validating the framework's own options is reported on stdout as for any command, because no tool has run. On success, <code>data</code> is <code>{"exit_code": 0}</code>.</p>
+<p><strong>The exit code.</strong> The process exits with the delegated tool's own exit code, unchanged, so scripts and the tool's documentation keep working. A non-zero delegated code gives <code>ok: false</code>, <code>error.code: "DELEGATED_EXIT"</code>, <code>data: {"exit_code": n}</code>, <code>meta.exit_code: n</code>, and <code>retryable: false</code>. Codes the framework emits itself keep their framework meanings and their own <code>error.code</code>: an argument error in the framework's options (<code>2</code>, <code>ARG_ERROR</code>, <code>phase: "validation"</code>), the timeout (<code>10</code>, <code>TIMEOUT</code>), and a signal (<code>128 + N</code>). This is the cost of keeping the tool's codes: a delegated <code>2</code> is the tool's usage error and promises nothing about side effects. An agent decides on a retry from the envelope's <code>error.code</code> and <code>retryable</code>, never from the process exit code alone.</p>
+<p><strong>Exemptions, for passthrough commands only:</strong></p>
 <ul>
-<li><strong>It names failure</strong> — most AX guidance is prescriptive ("do this"). The failure mode taxonomy is a named, scored, reproducible catalog of what goes wrong and why, making automated evaluation possible</li>
-<li><strong>It formalizes retry semantics</strong> — the <code>retryable: true</code> / <code>side_effects: "none"</code> pairing in <code>ExitCodeEntry</code> encodes agent-safe re-execution as a machine-checkable constraint, which we have not seen formalized elsewhere at this precision</li>
-<li><strong>It operates at the implementation layer</strong> — requirements have acceptance criteria, schemas have typed wire formats, and evaluation rubrics score 0–3. The output is designed to generate code, not frame discussions</li>
+<li>REQ-F-004 and REQ-F-006: the envelope is the last line of stderr, not stdout, which carries the delegated tool's output</li>
+<li>REQ-F-001 and REQ-F-002: the delegated code is outside the framework table's meanings; a delegated <code>2</code> carries no zero-side-effect guarantee and no <code>phase: "validation"</code>, and the framework neither checks nor rejects it at registration</li>
+<li>REQ-C-001: the command's <code>exit_codes</code> lists only the codes the framework emits for it; the delegated tool's codes are not declared</li>
+<li>REQ-C-003: a mutating passthrough command's <code>data</code> has no <code>effect</code>, because the framework cannot know what the tool changed; only a deduplicated replay adds <code>effect: "noop"</code></li>
+<li>REQ-C-006 and REQ-C-015: no input schema describes the tool's arguments, and the framework validates only its own options in phase 1; <code>--schema</code> lists the framework's flags and the passthrough fields</li>
 </ul>
-<p><strong>Relation to MCP:</strong> Anthropic's <a href="https://modelcontextprotocol.io">Model Context Protocol</a> defines a transport and capability-discovery layer between agents and tools. This spec defines the behavioral contracts for what a tool must do once invoked. The two are complementary.</p>
-<p><strong>What this spec does not yet cover:</strong> Streaming output ergonomics for agents: partial JSON, progress tokens, and incremental structured data from long-running commands. This remains an open AX problem for CLIs.</p>
-<hr />
-<h2 id="start-here">Start here</h2>
-<p><strong>I want to understand the problem</strong> → <a href="challenges/"><code>challenges/index.md</code></a> — browse by severity. Start with §10 (interactive blocking), §43 (output size), §50 (stdin deadlock), §62 (editor trap).</p>
-<p><strong>I want to implement this in my framework</strong> → <a href="IMPLEMENTING/"><code>IMPLEMENTING.md</code></a> — wave-based implementation order, or pick a goal-based path:
-- <a href="IMPLEMENTING/#path-a-fewer-retries">Fewer agent retries</a> — 15 requirements
-- <a href="IMPLEMENTING/#path-b-less-context-consumed">Less context consumed</a> — 14 requirements
-- <a href="IMPLEMENTING/#path-c-less-token-spend">Less token spend</a> — 12 requirements</p>
-<p><strong>I want to evaluate my existing CLI</strong> → run the deterministic <a href="conformance/">conformance kit</a> against it, aim for <a href="requirements/levels/">Level 1</a> first, then use the agent skills below for the judgment-based failure modes. <a href="challenges/checklist/"><code>challenges/checklist.md</code></a> is a manual self-assessment.</p>
-<p><strong>I want to audit any interface for agent-friendliness</strong> → the failure mode taxonomy applies beyond CLIs. REST APIs, SDKs, MCP servers, and RPC interfaces share the same failure categories: ambiguous error signaling (§1), interactive blocking (§10), missing machine-readable schemas (§21), over-verbose output (§43), credential leakage (§30). Use <a href="challenges/"><code>challenges/index.md</code></a> as a lens and substitute "interface" for "CLI" — the problem statement holds. For subprocess-callable tools, run <code>cli-agent-audit</code> directly; for other interfaces, apply the <code>### Evaluation</code> rubrics manually against your integration layer.</p>
-<p><strong>I want to add a failure mode or requirement</strong> → <a href="AGENTS/"><code>AGENTS.md</code></a></p>
-<hr />
-<h2 id="agent-skills">Agent skills</h2>
-<p>Installable skills for Agent Skills-compatible agents (Claude Code, Cursor, Gemini CLI, Copilot, and others):</p>
+<p><strong>Still required:</strong></p>
+<ul>
+<li><code>danger_level</code> (REQ-C-002): <code>safe</code> or <code>mutating</code>, declared like any command's</li>
+<li>The timeout (REQ-F-011, REQ-F-012) and signal handling (REQ-F-013, REQ-F-069) cover the delegated tool, and their envelope is also the last line of stderr</li>
+<li>Deduplication (REQ-C-007): within a session, a repeat of the same argv is not run again; the replay writes nothing to stdout and returns the original <code>data</code> with <code>effect: "noop"</code></li>
+<li>The audit log (REQ-O-030) records the invocation with <code>args</code> set to <code>{"argv": "[OMITTED]"}</code> plus any framework flags that changed what it did; the forwarded argv cannot be redacted without a schema, so it is never written</li>
+</ul>
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<ul>
+<li><code>tool manifest</code> shows <code>arguments: "passthrough"</code> and <code>option_placement: "strict"</code> on every passthrough command, and omits <code>arguments</code> or shows <code>"declared"</code> on every other command</li>
+<li>The framework rejects at registration a passthrough command that declares local flags, positionals, or <code>option_placement: "any"</code></li>
+<li>Every token after a passthrough command's path, including <code>--</code>, <code>--help</code> with other tokens, and <code>--format</code>, reaches the delegated tool verbatim and is never parsed by the framework</li>
+<li>With <code>help_argv</code> declared, <code>tool &lt;cmd&gt; --help</code> forwards exactly <code>help_argv</code>; without it, the tool receives <code>--help</code></li>
+<li>In JSON mode the last line of stderr parses as a <code>ResponseEnvelope</code>, and stdout holds only what the delegated tool wrote</li>
+<li>With <code>--output &lt;path&gt;</code> before the command path, the file holds the same envelope as the last stderr line</li>
+<li>A delegated exit code <code>n</code> is the process exit code; when <code>n</code> is non-zero the envelope has <code>error.code: "DELEGATED_EXIT"</code>, <code>data.exit_code: n</code>, <code>meta.exit_code: n</code>, and <code>retryable: false</code></li>
+<li>An invalid framework option before the command path exits <code>2</code> with <code>ARG_ERROR</code> on stdout and the delegated tool does not start</li>
+<li>The framework rejects at registration a passthrough command that declares <code>danger_level: "destructive"</code></li>
+<li>A timed-out or signalled delegated tool ends with exit <code>10</code> or <code>128 + N</code> and an envelope on the last line of stderr</li>
+<li>A repeated argv in the same session does not start the delegated tool and returns <code>effect: "noop"</code></li>
+<li>An audit log entry for a passthrough command has <code>args.argv</code> equal to <code>"[OMITTED]"</code> and contains no forwarded token</li>
+<li>A declared command's behavior under REQ-F-001, REQ-F-002, REQ-F-004, REQ-F-006, REQ-C-003, and REQ-C-015 is unchanged</li>
+</ul>
+<h2 id="schema">Schema</h2>
+<p><strong>Types:</strong></p>
+<ul>
+<li><a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a>: <code>arguments</code> (<code>"declared"</code> | <code>"passthrough"</code>, absent means <code>"declared"</code>) and <code>help_argv</code> (string array) on <code>CommandEntry</code>. A passthrough entry requires <code>option_placement: "strict"</code>, empty <code>flags</code>, and no <code>positionals</code>; <code>help_argv</code> requires <code>arguments: "passthrough"</code></li>
+<li><a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a>: the final envelope, unchanged in shape, with <code>error.code: "DELEGATED_EXIT"</code> on a non-zero delegated code</li>
+<li><a href="../../schemas/audit-log-entry/"><code>audit-log-entry.md</code></a>: <code>args.argv</code> is <code>"[OMITTED]"</code></li>
+</ul>
+<h2 id="wire-format">Wire Format</h2>
+<p>Manifest entry:</p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.9&quot;,
+  &quot;framework_version&quot;: &quot;1.4.0&quot;,
+  &quot;etag&quot;: &quot;sha256:c41d07&quot;,
+  &quot;commands&quot;: {
+    &quot;ingest&quot;: {
+      &quot;description&quot;: &quot;Run beangulp on bank statements; every argument goes to beangulp&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;arguments&quot;: &quot;passthrough&quot;,
+      &quot;help_argv&quot;: [&quot;extract&quot;, &quot;--help&quot;],
+      &quot;option_placement&quot;: &quot;strict&quot;,
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: {
+        &quot;2&quot;:  { &quot;name&quot;: &quot;ARG_ERROR&quot;, &quot;description&quot;: &quot;A framework option before the command path is invalid; the tool did not start&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; },
+        &quot;10&quot;: { &quot;name&quot;: &quot;TIMEOUT&quot;, &quot;description&quot;: &quot;The delegated tool ran past the timeout; partial writes may have occurred&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;partial&quot; }
+      }
+    }
+  }
+}
+</code></pre>
+<p>A delegated usage error. stdout carries beangulp's own output; the envelope is the last line of stderr:</p>
+<pre><code class="language-bash">$ ledger --format json ingest extract --bogus statement.csv
+</code></pre>
+<pre><code class="language-json">{&quot;ok&quot;: false, &quot;data&quot;: {&quot;exit_code&quot;: 2}, &quot;error&quot;: {&quot;code&quot;: &quot;DELEGATED_EXIT&quot;, &quot;message&quot;: &quot;The delegated tool exited 2&quot;, &quot;retryable&quot;: false}, &quot;warnings&quot;: [], &quot;meta&quot;: {&quot;exit_code&quot;: 2, &quot;duration_ms&quot;: 412}}
+</code></pre>
+<p>The process exits <code>2</code>, and <code>error.code</code> says the code is beangulp's, not the framework's <code>ARG_ERROR</code>. A framework option placed after the path is not an error: <code>ledger ingest --timeout 5 extract x</code> forwards <code>--timeout 5</code> to beangulp.</p>
+<h2 id="example">Example</h2>
+<pre><code>register command &quot;ingest&quot;:
+  arguments: passthrough            # implies option_placement: strict
+  help_argv: [&quot;extract&quot;, &quot;--help&quot;]
+  danger_level: mutating
+  execute(ctx):
+    return run_tool([&quot;bean-ingest&quot;, *ctx.argv_rest])   # the tool's exit code
+
+# Agent consults the manifest before calling:
+# ledger --format json --output env.json ingest extract a.csv   ✓ framework flags before the path
+# ledger ingest extract a.csv --format json                     ✗ --format goes to beangulp
+# On exit 2: read the last stderr line; DELEGATED_EXIT → beangulp rejected its arguments,
+#            and side effects are not ruled out; ARG_ERROR → the framework rejected its own
+</code></pre>
+<h2 id="related">Related</h2>
 <table>
 <thead>
 <tr>
-<th>Skill</th>
-<th>Purpose</th>
+<th>Requirement</th>
+<th>Tier</th>
+<th>Relationship</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-audit/SKILL.md"><code>cli-agent-audit</code></a></td>
-<td>Autonomous end-to-end pipeline: install → onboard → readiness → evaluate → report</td>
+<td><a href="../c-027-commands-declare-option-placement/">REQ-C-027</a></td>
+<td>C</td>
+<td>Extends: a passthrough command is always <code>option_placement: "strict"</code>, with no local options</td>
 </tr>
 <tr>
-<td><a href="https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-onboard/SKILL.md"><code>cli-agent-onboard</code></a></td>
-<td>Profile a CLI tool once — detects runtime, binary, flags, timeout method</td>
+<td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>
+<td>F</td>
+<td>Specializes: the envelope keeps its shape but moves to the last line of stderr</td>
 </tr>
 <tr>
-<td><a href="https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-evaluate/SKILL.md"><code>cli-agent-evaluate</code></a></td>
-<td>Score a CLI against a single failure mode (0–3), with applicable agent workaround</td>
+<td><a href="../f-006-stdout-stderr-stream-enforcement/">REQ-F-006</a></td>
+<td>F</td>
+<td>Specializes: stdout belongs to the delegated tool</td>
 </tr>
 <tr>
-<td><a href="https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-implement/SKILL.md"><code>cli-agent-implement</code></a></td>
-<td>Guide implementing the spec in a CLI framework, tier by tier</td>
+<td><a href="../f-001-standard-exit-code-table/">REQ-F-001</a></td>
+<td>F</td>
+<td>Specializes: the delegated exit code passes through as <code>DELEGATED_EXIT</code></td>
 </tr>
 <tr>
-<td><a href="https://github.com/cli-agent-spec/cli-agent-spec/blob/master/skills/cli-agent-diagnose/SKILL.md"><code>cli-agent-diagnose</code></a></td>
-<td>Classify a failed CLI call against §N taxonomy, return workaround + memory string</td>
+<td><a href="../f-002-exit-code-2-reserved-for-validation-failures/">REQ-F-002</a></td>
+<td>F</td>
+<td>Specializes: a delegated <code>2</code> carries no zero-side-effect guarantee</td>
+</tr>
+<tr>
+<td><a href="../c-003-mutating-commands-declare-effect-field/">REQ-C-003</a></td>
+<td>C</td>
+<td>Specializes: no <code>effect</code> except <code>noop</code> on a replay</td>
+</tr>
+<tr>
+<td><a href="../c-015-commands-declare-input-and-output-schema/">REQ-C-015</a></td>
+<td>C</td>
+<td>Specializes: no input schema for the delegated arguments</td>
+</tr>
+<tr>
+<td><a href="../c-002-command-declares-danger-level/">REQ-C-002</a></td>
+<td>C</td>
+<td>Consumes: <code>danger_level</code> is <code>safe</code> or <code>mutating</code>, never <code>destructive</code></td>
+</tr>
+<tr>
+<td><a href="../c-004-destructive-commands-must-support-dry-run/">REQ-C-004</a></td>
+<td>C</td>
+<td>Composes: a passthrough command cannot be destructive because it cannot offer a dry run</td>
+</tr>
+<tr>
+<td><a href="../c-007-mutating-commands-accept-idempotency-key/">REQ-C-007</a></td>
+<td>C</td>
+<td>Composes: session deduplication keys on the forwarded argv</td>
+</tr>
+<tr>
+<td><a href="../f-012-timeout-exit-code-and-json-error/">REQ-F-012</a></td>
+<td>F</td>
+<td>Composes: the timeout covers the delegated tool</td>
+</tr>
+<tr>
+<td><a href="../o-030-opt-in-audit-log/">REQ-O-030</a></td>
+<td>O</td>
+<td>Composes: the audit log records the forwarded argv as <code>[OMITTED]</code></td>
+</tr>
+<tr>
+<td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
+<td>O</td>
+<td>Exposes: <code>arguments</code> and <code>help_argv</code> appear in the manifest</td>
 </tr>
 </tbody>
 </table>
-<pre><code class="language-bash"># Install (run inside your agent)
-npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-audit
-npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-onboard
-npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-evaluate
-npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-implement
-npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-diagnose
-</code></pre>
-<hr />
-<h2 id="contributing">Contributing</h2>
-<p>Changes to contracts are recorded in <a href="CHANGELOG/"><code>CHANGELOG.md</code></a>, which also defines how spec and schema versions increment.</p>
-<p>The spec is a living document. New failure modes are documented when confirmed against real tooling. New requirements follow from new failure modes.</p>
-<p>Before contributing, read <a href="AGENTS/"><code>AGENTS.md</code></a> for conventions: file format, required sections, naming rules, and how to run <code>/validate-links</code> to verify cross-references after any edit.</p>
-<hr />
-<p><em>CLI Agent Spec v1.9 — 75 failure modes · 159 requirements · 6 canonical schemas · 12 frameworks evaluated</em></p>
 
 
 
@@ -10441,10 +10387,10 @@ npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-diagnose
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.highlight", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

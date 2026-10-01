@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4540,6 +4540,8 @@
       
         
       
+        
+      
     
     
     
@@ -5421,6 +5423,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10122,7 +10152,7 @@
 <td>6</td>
 <td><code>exit 2</code>, or usage/help text in stderr</td>
 <td><a href="../04-critical-output-and-parsing/01-critical-exit-codes/">§1</a> <a href="../02-critical-execution-and-reliability/14-high-arg-validation/">§14</a> <a href="../01-critical-ecosystem-runtime-agent-specific/35-high-hallucination-inputs/">§35</a> <a href="../01-critical-ecosystem-runtime-agent-specific/54-high-conditional-args/">§54</a> <a href="../01-critical-ecosystem-runtime-agent-specific/69-high-argument-order-ambiguity/">§69</a></td>
-<td>Re-read <code>--help</code> for the exact flags; correct the arguments; reissue once</td>
+<td>Re-read <code>--help</code> for the exact flags; correct the arguments; reissue once. If the last stderr line is an envelope with <code>error.code: "DELEGATED_EXIT"</code>, the <code>2</code> came from the tool a passthrough command wraps and side effects are possible: inspect state first (<a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>)</td>
 </tr>
 <tr>
 <td>7</td>

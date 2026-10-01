@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4514,6 +4514,8 @@
       
         
       
+        
+      
     
     
     
@@ -5395,6 +5397,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10586,7 +10616,8 @@
 <p><strong>Contradictory signals</strong>
 - Envelope and process exit code disagree in either direction — treat the call as failed; the side that reports failure wins
 - <code>ok: false</code> but process exit code is <code>0</code> — a pipeline or wrapper masked the code (§56); use <code>meta.exit_code</code> for classification
-- Exit code says retryable but <code>error.retryable: false</code> — trust <code>error.retryable</code>; it is the more specific signal</p>
+- Exit code says retryable but <code>error.retryable: false</code> — trust <code>error.retryable</code>; it is the more specific signal
+- Any code with <code>error.code: "DELEGATED_EXIT"</code> — a passthrough command (REQ-C-031) passed through its delegated tool's own code, and this table does not apply; a delegated <code>2</code> carries no zero-side-effect guarantee. The envelope is the last line of stderr</p>
 <p><strong>Retry budget</strong>
 - Codes marked retryable do not imply infinite retries — apply a retry budget (e.g. 3 attempts) before escalating
 - Codes marked <em>after fix</em> — apply the fix stated in <code>error.fix_required</code> (or <code>error.redirect</code>), reissue once; if no fix is stated, treat as terminal

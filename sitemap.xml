@@ -1173,6 +1173,10 @@
          <lastmod>2026-10-01</lastmod>
     </url>
     <url>
+         <loc>https://cli-agent-spec.github.io/requirements/c-031-passthrough-commands-delegate-to-another-parser/</loc>
+         <lastmod>2026-10-01</lastmod>
+    </url>
+    <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-001-standard-exit-code-table/</loc>
          <lastmod>2026-10-01</lastmod>
     </url>

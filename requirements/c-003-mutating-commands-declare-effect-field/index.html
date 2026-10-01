@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5513,6 +5515,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10139,7 +10169,7 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: High / Time: High / Context: Medium</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Every command with <code>danger_level</code> of <code>mutating</code> or <code>destructive</code> MUST include an <code>effect</code> field in its success response. The <code>effect</code> value MUST be one of: <code>"created"</code>, <code>"updated"</code>, <code>"deleted"</code>, <code>"noop"</code>. Command authors MUST determine and set the correct value based on what actually occurred. The framework MUST validate that the <code>effect</code> field is present and has a valid value for all non-safe commands.</p>
+<p>Every command with <code>danger_level</code> of <code>mutating</code> or <code>destructive</code> MUST include an <code>effect</code> field in its success response. The <code>effect</code> value MUST be one of: <code>"created"</code>, <code>"updated"</code>, <code>"deleted"</code>, <code>"noop"</code>. Command authors MUST determine and set the correct value based on what actually occurred. The framework MUST validate that the <code>effect</code> field is present and has a valid value for all non-safe commands. A passthrough command (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>) is exempt, because the framework cannot know what the delegated tool changed: its <code>data</code> is <code>{"exit_code": n}</code>, and only a deduplicated replay adds <code>effect: "noop"</code>.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A mutating command response always includes <code>"effect"</code> at the top level of the envelope</li>
@@ -10233,6 +10263,11 @@
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>
 <td>F</td>
 <td>Wraps: <code>effect</code> is carried inside the <code>ResponseEnvelope</code></td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Specializes: a passthrough command's <code>data</code> carries <code>exit_code</code>, not <code>effect</code></td>
 </tr>
 </tbody>
 </table>

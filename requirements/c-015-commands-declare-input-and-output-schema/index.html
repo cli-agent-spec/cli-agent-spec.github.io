@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5513,6 +5515,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10139,7 +10169,7 @@
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: High / Time: Medium / Context: Medium</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Every command MUST declare a complete input schema (all parameters: name, type, required, default, enum values if applicable, description) and output schema (JSON Schema for the <code>data</code> field of the response envelope). The framework MUST auto-generate <code>--schema</code> output from these declarations. Command authors MUST NOT write <code>--schema</code> output manually; it MUST be derived from the declaration.</p>
+<p>Every command MUST declare a complete input schema (all parameters: name, type, required, default, enum values if applicable, description) and output schema (JSON Schema for the <code>data</code> field of the response envelope). The framework MUST auto-generate <code>--schema</code> output from these declarations. Command authors MUST NOT write <code>--schema</code> output manually; it MUST be derived from the declaration. A passthrough command (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>) is exempt from the input schema: its arguments belong to the delegated tool, so it declares no flags or positionals, and <code>--schema</code> shows <code>arguments: "passthrough"</code> instead.</p>
 <p><strong>Structured flag values.</strong> A flag whose value is a JSON object SHOULD declare <code>type: "object"</code> and the value's JSON Schema in <code>FlagEntry.schema</code> rather than <code>type: "string"</code> with the shape described in prose, because an agent cannot see the shape it must build otherwise. A flag declared <code>type: "object"</code> MUST carry <code>schema</code>. The caller passes the value as one argv token of JSON text, as <code>--raw-payload</code> takes its payload (<a href="../o-032-raw-payload-flag-for-mutating-commands/">REQ-O-032</a>): <code>--filter '{"status":"open"}'</code>. An <code>array</code> flag whose items are objects puts the item schema in <code>schema</code>, and each item it receives is one such token. For a flag declared <code>type: "object"</code> (or an <code>array</code> flag with <code>schema</code>), the framework MUST parse and validate the value against <code>schema</code> during Phase 1 (<a href="../f-015-validate-before-execute-phase-order/">REQ-F-015</a>) and exit <code>2</code> (<code>ARG_ERROR</code>) when the text is not valid JSON or does not match, before any side effect. <code>schema</code> appears only on <code>object</code> and <code>array</code> flags.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
@@ -10264,6 +10294,11 @@
 <td><a href="../o-032-raw-payload-flag-for-mutating-commands/">REQ-O-032</a></td>
 <td>O</td>
 <td>Composes: an <code>object</code> flag takes JSON text on argv the same way <code>--raw-payload</code> does</td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Specializes: a passthrough command declares no input schema</td>
 </tr>
 </tbody>
 </table>

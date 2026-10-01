@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5400,6 +5402,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10139,7 +10169,7 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: High / Time: High / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST ensure that exit code <code>2</code> is emitted if and only if command execution was aborted during input validation, before any side effect occurred. The framework MUST guarantee this by enforcing the validate-before-execute phase boundary (see REQ-F-015). A command that exits <code>2</code> requires no cleanup or rollback; the caller corrects the input and reissues. The error response carries <code>retryable: false</code> (the identical invocation fails deterministically) with <code>fix_required</code> stating the correction.</p>
+<p>The framework MUST ensure that exit code <code>2</code> is emitted if and only if command execution was aborted during input validation, before any side effect occurred. The framework MUST guarantee this by enforcing the validate-before-execute phase boundary (see REQ-F-015). A command that exits <code>2</code> requires no cleanup or rollback; the caller corrects the input and reissues. The error response carries <code>retryable: false</code> (the identical invocation fails deterministically) with <code>fix_required</code> stating the correction. A passthrough command (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>) is exempt for the delegated tool's own <code>2</code>, which carries <code>error.code: "DELEGATED_EXIT"</code> and no zero-side-effect guarantee; the framework's own <code>ARG_ERROR</code> for that command keeps this guarantee.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A command that exits <code>2</code> has provably caused zero filesystem, network, or state mutations</li>
@@ -10211,6 +10241,11 @@
 <td><a href="../c-013-error-responses-include-code-and-message/">REQ-C-013</a></td>
 <td>C</td>
 <td>Composes: error response carries <code>phase</code> field alongside <code>code</code> and <code>message</code></td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Specializes: a delegated <code>2</code> from a passthrough command is not <code>ARG_ERROR</code> and promises nothing about side effects</td>
 </tr>
 </tbody>
 </table>

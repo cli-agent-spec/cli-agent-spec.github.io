@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5400,6 +5402,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10168,7 +10198,7 @@
 <p><strong>Entry.</strong> Each entry is one line of JSON matching <a href="../../schemas/audit-log-entry.json"><code>audit-log-entry.json</code></a>:</p>
 <ul>
 <li><code>timestamp</code>, <code>command</code>, <code>exit_code</code>, <code>duration_ms</code>, and <code>request_id</code> are always present. <code>command</code> MUST equal the invocation's <code>meta.command</code> exactly, in whichever spelling the framework uses consistently for it: space-separated (<code>config set</code>) or dot-separated (<code>config.set</code>)</li>
-<li><code>args</code> is the parsed argument map after REQ-F-034 redaction, never the raw argv. Framework flags that change what the invocation did (<code>--dry-run</code>, <code>--validate-only</code>, <code>--confirm-destructive</code>, <code>--no-injection-protection</code>) appear in it under their flag names</li>
+<li><code>args</code> is the parsed argument map after REQ-F-034 redaction, never the raw argv. Framework flags that change what the invocation did (<code>--dry-run</code>, <code>--validate-only</code>, <code>--confirm-destructive</code>, <code>--no-injection-protection</code>) appear in it under their flag names. A passthrough command (REQ-C-031) has no parsed map for the arguments it forwards, so <code>args</code> records them as <code>"argv": "[OMITTED]"</code></li>
 <li><code>warnings</code> lists the <code>code</code> of every entry in the response's <code>warnings[]</code>, so an over-privileged credential (<code>CREDENTIAL_OVER_PRIVILEGED</code>, REQ-O-047) or disabled injection protection (<code>INJECTION_PROTECTION_DISABLED</code>, REQ-O-023) is recorded as a queryable code</li>
 <li><code>trace_id</code> is present when <code>TOOL_TRACE_ID</code> is set (REQ-F-025)</li>
 <li><code>session_id</code> is present when the agent runtime sets the framework's session variable. A framework that already reads an agent session id from a prefixed environment variable (for example to scope REQ-C-007 idempotency keys) uses that variable; otherwise the session variable is <code>&lt;PREFIX&gt;SESSION_ID</code>. The framework reads exactly one variable, records its value verbatim, derives <code>session_id</code> from nothing else, and documents the variable's name</li>
@@ -10386,6 +10416,11 @@ $ TOOL_AUDIT_LOG=yes tool deploy --env prod
 <td><a href="../o-047-tool-check-permissions-built-in-command/">REQ-O-047</a></td>
 <td>O</td>
 <td>Consumes: <code>CREDENTIAL_OVER_PRIVILEGED</code> is recorded in the entry's <code>warnings</code></td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Consumes: a passthrough command's forwarded argv is recorded as <code>[OMITTED]</code></td>
 </tr>
 </tbody>
 </table>

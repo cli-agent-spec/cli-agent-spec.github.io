@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5400,6 +5402,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -9991,9 +10021,9 @@
 <blockquote>
 <p>All requirements for an agent-compatible CLI framework, derived from the CLI Agent Spec's 75 documented failure modes.</p>
 </blockquote>
-<p><strong>158 total</strong> &nbsp;|&nbsp; 78 Framework-Automatic · 30 Command Contract · 50 Opt-In — amended 2026-09-30</p>
-<p><strong>By priority:</strong> P0: 51 · P1: 64 · P2: 34 · P3: 9 — REQ-F-026 (append-only audit log) merged into opt-in REQ-O-030; the ID is retired</p>
-<p><strong>By level</strong> (<a href="levels/"><code>levels.md</code></a>): Level 1: 12 · Level 2: 51 · Level 3: 158</p>
+<p><strong>159 total</strong> &nbsp;|&nbsp; 78 Framework-Automatic · 31 Command Contract · 50 Opt-In — amended 2026-10-01</p>
+<p><strong>By priority:</strong> P0: 51 · P1: 65 · P2: 34 · P3: 9 — REQ-F-026 (append-only audit log) merged into opt-in REQ-O-030; the ID is retired</p>
+<p><strong>By level</strong> (<a href="levels/"><code>levels.md</code></a>): Level 1: 12 · Level 2: 51 · Level 3: 159</p>
 <hr />
 <h2 id="framework-automatic-f">Framework-Automatic (F)</h2>
 <p><strong>78 requirements</strong> &nbsp;|&nbsp; P0: 33 · P1: 30 · P2: 14 · P3: 1</p>
@@ -10558,7 +10588,7 @@
 </table>
 <hr />
 <h2 id="command-contract-c">Command Contract (C)</h2>
-<p><strong>30 requirements</strong> &nbsp;|&nbsp; P0: 12 · P1: 15 · P2: 1 · P3: 2</p>
+<p><strong>31 requirements</strong> &nbsp;|&nbsp; P0: 12 · P1: 16 · P2: 1 · P3: 2</p>
 <table>
 <thead>
 <tr>
@@ -10778,6 +10808,13 @@
 <td>P1</td>
 <td>Error Responses Include Executable fix_command</td>
 <td><a href="../challenges/06-high-errors-and-discoverability/18-high-error-quality/">§18</a> <a href="../challenges/06-high-errors-and-discoverability/19-high-retry-hints/">§19</a> <a href="../challenges/01-critical-ecosystem-runtime-agent-specific/53-critical-credential-expiry/">§53</a></td>
+<td>3</td>
+</tr>
+<tr>
+<td><a href="c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>P1</td>
+<td>Passthrough Commands Delegate to Another Tool's Parser</td>
+<td><a href="../challenges/01-critical-ecosystem-runtime-agent-specific/69-high-argument-order-ambiguity/">§69</a> <a href="../challenges/04-critical-output-and-parsing/01-critical-exit-codes/">§1</a> <a href="../challenges/04-critical-output-and-parsing/03-high-stderr-stdout/">§3</a></td>
 <td>3</td>
 </tr>
 </tbody>
@@ -11149,7 +11186,7 @@
 </tbody>
 </table>
 <hr />
-<p><em>CLI Agent Spec v1.9 — 158 requirements (78 REQ-F + 30 REQ-C + 50 REQ-O). Updated 2026-09-30.</em></p>
+<p><em>CLI Agent Spec v1.9 — 159 requirements (78 REQ-F + 31 REQ-C + 50 REQ-O). Updated 2026-10-01.</em></p>
 
 
 

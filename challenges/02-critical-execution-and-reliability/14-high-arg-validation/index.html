@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4657,6 +4657,8 @@
       
         
       
+        
+      
     
     
     
@@ -5538,6 +5540,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10296,6 +10326,7 @@ elif result.returncode != 0:
     # Execution failure — side effects may have occurred, check state before retrying
     pass
 </code></pre>
+<p>A command declared <code>arguments: "passthrough"</code> in the manifest is the exception: its <code>2</code> may be the wrapped tool's own, marked <code>error.code: "DELEGATED_EXIT"</code> in the envelope on the last stderr line, and promises nothing about side effects (<a href="../../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>).</p>
 <p><strong>Limitation:</strong> If the tool does not distinguish exit 2 (validation) from exit 1 (execution failure), the agent cannot safely determine whether a retry would cause duplicate side effects — treat any non-zero exit from a mutating command as potentially having caused partial side effects</p>
 
 

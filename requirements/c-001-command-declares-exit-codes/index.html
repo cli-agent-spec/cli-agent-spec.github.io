@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5513,6 +5515,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10139,7 +10169,7 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: High / Time: High / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Every command MUST declare a complete, exhaustive map of all exit codes it may emit, as part of its registration metadata. The framework MUST refuse to register a command that lacks this declaration. The exit code map MUST use the framework's named constants (REQ-F-001). The declared exit codes MUST be exposed in the command's <code>--schema</code> output.</p>
+<p>Every command MUST declare a complete, exhaustive map of all exit codes it may emit, as part of its registration metadata. The framework MUST refuse to register a command that lacks this declaration. The exit code map MUST use the framework's named constants (REQ-F-001). The declared exit codes MUST be exposed in the command's <code>--schema</code> output. A passthrough command (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>) declares only the codes the framework emits for it; the delegated tool's own codes pass through as <code>DELEGATED_EXIT</code> undeclared.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Attempting to register a command without an <code>exit_codes</code> declaration raises a framework error</li>
@@ -10240,6 +10270,11 @@ register command &quot;broken&quot;:
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
 <td>O</td>
 <td>Aggregates: manifest collects exit code declarations from all commands</td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Specializes: a passthrough command does not declare the delegated tool's codes</td>
 </tr>
 </tbody>
 </table>

@@ -6,14 +6,14 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 158 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
       
       
       
         <link rel="canonical" href="https://cli-agent-spec.github.io/requirements/f-001-standard-exit-code-table/">
       
       
-        <link rel="prev" href="../c-030-error-responses-include-fix-command/">
+        <link rel="prev" href="../c-031-passthrough-commands-delegate-to-another-parser/">
       
       
         <link rel="next" href="../f-002-exit-code-2-reserved-for-validation-failures/">
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5400,6 +5402,34 @@
     
   
     REQ-C-030: Error Responses Include Executable fix_command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-031-passthrough-commands-delegate-to-another-parser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
   
 
     
@@ -10139,7 +10169,7 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: High / Time: High / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST define and enforce a fixed, documented exit code table. Commands MUST NOT exit with any code outside this table for a standard condition. The table MUST include: <code>0</code> (success), <code>1</code> (general error — last resort), <code>2</code> (argument/validation error — zero side effects guaranteed), <code>3</code> (operation started but failed mid-way, partial side effects), <code>4</code> (precondition not met), <code>5</code> (not found), <code>6</code> (conflict / already exists), <code>7</code> (permission denied — valid credentials, wrong access level), <code>8</code> (auth required — credentials missing or invalid), <code>9</code> (payment required), <code>10</code> (timeout — partial side effects possible), <code>11</code> (rate limited — retry after back-off), <code>12</code> (service unavailable), <code>13</code> (command redirected — use replacement verbatim). The framework MUST provide named constants for every code; commands MUST reference these constants, never literal integers.</p>
+<p>The framework MUST define and enforce a fixed, documented exit code table. Commands MUST NOT exit with any code outside this table for a standard condition. The table MUST include: <code>0</code> (success), <code>1</code> (general error — last resort), <code>2</code> (argument/validation error — zero side effects guaranteed), <code>3</code> (operation started but failed mid-way, partial side effects), <code>4</code> (precondition not met), <code>5</code> (not found), <code>6</code> (conflict / already exists), <code>7</code> (permission denied — valid credentials, wrong access level), <code>8</code> (auth required — credentials missing or invalid), <code>9</code> (payment required), <code>10</code> (timeout — partial side effects possible), <code>11</code> (rate limited — retry after back-off), <code>12</code> (service unavailable), <code>13</code> (command redirected — use replacement verbatim). The framework MUST provide named constants for every code; commands MUST reference these constants, never literal integers. A passthrough command (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>) is the one exemption: it exits with the delegated tool's own code, reported as <code>DELEGATED_EXIT</code> when non-zero, and the table's meanings do not apply to that code.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Every exit code emitted by a framework-based command appears in the framework's code table</li>
@@ -10311,6 +10341,11 @@ raise CommandError(5, &quot;User not found&quot;)
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
 <td>O</td>
 <td>Exposes: manifest includes the exit code table per command</td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Specializes: a passthrough command exits with the delegated tool's own code</td>
 </tr>
 </tbody>
 </table>
