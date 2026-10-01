@@ -10473,8 +10473,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tbody>
 <tr>
 <td><code>output_file</code></td>
-<td><code>"formatted"</code> | <code>"binary"</code></td>
-<td>Command registers <code>--output &lt;path&gt;</code>. <code>formatted</code>: the file gets the <code>--format</code> representation; <code>binary</code>: the file gets the raw bytes and <code>data</code> is <code>{path, bytes, content_type, sha256}</code>; <code>--output -</code> exits <code>2</code> (REQ-O-001)</td>
+<td><code>"formatted"</code> | <code>"binary"</code> | <code>"handler"</code> | <code>"envelope"</code></td>
+<td>Command registers <code>--output &lt;path&gt;</code>. <code>formatted</code>: the file gets the <code>--format</code> representation; <code>binary</code>: the file gets the raw bytes and <code>data</code> is <code>{path, bytes, content_type, sha256}</code>, and <code>--output -</code> exits <code>2</code>; <code>handler</code>: the handler writes the file, described by the command's documentation; <code>envelope</code>: the file gets the final <code>ResponseEnvelope</code> as JSON whatever <code>--format</code> says (REQ-O-001)</td>
 </tr>
 <tr>
 <td><code>option_placement</code></td>
@@ -10929,6 +10929,36 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Every variable the tool reads has one home: <code>TOOL_FORMAT</code> backs <code>--format</code>, <code>TOOL_TOKEN</code> is a secret, and the four that back no flag sit in root <code>env_vars</code>, each described because no flag's <code>description</code> covers it.</p>
+<p><strong>Valid — commands whose <code>--output</code> is not a <code>--format</code> rendering</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.6&quot;,
+  &quot;framework_version&quot;: &quot;2.4.0&quot;,
+  &quot;etag&quot;: &quot;sha256:51c8e0&quot;,
+  &quot;commands&quot;: {
+    &quot;build&quot;: {
+      &quot;description&quot;: &quot;Compile the project into a single executable written to --output&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;output_file&quot;: &quot;handler&quot;,
+      &quot;flags&quot;: {
+        &quot;output&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: true, &quot;description&quot;: &quot;Path of the compiled executable&quot; }
+      },
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Executable written&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    },
+    &quot;test&quot;: {
+      &quot;description&quot;: &quot;Run the test suite, streaming the runner's own output&quot;,
+      &quot;danger_level&quot;: &quot;safe&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;output_file&quot;: &quot;envelope&quot;,
+      &quot;flags&quot;: {
+        &quot;output&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Path that receives the final JSON envelope&quot; }
+      },
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;All tests passed&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; } }
+    }
+  }
+}
+</code></pre>
+<p><code>tool build --output app</code> writes the executable the command describes; <code>--format</code> does not change it. <code>tool test --output result.json --format plain</code> streams the runner's output to stdout and writes the final envelope to <code>result.json</code> as JSON.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -10978,6 +11008,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Marking every flag of an "exactly one of" group <code>required: true</code>.</strong> No call can then satisfy the command; keep each flag <code>required: false</code> and declare the group as a <code>one_of</code> rule</li>
 <li><strong>Emitting pairwise <code>prohibited</code> rules next to a <code>one_of</code> group.</strong> <code>one_of</code> already forbids combining its members; the extra rules repeat the constraint and let the two drift apart</li>
 <li><strong>Declaring <code>output_file: "formatted"</code> on a command that returns a binary result.</strong> The file would then hold a JSON or plain wrapper around base64, not the file the caller asked for; a binary result is <code>"binary"</code></li>
+<li><strong>Omitting <code>output_file</code> because the handler writes the file itself.</strong> Absence tells the agent the command has no <code>--output</code>; declare <code>"handler"</code></li>
 <li><strong>Naming a flag's environment variables only in its <code>description</code>.</strong> "(read from <code>$A</code> or <code>$B</code> when not passed)" is prose an agent must parse; list the names in <code>env_vars</code>, in precedence order</li>
 <li><strong>Listing a secret in <code>env_vars</code>.</strong> A token or password is not a flag value (REQ-C-016); declare its variable in <code>secret_env_vars</code></li>
 <li><strong>Listing a borrowed name before the tool-prefixed one.</strong> <code>CLOUDFALL_PROJECT</code> ahead of <code>TOOL_PROJECT</code> lets a variable set for another tool override the one set for this tool (REQ-F-073)</li>
@@ -11004,6 +11035,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <p><strong>Writing a result to a file</strong>
 - <code>output_file: "binary"</code>: pass <code>--output &lt;path&gt;</code> to get the file itself; <code>--format</code> then shapes only the envelope on stdout. Verify the write with <code>data.sha256</code> or <code>data.bytes</code> instead of reading the file back. Never pass <code>--output -</code>; it exits <code>2</code>
 - <code>output_file: "formatted"</code>: the file holds the <code>--format</code> representation of <code>data</code>, so choose <code>--format</code> for the file's consumer
+- <code>output_file: "handler"</code>: the command's handler writes the file; read the command's <code>description</code> for what it holds, and do not expect <code>--format</code> to change it
+- <code>output_file: "envelope"</code>: the file holds the final <code>ResponseEnvelope</code> as JSON whatever <code>--format</code> says; read <code>ok</code>, <code>data</code>, and <code>error</code> from the file, not from stdout
 - <code>output_file</code> absent: the command takes no <code>--output</code>; a binary result arrives base64-encoded in <code>data</code> (REQ-F-017). Treat a pre-3.3 manifest the same way and read <code>output_schema</code> for a binary wrapper</p>
 <p><strong>Building a call from <code>FlagEntry</code></strong>
 - A command's accepted flags are the root <code>flags</code> plus its own <code>flags</code>; a name in neither produces <code>ARG_ERROR (2)</code>
@@ -11056,7 +11089,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert no <code>CommandEntry.flags</code> key or <code>short</code> value equals a root <code>flags</code> key or <code>short</code> value
 - Assert <code>positionals</code> lists every positional the parser accepts, in order, with no required entry after an optional one and <code>variadic</code> only on the last
 - Assert every command the framework registers, and each of its subcommands, carries <code>builtin: true</code>, and no application command does
-- Assert <code>output_file</code> is present on exactly the commands that register <code>--output &lt;path&gt;</code>, and is <code>"binary"</code> exactly when the command's result is a binary value
+- Assert <code>output_file</code> is present on exactly the commands that register <code>--output &lt;path&gt;</code>, and is <code>"binary"</code> exactly when the command's result is a binary value, <code>"handler"</code> exactly when the handler writes the file, and <code>"envelope"</code> exactly when the framework writes the final envelope to it
 - Assert every flag's <code>env_vars</code> lists exactly the variables its parser reads, in the order it reads them, with the tool-prefixed name first whenever a name without the prefix is listed, and no name from <code>secret_env_vars</code>
 - Assert root <code>env_vars</code> lists every other variable the tool reads outside the universal exceptions, each with the tool prefix and a <code>description</code>, and no name that also appears in a flag's <code>env_vars</code> or a <code>secret_env_vars</code>
 - Assert <code>etag</code> changes when any command registration changes, and is stable across identical registrations (determinism test)</p>

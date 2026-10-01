@@ -10040,6 +10040,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-36-handler-written-and-envelope-output-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.6: handler-written and envelope --output files
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10461,6 +10472,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-36-handler-written-and-envelope-output-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.6: handler-written and envelope --output files
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10830,6 +10852,13 @@
 <li>A producer that sets root <code>env_vars</code> emits <code>schema_version</code> <code>3.5</code>; a <code>3.4</code> manifest stays valid, and on it an absent root <code>env_vars</code> means unknown, not none</li>
 </ul>
 <p><strong>Why:</strong> REQ-F-073 promises that <code>tool manifest</code> lists every variable the tool recognizes, but after 3.4 the manifest had homes only for flag-backed variables and secrets, and its root rejects unknown fields, so <code>&lt;TOOLNAME&gt;_DEBUG</code> and the audit log's variables could not appear anywhere (#23).</p>
+<h3 id="manifestresponse-36-handler-written-and-envelope-output-files">ManifestResponse 3.6: handler-written and envelope <code>--output</code> files</h3>
+<ul>
+<li><code>CommandEntry.output_file</code> gains two values: <code>"handler"</code> (the command handler writes the file; the command's own documentation describes its contents and <code>--format</code> does not select it) and <code>"envelope"</code> (the framework writes the final <code>ResponseEnvelope</code> as JSON to the file whatever <code>--format</code> selects; <code>--format</code> shapes only stdout) (REQ-O-001)</li>
+<li>The key stays on every command that registers <code>--output &lt;path&gt;</code>, so absence still means the command has no <code>--output</code>. New acceptance criterion: an <code>"envelope"</code> command given <code>--format plain</code> still writes a JSON envelope to the file</li>
+<li>A producer that emits either value emits <code>schema_version</code> <code>3.6</code>; earlier manifests stay valid</li>
+</ul>
+<p><strong>Why:</strong> <code>"formatted"</code> and <code>"binary"</code> both assume the framework renders the result into the file, so a command whose handler owns the path, or whose stdout carries something other than an envelope and saves the envelope to <code>--output</code>, fit neither and had to mislabel itself or omit the key, which reads as "no <code>--output</code>" (#27).</p>
 <h2 id="190-2026-09-30">1.9.0 — 2026-09-30</h2>
 <h3 id="audit-log-and-logger-rotation-defaults-are-recommendations">Audit log and logger rotation defaults are recommendations</h3>
 <ul>
