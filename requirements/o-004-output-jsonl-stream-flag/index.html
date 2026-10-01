@@ -10141,20 +10141,37 @@
 <h2 id="description">Description</h2>
 <p>For commands that process or return large datasets, the framework MUST support <code>--stream</code> (equivalent to <code>--format jsonl</code>) which emits one JSON object per line as results are produced, rather than buffering all results before emitting. Commands that support streaming MUST declare <code>supports_streaming: true</code>. In streaming mode, pagination metadata MUST be emitted as a final summary line.</p>
 <p>Commands that stream by default (see §76) MUST additionally declare <code>streaming_default: true</code>. A streaming-default command MUST accept <code>--no-stream</code> (equivalent to <code>--format json</code>) to return a buffered <code>ResponseEnvelope</code> for compatibility with envelope-only consumers. The <code>streaming_default</code> field MUST be advertised in the manifest and in <code>--help</code> text.</p>
+<p>A stream ends with exactly one terminal line. On success it is the summary line (<code>"_summary": true</code>). When the command fails after its first line, the terminal line is instead the error <code>ResponseEnvelope</code> (<code>"ok": false</code>, REQ-F-004), and the process exits with that envelope's <code>meta.exit_code</code>. A line holding <code>"_summary": true</code> or an <code>"ok"</code> boolean beside an <code>"error"</code> key is therefore never an item, and neither is a heartbeat line (<code>"heartbeat": true</code>, REQ-O-038).</p>
+<p><strong>Records consumers.</strong> A command that reads such a stream from another command declares <code>stdin_input: "records"</code> with a record type; the manifest shows it as <code>CommandEntry.stdin</code> with <code>mode: "records"</code> and <code>record_schema</code> (ManifestResponse 3.8). The framework reads the stream through line mode (REQ-F-054, per-line cap, no total cap), skips blank lines and heartbeat lines (<code>"heartbeat": true</code>, REQ-O-038), and classifies every other line in order:</p>
+<ul>
+<li>The summary line ends the input. The framework reads nothing after it and hands the handler no record for it</li>
+<li>An error envelope (<code>"ok": false</code>) ends the run with exit <code>1</code> and error code <code>UPSTREAM_FAILED</code>. <code>context</code> carries <code>line</code> (1-based), <code>upstream</code> (the upstream <code>error</code> object, with the consumer's own secret redaction applied), and <code>upstream_exit_code</code> (the envelope's <code>meta.exit_code</code>)</li>
+<li>Any other line is one record: a JSON object that MUST validate against the declared record type. A line that is not a JSON object, or fails validation, ends the run with exit <code>1</code> and error code <code>RECORD_INVALID</code>, with <code>context.line</code> and, when one field is at fault, <code>context.field</code></li>
+<li>End of stdin before a terminal line ends the run with exit <code>1</code> and error code <code>UPSTREAM_INCOMPLETE</code>, with <code>context.line</code> (the last line read) and <code>context.records</code> (records handed to the handler). The producer was killed or exited without finishing its stream</li>
+</ul>
+<p>All four failures happen after the handler has started, so they exit <code>1</code>, not <code>2</code> (REQ-F-002), and carry <code>retryable: false</code> and <code>phase: "execution"</code>: the consumer may already have acted on earlier records. Input read through <code>--input-file &lt;path&gt;</code> is a finished file, not a live producer: a summary line still ends it, and end of file without one ends the input normally instead of failing. <code>--input-file -</code> is stdin and follows the stdin rule.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li><code>--stream</code> causes output to begin appearing before the command completes</li>
 <li>Each line of streaming output is a valid, self-contained JSON object</li>
-<li>The final line of streaming output is a summary object containing <code>pagination</code> metadata</li>
+<li>On success, the final line of streaming output is a summary object containing <code>pagination</code> metadata</li>
 <li>A command that does not declare <code>supports_streaming: true</code> emits a warning when <code>--stream</code> is passed</li>
 <li>A command that declares <code>streaming_default: true</code> emits JSONL without any flags</li>
 <li>Passing <code>--no-stream</code> to a streaming-default command returns a valid <code>ResponseEnvelope</code></li>
 <li>The manifest exposes <code>streaming_default: true</code> for commands that declare it</li>
+<li>A streaming command that fails after emitting two items emits a third and last line that is a <code>ResponseEnvelope</code> with <code>"ok": false</code>, no summary line, and exits with that envelope's <code>meta.exit_code</code></li>
+<li>A records consumer fed two items and a summary line hands the handler two records and exits <code>0</code></li>
+<li>A records consumer fed one item and an error envelope on line 2 exits <code>1</code> with <code>error.code: "UPSTREAM_FAILED"</code>, <code>context.line: 2</code>, <code>context.upstream.code</code> equal to the upstream error's code, and <code>context.upstream_exit_code</code> equal to its <code>meta.exit_code</code></li>
+<li>A records consumer fed two items and then end of stdin, with no terminal line, exits <code>1</code> with <code>error.code: "UPSTREAM_INCOMPLETE"</code>, <code>context.line: 2</code>, and <code>context.records: 2</code></li>
+<li>A records consumer fed a line that is not a JSON object, or a record missing a required field, exits <code>1</code> with <code>error.code: "RECORD_INVALID"</code> and that line's number in <code>context.line</code></li>
+<li>A records consumer given <code>--input-file &lt;path&gt;</code> whose file has two items and no summary line hands the handler two records and exits <code>0</code></li>
+<li>Every one of these consumer errors carries <code>retryable: false</code></li>
+<li>A records consumer fed an item, a heartbeat line, an item, and a summary line hands the handler two records and exits <code>0</code></li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Types:</strong> <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a> (<code>CommandEntry.streaming_default</code>) · <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a> (<code>ResponseMeta</code> field names on the summary line)</p>
-<p>Each streamed line is a self-contained JSON object using the command's declared item type. The final summary line reuses <code>ResponseMeta</code> field names.</p>
+<p>Each streamed line is a self-contained JSON object using the command's declared item type. The final summary line reuses <code>ResponseMeta</code> field names; a failed stream ends with a <code>ResponseEnvelope</code> instead. A records consumer declares <code>CommandEntry.stdin</code> with <code>mode: "records"</code> and <code>record_schema</code> in <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a>; its errors are <code>ErrorDetail</code> objects in <a href="../../schemas/response-envelope.json"><code>response-envelope.json</code></a>.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <pre><code class="language-bash">$ tool list-deployments --stream
@@ -10184,6 +10201,47 @@
 $ tool list-events --no-stream
 {&quot;ok&quot;: true, &quot;data&quot;: [{&quot;id&quot;: &quot;e1&quot;, ...}, {&quot;id&quot;: &quot;e2&quot;, ...}], &quot;error&quot;: null, &quot;warnings&quot;: [], &quot;meta&quot;: {&quot;total&quot;: 2, &quot;duration_ms&quot;: 18}}
 </code></pre>
+<p>A stream that fails mid-way ends on the error envelope, not a summary line:</p>
+<pre><code class="language-jsonl">{&quot;id&quot;: &quot;d1&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;target&quot;: &quot;prod&quot;}
+{&quot;id&quot;: &quot;d2&quot;, &quot;status&quot;: &quot;running&quot;, &quot;target&quot;: &quot;staging&quot;}
+{&quot;ok&quot;: false, &quot;data&quot;: null, &quot;error&quot;: {&quot;code&quot;: &quot;UNAVAILABLE&quot;, &quot;message&quot;: &quot;Deployment API returned 503&quot;, &quot;retryable&quot;: true}, &quot;warnings&quot;: [], &quot;meta&quot;: {&quot;exit_code&quot;: 12, &quot;duration_ms&quot;: 1840}}
+</code></pre>
+<p>Piped into a records consumer, that stream fails the consumer on line 3:</p>
+<pre><code class="language-bash">$ tool list-deployments --stream | tool annotate --format json
+</code></pre>
+<pre><code class="language-json">{
+  &quot;ok&quot;: false,
+  &quot;data&quot;: null,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;UPSTREAM_FAILED&quot;,
+    &quot;message&quot;: &quot;Upstream stream failed on line 3: Deployment API returned 503&quot;,
+    &quot;retryable&quot;: false,
+    &quot;phase&quot;: &quot;execution&quot;,
+    &quot;context&quot;: {
+      &quot;line&quot;: 3,
+      &quot;upstream&quot;: { &quot;code&quot;: &quot;UNAVAILABLE&quot;, &quot;message&quot;: &quot;Deployment API returned 503&quot;, &quot;retryable&quot;: true },
+      &quot;upstream_exit_code&quot;: 12
+    }
+  },
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: { &quot;exit_code&quot;: 1, &quot;duration_ms&quot;: 1852 }
+}
+</code></pre>
+<p>A producer killed before its terminal line:</p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: false,
+  &quot;data&quot;: null,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;UPSTREAM_INCOMPLETE&quot;,
+    &quot;message&quot;: &quot;Stdin ended after line 2 without a _summary line&quot;,
+    &quot;retryable&quot;: false,
+    &quot;phase&quot;: &quot;execution&quot;,
+    &quot;context&quot;: { &quot;line&quot;: 2, &quot;records&quot;: 2 }
+  },
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: { &quot;exit_code&quot;: 1, &quot;duration_ms&quot;: 31 }
+}
+</code></pre>
 <hr />
 <h2 id="example">Example</h2>
 <p>Commands opt in by declaring <code>supports_streaming: true</code> at registration time.</p>
@@ -10195,6 +10253,14 @@ register command &quot;list-deployments&quot;:
 
 # tool list-deployments --stream  →  JSONL lines as items arrive
 # tool list-deployments --format jsonl  →  identical behavior
+
+register command &quot;annotate&quot;:
+  stdin_input: &quot;records&quot;
+  record_type: Deployment   # {id, status, target}; published as stdin.record_schema
+  # handler iterates records as they arrive; the framework stops at _summary
+
+# tool list-deployments --stream | tool annotate  →  one record per item
+# tool annotate --input-file deployments.ndjson   →  end of file ends the input
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>
@@ -10221,6 +10287,31 @@ register command &quot;list-deployments&quot;:
 <td><a href="../f-053-stdout-unbuffering-in-non-tty-mode/">REQ-F-053</a></td>
 <td>F</td>
 <td>Provides: stdout unbuffering required for streaming to work</td>
+</tr>
+<tr>
+<td><a href="../f-054-stdin-payload-size-cap-with-input-file-fallback/">REQ-F-054</a></td>
+<td>F</td>
+<td>Provides: line mode and its per-line cap, through which a records consumer reads the stream</td>
+</tr>
+<tr>
+<td><a href="../f-065-pipeline-exit-code-propagation/">REQ-F-065</a></td>
+<td>F</td>
+<td>Composes: REQ-F-065 covers pipelines the framework runs; <code>UPSTREAM_FAILED</code> and <code>UPSTREAM_INCOMPLETE</code> surface an upstream failure in a pipeline the caller's shell runs</td>
+</tr>
+<tr>
+<td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>
+<td>F</td>
+<td>Wraps: a failed stream ends with the standard error envelope</td>
+</tr>
+<tr>
+<td><a href="../o-039-input-file-flag-for-stdin-commands/">REQ-O-039</a></td>
+<td>O</td>
+<td>Composes: <code>--input-file &lt;path&gt;</code> feeds a records consumer a finished file, so end of file ends the input</td>
+</tr>
+<tr>
+<td><a href="../o-038-heartbeat-ms-flag-for-long-running-commands/">REQ-O-038</a></td>
+<td>O</td>
+<td>Composes: a records consumer skips the producer's heartbeat lines, which are neither records nor terminal lines</td>
 </tr>
 <tr>
 <td><a href="../../challenges/04-critical-output-and-parsing/76-high-streaming-default-incompatibility/">§76</a></td>

@@ -10030,6 +10030,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#read-streams-line-by-line-capped-per-line-req-f-054-req-o-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read streams line by line, capped per line (REQ-F-054, REQ-O-004)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#declare-stdin-paths-in-schema-output" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10197,6 +10208,23 @@ def read_stdin() -&gt; str:
         )
     return data.decode()
 </code></pre>
+<h3 id="read-streams-line-by-line-capped-per-line-req-f-054-req-o-004">Read streams line by line, capped per line (REQ-F-054, REQ-O-004)</h3>
+<p>The 64 KB cap is for buffered stdin: a payload read whole before the handler runs. A command that consumes a stream (NDJSON from another command) declares line mode instead. The framework reads nothing up front and hands the handler one line at a time, so the stream has no total size; each line has a cap (1 MiB by default). An oversized line exits <code>1</code> with <code>LINE_TOO_LARGE</code> and the line number, not <code>2</code>, because earlier lines may already have been acted on.</p>
+<pre><code class="language-python">MAX_LINE_BYTES = 1_048_576
+
+def read_lines(stream: BinaryIO) -&gt; Iterator[str]:
+    for number, raw in enumerate(iter(lambda: stream.readline(MAX_LINE_BYTES + 2), b&quot;&quot;), start=1):
+        line = raw.rstrip(b&quot;\n&quot;).rstrip(b&quot;\r&quot;)
+        if len(line) &gt; MAX_LINE_BYTES:
+            fail_structured(
+                code=&quot;LINE_TOO_LARGE&quot;,
+                message=f&quot;Stdin line {number} exceeds the {MAX_LINE_BYTES}-byte line limit&quot;,
+                context={&quot;line&quot;: number, &quot;limit_bytes&quot;: MAX_LINE_BYTES},
+                exit_code=1,
+            )
+        yield line.decode()
+</code></pre>
+<p>Declare the mode in the manifest (<code>stdin: {"mode": "lines"}</code>), so an agent knows it can pipe a long stream. When the lines are another command's records, declare <code>"records"</code> with a <code>record_schema</code>: the framework then validates each line and stops at the producer's <code>_summary</code> line, failing with <code>UPSTREAM_FAILED</code> or <code>UPSTREAM_INCOMPLETE</code> when the producer failed or was cut off. Line mode removes the size cap, not the §61 hazard: it is deadlock-free when another process writes stdin, but a caller that writes stdin and then reads stdout from one thread still sends large input through <code>--input-file</code>.</p>
 <h3 id="declare-stdin-paths-in-schema-output">Declare stdin paths in <code>--schema</code> output</h3>
 <p>Agents discover capabilities from machine-readable schema. Every stdin-reading argument must document <code>stdin_fallback</code>, <code>stdin_format</code>, and <code>non_tty_behavior</code> so agents can find the correct invocation pattern without trial-and-error.</p>
 <pre><code class="language-json">{
@@ -10293,7 +10321,12 @@ def invoke_stdin_command(cmd: list[str], payload: str) -&gt; dict:
 <tr>
 <td>64 KB stdin cap</td>
 <td>REQ-F-054 · §61</td>
-<td>Read at most 64 KB; reject with <code>STDIN_TOO_LARGE</code> + hint to <code>--input-file</code></td>
+<td>Read at most 64 KB of buffered stdin; reject with <code>STDIN_TOO_LARGE</code> + hint to <code>--input-file</code></td>
+</tr>
+<tr>
+<td>Per-line cap in line mode</td>
+<td>REQ-F-054 · REQ-O-004</td>
+<td>Stream commands read lines lazily with no total cap; reject a line over 1 MiB with <code>LINE_TOO_LARGE</code> (exit <code>1</code>)</td>
 </tr>
 <tr>
 <td><code>--input-file</code> auto-registration</td>
@@ -10340,7 +10373,7 @@ def invoke_stdin_command(cmd: list[str], payload: str) -&gt; dict:
 </tr>
 <tr>
 <td><a href="../../requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/">REQ-F-054</a></td>
-<td>Enforces: 64 KB stdin cap and <code>STDIN_TOO_LARGE</code> error</td>
+<td>Enforces: 64 KB buffered stdin cap, <code>STDIN_TOO_LARGE</code> error, and the per-line cap of line mode</td>
 </tr>
 <tr>
 <td><a href="../../requirements/o-039-input-file-flag-for-stdin-commands/">REQ-O-039</a></td>
@@ -10349,6 +10382,10 @@ def invoke_stdin_command(cmd: list[str], payload: str) -&gt; dict:
 <tr>
 <td><a href="../../requirements/o-006-stdin-as-id-source/">REQ-O-006</a></td>
 <td>Provides: <code>-</code> convention for reading a single ID value from stdin</td>
+</tr>
+<tr>
+<td><a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a></td>
+<td>Provides: the stream terminal line and the records consumer errors</td>
 </tr>
 <tr>
 <td><a href="../../schemas/response-envelope/">schemas/response-envelope.md</a></td>

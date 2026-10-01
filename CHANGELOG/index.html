@@ -10062,6 +10062,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-38-line-mode-stdin-and-records-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.8: line-mode stdin and records consumers
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10505,6 +10516,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-38-line-mode-stdin-and-records-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.8: line-mode stdin and records consumers
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10889,6 +10911,18 @@
 <li>A producer that sets either field emits <code>schema_version</code> <code>3.7</code>; earlier manifests stay valid</li>
 </ul>
 <p><strong>Why:</strong> a flag that takes a JSON object had to declare itself a <code>string</code> and describe the shape in prose, and an agent writing to a project-relative <code>--output</code> from a subdirectory looked for the file under its working directory (#24).</p>
+<h3 id="manifestresponse-38-line-mode-stdin-and-records-consumers">ManifestResponse 3.8: line-mode stdin and records consumers</h3>
+<ul>
+<li>REQ-F-054: the 65536-byte cap (<code>TOOL_MAX_STDIN_BYTES</code>, exit <code>2</code> <code>STDIN_TOO_LARGE</code>) now names buffered stdin, and is unchanged there. A command that declares line mode (<code>stdin_input: "lines"</code> or <code>"records"</code>) reads nothing before the handler runs and gets one line at a time, with no total cap and a per-line cap (default 1048576 bytes). A longer line exits <code>1</code> with <code>LINE_TOO_LARGE</code> and <code>context.line</code>: <code>1</code>, not <code>2</code>, because the handler has already started (REQ-F-002)</li>
+<li>REQ-F-054 and §61: line mode avoids the pipe deadlock only when a separate process writes stdin, as in a shell pipeline; a caller that writes stdin and reads stdout from one thread still uses <code>--input-file</code></li>
+<li>REQ-O-039: <code>--input-file</code> is registered on line-mode commands too and reads the file as lines with the same per-line cap; <code>--input-file -</code> reads stdin as lines</li>
+<li>REQ-O-004: a stream ends with one terminal line, the <code>_summary</code> line on success or the error <code>ResponseEnvelope</code> (<code>ok: false</code>) when the command fails after its first line</li>
+<li>REQ-O-004: a records consumer skips blank and heartbeat lines (REQ-O-038), validates each other line against its record type, and stops at the <code>_summary</code> line. An upstream error envelope exits <code>1</code> with <code>UPSTREAM_FAILED</code> (<code>context.line</code>, <code>upstream</code>, <code>upstream_exit_code</code>), end of stdin without a terminal line exits <code>1</code> with <code>UPSTREAM_INCOMPLETE</code> (<code>context.line</code>, <code>records</code>), and an invalid line exits <code>1</code> with <code>RECORD_INVALID</code> (<code>context.line</code>, <code>field</code>); all carry <code>retryable: false</code>. Read through <code>--input-file &lt;path&gt;</code>, end of file ends the input without a <code>_summary</code> line</li>
+<li><code>CommandEntry.stdin</code> (optional, <code>{mode, max_bytes?, max_line_bytes?, record_schema?}</code>) declares how a command reads stdin: <code>buffered</code> with <code>max_bytes</code>, <code>lines</code> with <code>max_line_bytes</code>, or <code>records</code> with <code>max_line_bytes</code> and a required <code>record_schema</code>. An agent picks a pipe or <code>--input-file</code> and matches a producer's items to <code>record_schema</code> before the call</li>
+<li>REQ-F-065 links to REQ-O-004 for pipelines the caller's shell runs, and §56 names the records consumer errors as a framework defense</li>
+<li>A producer that sets <code>stdin</code> emits <code>schema_version</code> <code>3.8</code>; older manifests stay valid</li>
+</ul>
+<p><strong>Why:</strong> REQ-F-054 capped every stdin read at 64 KiB, so an NDJSON pipeline of 300 records of 320 bytes failed with <code>STDIN_TOO_LARGE</code>, and a consumer of another command's stream could not tell a failed or truncated upstream run from short valid input (#26).</p>
 <h2 id="190-2026-09-30">1.9.0 — 2026-09-30</h2>
 <h3 id="audit-log-and-logger-rotation-defaults-are-recommendations">Audit log and logger rotation defaults are recommendations</h3>
 <ul>

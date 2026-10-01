@@ -10139,18 +10139,26 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: High / Time: Critical / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST enforce a maximum stdin read size (default: 65536 bytes, configurable via <code>TOOL_MAX_STDIN_BYTES</code>). If a stdin read would exceed this limit, the framework MUST exit with code 2 and a structured error directing the caller to use <code>--input-file &lt;path&gt;</code> instead. The <code>--input-file</code> flag MUST be automatically registered by the framework for any command that declares stdin input. This prevents bidirectional pipe deadlocks caused by the UNIX kernel pipe buffer limit.</p>
+<p>The framework MUST enforce a maximum stdin read size (default: 65536 bytes, configurable via <code>TOOL_MAX_STDIN_BYTES</code>) on buffered stdin. If a stdin read would exceed this limit, the framework MUST exit with code 2 and a structured error directing the caller to use <code>--input-file &lt;path&gt;</code> instead. The <code>--input-file</code> flag MUST be automatically registered by the framework for any command that declares stdin input. This prevents bidirectional pipe deadlocks caused by the UNIX kernel pipe buffer limit.</p>
+<p>Stdin is buffered unless the command declares line mode. Buffered stdin (<code>stdin_input: true</code>) is read whole before the handler runs. A command that consumes a stream one line at a time declares line mode instead (<code>stdin_input: "lines"</code>, or <code>"records"</code> for typed records under REQ-O-004): the framework reads nothing before the handler runs and hands it one line at a time as it asks, so nothing accumulates and there is no total cap. Each line is capped instead (default: 1048576 bytes, line terminator excluded; a command may declare a different cap at registration). A line over the cap ends the run with exit <code>1</code> and error code <code>LINE_TOO_LARGE</code>, carrying the 1-based line number in <code>context.line</code>. The exit is <code>1</code>, not <code>2</code>, because the handler has already started and may have acted on earlier lines; REQ-F-002 reserves <code>2</code> for failures before any side effect. Line mode is safe from the §61 deadlock only when a separate writer feeds stdin while stdout drains, as in a shell pipeline; a caller that writes stdin and reads stdout from one thread still uses <code>--input-file</code>.</p>
+<p><code>--input-file &lt;path&gt;</code> on a line-mode command reads the file as lines, with the same per-line cap and no total cap; <code>--input-file -</code> reads stdin as lines. The manifest declares each command's mode and cap in <code>CommandEntry.stdin</code> (ManifestResponse 3.8).</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A stdin payload of 65537 bytes exits with code 2 and <code>error.code: "STDIN_TOO_LARGE"</code></li>
 <li>The error includes <code>hint</code> pointing to <code>--input-file</code></li>
 <li>A command that declares <code>stdin_input: true</code> automatically has <code>--input-file</code> registered as a flag</li>
 <li>A payload of 65535 bytes is accepted and processed normally</li>
+<li>On a command that declares <code>stdin_input: "lines"</code>, 300 lines of 320 bytes each (96000 bytes in total) piped to stdin are all handed to the handler, and the command exits <code>0</code></li>
+<li>On a line-mode command, the handler receives line 1 before the producer writes line 2</li>
+<li>On a line-mode command with the default cap, a 1048577-byte third line exits <code>1</code> with <code>error.code: "LINE_TOO_LARGE"</code>, <code>error.retryable: false</code>, and <code>error.context.line: 3</code>, after lines 1 and 2 reached the handler</li>
+<li><code>tool &lt;cmd&gt; --input-file lines.ndjson</code> on a line-mode command applies the same per-line cap and reads a file larger than 65536 bytes</li>
+<li><code>TOOL_MAX_STDIN_BYTES</code> does not change the per-line cap, and a declared per-line cap does not change the buffered cap</li>
+<li>The manifest's <code>CommandEntry.stdin.mode</code> is <code>"buffered"</code> for <code>stdin_input: true</code> and <code>"lines"</code> for <code>stdin_input: "lines"</code></li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
-<p><strong>Types:</strong> <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a></p>
-<p>On oversized stdin, the framework exits with code 2 (<code>ARG_ERROR</code>) and emits a structured error with <code>code: "STDIN_TOO_LARGE"</code> and a <code>hint</code> field.</p>
+<p><strong>Types:</strong> <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a> · <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a> (<code>CommandEntry.stdin</code>)</p>
+<p>On oversized buffered stdin, the framework exits with code 2 (<code>ARG_ERROR</code>) and emits a structured error with <code>code: "STDIN_TOO_LARGE"</code> and a <code>hint</code> field. On an oversized line in line mode, it exits with code 1 (<code>GENERAL_ERROR</code>) and emits <code>code: "LINE_TOO_LARGE"</code> with <code>context.line</code> and <code>context.limit_bytes</code>. <code>CommandEntry.stdin</code> declares <code>mode</code> with <code>max_bytes</code> (buffered) or <code>max_line_bytes</code> (lines and records).</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <p>Oversized stdin rejection:</p>
@@ -10170,6 +10178,28 @@
   &quot;meta&quot;: { &quot;exit_code&quot;: 2, &quot;duration_ms&quot;: 1 }
 }
 </code></pre>
+<p>Oversized line in line mode:</p>
+<pre><code class="language-bash">$ { echo '{&quot;id&quot;:&quot;a1&quot;}'; echo '{&quot;id&quot;:&quot;a2&quot;}'; python3 -c &quot;print('x'*1048577)&quot;; } | tool tag --format json
+</code></pre>
+<pre><code class="language-json">{
+  &quot;ok&quot;: false,
+  &quot;data&quot;: null,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;LINE_TOO_LARGE&quot;,
+    &quot;message&quot;: &quot;Stdin line 3 exceeds the 1048576-byte line limit&quot;,
+    &quot;retryable&quot;: false,
+    &quot;phase&quot;: &quot;execution&quot;,
+    &quot;context&quot;: { &quot;line&quot;: 3, &quot;limit_bytes&quot;: 1048576 }
+  },
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: { &quot;exit_code&quot;: 1, &quot;duration_ms&quot;: 9 }
+}
+</code></pre>
+<p>The manifest declares the mode and its cap in <code>CommandEntry.stdin</code>:</p>
+<pre><code class="language-json">{
+  &quot;stdin&quot;: { &quot;mode&quot;: &quot;lines&quot;, &quot;max_line_bytes&quot;: 1048576 }
+}
+</code></pre>
 <hr />
 <h2 id="example">Example</h2>
 <p>Framework-Automatic: no command author action needed. The framework enforces the cap during stdin reading at bootstrap, before the command handler runs.</p>
@@ -10181,6 +10211,14 @@ register command &quot;process&quot;:
 # Framework enforces the cap; large payloads must use --input-file:
 $ echo &quot;$LARGE_JSON&quot; | tool process      # → STDIN_TOO_LARGE if &gt; 65536 bytes
 $ tool process --input-file payload.json  # → accepted, no size limit
+
+# Line mode: the handler reads one line at a time; each line is capped, the stream is not
+register command &quot;tag&quot;:
+  stdin_input: &quot;lines&quot;
+  max_line_bytes: 1048576   # the default; declare a different cap here
+
+$ tool list-securities --format jsonl | tool tag   # any number of lines
+$ tool tag --input-file securities.ndjson          # same per-line cap, from a file
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>
@@ -10211,7 +10249,17 @@ $ tool process --input-file payload.json  # → accepted, no size limit
 <tr>
 <td><a href="../f-015-validate-before-execute-phase-order/">REQ-F-015</a></td>
 <td>F</td>
-<td>Composes: stdin cap check is part of Phase 1 (validation), before any side effects</td>
+<td>Composes: the buffered stdin cap check is part of Phase 1 (validation), before any side effects; a line-mode cap fires during execution</td>
+</tr>
+<tr>
+<td><a href="../f-002-exit-code-2-reserved-for-validation-failures/">REQ-F-002</a></td>
+<td>F</td>
+<td>Enforces: an oversized line exits <code>1</code>, not <code>2</code>, because the handler has already started</td>
+</tr>
+<tr>
+<td><a href="../o-004-output-jsonl-stream-flag/">REQ-O-004</a></td>
+<td>O</td>
+<td>Extends: <code>records</code> mode reads a REQ-O-004 stream through line mode and ends it on the <code>_summary</code> line</td>
 </tr>
 </tbody>
 </table>
