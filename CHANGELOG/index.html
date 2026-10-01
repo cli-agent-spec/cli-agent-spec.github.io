@@ -10029,6 +10029,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-35-variables-that-back-no-flag-are-declared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.5: variables that back no flag are declared
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10439,6 +10450,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-35-variables-that-back-no-flag-are-declared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.5: variables that back no flag are declared
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10799,6 +10821,15 @@
 <li>REQ-F-073's promise that the manifest lists every recognized variable now points at <code>env_vars</code> and <code>secret_env_vars</code>; its wire format no longer shows an <code>environment</code> field the schema never had</li>
 </ul>
 <p><strong>Why:</strong> frameworks wrote "(read from <code>$A</code> or <code>$B</code> when not passed)" into flag descriptions because <code>FlagEntry</code> allowed no other place, and REQ-F-073 forbade the borrowed names outright. Contamination comes from variables a tool reads without saying so; a declared name is visible to the agent (#20).</p>
+<h3 id="manifestresponse-35-variables-that-back-no-flag-are-declared">ManifestResponse 3.5: variables that back no flag are declared</h3>
+<ul>
+<li>Root <code>env_vars</code> (optional, an array of <code>{name, deprecated?, description}</code>) lists every variable the tool reads that backs no flag and supplies no secret, such as <code>&lt;TOOLNAME&gt;_DEBUG</code>, <code>&lt;PREFIX&gt;AUDIT_LOG</code>, and <code>&lt;PREFIX&gt;SESSION_ID</code>. Each entry requires <code>description</code>; universal names such as <code>NO_COLOR</code> and <code>HOME</code> are not listed</li>
+<li><code>EnvVarEntry</code> gains an optional <code>description</code>, which stays optional in a flag's <code>env_vars</code></li>
+<li>REQ-F-073: every recognized variable appears in exactly one of root <code>env_vars</code>, a flag's <code>env_vars</code>, or <code>secret_env_vars</code>. New acceptance criteria; the wire example shows root <code>env_vars</code></li>
+<li>REQ-F-051 and REQ-O-030 declare their variables in root <code>env_vars</code> when no flag backs them, with new acceptance criteria</li>
+<li>A producer that sets root <code>env_vars</code> emits <code>schema_version</code> <code>3.5</code>; a <code>3.4</code> manifest stays valid, and on it an absent root <code>env_vars</code> means unknown, not none</li>
+</ul>
+<p><strong>Why:</strong> REQ-F-073 promises that <code>tool manifest</code> lists every variable the tool recognizes, but after 3.4 the manifest had homes only for flag-backed variables and secrets, and its root rejects unknown fields, so <code>&lt;TOOLNAME&gt;_DEBUG</code> and the audit log's variables could not appear anywhere (#23).</p>
 <h2 id="190-2026-09-30">1.9.0 — 2026-09-30</h2>
 <h3 id="audit-log-and-logger-rotation-defaults-are-recommendations">Audit log and logger rotation defaults are recommendations</h3>
 <ul>

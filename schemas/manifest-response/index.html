@@ -10302,7 +10302,7 @@
 <h1 id="schema-manifestresponse">Schema: ManifestResponse</h1>
 <p><strong>File:</strong> <a href="../manifest-response.json"><code>manifest-response.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a>
+<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a>
 Returned as the <code>data</code> field of a <a href="../response-envelope/"><code>ResponseEnvelope</code></a>.</p>
 </blockquote>
 <hr />
@@ -10366,6 +10366,12 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td><code>DependencyEntry[]</code></td>
 <td>no</td>
 <td>External runtime dependencies checked by <code>tool doctor</code> (REQ-O-031)</td>
+</tr>
+<tr>
+<td><code>env_vars</code></td>
+<td><code>EnvVarEntry[]</code></td>
+<td>no</td>
+<td>Variables the tool reads that back no flag and supply no secret, such as <code>TOOL_DEBUG</code> or <code>TOOL_AUDIT_LOG</code>; each entry carries <code>description</code>. Universal names (<code>NO_COLOR</code>, <code>HOME</code>, ...) are not listed (REQ-F-073)</td>
 </tr>
 </tbody>
 </table>
@@ -10739,7 +10745,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><code>EnvVarEntry</code></td>
-<td><code>name</code> required; <code>deprecated</code> optional (boolean, absent means <code>false</code>)</td>
+<td><code>name</code> required; <code>deprecated</code> optional (boolean, absent means <code>false</code>); <code>description</code> optional in a flag's <code>env_vars</code>, required in root <code>env_vars</code></td>
 </tr>
 </tbody>
 </table>
@@ -10890,6 +10896,39 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p><code>--project</code> wins over every variable; without it the tool reads <code>TOOL_PROJECT</code>, then <code>CLOUDFALL_PROJECT</code> (shared across the tool family), then the deprecated <code>TOOL_PROJECT_ID</code>. The token stays in <code>secret_env_vars</code>, never in a flag's <code>env_vars</code>. <code>TOOL_FORMAT</code> is the <code>--format</code> default from REQ-O-042.</p>
+<p><strong>Valid — variables that back no flag</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.5&quot;,
+  &quot;framework_version&quot;: &quot;2.4.0&quot;,
+  &quot;etag&quot;: &quot;sha256:e7a412&quot;,
+  &quot;env_vars&quot;: [
+    { &quot;name&quot;: &quot;TOOL_DEBUG&quot;, &quot;description&quot;: &quot;1 turns on debug output on stderr, with secrets redacted&quot; },
+    { &quot;name&quot;: &quot;TOOL_AUDIT_LOG&quot;, &quot;description&quot;: &quot;1 turns the audit log on, 0 turns it off, an absolute path turns it on at that path&quot; },
+    { &quot;name&quot;: &quot;TOOL_SESSION_ID&quot;, &quot;description&quot;: &quot;Agent session id recorded as session_id in each audit log entry&quot; },
+    { &quot;name&quot;: &quot;TOOL_TRACE_ID&quot;, &quot;description&quot;: &quot;Trace id propagated to meta.trace_id, logs, and child processes&quot; }
+  ],
+  &quot;flags&quot;: {
+    &quot;format&quot;: {
+      &quot;type&quot;: &quot;enum&quot;,
+      &quot;required&quot;: false,
+      &quot;enum_values&quot;: [&quot;json&quot;, &quot;jsonl&quot;, &quot;tsv&quot;, &quot;plain&quot;],
+      &quot;description&quot;: &quot;Output representation; json when stdout is not a terminal, plain in a terminal&quot;,
+      &quot;env_vars&quot;: [{ &quot;name&quot;: &quot;TOOL_FORMAT&quot; }]
+    }
+  },
+  &quot;commands&quot;: {
+    &quot;deploy&quot;: {
+      &quot;description&quot;: &quot;Deploy a build to a project&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [&quot;deploy:write&quot;],
+      &quot;secret_env_vars&quot;: [&quot;TOOL_TOKEN&quot;],
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Deployment completed&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    }
+  }
+}
+</code></pre>
+<p>Every variable the tool reads has one home: <code>TOOL_FORMAT</code> backs <code>--format</code>, <code>TOOL_TOKEN</code> is a secret, and the four that back no flag sit in root <code>env_vars</code>, each described because no flag's <code>description</code> covers it.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -10912,6 +10951,16 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Violation: <code>requires_editor: true</code> requires <code>non_interactive_alternatives</code>; otherwise the agent has no path that avoids the editor trap (§62).</p>
+<p><strong>Invalid — root variable without a description</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.5&quot;,
+  &quot;framework_version&quot;: &quot;2.4.0&quot;,
+  &quot;etag&quot;: &quot;sha256:e7a412&quot;,
+  &quot;env_vars&quot;: [{ &quot;name&quot;: &quot;TOOL_DEBUG&quot; }],
+  &quot;commands&quot;: {}
+}
+</code></pre>
+<p>Violation: a root <code>env_vars</code> entry requires <code>description</code>; no flag's <code>description</code> explains what <code>TOOL_DEBUG</code> accepts or changes.</p>
 <hr />
 <h2 id="common-mistakes">Common mistakes</h2>
 <ul>
@@ -10932,6 +10981,9 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Naming a flag's environment variables only in its <code>description</code>.</strong> "(read from <code>$A</code> or <code>$B</code> when not passed)" is prose an agent must parse; list the names in <code>env_vars</code>, in precedence order</li>
 <li><strong>Listing a secret in <code>env_vars</code>.</strong> A token or password is not a flag value (REQ-C-016); declare its variable in <code>secret_env_vars</code></li>
 <li><strong>Listing a borrowed name before the tool-prefixed one.</strong> <code>CLOUDFALL_PROJECT</code> ahead of <code>TOOL_PROJECT</code> lets a variable set for another tool override the one set for this tool (REQ-F-073)</li>
+<li><strong>Reading a variable the manifest never names.</strong> <code>TOOL_DEBUG</code> or <code>TOOL_AUDIT_LOG</code> backs no flag, so it belongs in root <code>env_vars</code>; documenting it only in a README leaves an agent unable to see that it changes the tool's behavior</li>
+<li><strong>Listing one variable in two places.</strong> A name in root <code>env_vars</code> appears in no flag's <code>env_vars</code> and no <code>secret_env_vars</code>; a variable that supplies a flag's value is declared on that flag only</li>
+<li><strong>Listing universal names in root <code>env_vars</code>.</strong> <code>NO_COLOR</code>, <code>CI</code>, <code>HOME</code>, and the other REQ-F-073 exceptions are read by every conforming tool; listing them adds noise without telling the agent anything</li>
 </ul>
 <hr />
 <h2 id="agent-interpretation">Agent interpretation</h2>
@@ -10969,6 +11021,9 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - A name earlier in the list overrides the one you export, since the first one set wins; check that every earlier name is unset
 - <code>env_vars</code> absent on a <code>3.4</code> or later manifest: the flag reads no environment variable. On a pre-3.4 manifest, absent means unknown, not none; read the flag's <code>description</code> and keep that environment clean of guesses
 - A required flag with <code>env_vars</code> still counts as present when one of its variables is set</p>
+<p><strong>Reading root <code>env_vars</code></strong>
+- Root <code>env_vars</code> lists the variables that change the tool's behavior without backing a flag; read each <code>description</code> before exporting one, and unset any you did not set on purpose, since a leftover <code>TOOL_DEBUG</code> or <code>TOOL_AUDIT_LOG</code> changes every call
+- Root <code>env_vars</code> absent on a <code>3.5</code> or later manifest: the tool reads no such variable. On a pre-3.5 manifest, absent means unknown, not none</p>
 <p><strong>Selecting output format from <code>output_formats</code></strong>
 - If <code>output_formats</code> is absent, treat <code>json</code> as the only guaranteed format — do not attempt non-standard values
 - If <code>output_formats</code> is present, select the most appropriate format for your consumer: <code>json</code> for programmatic parsing, an LLM-optimized value (e.g. <code>toon</code>) when the language model is the final reader and token cost matters
@@ -11003,6 +11058,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert every command the framework registers, and each of its subcommands, carries <code>builtin: true</code>, and no application command does
 - Assert <code>output_file</code> is present on exactly the commands that register <code>--output &lt;path&gt;</code>, and is <code>"binary"</code> exactly when the command's result is a binary value
 - Assert every flag's <code>env_vars</code> lists exactly the variables its parser reads, in the order it reads them, with the tool-prefixed name first whenever a name without the prefix is listed, and no name from <code>secret_env_vars</code>
+- Assert root <code>env_vars</code> lists every other variable the tool reads outside the universal exceptions, each with the tool prefix and a <code>description</code>, and no name that also appears in a flag's <code>env_vars</code> or a <code>secret_env_vars</code>
 - Assert <code>etag</code> changes when any command registration changes, and is stable across identical registrations (determinism test)</p>
 <p><strong>Tests to generate</strong>
 - A test that <code>tool manifest</code> returns all registered commands including built-ins
@@ -11060,7 +11116,15 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a></td>
-<td>Sources: <code>FlagEntry.env_vars</code> and the precedence rule for names without the tool prefix</td>
+<td>Sources: <code>FlagEntry.env_vars</code>, root <code>env_vars</code>, and the precedence rule for names without the tool prefix</td>
+</tr>
+<tr>
+<td><a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a></td>
+<td>Sources: <code>TOOL_DEBUG</code> listed in root <code>env_vars</code> when no flag backs it</td>
+</tr>
+<tr>
+<td><a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a></td>
+<td>Sources: <code>TOOL_AUDIT_LOG</code> and the session variable listed in root <code>env_vars</code></td>
 </tr>
 <tr>
 <td><a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a></td>

@@ -10139,7 +10139,7 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: Low / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST require a tool-scoped prefix for all environment variables the tool reads. The prefix MUST be the tool's binary name uppercased with hyphens replaced by underscores, followed by <code>_</code>. For example, a tool named <code>my-tool</code> uses prefix <code>MY_TOOL_</code>. The framework MUST declare in the manifest response every environment variable that supplies a flag's value, in that flag's <code>env_vars</code> (ManifestResponse 3.4), and every variable that supplies a secret in the command's <code>secret_env_vars</code> (REQ-C-016). A secret never appears in a flag's <code>env_vars</code>.</p>
+<p>The framework MUST require a tool-scoped prefix for all environment variables the tool reads. The prefix MUST be the tool's binary name uppercased with hyphens replaced by underscores, followed by <code>_</code>. For example, a tool named <code>my-tool</code> uses prefix <code>MY_TOOL_</code>. The framework MUST declare in the manifest response every environment variable that supplies a flag's value, in that flag's <code>env_vars</code> (ManifestResponse 3.4), every variable that supplies a secret in the command's <code>secret_env_vars</code> (REQ-C-016), and every other variable it reads, such as <code>&lt;TOOLNAME&gt;_DEBUG</code>, <code>&lt;PREFIX&gt;AUDIT_LOG</code>, or <code>&lt;PREFIX&gt;SESSION_ID</code> (REQ-O-030), in the manifest's root <code>env_vars</code> with a <code>description</code> (ManifestResponse 3.5). Each recognized variable has exactly one of these three homes: a secret never appears in a flag's <code>env_vars</code>, and a name in root <code>env_vars</code> appears in neither. The universal exceptions below are not listed.</p>
 <p>Exceptions (read without prefix, per universal convention): <code>NO_COLOR</code>, <code>CI</code>, <code>HOME</code>, <code>USER</code>, <code>PATH</code>, <code>SHELL</code>, <code>TERM</code>, <code>XDG_CONFIG_HOME</code>, <code>XDG_DATA_HOME</code>, <code>XDG_CACHE_HOME</code>, <code>XDG_STATE_HOME</code>, <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, <code>NO_PROXY</code>.</p>
 <p><strong>Declared names without the prefix.</strong> A flag MAY also read a variable outside the prefix and the exceptions, such as a service's established name (<code>AWS_REGION</code>) or one shared across a family of tools (<code>CLOUDFALL_PROJECT</code>), only when the manifest declares that name in the flag's <code>env_vars</code> and the tool-prefixed name is also listed and comes first in precedence. Contamination comes from variables a tool reads without saying so; a declared name is visible to the agent, which can set or unset it on purpose, and the prefixed name set for this tool always overrides one set for another. The framework MUST reject a registration that reads an undeclared name without the prefix, or lists one ahead of the prefixed name.</p>
 <p>An agent setting <code>DEBUG=1</code> to enable verbose output in one tool must not accidentally enable debug mode in every other tool in the same session. Unprefixed env vars are a cross-tool contamination vector in multi-tool agent pipelines.</p>
@@ -10151,20 +10151,26 @@
 <li><code>tool manifest</code> lists every variable that supplies a flag's value in that flag's <code>env_vars</code>, in the order the parser reads them, and every secret variable in the command's <code>secret_env_vars</code></li>
 <li>A flag whose <code>env_vars</code> holds a name without the prefix (outside the exceptions) also lists the tool-prefixed name, first; the framework rejects a registration that breaks this</li>
 <li>No name in a command's <code>secret_env_vars</code> appears in any flag's <code>env_vars</code></li>
+<li><code>tool manifest</code> lists every other variable the tool reads outside the universal exceptions in root <code>env_vars</code>, each with the tool prefix and a <code>description</code>; no name there appears in any flag's <code>env_vars</code> or any <code>secret_env_vars</code>, so every recognized variable appears in exactly one of the three</li>
+<li>Verified: a tool that reads <code>TOOLNAME_DEBUG</code> without a <code>--debug</code> flag lists it in root <code>env_vars</code></li>
 <li>Verified: with both <code>TOOL_PROJECT</code> and <code>CLOUDFALL_PROJECT</code> set, <code>tool deploy</code> uses <code>TOOL_PROJECT</code>; with only <code>CLOUDFALL_PROJECT</code> set, it uses that; <code>--project</code> overrides both</li>
 <li>Verified: run tool with <code>env -i TOOLNAME_DEBUG=1 tool --version</code> — debug output appears; run with <code>env -i DEBUG=1 tool --version</code> — no debug output</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Types:</strong> <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a> · <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a></p>
-<p><code>FlagEntry.env_vars</code> lists the variables a flag reads when it is not passed, each an <code>EnvVarEntry</code> <code>{name, deprecated?}</code>, in precedence order. Secret variables stay in <code>CommandEntry.secret_env_vars</code>.</p>
+<p><code>FlagEntry.env_vars</code> lists the variables a flag reads when it is not passed, each an <code>EnvVarEntry</code> <code>{name, deprecated?, description?}</code>, in precedence order. Secret variables stay in <code>CommandEntry.secret_env_vars</code>. Root <code>env_vars</code> lists every other variable as an <code>EnvVarEntry</code> whose <code>description</code> is required.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
-<p><code>tool manifest</code> declares the variables on the flags that read them:</p>
+<p><code>tool manifest</code> declares the variables on the flags that read them, the secrets on the command, and the rest at the root:</p>
 <pre><code class="language-json">{
-  &quot;schema_version&quot;: &quot;3.4&quot;,
-  &quot;framework_version&quot;: &quot;2.3.0&quot;,
+  &quot;schema_version&quot;: &quot;3.5&quot;,
+  &quot;framework_version&quot;: &quot;2.4.0&quot;,
   &quot;etag&quot;: &quot;sha256:51c0de&quot;,
+  &quot;env_vars&quot;: [
+    { &quot;name&quot;: &quot;MY_TOOL_DEBUG&quot;, &quot;description&quot;: &quot;1 turns on debug output on stderr, with secrets redacted&quot; },
+    { &quot;name&quot;: &quot;MY_TOOL_AUDIT_LOG&quot;, &quot;description&quot;: &quot;1 turns the audit log on, 0 turns it off, an absolute path turns it on at that path&quot; }
+  ],
   &quot;commands&quot;: {
     &quot;deploy&quot;: {
       &quot;description&quot;: &quot;Deploy a build to a project&quot;,
@@ -10214,7 +10220,7 @@ MY_TOOL_PROJECT=api CLOUDFALL_PROJECT=web my-tool deploy     # project: api (pre
 <tr>
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
 <td>O</td>
-<td>Provides: manifest command that exposes each flag's <code>env_vars</code></td>
+<td>Provides: manifest command that exposes each flag's <code>env_vars</code> and the root <code>env_vars</code></td>
 </tr>
 <tr>
 <td><a href="../c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a></td>
@@ -10229,7 +10235,12 @@ MY_TOOL_PROJECT=api CLOUDFALL_PROJECT=web my-tool deploy     # project: api (pre
 <tr>
 <td><a href="../f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a></td>
 <td>F</td>
-<td>Composes: debug mode is activated via prefixed env var</td>
+<td>Composes: debug mode is activated via a prefixed env var declared in root <code>env_vars</code> when no flag backs it</td>
+</tr>
+<tr>
+<td><a href="../o-030-opt-in-audit-log/">REQ-O-030</a></td>
+<td>O</td>
+<td>Composes: <code>&lt;PREFIX&gt;AUDIT_LOG</code> and the session variable are declared in root <code>env_vars</code></td>
 </tr>
 <tr>
 <td><a href="../f-008-no-color-and-ci-environment-detection/">REQ-F-008</a></td>

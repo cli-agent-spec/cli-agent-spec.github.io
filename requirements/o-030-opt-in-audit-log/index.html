@@ -10163,7 +10163,7 @@
 </tr>
 </tbody>
 </table>
-<p>Any other value (<code>true</code>, <code>off</code>, an empty string, a relative path) fails every invocation except <code>--help</code> and <code>--version</code> with exit <code>2</code> (<code>ARG_ERROR</code>) and error code <code>INVALID_AUDIT_LOG_SETTING</code>, naming the variable and the accepted values. The operator setting takes precedence over the application, so an agent runtime can turn the log on for a CLI whose author never did, and off for one that did. When the log is disabled, the framework MUST NOT create any file or directory for it.</p>
+<p>Any other value (<code>true</code>, <code>off</code>, an empty string, a relative path) fails every invocation except <code>--help</code> and <code>--version</code> with exit <code>2</code> (<code>ARG_ERROR</code>) and error code <code>INVALID_AUDIT_LOG_SETTING</code>, naming the variable and the accepted values. The operator setting takes precedence over the application, so an agent runtime can turn the log on for a CLI whose author never did, and off for one that did. When the log is disabled, the framework MUST NOT create any file or directory for it. Whether or not the log is enabled, the manifest MUST declare <code>&lt;PREFIX&gt;AUDIT_LOG</code> and the session variable, each in its one home under REQ-F-073: root <code>env_vars</code> with a <code>description</code> (ManifestResponse 3.5), or the <code>env_vars</code> of the flag it already backs, as when the framework reuses a variable behind a flag as the session variable.</p>
 <p><strong>What is logged.</strong> When enabled, the framework MUST append one entry per invocation that resolves to a command, whatever its outcome. This includes argument errors raised after the command resolves, <code>--validate-only</code> (REQ-O-009), <code>--dry-run</code> (REQ-C-004, REQ-O-048), and a destructive command refused for lacking <code>--confirm-destructive</code> (REQ-O-021): an incident review needs exactly these. An invocation that never resolves to a command (an unknown command or group) is not logged, because its arguments cannot be redacted without a declared schema and raw argv is never written. Invocations that do no work are not logged: <code>--help</code>, <code>--version</code>, shell completion, schema or manifest introspection, and <code>audit-log</code> itself.</p>
 <p><strong>Entry.</strong> Each entry is one line of JSON matching <a href="../../schemas/audit-log-entry.json"><code>audit-log-entry.json</code></a>:</p>
 <ul>
@@ -10211,6 +10211,7 @@
 <li>An invocation that emits <code>CREDENTIAL_OVER_PRIVILEGED</code> has that code in the entry's <code>warnings</code></li>
 <li>With the framework's session variable set to <code>s-1</code>, the entry has <code>session_id: "s-1"</code>; without it, the entry has no <code>session_id</code></li>
 <li>A framework that has no other session variable uses <code>&lt;PREFIX&gt;SESSION_ID</code>, and its documentation names the session variable it reads</li>
+<li><code>tool manifest</code> lists <code>&lt;PREFIX&gt;AUDIT_LOG</code> in root <code>env_vars</code> with a <code>description</code>, and the session variable there too unless it backs a flag, whether or not the log is enabled</li>
 <li>Every entry validates against <code>audit-log-entry.json</code></li>
 <li>An invocation with a 50 MB argument appends one entry of at most 16 KiB with <code>truncated: true</code></li>
 <li>With a umask of <code>0022</code>, a freshly created audit log file has mode <code>0600</code> and a directory created for it has mode <code>0700</code></li>
@@ -10240,7 +10241,7 @@
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Types:</strong> <a href="../../schemas/audit-log-entry.json"><code>audit-log-entry.json</code></a> · <a href="../../schemas/response-envelope.json"><code>response-envelope.json</code></a> · <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a></p>
-<p>Each log line and each item of the <code>audit-log</code> command's <code>data.entries</code> is an <code>AuditLogEntry</code>. <code>meta.audit_log_path</code> is present on every response while the log is enabled. The enabled log appears in the manifest as a <code>FilesystemSideEffect</code> of type <code>log</code>.</p>
+<p>Each log line and each item of the <code>audit-log</code> command's <code>data.entries</code> is an <code>AuditLogEntry</code>. <code>meta.audit_log_path</code> is present on every response while the log is enabled. The enabled log appears in the manifest as a <code>FilesystemSideEffect</code> of type <code>log</code>. <code>&lt;PREFIX&gt;AUDIT_LOG</code> and the session variable are <code>EnvVarEntry</code> items in the manifest's root <code>env_vars</code>, unless the session variable already backs a flag.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <p><code>meta.audit_log_path</code> in the response envelope when the log is enabled:</p>
@@ -10334,7 +10335,7 @@ $ TOOL_AUDIT_LOG=yes tool deploy --env prod
 <tr>
 <td><a href="../f-073-env-var-namespace-prefix/">REQ-F-073</a></td>
 <td>F</td>
-<td>Consumes: <code>&lt;PREFIX&gt;AUDIT_LOG</code> and the session variable (<code>&lt;PREFIX&gt;SESSION_ID</code> unless the framework already reads a prefixed one) follow the tool env var prefix</td>
+<td>Consumes: <code>&lt;PREFIX&gt;AUDIT_LOG</code> and the session variable (<code>&lt;PREFIX&gt;SESSION_ID</code> unless the framework already reads a prefixed one) follow the tool env var prefix and are declared in root <code>env_vars</code>, or on the flag the session variable already backs</td>
 </tr>
 <tr>
 <td><a href="../f-018-pagination-metadata-on-list-commands/">REQ-F-018</a></td>

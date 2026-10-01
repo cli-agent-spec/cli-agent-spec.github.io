@@ -10140,19 +10140,30 @@
 <hr />
 <h2 id="description">Description</h2>
 <p>When <code>--debug</code>, <code>--trace</code>, <code>--verbose</code>, or any elevated verbosity flag is active, the framework MUST apply the same secret redaction rules defined in REQ-F-034 to ALL output, including HTTP request/response dumps, environment variable listings, and argument echoing. The framework MUST redact: HTTP headers matching <code>Authorization</code>, <code>Cookie</code>, <code>X-Api-Key</code>, <code>X-Auth-Token</code>, <code>Proxy-Authorization</code>; environment variables matching <code>*_KEY</code>, <code>*_SECRET</code>, <code>*_TOKEN</code>, <code>*_PASSWORD</code>, <code>*_PASS</code>, <code>API_*</code>, <code>AUTH_*</code>; and any argument declared as <code>secret: true</code> in the command schema. Redacted values MUST be replaced with <code>[REDACTED]</code>.</p>
+<p>When the operator can also turn debug or trace mode on through a prefixed environment variable (<code>&lt;TOOLNAME&gt;_DEBUG</code>, REQ-F-073), the manifest MUST declare it: in the <code>env_vars</code> of the flag it backs, such as a root <code>--debug</code>, or in the manifest's root <code>env_vars</code> when no flag backs it, so an agent can see that a leftover variable changes what every call writes to stderr.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>An HTTP request log in debug mode shows <code>Authorization: [REDACTED]</code>, not the actual token</li>
 <li>Environment variable dumps in trace mode show <code>AWS_SECRET_ACCESS_KEY=[REDACTED]</code></li>
 <li>An argument declared as <code>secret: true</code> is never echoed in any verbosity level</li>
 <li>The redaction applies to both stderr debug output and any audit log entries created during debug mode</li>
+<li>A debug or trace variable the framework reads appears in <code>tool manifest</code>, in the <code>env_vars</code> of the flag it backs or, when no flag backs it, in root <code>env_vars</code> with a <code>description</code></li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
-<p>No dedicated schema type — this requirement governs debug output filtering without adding new wire-format fields</p>
+<p><strong>Types:</strong> <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a> · <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a></p>
+<p>No dedicated schema type for redaction. A debug variable that backs no flag is an <code>EnvVarEntry</code> in <code>ManifestResponse.env_vars</code> (ManifestResponse 3.5).</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
-<p>No wire-format fields — this requirement governs framework behavior only</p>
+<p>Redaction adds no wire-format fields. The manifest declares a debug variable that backs no flag at the root:</p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.5&quot;,
+  &quot;framework_version&quot;: &quot;2.4.0&quot;,
+  &quot;etag&quot;: &quot;sha256:0b7d93&quot;,
+  &quot;env_vars&quot;: [{ &quot;name&quot;: &quot;TOOL_DEBUG&quot;, &quot;description&quot;: &quot;1 turns on debug output on stderr, with secrets redacted&quot; }],
+  &quot;commands&quot;: {}
+}
+</code></pre>
 <hr />
 <h2 id="example">Example</h2>
 <p>Framework-Automatic: no command author action needed. The framework intercepts all debug output and applies the redaction rules before writing.</p>
@@ -10203,6 +10214,11 @@ $ tool deploy --api-key &quot;sk-abc123&quot;
 <td><a href="../c-013-error-responses-include-code-and-message/">REQ-C-013</a></td>
 <td>C</td>
 <td>Enforces: error responses must not include secret values even in debug mode</td>
+</tr>
+<tr>
+<td><a href="../f-073-env-var-namespace-prefix/">REQ-F-073</a></td>
+<td>F</td>
+<td>Consumes: the debug variable carries the tool prefix and is declared in the manifest</td>
 </tr>
 </tbody>
 </table>
