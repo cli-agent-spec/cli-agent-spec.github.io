@@ -10466,6 +10466,11 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </thead>
 <tbody>
 <tr>
+<td><code>output_file</code></td>
+<td><code>"formatted"</code> | <code>"binary"</code></td>
+<td>Command registers <code>--output &lt;path&gt;</code>. <code>formatted</code>: the file gets the <code>--format</code> representation; <code>binary</code>: the file gets the raw bytes and <code>data</code> is <code>{path, bytes, content_type, sha256}</code>; <code>--output -</code> exits <code>2</code> (REQ-O-001)</td>
+</tr>
+<tr>
 <td><code>option_placement</code></td>
 <td><code>"any"</code> | <code>"strict"</code></td>
 <td><code>strict</code>: every option, global or local, precedes the first positional; absent means <code>any</code> (REQ-C-027)</td>
@@ -10820,6 +10825,27 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Each flag is optional on its own; the <code>one_of</code> rule makes exactly one of them mandatory. <code>tool quote --symbol AAPL</code> passes, while <code>tool quote</code> and <code>tool quote --isin US0378331005 --symbol AAPL</code> exit <code>2</code>.</p>
+<p><strong>Valid — command that writes a binary result to a file</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.3&quot;,
+  &quot;framework_version&quot;: &quot;2.2.0&quot;,
+  &quot;etag&quot;: &quot;sha256:4be9a1&quot;,
+  &quot;commands&quot;: {
+    &quot;download&quot;: {
+      &quot;description&quot;: &quot;Download a Flex report&quot;,
+      &quot;danger_level&quot;: &quot;safe&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;output_file&quot;: &quot;binary&quot;,
+      &quot;has_network_io&quot;: true,
+      &quot;flags&quot;: {
+        &quot;output&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Path that receives the report's raw bytes&quot; }
+      },
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Report written&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    }
+  }
+}
+</code></pre>
+<p><code>tool download --output report.xml</code> writes the XML itself to <code>report.xml</code>, and <code>data</code> carries <code>path</code>, <code>bytes</code>, <code>content_type</code>, and <code>sha256</code>.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -10858,6 +10884,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Marking an application command that replaces a built-in's name as <code>builtin: true</code>.</strong> The flag follows who registered the command, not its name; the replacement is <code>false</code></li>
 <li><strong>Marking every flag of an "exactly one of" group <code>required: true</code>.</strong> No call can then satisfy the command; keep each flag <code>required: false</code> and declare the group as a <code>one_of</code> rule</li>
 <li><strong>Emitting pairwise <code>prohibited</code> rules next to a <code>one_of</code> group.</strong> <code>one_of</code> already forbids combining its members; the extra rules repeat the constraint and let the two drift apart</li>
+<li><strong>Declaring <code>output_file: "formatted"</code> on a command that returns a binary result.</strong> The file would then hold a JSON or plain wrapper around base64, not the file the caller asked for; a binary result is <code>"binary"</code></li>
 </ul>
 <hr />
 <h2 id="agent-interpretation">Agent interpretation</h2>
@@ -10875,6 +10902,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - When building a task list, a skill set, or a summary of what the tool does, drop entries with <code>builtin: true</code>; they are framework plumbing (<code>manifest</code>, <code>doctor</code>, <code>audit-log</code>) present in every conforming CLI
 - Treat an absent <code>builtin</code> as <code>false</code>. A pre-3.1 manifest never sets it, so every command there reads as an application command
 - Keep built-ins in the lookup table: they are still callable, and <code>doctor</code> or <code>audit-log</code> is the right call when diagnosing a failure</p>
+<p><strong>Writing a result to a file</strong>
+- <code>output_file: "binary"</code>: pass <code>--output &lt;path&gt;</code> to get the file itself; <code>--format</code> then shapes only the envelope on stdout. Verify the write with <code>data.sha256</code> or <code>data.bytes</code> instead of reading the file back. Never pass <code>--output -</code>; it exits <code>2</code>
+- <code>output_file: "formatted"</code>: the file holds the <code>--format</code> representation of <code>data</code>, so choose <code>--format</code> for the file's consumer
+- <code>output_file</code> absent: the command takes no <code>--output</code>; a binary result arrives base64-encoded in <code>data</code> (REQ-F-017). Treat a pre-3.3 manifest the same way and read <code>output_schema</code> for a binary wrapper</p>
 <p><strong>Building a call from <code>FlagEntry</code></strong>
 - A command's accepted flags are the root <code>flags</code> plus its own <code>flags</code>; a name in neither produces <code>ARG_ERROR (2)</code>
 - Emit tokens in the canonical order <code>tool &lt;global options&gt; &lt;command path&gt; &lt;local options&gt; [--] &lt;positionals&gt;</code>; every parser mode and both <code>option_placement</code> values accept it
@@ -10917,6 +10948,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert no <code>CommandEntry.flags</code> key or <code>short</code> value equals a root <code>flags</code> key or <code>short</code> value
 - Assert <code>positionals</code> lists every positional the parser accepts, in order, with no required entry after an optional one and <code>variadic</code> only on the last
 - Assert every command the framework registers, and each of its subcommands, carries <code>builtin: true</code>, and no application command does
+- Assert <code>output_file</code> is present on exactly the commands that register <code>--output &lt;path&gt;</code>, and is <code>"binary"</code> exactly when the command's result is a binary value
 - Assert <code>etag</code> changes when any command registration changes, and is stable across identical registrations (determinism test)</p>
 <p><strong>Tests to generate</strong>
 - A test that <code>tool manifest</code> returns all registered commands including built-ins

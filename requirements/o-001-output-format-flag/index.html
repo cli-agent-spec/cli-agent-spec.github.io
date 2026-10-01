@@ -10185,7 +10185,8 @@
 <h2 id="description">Description</h2>
 <p>The framework MUST register <code>--format &lt;format&gt;</code> as a standard flag on all commands. Supported formats MUST include at minimum: <code>json</code> (default in non-TTY), <code>jsonl</code> (one JSON object per line), <code>tsv</code> (tab-separated, for piping), and <code>plain</code> (minimal human-readable, no decoration). In <code>json</code> mode, color and prose are always suppressed. The selected format MUST be consistent across all commands in the framework.</p>
 <p><code>--format</code> is the sole canonical flag for selecting response representation. The framework SHOULD NOT expose aliases such as <code>--output</code> or <code>-o</code> for the same behavior, because aliases increase discovery ambiguity, complicate help and schema extraction, and reduce transferability of agent behavior across commands and tools.</p>
-<p><code>--output</code> is reserved for a destination path. A command that writes its result to a file MUST name that flag <code>--output &lt;path&gt;</code> (or <code>--output-dir &lt;path&gt;</code> for a directory); it MUST NOT use <code>--output</code> to select a representation. When <code>--output &lt;path&gt;</code> is present, <code>--format</code> selects the representation written to the file and stdout carries the <code>ResponseEnvelope</code> describing the write. A command that registers <code>--output &lt;path&gt;</code> MUST reject a value that exactly matches a supported format name (<code>json</code>, <code>jsonl</code>, <code>tsv</code>, <code>plain</code>, <code>table</code>, <code>id</code>) with exit <code>2</code> and a suggestion naming <code>--format &lt;value&gt;</code>, instead of writing a file with that name.</p>
+<p><code>--output</code> is reserved for a destination path. A command that writes its result to a file MUST name that flag <code>--output &lt;path&gt;</code> (or <code>--output-dir &lt;path&gt;</code> for a directory); it MUST NOT use <code>--output</code> to select a representation. When <code>--output &lt;path&gt;</code> is present, <code>--format</code> selects the representation written to the file (except for a binary result, below) and stdout carries the <code>ResponseEnvelope</code> describing the write. A command that registers <code>--output &lt;path&gt;</code> MUST reject a value that exactly matches a supported format name (<code>json</code>, <code>jsonl</code>, <code>tsv</code>, <code>plain</code>, <code>table</code>, <code>id</code>) with exit <code>2</code> and a suggestion naming <code>--format &lt;value&gt;</code>, instead of writing a file with that name.</p>
+<p><strong>Binary results.</strong> A command whose result is a single binary value (the payload <a href="../f-017-binary-field-base64-encoding/">REQ-F-017</a> wraps as <code>{"type": "binary", ...}</code>) is the exception: its result <em>is</em> a file (a downloaded report, an export dump, a rendered image), and no <code>--format</code> representation of it is that file. When such a command receives <code>--output &lt;path&gt;</code>, the framework MUST write the raw bytes to the path through the atomic-write primitive (<a href="../f-070-atomic-write-via-rename/">REQ-F-070</a>), and <code>--format</code> selects only the representation of the response on stdout. The envelope's <code>data</code> describes the write as <code>{path, bytes, content_type, sha256}</code>: <code>bytes</code> is the byte count, <code>sha256</code> the lowercase hex digest of the file's contents, and <code>content_type</code> is present only when the command declares one. <code>--output -</code> on a binary result MUST exit <code>2</code> and write nothing, because stdout carries only envelopes. Without <code>--output</code>, the payload stays in the envelope as REQ-F-017 encodes it. The manifest marks a command that registers <code>--output &lt;path&gt;</code> with <code>output_file</code> (<code>"formatted"</code> or <code>"binary"</code>), so an agent knows before the call whether the file gets the <code>--format</code> representation or the raw bytes. Downloaders already behave this way (<code>curl -o</code>, <code>gh release download</code>, <code>aws s3 cp</code>).</p>
 <p><strong>Why not <code>--output</code>:</strong> agents learn format selection from two conflicting traditions. Cloud CLIs (<code>aws</code>, <code>kubectl</code>, <code>az</code>, <code>helm</code>) use <code>--output json</code>; build and transfer tools (<code>gcc</code>, <code>curl</code>, <code>sort</code>, <code>pandoc</code>, <code>go build</code>) use <code>--output</code> for a file path. <code>--format</code> selects a representation wherever it appears (<code>gcloud</code>, <code>docker</code>, <code>git</code>, <code>pandoc</code>'s <code>--to</code>), and the representation applies to whatever destination the result goes to: stdout by default, the file named by <code>--output</code> otherwise. An agent that passes <code>--output json</code> to a path-typed flag gets exit <code>0</code>, an empty stdout, and a stray file named <code>json</code>; the reverse mistake (<code>--format report.json</code>) fails loudly as an unsupported value.</p>
 <p><code>--format</code> values MUST come from a closed set declared at registration and listed in the manifest. An unknown value exits <code>2</code> with a structured error listing the supported values; the framework MUST NOT interpret an unrecognized value as a template. Tools that overload <code>--format</code> with templates show why: <code>docker</code> reads any value other than <code>json</code> or <code>table</code> as a Go template, so the typo <code>docker version --format jsn</code> prints <code>jsn</code> instead of failing. <code>git</code> guesses from the value (a <code>%</code> or a <code>tformat:</code> prefix means a template, anything else must be a preset name), which catches <code>--format=json</code> but still leaves the agent to learn a second grammar; <code>gcloud</code> rejects the typo and lists the valid values, which is the behavior this requirement asks for. Field projection belongs to <code>--fields</code> (<a href="../o-002-fields-selector/">REQ-O-002</a>): <code>--format tsv --fields hash,subject</code> covers what <code>--format='%H %s'</code> does, with field names validated against the schema. A CLI that wants free-form text templates for human use registers them under a separate flag (<code>--template</code>), never as a <code>--format</code> value.</p>
 <p>If the framework also implements <a href="../o-042-output-format-env-var-default/">REQ-O-042</a>, the environment variable provides only a default value. <code>--format</code> remains the authoritative interface and MUST override the environment variable whenever both are present.</p>
@@ -10293,12 +10294,18 @@
 <li>No alias flag such as <code>--output</code> or <code>-o</code> selects the same response representation behavior</li>
 <li><code>--output json</code> on a command whose <code>--output</code> takes a path exits <code>2</code> with a suggestion naming <code>--format json</code>, and writes no file</li>
 <li><code>--format csv --output report.csv</code> writes CSV to <code>report.csv</code> and emits a <code>ResponseEnvelope</code> on stdout</li>
+<li><code>download --output report.xml --format json</code> on a command with a binary result writes the raw bytes to <code>report.xml</code>; stdout is a <code>ResponseEnvelope</code> whose <code>data.bytes</code> equals the file size and whose <code>data.sha256</code> matches the file's digest</li>
+<li><code>download --output -</code> on a command with a binary result exits <code>2</code> and writes nothing to stdout or to any file</li>
+<li><code>download</code> without <code>--output</code> returns the binary payload in the envelope as REQ-F-017 encodes it</li>
+<li>A failed run of a command with a binary result leaves no file at the <code>--output</code> path</li>
+<li>The manifest entry of every command that registers <code>--output &lt;path&gt;</code> carries <code>output_file</code>: <code>"binary"</code> when its result is binary, <code>"formatted"</code> otherwise</li>
 <li><code>--format</code> with a value outside the declared set (<code>--format jsn</code>, <code>--format '%H %s'</code>) exits <code>2</code>, lists the supported values, and writes nothing to stdout or to any file</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Type:</strong> <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a></p>
 <p>The <code>--format json</code> format uses the <code>ResponseEnvelope</code> shape. The <code>--format jsonl</code> and <code>--format tsv</code> formats use command-specific row shapes without the envelope wrapper.</p>
+<p>The manifest declares the <code>--output</code> behavior in <code>CommandEntry.output_file</code> (<a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a>).</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <pre><code class="language-bash">$ tool deploy --target staging --format json
@@ -10316,6 +10323,22 @@
 </code></pre>
 <pre><code>{&quot;id&quot;: &quot;1&quot;, &quot;name&quot;: &quot;alice&quot;}
 {&quot;id&quot;: &quot;2&quot;, &quot;name&quot;: &quot;bob&quot;}
+</code></pre>
+<p>Binary result written to <code>--output</code>: the file holds the raw bytes, stdout holds the envelope describing the write:</p>
+<pre><code class="language-bash">$ tool download --output report.xml --format json
+</code></pre>
+<pre><code class="language-json">{
+  &quot;ok&quot;: true,
+  &quot;data&quot;: {
+    &quot;path&quot;: &quot;report.xml&quot;,
+    &quot;bytes&quot;: 48213,
+    &quot;content_type&quot;: &quot;application/xml&quot;,
+    &quot;sha256&quot;: &quot;9f2c4a7e1b0d83f5c6a2e9d417b38c05f1e6a9d2c4b7e8f03a5d6c1b2e9f4a70&quot;
+  },
+  &quot;error&quot;: null,
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: { &quot;exit_code&quot;: 0, &quot;duration_ms&quot;: 812 }
+}
 </code></pre>
 <hr />
 <h2 id="example">Example</h2>
@@ -10347,6 +10370,16 @@ app.enable_format_flag(formats=[&quot;json&quot;, &quot;jsonl&quot;, &quot;tsv&q
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>
 <td>F</td>
 <td>Provides: <code>ResponseEnvelope</code> used by <code>--format json</code> mode</td>
+</tr>
+<tr>
+<td><a href="../f-017-binary-field-base64-encoding/">REQ-F-017</a></td>
+<td>F</td>
+<td>Consumes: a binary result is written raw to <code>--output</code> instead of base64-encoded in the envelope</td>
+</tr>
+<tr>
+<td><a href="../f-070-atomic-write-via-rename/">REQ-F-070</a></td>
+<td>F</td>
+<td>Consumes: every <code>--output</code> write, formatted or raw, goes through the atomic rename</td>
 </tr>
 <tr>
 <td><a href="../f-079-global-option-scope/">REQ-F-079</a></td>

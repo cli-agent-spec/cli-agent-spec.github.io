@@ -9985,6 +9985,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#-output-writes-a-binary-results-raw-bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        --output writes a binary result's raw bytes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manifestresponse-33-file-output-is-marked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.3: file output is marked
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10351,6 +10373,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#-output-writes-a-binary-results-raw-bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        --output writes a binary result's raw bytes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manifestresponse-33-file-output-is-marked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.3: file output is marked
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10685,6 +10729,19 @@
 <li>REQ-O-030: the <code>audit-log</code> cursor anchors on the last returned entry's <code>timestamp</code> plus <code>request_id</code>, never a file offset or rotated-file index. After pruning, the next page returns the older matches that remain, without error, and <code>total</code> may shrink; entries appended after the first page never appear on later pages. The invalid-cursor criterion now names exit <code>2</code> and <code>INVALID_CURSOR</code>, and new criteria cover a token reused with other filters, pruning between pages, and an entry appended between pages</li>
 </ul>
 <p><strong>Why:</strong> both requirements said an invalid cursor "fails with a structured error" without an exit or error code, and left undefined what a token means under different filters or after rotation removes entries between pages, so frameworks would diverge and an agent could not branch on the failure (#15).</p>
+<h3 id="-output-writes-a-binary-results-raw-bytes"><code>--output</code> writes a binary result's raw bytes</h3>
+<ul>
+<li>REQ-O-001: when a command's result is a single binary value (REQ-F-017) and <code>--output &lt;path&gt;</code> is given, the file gets the raw bytes through the atomic write (REQ-F-070), and <code>--format</code> selects only the representation of the response on stdout</li>
+<li>The envelope's <code>data</code> describes the write: <code>{path, bytes, content_type, sha256}</code>; <code>content_type</code> is present only when the command declares one</li>
+<li><code>--output -</code> on a binary result exits <code>2</code> and writes nothing; without <code>--output</code>, the payload stays base64-encoded in the envelope as before</li>
+<li>Commands whose result is not binary are unchanged: <code>--format</code> still selects the file's representation</li>
+</ul>
+<p><strong>Why:</strong> a downloader, exporter, or renderer's result is a file. Writing it "in the <code>--format</code> representation" produced a JSON or plain wrapper around base64, so such commands rolled their own path flag and file write and lost the atomic write, the no-file-on-failure guarantee, and a uniform envelope (#19).</p>
+<h3 id="manifestresponse-33-file-output-is-marked">ManifestResponse 3.3: file output is marked</h3>
+<ul>
+<li><code>CommandEntry.output_file</code> (optional, <code>"formatted"</code> or <code>"binary"</code>) is present on every command that registers <code>--output &lt;path&gt;</code>, so an agent knows before the call whether the file gets the <code>--format</code> representation or the raw bytes (REQ-O-001)</li>
+<li>A producer that sets <code>output_file</code> emits <code>schema_version</code> <code>3.3</code>; a <code>3.2</code> manifest stays valid</li>
+</ul>
 <h2 id="190-2026-09-30">1.9.0 — 2026-09-30</h2>
 <h3 id="audit-log-and-logger-rotation-defaults-are-recommendations">Audit log and logger rotation defaults are recommendations</h3>
 <ul>
