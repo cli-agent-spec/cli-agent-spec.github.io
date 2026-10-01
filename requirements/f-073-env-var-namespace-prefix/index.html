@@ -10139,29 +10139,55 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: Low / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST require a tool-scoped prefix for all environment variables the tool reads. The prefix MUST be the tool's binary name uppercased with hyphens replaced by underscores, followed by <code>_</code>. For example, a tool named <code>my-tool</code> uses prefix <code>MY_TOOL_</code>. The framework MUST document the full list of environment variables under this prefix in the manifest response.</p>
+<p>The framework MUST require a tool-scoped prefix for all environment variables the tool reads. The prefix MUST be the tool's binary name uppercased with hyphens replaced by underscores, followed by <code>_</code>. For example, a tool named <code>my-tool</code> uses prefix <code>MY_TOOL_</code>. The framework MUST declare in the manifest response every environment variable that supplies a flag's value, in that flag's <code>env_vars</code> (ManifestResponse 3.4), and every variable that supplies a secret in the command's <code>secret_env_vars</code> (REQ-C-016). A secret never appears in a flag's <code>env_vars</code>.</p>
 <p>Exceptions (read without prefix, per universal convention): <code>NO_COLOR</code>, <code>CI</code>, <code>HOME</code>, <code>USER</code>, <code>PATH</code>, <code>SHELL</code>, <code>TERM</code>, <code>XDG_CONFIG_HOME</code>, <code>XDG_DATA_HOME</code>, <code>XDG_CACHE_HOME</code>, <code>XDG_STATE_HOME</code>, <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, <code>NO_PROXY</code>.</p>
+<p><strong>Declared names without the prefix.</strong> A flag MAY also read a variable outside the prefix and the exceptions, such as a service's established name (<code>AWS_REGION</code>) or one shared across a family of tools (<code>CLOUDFALL_PROJECT</code>), only when the manifest declares that name in the flag's <code>env_vars</code> and the tool-prefixed name is also listed and comes first in precedence. Contamination comes from variables a tool reads without saying so; a declared name is visible to the agent, which can set or unset it on purpose, and the prefixed name set for this tool always overrides one set for another. The framework MUST reject a registration that reads an undeclared name without the prefix, or lists one ahead of the prefixed name.</p>
 <p>An agent setting <code>DEBUG=1</code> to enable verbose output in one tool must not accidentally enable debug mode in every other tool in the same session. Unprefixed env vars are a cross-tool contamination vector in multi-tool agent pipelines.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>All tool-specific configuration env vars are documented under the <code>TOOLNAME_</code> prefix</li>
 <li>Setting <code>DEBUG=1</code> does not affect the tool unless the tool explicitly reads <code>TOOLNAME_DEBUG</code></li>
-<li>The framework rejects (with a warning) any framework plugin that reads an unprefixed custom env var</li>
-<li><code>tool manifest</code> lists all recognized env vars with their prefix</li>
+<li>The framework rejects (with a warning) any framework plugin that reads an unprefixed custom env var it does not declare in a flag's <code>env_vars</code></li>
+<li><code>tool manifest</code> lists every variable that supplies a flag's value in that flag's <code>env_vars</code>, in the order the parser reads them, and every secret variable in the command's <code>secret_env_vars</code></li>
+<li>A flag whose <code>env_vars</code> holds a name without the prefix (outside the exceptions) also lists the tool-prefixed name, first; the framework rejects a registration that breaks this</li>
+<li>No name in a command's <code>secret_env_vars</code> appears in any flag's <code>env_vars</code></li>
+<li>Verified: with both <code>TOOL_PROJECT</code> and <code>CLOUDFALL_PROJECT</code> set, <code>tool deploy</code> uses <code>TOOL_PROJECT</code>; with only <code>CLOUDFALL_PROJECT</code> set, it uses that; <code>--project</code> overrides both</li>
 <li>Verified: run tool with <code>env -i TOOLNAME_DEBUG=1 tool --version</code> — debug output appears; run with <code>env -i DEBUG=1 tool --version</code> — no debug output</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
-<p><code>manifest-response</code> — env var entries listed under <code>environment</code> field with full prefixed names</p>
+<p><strong>Types:</strong> <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a> · <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a></p>
+<p><code>FlagEntry.env_vars</code> lists the variables a flag reads when it is not passed, each an <code>EnvVarEntry</code> <code>{name, deprecated?}</code>, in precedence order. Secret variables stay in <code>CommandEntry.secret_env_vars</code>.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
-<p>In manifest response:</p>
+<p><code>tool manifest</code> declares the variables on the flags that read them:</p>
 <pre><code class="language-json">{
-  &quot;environment&quot;: [
-    {&quot;name&quot;: &quot;MY_TOOL_TOKEN&quot;, &quot;description&quot;: &quot;API authentication token&quot;, &quot;required&quot;: true},
-    {&quot;name&quot;: &quot;MY_TOOL_DEBUG&quot;, &quot;description&quot;: &quot;Enable debug logging when set to 1&quot;, &quot;required&quot;: false},
-    {&quot;name&quot;: &quot;MY_TOOL_CONFIG&quot;, &quot;description&quot;: &quot;Override config file path&quot;, &quot;required&quot;: false}
-  ]
+  &quot;schema_version&quot;: &quot;3.4&quot;,
+  &quot;framework_version&quot;: &quot;2.3.0&quot;,
+  &quot;etag&quot;: &quot;sha256:51c0de&quot;,
+  &quot;commands&quot;: {
+    &quot;deploy&quot;: {
+      &quot;description&quot;: &quot;Deploy a build to a project&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [&quot;deploy:write&quot;],
+      &quot;secret_env_vars&quot;: [&quot;MY_TOOL_TOKEN&quot;],
+      &quot;flags&quot;: {
+        &quot;project&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;required&quot;: true,
+          &quot;description&quot;: &quot;Project to deploy to&quot;,
+          &quot;env_vars&quot;: [{ &quot;name&quot;: &quot;MY_TOOL_PROJECT&quot; }, { &quot;name&quot;: &quot;CLOUDFALL_PROJECT&quot; }]
+        },
+        &quot;config&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;required&quot;: false,
+          &quot;description&quot;: &quot;Config file path&quot;,
+          &quot;env_vars&quot;: [{ &quot;name&quot;: &quot;MY_TOOL_CONFIG&quot; }, { &quot;name&quot;: &quot;MY_TOOL_CONF&quot;, &quot;deprecated&quot;: true }]
+        }
+      },
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Deployment completed&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    }
+  }
 }
 </code></pre>
 <hr />
@@ -10169,6 +10195,10 @@
 <pre><code># Agent isolating two tools in the same session
 MY_TOOL_DEBUG=1 my-tool list     # debug output for my-tool only
 OTHER_TOOL_DEBUG=0 other-tool list  # other-tool unaffected
+
+# A family-wide name is honored only because the manifest declares it
+CLOUDFALL_PROJECT=web my-tool deploy                         # project: web
+MY_TOOL_PROJECT=api CLOUDFALL_PROJECT=web my-tool deploy     # project: api (prefixed name first)
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>
@@ -10184,7 +10214,17 @@ OTHER_TOOL_DEBUG=0 other-tool list  # other-tool unaffected
 <tr>
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
 <td>O</td>
-<td>Provides: manifest command that exposes the env var list</td>
+<td>Provides: manifest command that exposes each flag's <code>env_vars</code></td>
+</tr>
+<tr>
+<td><a href="../c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a></td>
+<td>C</td>
+<td>Composes: secret variables are declared in <code>secret_env_vars</code>, never in a flag's <code>env_vars</code></td>
+</tr>
+<tr>
+<td><a href="../o-042-output-format-env-var-default/">REQ-O-042</a></td>
+<td>O</td>
+<td>Specializes: <code>&lt;TOOLNAME&gt;_FORMAT</code> is the <code>env_vars</code> entry of <code>--format</code></td>
 </tr>
 <tr>
 <td><a href="../f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a></td>

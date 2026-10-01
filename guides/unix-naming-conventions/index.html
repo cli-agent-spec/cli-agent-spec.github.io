@@ -11090,7 +11090,7 @@
 </tbody>
 </table>
 <h3 id="tool-specific-variables-always-use-toolname_-prefix">Tool-specific variables (always use <code>TOOLNAME_</code> prefix)</h3>
-<p>See REQ-F-073. All tool-specific env vars must be namespaced to prevent cross-tool contamination in multi-tool agent pipelines.</p>
+<p>See REQ-F-073. All tool-specific env vars must be namespaced to prevent cross-tool contamination in multi-tool agent pipelines. A flag may also read a service's established name or one shared across a tool family, but only when the manifest declares it in the flag's <code>env_vars</code> after the prefixed name.</p>
 <hr />
 <h2 id="the-three-design-layers">The Three Design Layers</h2>
 <p>A fully agent-compatible CLI operates at three levels:</p>

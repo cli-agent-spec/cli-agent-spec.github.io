@@ -10007,6 +10007,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-34-a-flag-declares-the-environment-variables-it-reads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.4: a flag declares the environment variables it reads
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#declared-environment-variables-without-the-tool-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declared environment variables without the tool prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10395,6 +10417,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-34-a-flag-declares-the-environment-variables-it-reads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.4: a flag declares the environment variables it reads
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#declared-environment-variables-without-the-tool-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declared environment variables without the tool prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10742,6 +10786,19 @@
 <li><code>CommandEntry.output_file</code> (optional, <code>"formatted"</code> or <code>"binary"</code>) is present on every command that registers <code>--output &lt;path&gt;</code>, so an agent knows before the call whether the file gets the <code>--format</code> representation or the raw bytes (REQ-O-001)</li>
 <li>A producer that sets <code>output_file</code> emits <code>schema_version</code> <code>3.3</code>; a <code>3.2</code> manifest stays valid</li>
 </ul>
+<h3 id="manifestresponse-34-a-flag-declares-the-environment-variables-it-reads">ManifestResponse 3.4: a flag declares the environment variables it reads</h3>
+<ul>
+<li><code>FlagEntry.env_vars</code> (optional, an array of <code>{name, deprecated?}</code>) lists the variables a flag reads when it is not passed, in precedence order: the first one set wins, and a passed flag beats them all. Root <code>flags</code> use it too, so <code>--format</code> lists <code>TOOL_FORMAT</code> (REQ-O-042)</li>
+<li>Agents set the first non-deprecated name instead of parsing the flag's <code>description</code>; on a pre-3.4 manifest an absent <code>env_vars</code> means unknown, not none</li>
+<li><code>secret_env_vars</code> keeps its meaning: a secret is never a flag value (REQ-C-016), so its variable never appears in <code>env_vars</code></li>
+<li>A producer that sets <code>env_vars</code> emits <code>schema_version</code> <code>3.4</code>; a <code>3.3</code> manifest stays valid</li>
+</ul>
+<h3 id="declared-environment-variables-without-the-tool-prefix">Declared environment variables without the tool prefix</h3>
+<ul>
+<li>REQ-F-073: a flag may read a variable outside the tool prefix and the universal exceptions, such as a service's established name or one shared across a tool family (<code>CLOUDFALL_PROJECT</code>), only when the manifest declares it in that flag's <code>env_vars</code> and the tool-prefixed name is listed first. The framework rejects a registration that reads an undeclared one</li>
+<li>REQ-F-073's promise that the manifest lists every recognized variable now points at <code>env_vars</code> and <code>secret_env_vars</code>; its wire format no longer shows an <code>environment</code> field the schema never had</li>
+</ul>
+<p><strong>Why:</strong> frameworks wrote "(read from <code>$A</code> or <code>$B</code> when not passed)" into flag descriptions because <code>FlagEntry</code> allowed no other place, and REQ-F-073 forbade the borrowed names outright. Contamination comes from variables a tool reads without saying so; a declared name is visible to the agent (#20).</p>
 <h2 id="190-2026-09-30">1.9.0 — 2026-09-30</h2>
 <h3 id="audit-log-and-logger-rotation-defaults-are-recommendations">Audit log and logger rotation defaults are recommendations</h3>
 <ul>

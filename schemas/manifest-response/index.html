@@ -10302,7 +10302,7 @@
 <h1 id="schema-manifestresponse">Schema: ManifestResponse</h1>
 <p><strong>File:</strong> <a href="../manifest-response.json"><code>manifest-response.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a>
+<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a>
 Returned as the <code>data</code> field of a <a href="../response-envelope/"><code>ResponseEnvelope</code></a>.</p>
 </blockquote>
 <hr />
@@ -10513,7 +10513,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><code>secret_env_vars</code></td>
 <td>string[]</td>
-<td>Environment variables that supply secrets (REQ-C-016)</td>
+<td>Environment variables that supply secrets (REQ-C-016); a secret is never a flag value, so these names never appear in a flag's <code>env_vars</code></td>
 </tr>
 <tr>
 <td><code>platform</code></td>
@@ -10651,6 +10651,12 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td>no</td>
 <td>Built-in validation preset (REQ-C-020)</td>
 </tr>
+<tr>
+<td><code>env_vars</code></td>
+<td><code>EnvVarEntry[]</code></td>
+<td>no</td>
+<td>Variables the flag reads when not passed, in precedence order (first set wins); the tool-prefixed name comes first whenever a name without the prefix is listed. Never a secret (REQ-F-073)</td>
+</tr>
 </tbody>
 </table>
 <h3 id="positionalentry">PositionalEntry</h3>
@@ -10730,6 +10736,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><code>DependencyEntry</code></td>
 <td><code>name</code>, <code>check_command</code>, <code>min_version</code> required; <code>version_regex</code>, <code>fix_command</code> optional</td>
+</tr>
+<tr>
+<td><code>EnvVarEntry</code></td>
+<td><code>name</code> required; <code>deprecated</code> optional (boolean, absent means <code>false</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -10846,6 +10856,40 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p><code>tool download --output report.xml</code> writes the XML itself to <code>report.xml</code>, and <code>data</code> carries <code>path</code>, <code>bytes</code>, <code>content_type</code>, and <code>sha256</code>.</p>
+<p><strong>Valid — flags that fall back to environment variables</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.4&quot;,
+  &quot;framework_version&quot;: &quot;2.3.0&quot;,
+  &quot;etag&quot;: &quot;sha256:9d02f7&quot;,
+  &quot;flags&quot;: {
+    &quot;format&quot;: {
+      &quot;type&quot;: &quot;enum&quot;,
+      &quot;required&quot;: false,
+      &quot;enum_values&quot;: [&quot;json&quot;, &quot;jsonl&quot;, &quot;tsv&quot;, &quot;plain&quot;],
+      &quot;description&quot;: &quot;Output representation; json when stdout is not a terminal, plain in a terminal&quot;,
+      &quot;env_vars&quot;: [{ &quot;name&quot;: &quot;TOOL_FORMAT&quot; }]
+    }
+  },
+  &quot;commands&quot;: {
+    &quot;deploy&quot;: {
+      &quot;description&quot;: &quot;Deploy a build to a project&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [&quot;deploy:write&quot;],
+      &quot;secret_env_vars&quot;: [&quot;TOOL_TOKEN&quot;],
+      &quot;flags&quot;: {
+        &quot;project&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;required&quot;: true,
+          &quot;description&quot;: &quot;Project to deploy to&quot;,
+          &quot;env_vars&quot;: [{ &quot;name&quot;: &quot;TOOL_PROJECT&quot; }, { &quot;name&quot;: &quot;CLOUDFALL_PROJECT&quot; }, { &quot;name&quot;: &quot;TOOL_PROJECT_ID&quot;, &quot;deprecated&quot;: true }]
+        }
+      },
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Deployment completed&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    }
+  }
+}
+</code></pre>
+<p><code>--project</code> wins over every variable; without it the tool reads <code>TOOL_PROJECT</code>, then <code>CLOUDFALL_PROJECT</code> (shared across the tool family), then the deprecated <code>TOOL_PROJECT_ID</code>. The token stays in <code>secret_env_vars</code>, never in a flag's <code>env_vars</code>. <code>TOOL_FORMAT</code> is the <code>--format</code> default from REQ-O-042.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -10885,6 +10929,9 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Marking every flag of an "exactly one of" group <code>required: true</code>.</strong> No call can then satisfy the command; keep each flag <code>required: false</code> and declare the group as a <code>one_of</code> rule</li>
 <li><strong>Emitting pairwise <code>prohibited</code> rules next to a <code>one_of</code> group.</strong> <code>one_of</code> already forbids combining its members; the extra rules repeat the constraint and let the two drift apart</li>
 <li><strong>Declaring <code>output_file: "formatted"</code> on a command that returns a binary result.</strong> The file would then hold a JSON or plain wrapper around base64, not the file the caller asked for; a binary result is <code>"binary"</code></li>
+<li><strong>Naming a flag's environment variables only in its <code>description</code>.</strong> "(read from <code>$A</code> or <code>$B</code> when not passed)" is prose an agent must parse; list the names in <code>env_vars</code>, in precedence order</li>
+<li><strong>Listing a secret in <code>env_vars</code>.</strong> A token or password is not a flag value (REQ-C-016); declare its variable in <code>secret_env_vars</code></li>
+<li><strong>Listing a borrowed name before the tool-prefixed one.</strong> <code>CLOUDFALL_PROJECT</code> ahead of <code>TOOL_PROJECT</code> lets a variable set for another tool override the one set for this tool (REQ-F-073)</li>
 </ul>
 <hr />
 <h2 id="agent-interpretation">Agent interpretation</h2>
@@ -10916,6 +10963,12 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - <code>type: "enum"</code> — only values in <code>enum_values</code> are accepted; sending any other value produces <code>ARG_ERROR (2)</code>
 - <code>default</code> absent — the flag is optional but has no fallback; omitting it changes behavior; include explicitly if the outcome matters
 - <code>short</code> present — both <code>--flag-name value</code> and <code>-f value</code> are valid; prefer long form for clarity in agent-constructed calls</p>
+<p><strong>Supplying a flag through the environment from <code>env_vars</code></strong>
+- A passed flag beats every variable; pass the flag when the value matters for this call alone
+- To set a value for the whole session, export the first name whose <code>deprecated</code> is absent or <code>false</code>; never export a deprecated name
+- A name earlier in the list overrides the one you export, since the first one set wins; check that every earlier name is unset
+- <code>env_vars</code> absent on a <code>3.4</code> or later manifest: the flag reads no environment variable. On a pre-3.4 manifest, absent means unknown, not none; read the flag's <code>description</code> and keep that environment clean of guesses
+- A required flag with <code>env_vars</code> still counts as present when one of its variables is set</p>
 <p><strong>Selecting output format from <code>output_formats</code></strong>
 - If <code>output_formats</code> is absent, treat <code>json</code> as the only guaranteed format — do not attempt non-standard values
 - If <code>output_formats</code> is present, select the most appropriate format for your consumer: <code>json</code> for programmatic parsing, an LLM-optimized value (e.g. <code>toon</code>) when the language model is the final reader and token cost matters
@@ -10949,6 +11002,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert <code>positionals</code> lists every positional the parser accepts, in order, with no required entry after an optional one and <code>variadic</code> only on the last
 - Assert every command the framework registers, and each of its subcommands, carries <code>builtin: true</code>, and no application command does
 - Assert <code>output_file</code> is present on exactly the commands that register <code>--output &lt;path&gt;</code>, and is <code>"binary"</code> exactly when the command's result is a binary value
+- Assert every flag's <code>env_vars</code> lists exactly the variables its parser reads, in the order it reads them, with the tool-prefixed name first whenever a name without the prefix is listed, and no name from <code>secret_env_vars</code>
 - Assert <code>etag</code> changes when any command registration changes, and is stable across identical registrations (determinism test)</p>
 <p><strong>Tests to generate</strong>
 - A test that <code>tool manifest</code> returns all registered commands including built-ins
@@ -11003,6 +11057,14 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a></td>
 <td>Sources: top-level <code>flags</code> (global options)</td>
+</tr>
+<tr>
+<td><a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a></td>
+<td>Sources: <code>FlagEntry.env_vars</code> and the precedence rule for names without the tool prefix</td>
+</tr>
+<tr>
+<td><a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a></td>
+<td>Sources: <code>TOOL_FORMAT</code> listed in the root <code>format</code> flag's <code>env_vars</code></td>
 </tr>
 <tr>
 <td><a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a></td>
