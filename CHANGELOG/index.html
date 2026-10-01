@@ -10051,6 +10051,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-37-object-flags-and-the-base-of-a-relative-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.7: object flags and the base of a relative --output
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10483,6 +10494,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-37-object-flags-and-the-base-of-a-relative-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.7: object flags and the base of a relative --output
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10859,6 +10881,14 @@
 <li>A producer that emits either value emits <code>schema_version</code> <code>3.6</code>; earlier manifests stay valid</li>
 </ul>
 <p><strong>Why:</strong> <code>"formatted"</code> and <code>"binary"</code> both assume the framework renders the result into the file, so a command whose handler owns the path, or whose stdout carries something other than an envelope and saves the envelope to <code>--output</code>, fit neither and had to mislabel itself or omit the key, which reads as "no <code>--output</code>" (#27).</p>
+<h3 id="manifestresponse-37-object-flags-and-the-base-of-a-relative-output">ManifestResponse 3.7: object flags and the base of a relative <code>--output</code></h3>
+<ul>
+<li><code>FlagEntry.type</code> gains <code>"object"</code>: the value is one argv token of JSON text, as <code>--raw-payload</code> takes it (REQ-O-032). The new <code>FlagEntry.schema</code> holds the draft-07 schema of one value: the object for an <code>object</code> flag (required there), one item for an <code>array</code> flag of objects; it appears on no other type (REQ-C-015)</li>
+<li>REQ-C-015: a JSON-object flag should declare <code>type: "object"</code> rather than <code>type: "string"</code> with the shape in prose (a <code>string</code> declaration stays conforming); for an <code>object</code> flag the framework validates the value against <code>schema</code> in Phase 1 and exits <code>2</code> (<code>ARG_ERROR</code>) on text that is not JSON or does not match. New acceptance criteria cover both</li>
+<li><code>CommandEntry.output_file_base</code> (optional, <code>"cwd"</code>, <code>"project_root"</code>, or <code>"resource"</code>) names the directory a relative <code>--output</code> path resolves against; it appears only with <code>output_file</code>, and absence means <code>cwd</code>. An absolute path is used as given. A command whose base is not <code>cwd</code> must declare it (REQ-O-001)</li>
+<li>A producer that sets either field emits <code>schema_version</code> <code>3.7</code>; earlier manifests stay valid</li>
+</ul>
+<p><strong>Why:</strong> a flag that takes a JSON object had to declare itself a <code>string</code> and describe the shape in prose, and an agent writing to a project-relative <code>--output</code> from a subdirectory looked for the file under its working directory (#24).</p>
 <h2 id="190-2026-09-30">1.9.0 — 2026-09-30</h2>
 <h3 id="audit-log-and-logger-rotation-defaults-are-recommendations">Audit log and logger rotation defaults are recommendations</h3>
 <ul>

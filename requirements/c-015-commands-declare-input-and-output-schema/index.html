@@ -10140,6 +10140,7 @@
 <hr />
 <h2 id="description">Description</h2>
 <p>Every command MUST declare a complete input schema (all parameters: name, type, required, default, enum values if applicable, description) and output schema (JSON Schema for the <code>data</code> field of the response envelope). The framework MUST auto-generate <code>--schema</code> output from these declarations. Command authors MUST NOT write <code>--schema</code> output manually; it MUST be derived from the declaration.</p>
+<p><strong>Structured flag values.</strong> A flag whose value is a JSON object SHOULD declare <code>type: "object"</code> and the value's JSON Schema in <code>FlagEntry.schema</code> rather than <code>type: "string"</code> with the shape described in prose, because an agent cannot see the shape it must build otherwise. A flag declared <code>type: "object"</code> MUST carry <code>schema</code>. The caller passes the value as one argv token of JSON text, as <code>--raw-payload</code> takes its payload (<a href="../o-032-raw-payload-flag-for-mutating-commands/">REQ-O-032</a>): <code>--filter '{"status":"open"}'</code>. An <code>array</code> flag whose items are objects puts the item schema in <code>schema</code>, and each item it receives is one such token. For a flag declared <code>type: "object"</code> (or an <code>array</code> flag with <code>schema</code>), the framework MUST parse and validate the value against <code>schema</code> during Phase 1 (<a href="../f-015-validate-before-execute-phase-order/">REQ-F-015</a>) and exit <code>2</code> (<code>ARG_ERROR</code>) when the text is not valid JSON or does not match, before any side effect. <code>schema</code> appears only on <code>object</code> and <code>array</code> flags.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li><code>tool &lt;cmd&gt; --schema</code> returns valid JSON containing <code>parameters</code> and <code>output_schema</code></li>
@@ -10147,6 +10148,8 @@
 <li>Adding a parameter to a command automatically appears in <code>--schema</code> without separate documentation effort</li>
 <li>Positional arguments appear in the command's <code>positionals</code> array in call order, never only in its <code>description</code></li>
 <li>The <code>output_schema</code> is a valid JSON Schema object</li>
+<li>A flag declared <code>type: "object"</code> carries a <code>schema</code>; <code>--filter '{"status":"open"}'</code> passes when the text matches that schema</li>
+<li>On a flag declared <code>type: "object"</code>, <code>--filter 'status=open'</code> (not JSON) and <code>--filter '{"status":3}'</code> (does not match <code>schema</code>) both exit <code>2</code> with an <code>ARG_ERROR</code> naming the flag, before any side effect</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
@@ -10186,7 +10189,9 @@
   &quot;parameters&quot;: {
     &quot;target&quot;:  { &quot;type&quot;: &quot;enum&quot;,    &quot;required&quot;: true,  &quot;enum_values&quot;: [&quot;prod&quot;, &quot;staging&quot;, &quot;dev&quot;], &quot;description&quot;: &quot;Target environment&quot; },
     &quot;dry-run&quot;: { &quot;type&quot;: &quot;boolean&quot;, &quot;required&quot;: false, &quot;default&quot;: false, &quot;description&quot;: &quot;Validate without executing&quot; },
-    &quot;timeout&quot;: { &quot;type&quot;: &quot;integer&quot;, &quot;required&quot;: false, &quot;default&quot;: 300,   &quot;description&quot;: &quot;Seconds before abort&quot; }
+    &quot;timeout&quot;: { &quot;type&quot;: &quot;integer&quot;, &quot;required&quot;: false, &quot;default&quot;: 300,   &quot;description&quot;: &quot;Seconds before abort&quot; },
+    &quot;labels&quot;:  { &quot;type&quot;: &quot;object&quot;,  &quot;required&quot;: false, &quot;description&quot;: &quot;Labels to attach as JSON text&quot;,
+                 &quot;schema&quot;: { &quot;type&quot;: &quot;object&quot;, &quot;additionalProperties&quot;: { &quot;type&quot;: &quot;string&quot; } } }
   },
   &quot;output_schema&quot;: {
     &quot;type&quot;: &quot;object&quot;,
@@ -10212,6 +10217,8 @@
     target:  type=enum(prod, staging, dev), required=true,  description=&quot;Target environment&quot;
     dry-run: type=boolean, required=false, default=false,   description=&quot;Validate without executing&quot;
     timeout: type=integer, required=false, default=300,     description=&quot;Seconds before abort&quot;
+    labels:  type=object,  required=false, schema={type: object, additionalProperties: {type: string}},
+             description=&quot;Labels to attach as JSON text&quot;
   output_schema:
     type: object
     required: [deployment_id, status]
@@ -10252,6 +10259,11 @@
 <td><a href="../c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a></td>
 <td>C</td>
 <td>Extends: conditional <code>requires</code> graph is part of the <code>--schema</code> output</td>
+</tr>
+<tr>
+<td><a href="../o-032-raw-payload-flag-for-mutating-commands/">REQ-O-032</a></td>
+<td>O</td>
+<td>Composes: an <code>object</code> flag takes JSON text on argv the same way <code>--raw-payload</code> does</td>
 </tr>
 </tbody>
 </table>

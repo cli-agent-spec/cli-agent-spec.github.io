@@ -10477,6 +10477,11 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td>Command registers <code>--output &lt;path&gt;</code>. <code>formatted</code>: the file gets the <code>--format</code> representation; <code>binary</code>: the file gets the raw bytes and <code>data</code> is <code>{path, bytes, content_type, sha256}</code>, and <code>--output -</code> exits <code>2</code>; <code>handler</code>: the handler writes the file, described by the command's documentation; <code>envelope</code>: the file gets the final <code>ResponseEnvelope</code> as JSON whatever <code>--format</code> says (REQ-O-001)</td>
 </tr>
 <tr>
+<td><code>output_file_base</code></td>
+<td><code>"cwd"</code> | <code>"project_root"</code> | <code>"resource"</code></td>
+<td>Directory a relative <code>--output</code> path resolves against; only with <code>output_file</code>, absent means <code>cwd</code>. An absolute path is used as given (REQ-O-001)</td>
+</tr>
+<tr>
 <td><code>option_placement</code></td>
 <td><code>"any"</code> | <code>"strict"</code></td>
 <td><code>strict</code>: every option, global or local, precedes the first positional; absent means <code>any</code> (REQ-C-027)</td>
@@ -10611,9 +10616,9 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tbody>
 <tr>
 <td><code>type</code></td>
-<td><code>"string"</code> | <code>"integer"</code> | <code>"number"</code> | <code>"boolean"</code> | <code>"array"</code> | <code>"enum"</code></td>
+<td><code>"string"</code> | <code>"integer"</code> | <code>"number"</code> | <code>"boolean"</code> | <code>"array"</code> | <code>"enum"</code> | <code>"object"</code></td>
 <td>yes</td>
-<td>Value type</td>
+<td>Value type; an <code>object</code> value is one argv token of JSON text (REQ-C-015)</td>
 </tr>
 <tr>
 <td><code>required</code></td>
@@ -10662,6 +10667,12 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td><code>EnvVarEntry[]</code></td>
 <td>no</td>
 <td>Variables the flag reads when not passed, in precedence order (first set wins); the tool-prefixed name comes first whenever a name without the prefix is listed. Never a secret (REQ-F-073)</td>
+</tr>
+<tr>
+<td><code>schema</code></td>
+<td>JSON Schema object</td>
+<td>when <code>type</code> is <code>"object"</code></td>
+<td>Draft-07 schema of one value: the object itself for <code>object</code>, one item for <code>array</code>; never on other types (REQ-C-015)</td>
 </tr>
 </tbody>
 </table>
@@ -10959,6 +10970,66 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p><code>tool build --output app</code> writes the executable the command describes; <code>--format</code> does not change it. <code>tool test --output result.json --format plain</code> streams the runner's output to stdout and writes the final envelope to <code>result.json</code> as JSON.</p>
+<p><strong>Valid — object flag and project-relative output</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.7&quot;,
+  &quot;framework_version&quot;: &quot;2.5.0&quot;,
+  &quot;etag&quot;: &quot;sha256:7a03be&quot;,
+  &quot;commands&quot;: {
+    &quot;report&quot;: {
+      &quot;description&quot;: &quot;Render a report for the matching orders into the project's reports directory&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [&quot;orders:read&quot;],
+      &quot;output_file&quot;: &quot;formatted&quot;,
+      &quot;output_file_base&quot;: &quot;project_root&quot;,
+      &quot;flags&quot;: {
+        &quot;filter&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;required&quot;: false,
+          &quot;description&quot;: &quot;Order filter as JSON text&quot;,
+          &quot;schema&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: { &quot;status&quot;: { &quot;type&quot;: &quot;string&quot; }, &quot;min_total&quot;: { &quot;type&quot;: &quot;number&quot; } },
+            &quot;additionalProperties&quot;: false
+          }
+        },
+        &quot;line&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;required&quot;: false,
+          &quot;description&quot;: &quot;Extra line item as JSON text; repeat for more&quot;,
+          &quot;schema&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;required&quot;: [&quot;sku&quot;, &quot;qty&quot;],
+            &quot;properties&quot;: { &quot;sku&quot;: { &quot;type&quot;: &quot;string&quot; }, &quot;qty&quot;: { &quot;type&quot;: &quot;integer&quot;, &quot;minimum&quot;: 1 } }
+          }
+        },
+        &quot;output&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: true, &quot;description&quot;: &quot;Report path, relative to the project root&quot; }
+      },
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Report written&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    }
+  }
+}
+</code></pre>
+<p><code>tool report --filter '{"status":"open"}' --output reports/open.json</code> writes <code>&lt;project root&gt;/reports/open.json</code> from any subdirectory. Each <code>--line</code> value is one JSON object matching <code>schema</code>.</p>
+<p><strong>Invalid — object flag without its schema</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.7&quot;,
+  &quot;framework_version&quot;: &quot;2.5.0&quot;,
+  &quot;etag&quot;: &quot;sha256:7a03be&quot;,
+  &quot;commands&quot;: {
+    &quot;search&quot;: {
+      &quot;description&quot;: &quot;Search orders&quot;,
+      &quot;danger_level&quot;: &quot;safe&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;flags&quot;: {
+        &quot;filter&quot;: { &quot;type&quot;: &quot;object&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Order filter as JSON text&quot; }
+      },
+      &quot;exit_codes&quot;: {}
+    }
+  }
+}
+</code></pre>
+<p>Violation: an <code>object</code> flag requires <code>schema</code>; without it an agent cannot build a value the command accepts.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -11009,6 +11080,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Emitting pairwise <code>prohibited</code> rules next to a <code>one_of</code> group.</strong> <code>one_of</code> already forbids combining its members; the extra rules repeat the constraint and let the two drift apart</li>
 <li><strong>Declaring <code>output_file: "formatted"</code> on a command that returns a binary result.</strong> The file would then hold a JSON or plain wrapper around base64, not the file the caller asked for; a binary result is <code>"binary"</code></li>
 <li><strong>Omitting <code>output_file</code> because the handler writes the file itself.</strong> Absence tells the agent the command has no <code>--output</code>; declare <code>"handler"</code></li>
+<li><strong>Leaving <code>output_file_base</code> out when <code>--output</code> does not resolve against the working directory.</strong> Absence means <code>cwd</code>, so the agent looks for the file in the wrong place; declare <code>project_root</code> or <code>resource</code></li>
+<li><strong>Declaring a JSON-valued flag as <code>type: "string"</code>.</strong> The agent then has no shape to build and no signal that the value is parsed as JSON; declare <code>type: "object"</code> with <code>schema</code></li>
 <li><strong>Naming a flag's environment variables only in its <code>description</code>.</strong> "(read from <code>$A</code> or <code>$B</code> when not passed)" is prose an agent must parse; list the names in <code>env_vars</code>, in precedence order</li>
 <li><strong>Listing a secret in <code>env_vars</code>.</strong> A token or password is not a flag value (REQ-C-016); declare its variable in <code>secret_env_vars</code></li>
 <li><strong>Listing a borrowed name before the tool-prefixed one.</strong> <code>CLOUDFALL_PROJECT</code> ahead of <code>TOOL_PROJECT</code> lets a variable set for another tool override the one set for this tool (REQ-F-073)</li>
@@ -11037,6 +11110,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - <code>output_file: "formatted"</code>: the file holds the <code>--format</code> representation of <code>data</code>, so choose <code>--format</code> for the file's consumer
 - <code>output_file: "handler"</code>: the command's handler writes the file; read the command's <code>description</code> for what it holds, and do not expect <code>--format</code> to change it
 - <code>output_file: "envelope"</code>: the file holds the final <code>ResponseEnvelope</code> as JSON whatever <code>--format</code> says; read <code>ok</code>, <code>data</code>, and <code>error</code> from the file, not from stdout
+- <code>output_file_base</code> other than <code>cwd</code>: a relative <code>--output</code> lands under the project root (<code>project_root</code>) or the target resource's directory (<code>resource</code>), not the working directory. Pass an absolute path when the file must land in a known place; it is used as given
 - <code>output_file</code> absent: the command takes no <code>--output</code>; a binary result arrives base64-encoded in <code>data</code> (REQ-F-017). Treat a pre-3.3 manifest the same way and read <code>output_schema</code> for a binary wrapper</p>
 <p><strong>Building a call from <code>FlagEntry</code></strong>
 - A command's accepted flags are the root <code>flags</code> plus its own <code>flags</code>; a name in neither produces <code>ARG_ERROR (2)</code>
@@ -11046,6 +11120,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Pass each option once; a scalar option repeated with a different value produces <code>ARG_ERROR (2)</code>
 - <code>required: true</code> flags must always be present; absence will produce <code>ARG_ERROR (2)</code>
 - <code>type: "enum"</code> — only values in <code>enum_values</code> are accepted; sending any other value produces <code>ARG_ERROR (2)</code>
+- <code>type: "object"</code>: pass one argv token of compact JSON text that validates against <code>schema</code> (<code>--filter '{"status":"open"}'</code>); text that is not a JSON object, or does not match, produces <code>ARG_ERROR (2)</code>. An <code>array</code> flag with <code>schema</code> takes each item as such a token
 - <code>default</code> absent — the flag is optional but has no fallback; omitting it changes behavior; include explicitly if the outcome matters
 - <code>short</code> present — both <code>--flag-name value</code> and <code>-f value</code> are valid; prefer long form for clarity in agent-constructed calls</p>
 <p><strong>Supplying a flag through the environment from <code>env_vars</code></strong>
@@ -11090,6 +11165,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert <code>positionals</code> lists every positional the parser accepts, in order, with no required entry after an optional one and <code>variadic</code> only on the last
 - Assert every command the framework registers, and each of its subcommands, carries <code>builtin: true</code>, and no application command does
 - Assert <code>output_file</code> is present on exactly the commands that register <code>--output &lt;path&gt;</code>, and is <code>"binary"</code> exactly when the command's result is a binary value, <code>"handler"</code> exactly when the handler writes the file, and <code>"envelope"</code> exactly when the framework writes the final envelope to it
+- Assert <code>output_file_base</code> appears only with <code>output_file</code>, and that a relative <code>--output</code> path lands under the declared base from a working directory other than that base
+- Assert every <code>type: "object"</code> flag carries a <code>schema</code> the parser enforces, and prefer <code>type: "object"</code> for every flag whose value the parser reads as a JSON object
 - Assert every flag's <code>env_vars</code> lists exactly the variables its parser reads, in the order it reads them, with the tool-prefixed name first whenever a name without the prefix is listed, and no name from <code>secret_env_vars</code>
 - Assert root <code>env_vars</code> lists every other variable the tool reads outside the universal exceptions, each with the tool prefix and a <code>description</code>, and no name that also appears in a flag's <code>env_vars</code> or a <code>secret_env_vars</code>
 - Assert <code>etag</code> changes when any command registration changes, and is stable across identical registrations (determinism test)</p>
@@ -11109,6 +11186,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><code>exit_codes</code> keys are strings (<code>"0"</code>, <code>"2"</code>) because JSON object keys are always strings</li>
 <li><code>FlagEntry.default</code> must be omitted (not <code>null</code>) when no default exists, to distinguish "optional without fallback" from "default is null"</li>
 <li><code>output_formats</code> must list only values the command actually accepts; do not list formats that resolve to an error</li>
+<li><code>FlagEntry.schema</code> is a plain draft-07 schema, so a generated MCP <code>inputSchema</code> uses it as the property's schema for an <code>object</code> flag and as <code>items</code> for an <code>array</code> flag; the CLI side still takes JSON text on argv</li>
 </ul>
 <h2 id="related">Related</h2>
 <table>
