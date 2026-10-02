@@ -10169,7 +10169,7 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: High / Time: Medium / Context: High</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Every error response MUST include an <code>error</code> object with: <code>code</code> (string, <code>DOMAIN_NOUN_CONDITION</code> format, machine-readable), <code>message</code> (string, human-readable, complete sentence), and optionally <code>cause</code> (the underlying system error), <code>suggestion</code> (an actionable next step), <code>docs_url</code> (a URL to documentation), and <code>context</code> (an object of relevant key-value pairs). Stack traces MUST NOT appear in <code>error.message</code> or any stdout field; they MUST be sent only to stderr or a log file.</p>
+<p>Every error response MUST include an <code>error</code> object with: <code>code</code> (string, <code>DOMAIN_NOUN_CONDITION</code> format, machine-readable), <code>message</code> (string, human-readable, complete sentence), and optionally <code>cause</code> (the underlying system error), <code>suggestion</code> (an actionable next step), <code>docs_url</code> (a URL to documentation), and <code>context</code> (an object of relevant key-value pairs). A <code>context</code> that holds external content, such as a wrapped program's stderr, carries the REQ-F-035 trust tags; outside text the author wants tagged and masked goes in <code>context</code>. Stack traces MUST NOT appear in <code>error.message</code> or any stdout field; they MUST be sent only to stderr or a log file.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Every non-zero exit code response includes a non-null <code>error</code> object</li>
@@ -10267,6 +10267,11 @@
 <td><a href="../c-014-error-responses-include-retryable-and-retry-after-/">REQ-C-014</a></td>
 <td>C</td>
 <td>Extends: adds <code>retryable</code> and <code>retry_after_ms</code> fields to the error object defined here</td>
+</tr>
+<tr>
+<td><a href="../f-035-external-data-trust-tagging/">REQ-F-035</a></td>
+<td>F</td>
+<td>Enforces: a <code>context</code> holding external content carries <code>_source</code> and <code>_trusted</code> and is masked</td>
 </tr>
 </tbody>
 </table>

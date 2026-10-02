@@ -10169,7 +10169,7 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: High / Time: Low / Context: High</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST provide <code>--unmask</code> as a global flag that disables the high-entropy masking from REQ-F-058. When <code>--unmask</code> is passed, all fields are returned with their raw values. This flag SHOULD require explicit invocation and MUST NOT be activated by any environment variable. The <code>--unmask</code> flag is intended for debugging and human inspection; agents should not pass it except when they specifically need the raw high-entropy value for a subsequent operation.</p>
+<p>The framework MUST provide <code>--unmask</code> as a global flag that disables the high-entropy masking from REQ-F-058. When <code>--unmask</code> is passed, all fields are returned with their raw values, including the external values of a tagged <code>error.context</code> (REQ-F-035). This flag SHOULD require explicit invocation and MUST NOT be activated by any environment variable. The <code>--unmask</code> flag is intended for debugging and human inspection; agents should not pass it except when they specifically need the raw high-entropy value for a subsequent operation.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Without <code>--unmask</code>, a JWT field is returned as <code>[JWT: sub=..., exp=...]</code></li>
@@ -10217,6 +10217,11 @@ $ tool get-token --unmask --format json
 <td><a href="../f-058-high-entropy-field-masking/">REQ-F-058</a></td>
 <td>F</td>
 <td>Provides: the masking behavior that <code>--unmask</code> disables</td>
+</tr>
+<tr>
+<td><a href="../f-035-external-data-trust-tagging/">REQ-F-035</a></td>
+<td>F</td>
+<td>Composes: <code>--unmask</code> also returns the external values of a tagged <code>error.context</code> raw</td>
 </tr>
 <tr>
 <td><a href="../c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a></td>

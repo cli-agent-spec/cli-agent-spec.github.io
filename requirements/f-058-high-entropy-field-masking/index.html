@@ -10170,11 +10170,13 @@
 <hr />
 <h2 id="description">Description</h2>
 <p>The framework MUST automatically detect and mask high-entropy string values in JSON output unless <code>--unmask</code> is explicitly passed. Detection criteria: strings matching base64 pattern (<code>[A-Za-z0-9+/]{40,}={0,2}</code>), JWT three-part structure (<code>[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+</code>), or fields declared <code>high_entropy: true</code> in the command schema. Masked values MUST be replaced with a semantic summary: for JWTs — <code>[JWT: sub=&lt;sub&gt;, exp=&lt;exp&gt;]</code>; for API keys — <code>[KEY: &lt;first8&gt;...]</code>; for base64 — <code>[BASE64: &lt;bytecount&gt; bytes]</code>. The raw value MUST be accessible via <code>--unmask</code>.</p>
+<p>Masking also applies to the external values in an <code>error.context</code> that REQ-F-035 tags. There a free-text value such as a stderr tail keeps its text and only each matching substring is replaced; the keys an agent branches on (<code>exit_code</code>, <code>line</code>, <code>code</code>, <code>retryable</code>) are never masked.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A JWT in a response field is replaced with <code>[JWT: sub=user_123, exp=2024-03-11T15:00:00Z]</code> by default</li>
 <li>A 256-character base64 string is replaced with <code>[BASE64: 192 bytes]</code> by default</li>
 <li><code>--unmask</code> produces the raw value</li>
+<li>A JWT inside an external stderr value in <code>error.context</code> is replaced by its summary, and the rest of the value is unchanged</li>
 <li>Fields declared <code>high_entropy: true</code> in the schema are always masked regardless of content pattern</li>
 </ul>
 <hr />
@@ -10239,6 +10241,11 @@ $ mytool token create --json --unmask
 <td><a href="../f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a></td>
 <td>F</td>
 <td>Composes: debug/trace mode must also respect masking for high-entropy values</td>
+</tr>
+<tr>
+<td><a href="../f-035-external-data-trust-tagging/">REQ-F-035</a></td>
+<td>F</td>
+<td>Composes: masking reaches the external values of a tagged <code>error.context</code></td>
 </tr>
 </tbody>
 </table>

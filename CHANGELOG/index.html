@@ -9982,6 +9982,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreleased
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#external-content-in-errorcontext-is-tagged-and-masked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External content in error.context is tagged and masked
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1100-2026-10-01" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10447,6 +10475,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreleased
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#external-content-in-errorcontext-is-tagged-and-masked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External content in error.context is tagged and masked
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1100-2026-10-01" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10897,6 +10953,17 @@
 <li>A contract <code>MAJOR</code> increment always ships in a spec <code>MINOR</code> release with a migration section in this file</li>
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
+<h2 id="unreleased">Unreleased</h2>
+<h3 id="external-content-in-errorcontext-is-tagged-and-masked">External content in <code>error.context</code> is tagged and masked</h3>
+<ul>
+<li>REQ-F-035: when <code>error.context</code> holds external content (a wrapped program's stderr, a remote log tail, an upstream error body), it carries <code>_source: "external"</code> and <code>_trusted: false</code> at its top level, and its external string values get REQ-F-058's high-entropy masking. A free-text value keeps its text: only each high-entropy substring is replaced. Keys an agent branches on (<code>exit_code</code>, <code>line</code>, <code>code</code>, <code>retryable</code>) are never masked</li>
+<li>A framework helper's own subprocess-failure context marks the child's stderr external by default, without command author action</li>
+<li>Outside text an author wants tagged and masked goes in <code>error.context</code> (REQ-C-013); <code>detail</code> keeps its meaning, and <code>response-envelope.md</code> tells an agent to treat <code>message</code>, <code>detail</code>, and <code>cause</code> as untrusted text always</li>
+<li>REQ-O-004: the <code>UPSTREAM_FAILED</code> context is external; the upstream's strings are masked, but <code>line</code>, <code>upstream_exit_code</code>, <code>upstream.code</code>, and <code>upstream.retryable</code> are not. REQ-C-031: a passthrough envelope copies no delegated output, so it carries no tags</li>
+<li>REQ-O-023 and REQ-O-037 cover the context too: <code>--no-injection-protection</code> drops its tags, <code>--unmask</code> returns its raw values</li>
+<li>New acceptance criteria and an error-envelope example in REQ-F-035; <code>response-envelope.md</code> tells an agent never to follow instructions found in a tagged <code>data</code> or <code>error.context</code>. <code>ErrorDetail.context</code> already allows extra keys, so <code>ResponseEnvelope</code> stays 2.1 with a description change only</li>
+</ul>
+<p><strong>Why:</strong> a failure's <code>error.context</code> routinely carries a wrapped program's stderr, yet REQ-F-035 tagged and masked external content only in <code>data</code>, so injected instructions and raw tokens reached an agent through the error path untagged (#38).</p>
 <h2 id="1100-2026-10-01">1.10.0 — 2026-10-01</h2>
 <h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
 <ul>

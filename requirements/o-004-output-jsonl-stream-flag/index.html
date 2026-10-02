@@ -10175,7 +10175,7 @@
 <p><strong>Records consumers.</strong> A command that reads such a stream from another command declares <code>stdin_input: "records"</code> with a record type; the manifest shows it as <code>CommandEntry.stdin</code> with <code>mode: "records"</code> and <code>record_schema</code> (ManifestResponse 3.8). The framework reads the stream through line mode (REQ-F-054, per-line cap, no total cap), skips blank lines and heartbeat lines (<code>"heartbeat": true</code>, REQ-O-038), and classifies every other line in order:</p>
 <ul>
 <li>The summary line ends the input. The framework reads nothing after it and hands the handler no record for it</li>
-<li>An error envelope (<code>"ok": false</code>) ends the run with exit <code>1</code> and error code <code>UPSTREAM_FAILED</code>. <code>context</code> carries <code>line</code> (1-based), <code>upstream</code> (the upstream <code>error</code> object, with the consumer's own secret redaction applied), and <code>upstream_exit_code</code> (the envelope's <code>meta.exit_code</code>)</li>
+<li>An error envelope (<code>"ok": false</code>) ends the run with exit <code>1</code> and error code <code>UPSTREAM_FAILED</code>. <code>context</code> carries <code>line</code> (1-based), <code>upstream</code> (the upstream <code>error</code> object, with the consumer's own secret redaction applied), and <code>upstream_exit_code</code> (the envelope's <code>meta.exit_code</code>). The upstream object is another process's output, so the context carries <code>_source: "external"</code> and <code>_trusted: false</code> and the upstream's strings are masked (REQ-F-035); <code>line</code>, <code>upstream_exit_code</code>, <code>upstream.code</code>, and <code>upstream.retryable</code> are never masked</li>
 <li>Any other line is one record: a JSON object that MUST validate against the declared record type. A line that is not a JSON object, or fails validation, ends the run with exit <code>1</code> and error code <code>RECORD_INVALID</code>, with <code>context.line</code> and, when one field is at fault, <code>context.field</code></li>
 <li>End of stdin before a terminal line ends the run with exit <code>1</code> and error code <code>UPSTREAM_INCOMPLETE</code>, with <code>context.line</code> (the last line read) and <code>context.records</code> (records handed to the handler). The producer was killed or exited without finishing its stream</li>
 </ul>
@@ -10191,7 +10191,7 @@
 <li>The manifest exposes <code>streaming_default: true</code> for commands that declare it</li>
 <li>A streaming command that fails after emitting two items emits a third and last line that is a <code>ResponseEnvelope</code> with <code>"ok": false</code>, no summary line, and exits with that envelope's <code>meta.exit_code</code></li>
 <li>A records consumer fed two items and a summary line hands the handler two records and exits <code>0</code></li>
-<li>A records consumer fed one item and an error envelope on line 2 exits <code>1</code> with <code>error.code: "UPSTREAM_FAILED"</code>, <code>context.line: 2</code>, <code>context.upstream.code</code> equal to the upstream error's code, and <code>context.upstream_exit_code</code> equal to its <code>meta.exit_code</code></li>
+<li>A records consumer fed one item and an error envelope on line 2 exits <code>1</code> with <code>error.code: "UPSTREAM_FAILED"</code>, <code>context.line: 2</code>, <code>context.upstream.code</code> equal to the upstream error's code, <code>context._trusted: false</code>, and <code>context.upstream_exit_code</code> equal to its <code>meta.exit_code</code></li>
 <li>A records consumer fed two items and then end of stdin, with no terminal line, exits <code>1</code> with <code>error.code: "UPSTREAM_INCOMPLETE"</code>, <code>context.line: 2</code>, and <code>context.records: 2</code></li>
 <li>A records consumer fed a line that is not a JSON object, or a record missing a required field, exits <code>1</code> with <code>error.code: "RECORD_INVALID"</code> and that line's number in <code>context.line</code></li>
 <li>A records consumer given <code>--input-file &lt;path&gt;</code> whose file has two items and no summary line hands the handler two records and exits <code>0</code></li>
@@ -10248,6 +10248,8 @@ $ tool list-events --no-stream
     &quot;retryable&quot;: false,
     &quot;phase&quot;: &quot;execution&quot;,
     &quot;context&quot;: {
+      &quot;_source&quot;: &quot;external&quot;,
+      &quot;_trusted&quot;: false,
       &quot;line&quot;: 3,
       &quot;upstream&quot;: { &quot;code&quot;: &quot;UNAVAILABLE&quot;, &quot;message&quot;: &quot;Deployment API returned 503&quot;, &quot;retryable&quot;: true },
       &quot;upstream_exit_code&quot;: 12
@@ -10332,6 +10334,11 @@ register command &quot;annotate&quot;:
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>
 <td>F</td>
 <td>Wraps: a failed stream ends with the standard error envelope</td>
+</tr>
+<tr>
+<td><a href="../f-035-external-data-trust-tagging/">REQ-F-035</a></td>
+<td>F</td>
+<td>Enforces: the <code>UPSTREAM_FAILED</code> context is tagged external and its upstream strings are masked</td>
 </tr>
 <tr>
 <td><a href="../o-039-input-file-flag-for-stdin-commands/">REQ-O-039</a></td>
