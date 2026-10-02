@@ -10197,6 +10197,7 @@
 </tr>
 </tbody>
 </table>
+<p>A secret every command reads, such as a tool-wide API key, is listed once in the manifest's root <code>secret_env_vars</code> (ManifestResponse 3.13) instead of on each command; REQ-F-073 gives each variable one home.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <pre><code class="language-bash">$ tool login --schema
@@ -10256,6 +10257,11 @@
 <td><a href="../f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a></td>
 <td>F</td>
 <td>Enforces: secret values read from env are redacted in debug/trace output</td>
+</tr>
+<tr>
+<td><a href="../f-073-env-var-namespace-prefix/">REQ-F-073</a></td>
+<td>F</td>
+<td>Composes: places a secret in a command's or the root <code>secret_env_vars</code>, and a pre-acquired token in <code>token_env_vars</code></td>
 </tr>
 </tbody>
 </table>

@@ -10401,7 +10401,13 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td><code>env_vars</code></td>
 <td><code>EnvVarEntry[]</code></td>
 <td>no</td>
-<td>Variables the tool reads that back no flag and supply no secret, such as <code>TOOL_DEBUG</code> or <code>TOOL_AUDIT_LOG</code>; each entry carries <code>description</code>. Universal names (<code>NO_COLOR</code>, <code>HOME</code>, ...) are not listed (REQ-F-073)</td>
+<td>Variables the tool reads that back no flag and supply no secret, such as <code>TOOL_DEBUG</code> or <code>TOOL_AUDIT_LOG</code>; each entry carries <code>description</code>. A name without the tool prefix immediately follows the entry for its setting's prefixed name, which wins. Universal names (<code>NO_COLOR</code>, <code>HOME</code>, ...) are not listed (REQ-F-073)</td>
+</tr>
+<tr>
+<td><code>secret_env_vars</code></td>
+<td>string[]</td>
+<td>no</td>
+<td>Variables that supply a secret every command reads, such as a tool-wide API key; names only, never a value or default. A name here appears in no command's <code>secret_env_vars</code> and no flag's <code>env_vars</code> (REQ-F-073, REQ-C-016)</td>
 </tr>
 </tbody>
 </table>
@@ -10580,7 +10586,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><code>secret_env_vars</code></td>
 <td>string[]</td>
-<td>Environment variables that supply secrets (REQ-C-016); a secret is never a flag value, so these names never appear in a flag's <code>env_vars</code></td>
+<td>Environment variables that supply this command's secrets beyond the root <code>secret_env_vars</code> (REQ-C-016); a secret is never a flag value, so these names never appear in a flag's <code>env_vars</code></td>
 </tr>
 <tr>
 <td><code>platform</code></td>
@@ -10605,7 +10611,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><code>token_env_vars</code></td>
 <td>string[]</td>
-<td>Pre-acquired token variables; required when <code>headless_supported</code> is <code>false</code> (REQ-C-021)</td>
+<td>Pre-acquired token variables; required when <code>headless_supported</code> is <code>false</code> (REQ-C-021). A name here is not repeated in this command's <code>secret_env_vars</code> (REQ-F-073)</td>
 </tr>
 <tr>
 <td><code>async</code></td>
@@ -11057,6 +11063,38 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Violation: only the root <code>format</code> flag carries <code>media_types</code>; a command-specific <code>--format</code> value declares its media type in the command's <code>output_media_types</code>.</p>
+<p><strong>Valid — a tool-wide secret and a setting with an ecosystem name</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.13&quot;,
+  &quot;framework_version&quot;: &quot;2.5.0&quot;,
+  &quot;etag&quot;: &quot;sha256:0b93e2&quot;,
+  &quot;env_vars&quot;: [
+    { &quot;name&quot;: &quot;TOOL_LEDGER&quot;, &quot;description&quot;: &quot;Path of the ledger file every command reads&quot; },
+    { &quot;name&quot;: &quot;LEDGER_FILE&quot;, &quot;description&quot;: &quot;Path of the ledger file, the ecosystem's established name; TOOL_LEDGER overrides it&quot; }
+  ],
+  &quot;secret_env_vars&quot;: [&quot;TOOL_API_KEY&quot;],
+  &quot;commands&quot;: {
+    &quot;login&quot;: {
+      &quot;description&quot;: &quot;Store credentials for the price service&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;headless_supported&quot;: false,
+      &quot;token_env_vars&quot;: [&quot;TOOL_PRICE_TOKEN&quot;],
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Credentials stored&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    },
+    &quot;sync&quot;: {
+      &quot;description&quot;: &quot;Sync prices into the ledger&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;secret_env_vars&quot;: [&quot;TOOL_PRICE_TOKEN&quot;],
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Prices synced&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    }
+  }
+}
+</code></pre>
+<p>Every command reads <code>TOOL_API_KEY</code>, so it sits once in root <code>secret_env_vars</code>. <code>login</code> accepts <code>TOOL_PRICE_TOKEN</code> as a pre-acquired token, so it names it in <code>token_env_vars</code> and not in its own <code>secret_env_vars</code>; <code>sync</code> reads the same token as a plain secret. <code>LEDGER_FILE</code> follows <code>TOOL_LEDGER</code>, which the tool reads first.</p>
 <p><strong>Valid — commands whose <code>--output</code> is not a <code>--format</code> rendering</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.6&quot;,
@@ -11364,11 +11402,14 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Letting auto-quiet or <code>--verbose</code> gate a declared child log.</strong> <code>child_log</code> streams whatever the verbosity; only <code>--quiet</code> silences it, so a log that appears only under <code>--verbose</code> is a framework diagnostic, not a child log</li>
 <li><strong>Listing a borrowed name before the tool-prefixed one.</strong> <code>CLOUDFALL_PROJECT</code> ahead of <code>TOOL_PROJECT</code> lets a variable set for another tool override the one set for this tool (REQ-F-073)</li>
 <li><strong>Reading a variable the manifest never names.</strong> <code>TOOL_DEBUG</code> or <code>TOOL_AUDIT_LOG</code> backs no flag, so it belongs in root <code>env_vars</code>; documenting it only in a README leaves an agent unable to see that it changes the tool's behavior</li>
-<li><strong>Listing one variable in two places.</strong> A name in root <code>env_vars</code> appears in no flag's <code>env_vars</code> and no <code>secret_env_vars</code>; a variable that supplies a flag's value is declared on that flag only</li>
+<li><strong>Listing one variable in two places.</strong> A name in root <code>env_vars</code> appears nowhere else in the manifest; a variable that supplies a flag's value is declared on that flag only; a root secret appears in no command's <code>secret_env_vars</code>; an auth command's token sits in its <code>token_env_vars</code>, not also in its <code>secret_env_vars</code></li>
+<li><strong>Repeating a tool-wide secret on every command.</strong> A secret every command reads goes in root <code>secret_env_vars</code> once</li>
+<li><strong>Listing a secret in root <code>env_vars</code>.</strong> A root <code>description</code> invites a default or an example value; a secret goes in a <code>secret_env_vars</code>, which holds names only</li>
+<li><strong>Listing an ecosystem name in root <code>env_vars</code> alone.</strong> <code>LEDGER_FILE</code> without <code>TOOL_LEDGER</code> right before it lets a variable set for another tool configure this one; the prefixed name comes first and wins (REQ-F-073)</li>
 <li><strong>Naming a format's media type only in the <code>--format</code> <code>description</code>.</strong> "html writes text/html" is prose an agent must parse; declare it in the root <code>format</code> flag's <code>media_types</code></li>
 <li><strong>Leaving a tool's own format value out of <code>media_types</code>.</strong> An agent can then assume nothing about it and must treat its output as opaque; every value outside the spec's table has an entry</li>
 <li><strong>Mapping a spec value to another media type.</strong> <code>json</code> is always <code>application/json</code>; a variant with another shape is a new format value with its own name</li>
-<li><strong>Listing universal names in root <code>env_vars</code>.</strong> <code>NO_COLOR</code>, <code>CI</code>, <code>HOME</code>, and the other REQ-F-073 exceptions are read by every conforming tool; listing them adds noise without telling the agent anything</li>
+<li><strong>Listing universal names in root <code>env_vars</code>.</strong> <code>NO_COLOR</code>, <code>CI</code>, <code>HOME</code>, <code>COLUMNS</code>, the proxy and CA bundle names, and the other REQ-F-073 exceptions are read by every conforming tool; listing them adds noise without telling the agent anything</li>
 </ul>
 <hr />
 <h2 id="agent-interpretation">Agent interpretation</h2>
@@ -11417,7 +11458,11 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - A required flag with <code>env_vars</code> still counts as present when one of its variables is set</p>
 <p><strong>Reading root <code>env_vars</code></strong>
 - Root <code>env_vars</code> lists the variables that change the tool's behavior without backing a flag; read each <code>description</code> before exporting one, and unset any you did not set on purpose, since a leftover <code>TOOL_DEBUG</code> or <code>TOOL_AUDIT_LOG</code> changes every call
-- Root <code>env_vars</code> absent on a <code>3.5</code> or later manifest: the tool reads no such variable. On a pre-3.5 manifest, absent means unknown, not none</p>
+- Root <code>env_vars</code> absent on a <code>3.5</code> or later manifest: the tool reads no such variable. On a pre-3.5 manifest, absent means unknown, not none
+- An entry without the tool prefix, such as <code>LEDGER_FILE</code>, follows the prefixed entry for the same setting; set the prefixed one, since it wins, and unset the other if you inherited it</p>
+<p><strong>Supplying secrets</strong>
+- A command's secrets are the root <code>secret_env_vars</code> plus its own <code>secret_env_vars</code>; an auth command also accepts the names in its <code>token_env_vars</code>. Export the value from your secret store; never pass it on the command line
+- Root <code>secret_env_vars</code> absent on a <code>3.13</code> or later manifest: no secret is read by every command. On a pre-3.13 manifest, absent means unknown; a tool-wide secret may appear only in a README or in each command's <code>secret_env_vars</code></p>
 <p><strong>Selecting output format from <code>output_formats</code></strong>
 - If <code>output_formats</code> is absent, treat <code>json</code> as the only guaranteed format — do not attempt non-standard values
 - Look up a value's media type in the command's <code>output_media_types</code>, then the root <code>format</code> flag's <code>media_types</code>, then the spec's table in REQ-O-001 (<code>json</code> → <code>application/json</code>, <code>jsonl</code> → <code>application/x-ndjson</code>, and <code>tsv</code>, <code>plain</code>, <code>table</code>, <code>id</code> as text)
@@ -11469,7 +11514,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert every <code>type: "object"</code> flag carries a <code>schema</code> the parser enforces, and prefer <code>type: "object"</code> for every flag whose value the parser reads as a JSON object
 - Assert every <code>arguments: "passthrough"</code> command has <code>option_placement: "strict"</code>, empty <code>flags</code>, no <code>positionals</code>, and a <code>danger_level</code> other than <code>destructive</code>, and that <code>help_argv</code> appears only on such commands
 - Assert every flag's <code>env_vars</code> lists exactly the variables its parser reads, in the order it reads them, with the tool-prefixed name first whenever a name without the prefix is listed, and no name from <code>secret_env_vars</code>
-- Assert root <code>env_vars</code> lists every other variable the tool reads outside the universal exceptions, each with the tool prefix and a <code>description</code>, and no name that also appears in a flag's <code>env_vars</code> or a <code>secret_env_vars</code>
+- Assert root <code>env_vars</code> lists every other variable the tool reads outside the universal exceptions, each with a <code>description</code> and either the tool prefix or a declared name that immediately follows its setting's prefixed entry, and no name that also appears in a flag's <code>env_vars</code>, a <code>secret_env_vars</code>, or a <code>token_env_vars</code>
+- Assert root <code>secret_env_vars</code> lists exactly the secrets every command reads, and that none of them repeats in a command's <code>secret_env_vars</code> or a flag's <code>env_vars</code>; assert no name in an auth command's <code>token_env_vars</code> repeats in that command's <code>secret_env_vars</code>
 - Assert <code>stderr: "child_log"</code> appears on exactly the commands that stream a wrapped program's output to stderr, never on a passthrough command, and that <code>--quiet</code> leaves stderr empty for them
 - Assert the root <code>format</code> flag's <code>media_types</code> keys are all in its <code>enum_values</code>, cover every value outside the spec's media type table, and map each spec value they list to the table's media type; assert no other flag carries <code>media_types</code>
 - Assert every <code>output_formats</code> value covered by neither the spec's table nor the root <code>media_types</code> has an <code>output_media_types</code> entry, and every <code>output_media_types</code> key is a value the command accepts
@@ -11536,7 +11582,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a></td>
-<td>Sources: <code>FlagEntry.env_vars</code>, root <code>env_vars</code>, and the precedence rule for names without the tool prefix</td>
+<td>Sources: <code>FlagEntry.env_vars</code>, root <code>env_vars</code>, root <code>secret_env_vars</code>, the four homes of a variable, and the precedence rule for names without the tool prefix</td>
 </tr>
 <tr>
 <td><a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a></td>

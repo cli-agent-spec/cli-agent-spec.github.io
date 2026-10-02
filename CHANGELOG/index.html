@@ -10048,6 +10048,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-313-every-environment-variable-has-a-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.13: every environment variable has a home
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10585,6 +10596,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-313-every-environment-variable-has-a-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.13: every environment variable has a home
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -11091,6 +11113,15 @@
 <li>A producer that sets either map emits <code>schema_version</code> <code>3.12</code>; earlier manifests stay valid</li>
 </ul>
 <p><strong>Why:</strong> a tool can register its own <code>--format</code> values beside the spec's (<code>html</code> for a page a person reads), and an agent had no way to learn from the manifest that such a value is not JSON, short of parsing the flag's <code>description</code> (#36).</p>
+<h3 id="manifestresponse-313-every-environment-variable-has-a-home">ManifestResponse 3.13: every environment variable has a home</h3>
+<ul>
+<li>Root <code>secret_env_vars</code> (optional, a string array of names, never a value or default) lists the secrets every command reads, such as a tool-wide API key. A name there appears in no command's <code>secret_env_vars</code> and no flag's <code>env_vars</code>; a command's secrets are the root list plus its own</li>
+<li>REQ-F-073 names four homes in order: an auth command's <code>token_env_vars</code>, a <code>secret_env_vars</code> (root or command), a flag's <code>env_vars</code>, and root <code>env_vars</code>. When a variable fits two, the first wins: a token an auth command accepts is not repeated in that command's <code>secret_env_vars</code>, a secret never backs a flag's <code>env_vars</code>, and a flag-backed variable never sits in root <code>env_vars</code>. This replaces the "exactly one of three" wording</li>
+<li>Root <code>env_vars</code> follows the <code>FlagEntry.env_vars</code> rule: an entry without the tool prefix, such as an ecosystem's <code>LEDGER_FILE</code>, is allowed only right after the entry for the same setting's prefixed name, which the tool reads first. The criterion that every root entry carries the prefix is replaced; new acceptance criteria cover the order and the root secret list</li>
+<li>The universal exceptions gain <code>PWD</code>, <code>COLUMNS</code>, <code>ALL_PROXY</code>, the lowercase <code>http_proxy</code>, <code>https_proxy</code>, <code>no_proxy</code>, and <code>all_proxy</code>, <code>REQUESTS_CA_BUNDLE</code>, <code>SSL_CERT_FILE</code>, <code>GITHUB_ACTIONS</code>, and <code>JENKINS_URL</code>; the naming guide's table lists them</li>
+<li>A producer that sets root <code>secret_env_vars</code> emits <code>schema_version</code> <code>3.13</code>; a pre-3.13 manifest stays valid, and on it an absent root <code>secret_env_vars</code> means unknown, not none</li>
+</ul>
+<p><strong>Why:</strong> implementing ManifestResponse 3.5 left a tool-wide secret with no home, forbade a root setting's established unprefixed name that a flag could declare, left <code>token_env_vars</code> out of the "three homes", and made tools that read <code>COLUMNS</code> or a CA bundle variable non-conforming (#37).</p>
 <h2 id="1100-2026-10-01">1.10.0 — 2026-10-01</h2>
 <h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
 <ul>

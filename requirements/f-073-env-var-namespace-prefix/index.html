@@ -10169,19 +10169,31 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: Low / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST require a tool-scoped prefix for all environment variables the tool reads. The prefix MUST be the tool's binary name uppercased with hyphens replaced by underscores, followed by <code>_</code>. For example, a tool named <code>my-tool</code> uses prefix <code>MY_TOOL_</code>. The framework MUST declare in the manifest response every environment variable that supplies a flag's value, in that flag's <code>env_vars</code> (ManifestResponse 3.4), every variable that supplies a secret in the command's <code>secret_env_vars</code> (REQ-C-016), and every other variable it reads, such as <code>&lt;TOOLNAME&gt;_DEBUG</code>, <code>&lt;PREFIX&gt;AUDIT_LOG</code>, or <code>&lt;PREFIX&gt;SESSION_ID</code> (REQ-O-030), in the manifest's root <code>env_vars</code> with a <code>description</code> (ManifestResponse 3.5). Each recognized variable has exactly one of these three homes: a secret never appears in a flag's <code>env_vars</code>, and a name in root <code>env_vars</code> appears in neither. The universal exceptions below are not listed.</p>
-<p>Exceptions (read without prefix, per universal convention): <code>NO_COLOR</code>, <code>CI</code>, <code>HOME</code>, <code>USER</code>, <code>PATH</code>, <code>SHELL</code>, <code>TERM</code>, <code>XDG_CONFIG_HOME</code>, <code>XDG_DATA_HOME</code>, <code>XDG_CACHE_HOME</code>, <code>XDG_STATE_HOME</code>, <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, <code>NO_PROXY</code>.</p>
+<p>The framework MUST require a tool-scoped prefix for all environment variables the tool reads. The prefix MUST be the tool's binary name uppercased with hyphens replaced by underscores, followed by <code>_</code>. For example, a tool named <code>my-tool</code> uses prefix <code>MY_TOOL_</code>. The framework MUST declare in the manifest response every environment variable the tool reads outside the universal exceptions below, in one of four homes:</p>
+<ol>
+<li><code>token_env_vars</code> of an auth command (REQ-C-021): a variable that supplies a pre-acquired token in place of the command's interactive authentication</li>
+<li><code>secret_env_vars</code> (REQ-C-016): any other variable that supplies a secret. A secret every command reads, such as a tool-wide API key, goes in the manifest's root <code>secret_env_vars</code> (ManifestResponse 3.13); a secret only some commands read goes in each of those commands' <code>secret_env_vars</code></li>
+<li>A flag's <code>env_vars</code> (ManifestResponse 3.4): a variable that supplies that flag's value when the flag is not passed</li>
+<li>The manifest's root <code>env_vars</code> with a <code>description</code> (ManifestResponse 3.5): every other variable, such as <code>&lt;TOOLNAME&gt;_DEBUG</code>, <code>&lt;PREFIX&gt;AUDIT_LOG</code>, or <code>&lt;PREFIX&gt;SESSION_ID</code> (REQ-O-030)</li>
+</ol>
+<p>When a variable fits two homes, the first in this order wins: a token an auth command accepts sits in its <code>token_env_vars</code> and not in that command's <code>secret_env_vars</code>; a secret never sits in a flag's <code>env_vars</code>, even when it backs a <code>--x-from-env</code> flag; a variable that backs a flag never sits in root <code>env_vars</code>. Root homes are exclusive: a name in root <code>env_vars</code> appears nowhere else in the manifest, and a name in root <code>secret_env_vars</code> appears in no command's <code>secret_env_vars</code> and no flag's <code>env_vars</code>. The one overlap allowed is a root secret that an auth command also accepts as a pre-acquired token, which that command still names in <code>token_env_vars</code> because REQ-C-021 requires the list. The universal exceptions are listed in no home.</p>
+<p>Exceptions (read without prefix, per universal convention): <code>NO_COLOR</code>, <code>CI</code>, <code>HOME</code>, <code>USER</code>, <code>PATH</code>, <code>PWD</code>, <code>SHELL</code>, <code>TERM</code>, <code>COLUMNS</code>, <code>XDG_CONFIG_HOME</code>, <code>XDG_DATA_HOME</code>, <code>XDG_CACHE_HOME</code>, <code>XDG_STATE_HOME</code>, <code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code>, <code>NO_PROXY</code>, <code>ALL_PROXY</code> and their lowercase forms <code>http_proxy</code>, <code>https_proxy</code>, <code>no_proxy</code>, <code>all_proxy</code>, <code>REQUESTS_CA_BUNDLE</code>, <code>SSL_CERT_FILE</code>, <code>GITHUB_ACTIONS</code>, <code>JENKINS_URL</code>.</p>
 <p><strong>Declared names without the prefix.</strong> A flag MAY also read a variable outside the prefix and the exceptions, such as a service's established name (<code>AWS_REGION</code>) or one shared across a family of tools (<code>CLOUDFALL_PROJECT</code>), only when the manifest declares that name in the flag's <code>env_vars</code> and the tool-prefixed name is also listed and comes first in precedence. Contamination comes from variables a tool reads without saying so; a declared name is visible to the agent, which can set or unset it on purpose, and the prefixed name set for this tool always overrides one set for another. The framework MUST reject a registration that reads an undeclared name without the prefix, or lists one ahead of the prefixed name.</p>
+<p>Root <code>env_vars</code> follows the same rule. A tool-wide setting MAY also read a declared name without the prefix, such as <code>LEDGER_FILE</code> kept for an established ecosystem, only when root <code>env_vars</code> also lists the setting's tool-prefixed name (<code>MY_TOOL_LEDGER</code>) immediately before it, the tool reads the prefixed name first, and the unprefixed entry's <code>description</code> names the prefixed variable that overrides it.</p>
 <p>An agent setting <code>DEBUG=1</code> to enable verbose output in one tool must not accidentally enable debug mode in every other tool in the same session. Unprefixed env vars are a cross-tool contamination vector in multi-tool agent pipelines.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>All tool-specific configuration env vars are documented under the <code>TOOLNAME_</code> prefix</li>
 <li>Setting <code>DEBUG=1</code> does not affect the tool unless the tool explicitly reads <code>TOOLNAME_DEBUG</code></li>
-<li>The framework rejects (with a warning) any framework plugin that reads an unprefixed custom env var it does not declare in a flag's <code>env_vars</code></li>
-<li><code>tool manifest</code> lists every variable that supplies a flag's value in that flag's <code>env_vars</code>, in the order the parser reads them, and every secret variable in the command's <code>secret_env_vars</code></li>
+<li>The framework rejects (with a warning) any framework plugin that reads an unprefixed custom env var it does not declare in a flag's <code>env_vars</code> or, after the prefixed entry for the same setting, in root <code>env_vars</code></li>
+<li><code>tool manifest</code> lists every variable that supplies a flag's value in that flag's <code>env_vars</code>, in the order the parser reads them, every token variable of an auth command in its <code>token_env_vars</code>, and every other secret variable in root <code>secret_env_vars</code> when every command reads it, otherwise in the <code>secret_env_vars</code> of each command that reads it</li>
 <li>A flag whose <code>env_vars</code> holds a name without the prefix (outside the exceptions) also lists the tool-prefixed name, first; the framework rejects a registration that breaks this</li>
-<li>No name in a command's <code>secret_env_vars</code> appears in any flag's <code>env_vars</code></li>
-<li><code>tool manifest</code> lists every other variable the tool reads outside the universal exceptions in root <code>env_vars</code>, each with the tool prefix and a <code>description</code>; no name there appears in any flag's <code>env_vars</code> or any <code>secret_env_vars</code>, so every recognized variable appears in exactly one of the three</li>
+<li>No name in a command's or the root <code>secret_env_vars</code> appears in any flag's <code>env_vars</code>; no name in an auth command's <code>token_env_vars</code> also appears in that command's <code>secret_env_vars</code>; no name in root <code>secret_env_vars</code> appears in any command's <code>secret_env_vars</code></li>
+<li><code>tool manifest</code> lists every other variable the tool reads outside the universal exceptions in root <code>env_vars</code>, each with a <code>description</code>; no name there appears in any flag's <code>env_vars</code>, any <code>secret_env_vars</code>, or any <code>token_env_vars</code></li>
+<li>Each root <code>env_vars</code> entry carries the tool prefix, or is a declared name without it that immediately follows the entry for the same setting's tool-prefixed name; the tool reads the prefixed name first, and the framework rejects a registration that breaks this</li>
+<li>No universal exception appears in any of the four homes</li>
+<li>Verified: a tool that reads <code>MY_TOOL_API_KEY</code> for every command lists it in root <code>secret_env_vars</code> and in no command's <code>secret_env_vars</code></li>
+<li>Verified: with both <code>MY_TOOL_LEDGER</code> and <code>LEDGER_FILE</code> set, the tool uses <code>MY_TOOL_LEDGER</code>; with only <code>LEDGER_FILE</code> set, it uses that</li>
 <li>Verified: a tool that reads <code>TOOLNAME_DEBUG</code> without a <code>--debug</code> flag lists it in root <code>env_vars</code></li>
 <li>Verified: with both <code>TOOL_PROJECT</code> and <code>CLOUDFALL_PROJECT</code> set, <code>tool deploy</code> uses <code>TOOL_PROJECT</code>; with only <code>CLOUDFALL_PROJECT</code> set, it uses that; <code>--project</code> overrides both</li>
 <li>Verified: run tool with <code>env -i TOOLNAME_DEBUG=1 tool --version</code> — debug output appears; run with <code>env -i DEBUG=1 tool --version</code> — no debug output</li>
@@ -10189,18 +10201,21 @@
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Types:</strong> <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a> · <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a></p>
-<p><code>FlagEntry.env_vars</code> lists the variables a flag reads when it is not passed, each an <code>EnvVarEntry</code> <code>{name, deprecated?, description?}</code>, in precedence order. Secret variables stay in <code>CommandEntry.secret_env_vars</code>. Root <code>env_vars</code> lists every other variable as an <code>EnvVarEntry</code> whose <code>description</code> is required.</p>
+<p><code>FlagEntry.env_vars</code> lists the variables a flag reads when it is not passed, each an <code>EnvVarEntry</code> <code>{name, deprecated?, description?}</code>, in precedence order. Secret variables stay in <code>CommandEntry.secret_env_vars</code>, or in the root <code>secret_env_vars</code> (a string array of names, ManifestResponse 3.13) when every command reads them; an auth command's pre-acquired token variables stay in <code>CommandEntry.token_env_vars</code>. Root <code>env_vars</code> lists every other variable as an <code>EnvVarEntry</code> whose <code>description</code> is required.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
-<p><code>tool manifest</code> declares the variables on the flags that read them, the secrets on the command, and the rest at the root:</p>
+<p><code>tool manifest</code> declares the variables on the flags that read them, the tool-wide secret at the root, the command's own secret on the command, and the rest in root <code>env_vars</code>:</p>
 <pre><code class="language-json">{
-  &quot;schema_version&quot;: &quot;3.5&quot;,
+  &quot;schema_version&quot;: &quot;3.13&quot;,
   &quot;framework_version&quot;: &quot;2.4.0&quot;,
   &quot;etag&quot;: &quot;sha256:51c0de&quot;,
   &quot;env_vars&quot;: [
     { &quot;name&quot;: &quot;MY_TOOL_DEBUG&quot;, &quot;description&quot;: &quot;1 turns on debug output on stderr, with secrets redacted&quot; },
-    { &quot;name&quot;: &quot;MY_TOOL_AUDIT_LOG&quot;, &quot;description&quot;: &quot;1 turns the audit log on, 0 turns it off, an absolute path turns it on at that path&quot; }
+    { &quot;name&quot;: &quot;MY_TOOL_AUDIT_LOG&quot;, &quot;description&quot;: &quot;1 turns the audit log on, 0 turns it off, an absolute path turns it on at that path&quot; },
+    { &quot;name&quot;: &quot;MY_TOOL_LEDGER&quot;, &quot;description&quot;: &quot;Path of the ledger file every command reads&quot; },
+    { &quot;name&quot;: &quot;LEDGER_FILE&quot;, &quot;description&quot;: &quot;Path of the ledger file, the ecosystem's established name; MY_TOOL_LEDGER overrides it&quot; }
   ],
+  &quot;secret_env_vars&quot;: [&quot;MY_TOOL_API_KEY&quot;],
   &quot;commands&quot;: {
     &quot;deploy&quot;: {
       &quot;description&quot;: &quot;Deploy a build to a project&quot;,
@@ -10235,6 +10250,10 @@ OTHER_TOOL_DEBUG=0 other-tool list  # other-tool unaffected
 # A family-wide name is honored only because the manifest declares it
 CLOUDFALL_PROJECT=web my-tool deploy                         # project: web
 MY_TOOL_PROJECT=api CLOUDFALL_PROJECT=web my-tool deploy     # project: api (prefixed name first)
+
+# A tool-wide setting keeps the ecosystem's name behind the prefixed one
+LEDGER_FILE=main.ledger my-tool list                              # ledger: main.ledger
+MY_TOOL_LEDGER=test.ledger LEDGER_FILE=main.ledger my-tool list   # ledger: test.ledger
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>
@@ -10255,7 +10274,12 @@ MY_TOOL_PROJECT=api CLOUDFALL_PROJECT=web my-tool deploy     # project: api (pre
 <tr>
 <td><a href="../c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a></td>
 <td>C</td>
-<td>Composes: secret variables are declared in <code>secret_env_vars</code>, never in a flag's <code>env_vars</code></td>
+<td>Composes: secret variables are declared in a command's or the root <code>secret_env_vars</code>, never in a flag's <code>env_vars</code></td>
+</tr>
+<tr>
+<td><a href="../c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a></td>
+<td>C</td>
+<td>Composes: an auth command's pre-acquired token variables are declared in its <code>token_env_vars</code>, the first home</td>
 </tr>
 <tr>
 <td><a href="../o-042-output-format-env-var-default/">REQ-O-042</a></td>

@@ -11106,8 +11106,24 @@
 <td>Config/data/cache locations</td>
 </tr>
 <tr>
-<td><code>HTTP_PROXY</code> / <code>HTTPS_PROXY</code> / <code>NO_PROXY</code></td>
+<td><code>HTTP_PROXY</code> / <code>HTTPS_PROXY</code> / <code>NO_PROXY</code> / <code>ALL_PROXY</code> and lowercase <code>http_proxy</code> / <code>https_proxy</code> / <code>no_proxy</code> / <code>all_proxy</code></td>
 <td>Network proxy</td>
+</tr>
+<tr>
+<td><code>REQUESTS_CA_BUNDLE</code> / <code>SSL_CERT_FILE</code></td>
+<td>CA bundle for TLS verification behind a proxy</td>
+</tr>
+<tr>
+<td><code>COLUMNS</code></td>
+<td>Terminal width for table and wrapped output</td>
+</tr>
+<tr>
+<td><code>PWD</code></td>
+<td>Working directory</td>
+</tr>
+<tr>
+<td><code>GITHUB_ACTIONS</code> / <code>JENKINS_URL</code></td>
+<td>CI provider detection, alongside <code>CI</code></td>
 </tr>
 <tr>
 <td><code>PAGER</code></td>
@@ -11120,7 +11136,7 @@
 </tbody>
 </table>
 <h3 id="tool-specific-variables-always-use-toolname_-prefix">Tool-specific variables (always use <code>TOOLNAME_</code> prefix)</h3>
-<p>See REQ-F-073. All tool-specific env vars must be namespaced to prevent cross-tool contamination in multi-tool agent pipelines. A flag may also read a service's established name or one shared across a tool family, but only when the manifest declares it in the flag's <code>env_vars</code> after the prefixed name. A prefixed variable that backs no flag, such as <code>TOOLNAME_DEBUG</code>, is declared in the manifest's root <code>env_vars</code>.</p>
+<p>See REQ-F-073. All tool-specific env vars must be namespaced to prevent cross-tool contamination in multi-tool agent pipelines. A flag may also read a service's established name or one shared across a tool family, but only when the manifest declares it in the flag's <code>env_vars</code> after the prefixed name. A prefixed variable that backs no flag, such as <code>TOOLNAME_DEBUG</code>, is declared in the manifest's root <code>env_vars</code>, where an established name for the same setting may follow it. A secret every command reads is declared once in the root <code>secret_env_vars</code>.</p>
 <hr />
 <h2 id="the-three-design-layers">The Three Design Layers</h2>
 <p>A fully agent-compatible CLI operates at three levels:</p>
