@@ -27,7 +27,7 @@
     
     
       
-        <title>REQ-O-048: Destructive Commands Default to Dry-Run Mode - CLI Agent Spec</title>
+        <title>REQ-O-048: High-Stakes Commands Default to Dry-Run Mode - CLI Agent Spec</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#req-o-048-destructive-commands-default-to-dry-run-mode" class="md-skip">
+        <a href="#req-o-048-high-stakes-commands-default-to-dry-run-mode" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              REQ-O-048: Destructive Commands Default to Dry-Run Mode
+              REQ-O-048: High-Stakes Commands Default to Dry-Run Mode
             
           </span>
         </div>
@@ -8994,7 +8994,7 @@
   <span class="md-ellipsis">
     
   
-    REQ-O-048: Destructive Commands Default to Dry-Run Mode
+    REQ-O-048: High-Stakes Commands Default to Dry-Run Mode
   
 
     
@@ -9012,7 +9012,7 @@
   <span class="md-ellipsis">
     
   
-    REQ-O-048: Destructive Commands Default to Dry-Run Mode
+    REQ-O-048: High-Stakes Commands Default to Dry-Run Mode
   
 
     
@@ -10163,43 +10163,65 @@
   
 
 
-<h1 id="req-o-048-destructive-commands-default-to-dry-run-mode">REQ-O-048: Destructive Commands Default to Dry-Run Mode</h1>
+<h1 id="req-o-048-high-stakes-commands-default-to-dry-run-mode">REQ-O-048: High-Stakes Commands Default to Dry-Run Mode</h1>
 <p><strong>Tier:</strong> Opt-In | <strong>Priority:</strong> P0</p>
 <p><strong>Source:</strong> <a href="../../challenges/03-critical-security/75-critical-safe-default-execution/">§75 Safe-Default Execution Mode Absent</a></p>
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: Low / Time: Critical / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Commands that declare <code>safe_default: true</code> MUST execute in dry-run mode when invoked without <code>--live</code>. The framework MUST inject a <code>--live</code> flag on all <code>safe_default: true</code> commands, route execution through the dry-run path when <code>--live</code> is absent, and include <code>meta.dry_run: true</code> in every response envelope for that path. A live invocation MUST include <code>meta.dry_run: false</code> and <code>meta.confirmed: true</code>. The <code>safe_default</code> field MUST be present in the manifest response so agents can detect and adjust their invocation strategy.</p>
-<p>This requirement is distinct from REQ-C-004 (<code>--dry-run</code> availability) and REQ-O-021 (<code>--confirm-destructive</code> gate). Safe-default mode makes the dry-run path the zero-argument default — not a flag the caller must remember — and uses <code>--live</code> as the explicit opt-in to execution.</p>
+<p>A command makes the dry-run path its zero-argument default in one of two ways: <code>safe_default: true</code>, where the framework injects <code>--live</code>, or <code>confirm_flag: "&lt;name&gt;"</code>, where the command's own boolean flag (such as <code>--yes</code>) confirms execution. Either way, a call without the confirming flag previews and a call with it runs.</p>
+<p><strong><code>safe_default</code>.</strong> Commands that declare <code>safe_default: true</code> MUST execute in dry-run mode when invoked without <code>--live</code>. The framework MUST inject a <code>--live</code> flag on all <code>safe_default: true</code> commands, route execution through the dry-run path when <code>--live</code> is absent, and include <code>meta.dry_run: true</code> in every response envelope for that path. A live invocation MUST include <code>meta.dry_run: false</code> and <code>meta.confirmed: true</code>. The <code>safe_default</code> field MUST be present in the manifest response so agents can detect and adjust their invocation strategy.</p>
+<p><strong><code>confirm_flag</code>.</strong> A command with <code>danger_level</code> <code>mutating</code> or <code>destructive</code> MAY declare <code>confirm_flag</code> with the name, without <code>--</code>, of a boolean flag it accepts: one of its own <code>flags</code> or a root flag. The framework does not inject that flag; it MUST refuse the registration when the named flag is not a declared boolean flag of the command or root, when the command's <code>danger_level</code> is <code>safe</code>, when the same command declares <code>safe_default: true</code> (two confirmation mechanisms on one command), when the command is a passthrough command (REQ-C-031), or when the command implements no dry-run path. At run time:</p>
+<ul>
+<li>Without the confirm flag, the command runs the dry-run path under the dry-run contract (REQ-C-004): a <code>would_*</code> effect, a <code>would_affect</code> object, <code>meta.dry_run: true</code>, exit <code>0</code>, and no side effects. It does not prompt for the confirmation the flag stands for, with or without a TTY; the preview takes the prompt's place</li>
+<li>With the confirm flag, the command executes and the envelope carries <code>meta.dry_run: false</code> and <code>meta.confirmed: true</code></li>
+<li><code>--dry-run</code> wins: when the command accepts <code>--dry-run</code> and it is given, the command previews even when the confirm flag is given too. REQ-O-050's <code>exec --dry-run</code>, which forwards <code>dry_run: true</code> to every dispatched mutating or destructive command, therefore previews a <code>confirm_flag</code> command even when its dispatched line passes the confirm flag</li>
+<li>When REQ-O-021 is enabled, a destructive command's <code>confirm_flag</code> MUST be <code>confirm-destructive</code>, so the command keeps one confirmation flag. Without it the command previews and exits <code>0</code> instead of exiting <code>2</code> with <code>CONFIRMATION_REQUIRED</code></li>
+<li>When the confirm flag is <code>yes</code> on an <code>interactive: true</code> command (REQ-C-005), <code>--yes</code> still auto-confirms every other prompt; <code>--non-interactive</code> never turns the missing confirmation into exit <code>4</code>, since the command previews instead of prompting</li>
+</ul>
+<p>The manifest MUST expose <code>confirm_flag</code> on every command that declares it, so an agent knows before the first call that a bare call only previews and which flag runs it.</p>
+<p>This requirement is distinct from REQ-C-004 (<code>--dry-run</code> availability) and REQ-O-021 (<code>--confirm-destructive</code> gate). Safe-default mode makes the dry-run path the zero-argument default (not a flag the caller must remember) and uses <code>--live</code> or the declared confirm flag as the explicit opt-in to execution.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A <code>safe_default: true</code> command invoked without <code>--live</code> returns a <code>would_*</code> effect, exits 0, and causes no side effects</li>
 <li>A <code>safe_default: true</code> command invoked with <code>--live</code> executes and returns an effect without a <code>would_</code> prefix</li>
-<li>The response envelope always includes <code>meta.dry_run</code> (boolean) for <code>safe_default: true</code> commands</li>
+<li>The response envelope always includes <code>meta.dry_run</code> (boolean) for <code>safe_default: true</code> commands and for commands that declare <code>confirm_flag</code></li>
 <li>The manifest exposes <code>safe_default: true</code> on commands that declare it</li>
 <li>The framework raises a registration error if a <code>safe_default: true</code> command does not implement a dry-run path</li>
+<li>A command that declares <code>confirm_flag</code> and is invoked without that flag returns a <code>would_*</code> effect, carries <code>meta.dry_run: true</code>, exits 0, and causes no side effects, in a TTY and outside one</li>
+<li>A command that declares <code>confirm_flag</code> and is invoked with that flag executes, returns an effect without a <code>would_</code> prefix, and carries <code>meta.dry_run: false</code> and <code>meta.confirmed: true</code></li>
+<li>A command that declares <code>confirm_flag</code> and is invoked with both <code>--dry-run</code> and that flag previews, carries <code>meta.dry_run: true</code>, and causes no side effects</li>
+<li><code>tool exec --dry-run</code> previews a dispatched <code>confirm_flag</code> command whose line passes the confirm flag</li>
+<li>The framework raises a registration error for a <code>confirm_flag</code> that names no declared boolean flag of the command or root, on a <code>safe</code> command, on a command that also declares <code>safe_default: true</code>, on a passthrough command, and on a command without a dry-run path</li>
+<li>With REQ-O-021 enabled, the framework raises a registration error for a destructive command whose <code>confirm_flag</code> is not <code>confirm-destructive</code></li>
+<li>The manifest exposes <code>confirm_flag</code> on every command that declares it</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
-<p><strong>Types:</strong> <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a> · <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a></p>
+<p><strong>Types:</strong> <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a> · <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a> · <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a></p>
 <p>The <code>meta</code> object is extended with <code>dry_run</code>:</p>
 <pre><code class="language-json">{
   &quot;meta&quot;: {
     &quot;dry_run&quot;: {
       &quot;type&quot;: &quot;boolean&quot;,
-      &quot;description&quot;: &quot;True when the command ran in preview mode; false when --live was passed and side effects occurred&quot;
+      &quot;description&quot;: &quot;True when the command ran in preview mode; false when --live or the confirm flag was passed and side effects occurred&quot;
     }
   }
 }
 </code></pre>
-<p>The manifest command entry is extended with <code>safe_default</code>:</p>
+<p>The manifest command entry is extended with <code>safe_default</code> and <code>confirm_flag</code>:</p>
 <pre><code class="language-json">{
   &quot;safe_default&quot;: {
     &quot;type&quot;: &quot;boolean&quot;,
     &quot;description&quot;: &quot;True when the command defaults to dry-run mode; --live is required to execute for real&quot;
+  },
+  &quot;confirm_flag&quot;: {
+    &quot;type&quot;: &quot;string&quot;,
+    &quot;description&quot;: &quot;Boolean flag, without leading --, that confirms execution; without it the command previews&quot;
   }
 }
 </code></pre>
+<p>The manifest schema rejects <code>confirm_flag</code> on a <code>safe</code> command, next to <code>safe_default: true</code>, and on a passthrough command. That the name refers to a declared boolean flag is checked at registration.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <p>Without <code>--live</code> (dry-run by default):</p>
@@ -10243,6 +10265,45 @@
   }
 }
 </code></pre>
+<p>A mutating command that runs only with <code>--yes</code> declares it in the manifest:</p>
+<pre><code class="language-json">{
+  &quot;description&quot;: &quot;Apply pending schema migrations&quot;,
+  &quot;danger_level&quot;: &quot;mutating&quot;,
+  &quot;required_scopes&quot;: [],
+  &quot;confirm_flag&quot;: &quot;yes&quot;,
+  &quot;flags&quot;: {
+    &quot;yes&quot;:     { &quot;type&quot;: &quot;boolean&quot;, &quot;required&quot;: false, &quot;default&quot;: false, &quot;description&quot;: &quot;Apply the migrations; omit to preview them&quot; },
+    &quot;dry-run&quot;: { &quot;type&quot;: &quot;boolean&quot;, &quot;required&quot;: false, &quot;default&quot;: false, &quot;description&quot;: &quot;Preview the migrations even when --yes is given&quot; }
+  },
+  &quot;exit_codes&quot;: {}
+}
+</code></pre>
+<p>Without <code>--yes</code>, and with <code>--dry-run --yes</code>, the call previews:</p>
+<pre><code class="language-bash">$ db migrate
+$ db migrate --dry-run --yes
+</code></pre>
+<pre><code class="language-json">{
+  &quot;ok&quot;: true,
+  &quot;data&quot;: {
+    &quot;effect&quot;: &quot;would_migrate&quot;,
+    &quot;would_affect&quot;: { &quot;migrations&quot;: [&quot;0042_add_index&quot;, &quot;0043_drop_legacy&quot;], &quot;reversible&quot;: false }
+  },
+  &quot;error&quot;: null,
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: { &quot;exit_code&quot;: 0, &quot;dry_run&quot;: true, &quot;duration_ms&quot;: 18 }
+}
+</code></pre>
+<p>With <code>--yes</code> alone, it runs:</p>
+<pre><code class="language-bash">$ db migrate --yes
+</code></pre>
+<pre><code class="language-json">{
+  &quot;ok&quot;: true,
+  &quot;data&quot;: { &quot;effect&quot;: &quot;migrated&quot;, &quot;applied&quot;: [&quot;0042_add_index&quot;, &quot;0043_drop_legacy&quot;] },
+  &quot;error&quot;: null,
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: { &quot;exit_code&quot;: 0, &quot;dry_run&quot;: false, &quot;confirmed&quot;: true, &quot;duration_ms&quot;: 912 }
+}
+</code></pre>
 <hr />
 <h2 id="example">Example</h2>
 <pre><code>register command &quot;execute&quot;:
@@ -10264,6 +10325,26 @@
       order_id=result.id,
       meta={&quot;dry_run&quot;: False, &quot;confirmed&quot;: True}
     )
+
+register command &quot;migrate&quot;:
+  danger_level: mutating
+  flags: yes (boolean), dry-run (boolean)
+  confirm_flag: yes    # framework checks --yes is a declared boolean flag
+
+  # framework: run = args.yes and not args.dry_run
+  migrate(args, run):
+    pending = pending_migrations()
+    if not run:
+      return response(effect=&quot;would_migrate&quot;, would_affect={&quot;migrations&quot;: pending},
+                      meta={&quot;dry_run&quot;: True})
+    applied = apply(pending)
+    return response(effect=&quot;migrated&quot;, applied=applied,
+                    meta={&quot;dry_run&quot;: False, &quot;confirmed&quot;: True})
+
+register command &quot;reset&quot;:
+  danger_level: safe
+  confirm_flag: yes
+  → framework error: confirm_flag requires danger_level mutating or destructive
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>
@@ -10279,17 +10360,37 @@
 <tr>
 <td><a href="../c-002-command-declares-danger-level/">REQ-C-002</a></td>
 <td>C</td>
-<td>Provides: <code>danger_level: "destructive"</code> is a prerequisite for <code>safe_default: true</code></td>
+<td>Provides: <code>danger_level: "destructive"</code> is a prerequisite for <code>safe_default: true</code>, and <code>mutating</code> or <code>destructive</code> for <code>confirm_flag</code></td>
 </tr>
 <tr>
 <td><a href="../c-004-destructive-commands-must-support-dry-run/">REQ-C-004</a></td>
 <td>C</td>
-<td>Extends: safe-default mode is the next level above opt-in <code>--dry-run</code> availability</td>
+<td>Extends: safe-default mode is the next level above opt-in <code>--dry-run</code> availability; <code>--dry-run</code> wins over a confirm flag</td>
+</tr>
+<tr>
+<td><a href="../c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a></td>
+<td>C</td>
+<td>Composes: a <code>confirm_flag</code> of <code>yes</code> confirms execution as well as every prompt</td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Composes: a passthrough command cannot preview, so it declares no <code>confirm_flag</code></td>
 </tr>
 <tr>
 <td><a href="../o-021-confirm-destructive-flag/">REQ-O-021</a></td>
 <td>O</td>
-<td>Composes: <code>--confirm-destructive</code> and <code>--live</code> serve different patterns; safe-default replaces the gate with a natural preview → commit workflow</td>
+<td>Composes: <code>--confirm-destructive</code> and <code>--live</code> serve different patterns; safe-default replaces the gate with a natural preview → commit workflow, and a destructive <code>confirm_flag</code> names <code>confirm-destructive</code> when the gate is enabled</td>
+</tr>
+<tr>
+<td><a href="../o-050-tool-exec-built-in-command/">REQ-O-050</a></td>
+<td>O</td>
+<td>Composes: <code>exec --dry-run</code> previews a <code>confirm_flag</code> command even when its line passes the confirm flag</td>
+</tr>
+<tr>
+<td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
+<td>O</td>
+<td>Exposes: <code>safe_default</code> and <code>confirm_flag</code> appear in the manifest</td>
 </tr>
 <tr>
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>

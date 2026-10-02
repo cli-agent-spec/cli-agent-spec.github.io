@@ -8978,7 +8978,7 @@
   <span class="md-ellipsis">
     
   
-    REQ-O-048: Destructive Commands Default to Dry-Run Mode
+    REQ-O-048: High-Stakes Commands Default to Dry-Run Mode
   
 
     
@@ -10059,6 +10059,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-314-a-commands-own-flag-confirms-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.14: a command's own flag confirms execution
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10607,6 +10618,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-314-a-commands-own-flag-confirms-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.14: a command's own flag confirms execution
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -11122,6 +11144,16 @@
 <li>A producer that sets root <code>secret_env_vars</code> emits <code>schema_version</code> <code>3.13</code>; a pre-3.13 manifest stays valid, and on it an absent root <code>secret_env_vars</code> means unknown, not none</li>
 </ul>
 <p><strong>Why:</strong> implementing ManifestResponse 3.5 left a tool-wide secret with no home, forbade a root setting's established unprefixed name that a flag could declare, left <code>token_env_vars</code> out of the "three homes", and made tools that read <code>COLUMNS</code> or a CA bundle variable non-conforming (#37).</p>
+<h3 id="manifestresponse-314-a-commands-own-flag-confirms-execution">ManifestResponse 3.14: a command's own flag confirms execution</h3>
+<ul>
+<li><code>CommandEntry.confirm_flag</code> (optional string) names a boolean flag of the command or root, such as <code>yes</code>. Without that flag the command previews under the dry-run contract (<code>would_*</code> effect, <code>meta.dry_run: true</code>, exit <code>0</code>, no side effects) and prompts for nothing; with it the command runs, with <code>meta.dry_run: false</code> and <code>meta.confirmed: true</code> (REQ-O-048)</li>
+<li><code>--dry-run</code> wins: <code>--dry-run --yes</code> previews, and <code>tool exec --dry-run</code> previews a dispatched <code>confirm_flag</code> command even when its line passes the flag (REQ-O-050)</li>
+<li>The framework refuses <code>confirm_flag</code> at registration on a <code>safe</code> command, next to <code>safe_default: true</code>, on a passthrough command (REQ-C-031), on a command without a dry-run path, and when it names no declared boolean flag. The schema rejects the first three</li>
+<li>With REQ-O-021 enabled, a destructive command's <code>confirm_flag</code> is <code>confirm-destructive</code>, and without it the command previews and exits <code>0</code> instead of exiting <code>2</code> with <code>CONFIRMATION_REQUIRED</code>. REQ-C-005's <code>--yes</code> stays a no-op on commands that never prompt, except where <code>confirm_flag</code> is <code>yes</code></li>
+<li>REQ-O-048 is retitled "High-Stakes Commands Default to Dry-Run Mode" and covers both <code>safe_default</code> and <code>confirm_flag</code>; <code>safe_default</code> is unchanged</li>
+<li>A producer that sets <code>confirm_flag</code> emits <code>schema_version</code> <code>3.14</code>; a pre-3.14 manifest stays valid, and on it an absent <code>confirm_flag</code> means unknown, not "runs without a flag"</li>
+</ul>
+<p><strong>Why:</strong> a mutating command that previews unless its own <code>--yes</code> is given could state that only in the flag's <code>description</code>, because <code>safe_default</code> is a boolean, destructive-only, and names <code>--live</code>. An agent reading the manifest expected a bare call to run (#40).</p>
 <h2 id="1100-2026-10-01">1.10.0 — 2026-10-01</h2>
 <h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
 <ul>

@@ -9098,7 +9098,7 @@
   <span class="md-ellipsis">
     
   
-    REQ-O-048: Destructive Commands Default to Dry-Run Mode
+    REQ-O-048: High-Stakes Commands Default to Dry-Run Mode
   
 
     
@@ -10174,7 +10174,7 @@
 <ul>
 <li>A command that prompts for confirmation in interactive mode accepts <code>--yes</code> and proceeds without prompting</li>
 <li>With <code>--non-interactive</code>, a command that would prompt exits with exit code 4 and a JSON error</li>
-<li>The <code>--yes</code> flag is idempotent: passing it to a command that never prompts has no effect</li>
+<li>The <code>--yes</code> flag is idempotent: passing it to a command that never prompts has no effect, except on a command whose <code>confirm_flag</code> is <code>yes</code> (REQ-O-048), where it confirms execution and the command runs instead of previewing</li>
 <li>The <code>--schema</code> output for interactive commands includes <code>interactive: true</code></li>
 </ul>
 <hr />
@@ -10257,6 +10257,11 @@
 <td><a href="../o-021-confirm-destructive-flag/">REQ-O-021</a></td>
 <td>O</td>
 <td>Extends: <code>--confirm-destructive</code> is a stronger opt-in variant for destructive confirmation</td>
+</tr>
+<tr>
+<td><a href="../o-048-destructive-commands-default-dry-run/">REQ-O-048</a></td>
+<td>O</td>
+<td>Composes: a command whose <code>confirm_flag</code> is <code>yes</code> previews without <code>--yes</code> instead of prompting</td>
 </tr>
 </tbody>
 </table>

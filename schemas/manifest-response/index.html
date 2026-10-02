@@ -8980,7 +8980,7 @@
   <span class="md-ellipsis">
     
   
-    REQ-O-048: Destructive Commands Default to Dry-Run Mode
+    REQ-O-048: High-Stakes Commands Default to Dry-Run Mode
   
 
     
@@ -10663,6 +10663,11 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td>boolean</td>
 <td>Command dry-runs unless <code>--live</code> (REQ-O-048)</td>
 </tr>
+<tr>
+<td><code>confirm_flag</code></td>
+<td>string</td>
+<td>Boolean flag, without <code>--</code>, of the command or root that runs the command; without it the command previews (<code>would_*</code> effect, <code>meta.dry_run: true</code>, exit <code>0</code>), and <code>--dry-run</code> wins over it. Only on <code>mutating</code> or <code>destructive</code> commands, never with <code>safe_default: true</code> or <code>arguments: "passthrough"</code> (REQ-O-048)</td>
+</tr>
 </tbody>
 </table>
 <h3 id="flagentry">FlagEntry</h3>
@@ -11338,6 +11343,38 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Violation: <code>stderr: "child_log"</code> promises that stdout carries only the envelope, while a passthrough command gives stdout to the delegated tool and puts the envelope on the last line of stderr. A passthrough command's stderr already carries the delegated tool's own stderr ahead of that line.</p>
+<p><strong>Valid — mutating command that previews unless <code>--yes</code> is given</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.14&quot;,
+  &quot;framework_version&quot;: &quot;1.5.0&quot;,
+  &quot;etag&quot;: &quot;sha256:5e9a12&quot;,
+  &quot;commands&quot;: {
+    &quot;migrate&quot;: {
+      &quot;description&quot;: &quot;Apply pending schema migrations&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;confirm_flag&quot;: &quot;yes&quot;,
+      &quot;flags&quot;: {
+        &quot;yes&quot;: { &quot;type&quot;: &quot;boolean&quot;, &quot;required&quot;: false, &quot;default&quot;: false, &quot;description&quot;: &quot;Apply the migrations; omit to preview them&quot; },
+        &quot;dry-run&quot;: { &quot;type&quot;: &quot;boolean&quot;, &quot;required&quot;: false, &quot;default&quot;: false, &quot;description&quot;: &quot;Preview the migrations even when --yes is given&quot; }
+      },
+      &quot;exit_codes&quot;: {}
+    }
+  }
+}
+</code></pre>
+<p><code>db migrate</code> previews with <code>meta.dry_run: true</code>; <code>db migrate --yes</code> applies the migrations; <code>db migrate --dry-run --yes</code> previews.</p>
+<p><strong>Invalid — confirm flag next to <code>safe_default</code></strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.14&quot;,
+  &quot;framework_version&quot;: &quot;1.5.0&quot;,
+  &quot;etag&quot;: &quot;sha256:5e9a12&quot;,
+  &quot;commands&quot;: {
+    &quot;rollback&quot;: { &quot;description&quot;: &quot;Roll back the last deployment&quot;, &quot;danger_level&quot;: &quot;destructive&quot;, &quot;required_scopes&quot;: [], &quot;safe_default&quot;: true, &quot;confirm_flag&quot;: &quot;yes&quot;, &quot;flags&quot;: { &quot;yes&quot;: { &quot;type&quot;: &quot;boolean&quot;, &quot;required&quot;: false, &quot;description&quot;: &quot;Run the rollback&quot; } }, &quot;exit_codes&quot;: {} }
+  }
+}
+</code></pre>
+<p>Violation: <code>confirm_flag</code> excludes <code>safe_default: true</code>; a command has one confirmation mechanism, either the injected <code>--live</code> or its own flag.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -11397,6 +11434,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Declaring <code>stdin: {mode: "buffered"}</code> on a command that consumes a record stream.</strong> The 64 KiB total cap then rejects any real pipeline; a command that handles one line at a time declares <code>lines</code> or <code>records</code></li>
 <li><strong>Declaring <code>max_bytes</code> on a <code>lines</code> or <code>records</code> command.</strong> Line mode has no total cap, so the field is rejected; the per-line cap is <code>max_line_bytes</code></li>
 <li><strong>Marking a passthrough command only through <code>option_placement: "strict"</code> and its <code>description</code>.</strong> <code>strict</code> also fits a command that parses its own options and forwards the rest; only <code>arguments: "passthrough"</code> tells an agent that stdout, the exit code, and every token after the path belong to another tool</li>
+<li><strong>Stating "previews unless <code>--yes</code>" only in a flag's <code>description</code>.</strong> An agent that reads the manifest then expects a bare call to run; declare <code>confirm_flag</code> so the preview default is machine-readable</li>
+<li><strong>Declaring <code>confirm_flag</code> with a name the command does not accept.</strong> The name must be a boolean flag in the command's <code>flags</code> or the root <code>flags</code>; the framework refuses any other at registration</li>
 <li><strong>Declaring <code>help_argv</code> on a declared command.</strong> The framework answers <code>--help</code> itself there; <code>help_argv</code> exists only where a lone <code>--help</code> would otherwise reach the delegated tool</li>
 <li><strong>Saying only in <code>description</code> that a command streams a wrapped program's log.</strong> An agent cannot match prose before the call; declare <code>stderr: "child_log"</code> so it knows stderr will be busy and carries no failure signal</li>
 <li><strong>Letting auto-quiet or <code>--verbose</code> gate a declared child log.</strong> <code>child_log</code> streams whatever the verbosity; only <code>--quiet</code> silences it, so a log that appears only under <code>--verbose</code> is a framework diagnostic, not a child log</li>
@@ -11476,6 +11515,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <p><strong>Reading declared contracts before calling</strong>
 - <code>danger_level</code> other than <code>safe</code> — prefer <code>--dry-run</code> first; <code>safe_default: true</code> means the command previews until <code>--live</code> is passed
 - <code>filesystem_side_effects</code> with <code>type: "output"</code> — the command writes its product there, even when it is <code>safe</code>; read the result from that path, and do not run <code>tool cleanup</code> expecting it to go. A pre-3.10 manifest cannot mark it and may declare it <code>cache</code>
+- <code>confirm_flag</code> present: a call without <code>--&lt;confirm_flag&gt;</code> only previews and exits <code>0</code> with <code>meta.dry_run: true</code>. Read the <code>would_*</code> preview, then repeat the call with the flag to run it; check <code>meta.dry_run</code> rather than the exit code to know whether it ran. <code>--dry-run</code> wins, so drop it from the confirmed call. On a pre-3.14 manifest an absent <code>confirm_flag</code> means unknown; read the flag descriptions
 - <code>option_placement: "strict"</code> — place every option, global or local, before the first positional argument; anything after it is forwarded to the child process
 - <code>requires</code> — evaluate each rule against the flags you plan to send before calling; a violated rule produces <code>ARG_ERROR (2)</code>
 - <code>any_of</code> and <code>one_of</code> groups — send at least one flag of an <code>any_of</code> group and exactly one flag of a <code>one_of</code> group, choosing the one whose value you already hold; a declared <code>default</code> never satisfies either rule
@@ -11513,6 +11553,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert <code>output_file_base</code> appears only with <code>output_file</code>, and that a relative <code>--output</code> path lands under the declared base from a working directory other than that base
 - Assert every <code>type: "object"</code> flag carries a <code>schema</code> the parser enforces, and prefer <code>type: "object"</code> for every flag whose value the parser reads as a JSON object
 - Assert every <code>arguments: "passthrough"</code> command has <code>option_placement: "strict"</code>, empty <code>flags</code>, no <code>positionals</code>, and a <code>danger_level</code> other than <code>destructive</code>, and that <code>help_argv</code> appears only on such commands
+- Assert every <code>confirm_flag</code> names a boolean flag in the command's <code>flags</code> or the root <code>flags</code>, appears only on <code>mutating</code> or <code>destructive</code> commands without <code>safe_default: true</code> or <code>arguments: "passthrough"</code>, and that a call without it previews with <code>meta.dry_run: true</code> while <code>--dry-run</code> plus the flag still previews
 - Assert every flag's <code>env_vars</code> lists exactly the variables its parser reads, in the order it reads them, with the tool-prefixed name first whenever a name without the prefix is listed, and no name from <code>secret_env_vars</code>
 - Assert root <code>env_vars</code> lists every other variable the tool reads outside the universal exceptions, each with a <code>description</code> and either the tool prefix or a declared name that immediately follows its setting's prefixed entry, and no name that also appears in a flag's <code>env_vars</code>, a <code>secret_env_vars</code>, or a <code>token_env_vars</code>
 - Assert root <code>secret_env_vars</code> lists exactly the secrets every command reads, and that none of them repeats in a command's <code>secret_env_vars</code> or a flag's <code>env_vars</code>; assert no name in an auth command's <code>token_env_vars</code> repeats in that command's <code>secret_env_vars</code>
@@ -11619,6 +11660,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><a href="../../requirements/f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a></td>
 <td>Sources: <code>stderr</code> per command, the child log that auto-quiet leaves alone</td>
+</tr>
+<tr>
+<td><a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a></td>
+<td>Sources: <code>safe_default</code> and <code>confirm_flag</code> per command</td>
 </tr>
 <tr>
 <td><a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a></td>

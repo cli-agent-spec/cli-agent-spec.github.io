@@ -8985,7 +8985,7 @@
   <span class="md-ellipsis">
     
   
-    REQ-O-048: Destructive Commands Default to Dry-Run Mode
+    REQ-O-048: High-Stakes Commands Default to Dry-Run Mode
   
 
     
@@ -10174,7 +10174,7 @@
 <p>The command supports two flags:</p>
 <ul>
 <li><code>--ignore-errors</code>: continue dispatching after a line failure (default: stop at first failure)</li>
-<li><code>--dry-run</code>: forward <code>dry_run: true</code> to every dispatched command whose <code>danger_level</code> is <code>"mutating"</code> or <code>"destructive"</code>; commands with <code>danger_level: "safe"</code> ignore it</li>
+<li><code>--dry-run</code>: forward <code>dry_run: true</code> to every dispatched command whose <code>danger_level</code> is <code>"mutating"</code> or <code>"destructive"</code>; commands with <code>danger_level: "safe"</code> ignore it. A forwarded <code>dry_run: true</code> wins over a confirm flag on the dispatched line, so a command that declares <code>confirm_flag</code> (REQ-O-048) previews even when its line passes that flag</li>
 </ul>
 <p>Exit codes:</p>
 <table>
@@ -10207,6 +10207,7 @@
 <li>Without <code>--ignore-errors</code>, dispatch stops at the first failure and exits <code>1</code></li>
 <li>With <code>--ignore-errors</code>, dispatch continues past line failures; exit code is still <code>1</code> if any line failed</li>
 <li><code>--dry-run</code> is forwarded to every dispatched command that declares <code>danger_level != "safe"</code></li>
+<li>With <code>--dry-run</code>, a dispatched command that declares <code>confirm_flag</code> previews (<code>meta.dry_run: true</code>, no side effects) even when its line passes the confirm flag</li>
 <li>A JSONL parse error on any line emits an error response for that line with <code>error.code: "DISPATCH_PARSE_ERROR"</code> and <code>error.phase: "validation"</code>; no side effects for that line</li>
 <li>A fully malformed stream (cannot parse any line) exits <code>2</code></li>
 <li>The command is available with zero per-command implementation work once enabled at the framework level</li>
@@ -10273,6 +10274,11 @@ results = [json.loads(line) for line in result.stdout.splitlines() if line.strip
 <td><a href="../c-004-destructive-commands-must-support-dry-run/">REQ-C-004</a></td>
 <td>C</td>
 <td>Composes: <code>--dry-run</code> forwarded per-line to declared mutating/destructive commands</td>
+</tr>
+<tr>
+<td><a href="../o-048-destructive-commands-default-dry-run/">REQ-O-048</a></td>
+<td>O</td>
+<td>Composes: a forwarded <code>--dry-run</code> wins over a dispatched line's confirm flag</td>
 </tr>
 <tr>
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>

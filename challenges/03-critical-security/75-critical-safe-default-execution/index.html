@@ -9123,7 +9123,7 @@
   <span class="md-ellipsis">
     
   
-    REQ-O-048: Destructive Commands Default to Dry-Run Mode
+    REQ-O-048: High-Stakes Commands Default to Dry-Run Mode
   
 
     
@@ -10274,6 +10274,17 @@ $ trade execute --symbol BTC --amount 10000 --live  # opt into real execution
 - Without <code>--live</code>, the framework routes all execution through the dry-run path
 - <code>meta.dry_run</code> is always present in the response envelope
 - <code>safe_default</code> is exposed in the manifest so agents can detect it programmatically</p>
+<p><strong>A command whose own flag confirms it declares <code>confirm_flag</code>:</strong></p>
+<pre><code>register command &quot;migrate&quot;:
+  danger_level: mutating
+  flags: yes (boolean), dry-run (boolean)
+  confirm_flag: yes    # previews without --yes; --dry-run --yes still previews
+</code></pre>
+<ul>
+<li>A <code>mutating</code> or <code>destructive</code> command that already runs only with a flag such as <code>--yes</code> names it in <code>confirm_flag</code> instead of describing the preview default in the flag's <code>description</code></li>
+<li>The framework refuses <code>confirm_flag</code> on a <code>safe</code> command, next to <code>safe_default: true</code>, and when it names no declared boolean flag</li>
+<li><code>--dry-run</code> wins over the confirm flag, here and in <code>tool exec --dry-run</code></li>
+</ul>
 <h3 id="evaluation">Evaluation</h3>
 <table>
 <thead>
@@ -10297,7 +10308,7 @@ $ trade execute --symbol BTC --amount 10000 --live  # opt into real execution
 </tr>
 <tr>
 <td>3</td>
-<td><code>safe_default</code> declared in manifest; <code>meta.dry_run</code> always present; agent can detect and enforce safe-default mode programmatically</td>
+<td><code>safe_default</code> or <code>confirm_flag</code> declared in manifest; <code>meta.dry_run</code> always present; agent can detect and enforce safe-default mode programmatically</td>
 </tr>
 </tbody>
 </table>
@@ -10311,11 +10322,12 @@ $ trade execute --symbol BTC --amount 10000 --live  # opt into real execution
 <pre><code class="language-python">manifest = json.loads(run([&quot;tool&quot;, &quot;manifest&quot;]).stdout)
 cmd = next(c for c in manifest[&quot;commands&quot;] if c[&quot;name&quot;] == &quot;execute&quot;)
 
-if cmd.get(&quot;safe_default&quot;):
+if cmd.get(&quot;safe_default&quot;) or cmd.get(&quot;confirm_flag&quot;):
     # Natural preview → commit workflow
     preview = run(cmd_args)                      # dry-run by default
     verify_scope(json.loads(preview.stdout))
-    result = run([*cmd_args, &quot;--live&quot;])
+    confirm = &quot;--live&quot; if cmd.get(&quot;safe_default&quot;) else f&quot;--{cmd['confirm_flag']}&quot;
+    result = run([*cmd_args, confirm])
 else:
     # No safe-default mode — pass --dry-run explicitly at every callsite
     preview = run([*cmd_args, &quot;--dry-run&quot;])
