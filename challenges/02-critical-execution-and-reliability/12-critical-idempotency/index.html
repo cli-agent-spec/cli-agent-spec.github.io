@@ -10257,6 +10257,7 @@ $ tool increment-counter --key views
 <p><strong>For framework design:</strong>
 - Mark commands as <code>safe</code> (read-only, always idempotent) or <code>unsafe</code> (mutating)
 - Require <code>--idempotency-key</code> for all <code>unsafe</code> commands, or generate one automatically
+- Exempt streaming commands from the key: a stream has no single result to replay, so each event carries its own <code>effect</code> and the summary line counts them (REQ-O-004)
 - Emit <code>effect</code> field in all responses
 - Implement <code>--dry-run</code> as a framework-level feature, not per-command</p>
 <h3 id="evaluation">Evaluation</h3>

@@ -10172,6 +10172,16 @@
 <p>For commands that process or return large datasets, the framework MUST support <code>--stream</code> (equivalent to <code>--format jsonl</code>) which emits one JSON object per line as results are produced, rather than buffering all results before emitting. Commands that support streaming MUST declare <code>supports_streaming: true</code>. In streaming mode, pagination metadata MUST be emitted as a final summary line.</p>
 <p>Commands that stream by default (see §76) MUST additionally declare <code>streaming_default: true</code>. A streaming-default command MUST accept <code>--no-stream</code> (equivalent to <code>--format json</code>) to return a buffered <code>ResponseEnvelope</code> for compatibility with envelope-only consumers. The <code>streaming_default</code> field MUST be advertised in the manifest and in <code>--help</code> text.</p>
 <p>A stream ends with exactly one terminal line. On success it is the summary line (<code>"_summary": true</code>). When the command fails after its first line, the terminal line is instead the error <code>ResponseEnvelope</code> (<code>"ok": false</code>, REQ-F-004), and the process exits with that envelope's <code>meta.exit_code</code>. A line holding <code>"_summary": true</code> or an <code>"ok"</code> boolean beside an <code>"error"</code> key is therefore never an item, and neither is a heartbeat line (<code>"heartbeat": true</code>, REQ-O-038).</p>
+<p><strong>Mutating streams.</strong> A streaming command declares <code>danger_level</code> <code>safe</code> or <code>mutating</code> (REQ-C-002). The framework MUST refuse to register a streaming command with <code>danger_level: "destructive"</code>: a stream cannot ask confirmation for each action it takes (REQ-O-021). A stream with <code>danger_level: "mutating"</code> reports what it did event by event, not once per run:</p>
+<ul>
+<li>Every item line carries its own top-level <code>effect</code> (REQ-C-003): what that event did. The framework validates each event's <code>effect</code> as it validates a single response's</li>
+<li>The summary line carries <code>effects</code>, an object that maps each effect value that occurred to the number of events reporting it (<code>{"created": 2, "noop": 1}</code>). Its counts sum to the number of item lines; a stream with no items has <code>"effects": {}</code></li>
+<li>When a mutating stream offers <code>--dry-run</code>, the flag covers the whole stream. Every event reports a <code>would_*</code> effect (<code>would_noop</code> for one that would change nothing) and none mutates, the summary line carries <code>"dry_run": true</code>, and a stream that fails ends on an error envelope with <code>meta.dry_run: true</code> (the field REQ-O-048 defines). One run never mixes live and <code>would_*</code> effects</li>
+<li>A stream has no idempotency replay: one stored result cannot stand in for a sequence of events. A streaming mutating command MUST NOT accept <code>--idempotency-key</code>, and the framework refuses to register one that does (REQ-C-007)</li>
+<li>A mutating stream that fails after an event with a live effect other than <code>noop</code> ends on an error envelope with <code>retryable: false</code>, because side effects occurred. The item lines already emitted tell the agent which events completed</li>
+<li>When the command answers buffered (without <code>--stream</code>, or with <code>--no-stream</code> on a streaming-default command), the envelope's <code>data</code> is the array of events, each with its own <code>effect</code>, and <code>meta.effects</code> carries the per-effect counts (with <code>meta.dry_run</code> in dry-run mode)</li>
+<li>The audit log (REQ-O-030) records one entry per run, never one per event, with the per-effect counts in <code>effects</code></li>
+</ul>
 <p><strong>Records consumers.</strong> A command that reads such a stream from another command declares <code>stdin_input: "records"</code> with a record type; the manifest shows it as <code>CommandEntry.stdin</code> with <code>mode: "records"</code> and <code>record_schema</code> (ManifestResponse 3.8). The framework reads the stream through line mode (REQ-F-054, per-line cap, no total cap), skips blank lines and heartbeat lines (<code>"heartbeat": true</code>, REQ-O-038), and classifies every other line in order:</p>
 <ul>
 <li>The summary line ends the input. The framework reads nothing after it and hands the handler no record for it</li>
@@ -10190,6 +10200,12 @@
 <li>Passing <code>--no-stream</code> to a streaming-default command returns a valid <code>ResponseEnvelope</code></li>
 <li>The manifest exposes <code>streaming_default: true</code> for commands that declare it</li>
 <li>A streaming command that fails after emitting two items emits a third and last line that is a <code>ResponseEnvelope</code> with <code>"ok": false</code>, no summary line, and exits with that envelope's <code>meta.exit_code</code></li>
+<li>Registering a streaming command with <code>danger_level: "destructive"</code> raises a registration error</li>
+<li>Registering a streaming command with <code>danger_level: "mutating"</code> that accepts <code>--idempotency-key</code> raises a registration error</li>
+<li>A mutating stream that creates two resources and finds one unchanged emits three item lines, each with its own <code>effect</code>, and a summary line with <code>"effects": {"created": 2, "noop": 1}</code></li>
+<li>The same stream with <code>--dry-run</code> changes nothing, every item line has a <code>would_*</code> effect, and the summary line carries <code>"dry_run": true</code> and <code>"effects": {"would_create": 2, "would_noop": 1}</code></li>
+<li>A mutating stream run with <code>--dry-run</code> that fails after its first item ends on an error envelope with <code>meta.dry_run: true</code></li>
+<li>A mutating stream that fails after an item with <code>effect: "created"</code> ends on an error envelope with <code>retryable: false</code></li>
 <li>A records consumer fed two items and a summary line hands the handler two records and exits <code>0</code></li>
 <li>A records consumer fed one item and an error envelope on line 2 exits <code>1</code> with <code>error.code: "UPSTREAM_FAILED"</code>, <code>context.line: 2</code>, <code>context.upstream.code</code> equal to the upstream error's code, <code>context._trusted: false</code>, and <code>context.upstream_exit_code</code> equal to its <code>meta.exit_code</code></li>
 <li>A records consumer fed two items and then end of stdin, with no terminal line, exits <code>1</code> with <code>error.code: "UPSTREAM_INCOMPLETE"</code>, <code>context.line: 2</code>, and <code>context.records: 2</code></li>
@@ -10201,7 +10217,7 @@
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Types:</strong> <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a> (<code>CommandEntry.streaming_default</code>) · <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a> (<code>ResponseMeta</code> field names on the summary line)</p>
-<p>Each streamed line is a self-contained JSON object using the command's declared item type. The final summary line reuses <code>ResponseMeta</code> field names; a failed stream ends with a <code>ResponseEnvelope</code> instead. A records consumer declares <code>CommandEntry.stdin</code> with <code>mode: "records"</code> and <code>record_schema</code> in <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a>; its errors are <code>ErrorDetail</code> objects in <a href="../../schemas/response-envelope.json"><code>response-envelope.json</code></a>.</p>
+<p>Each streamed line is a self-contained JSON object using the command's declared item type. The final summary line reuses <code>ResponseMeta</code> field names, including <code>effects</code> and <code>dry_run</code> on a mutating stream (ResponseEnvelope 2.2); a failed stream ends with a <code>ResponseEnvelope</code> instead. A records consumer declares <code>CommandEntry.stdin</code> with <code>mode: "records"</code> and <code>record_schema</code> in <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a>; its errors are <code>ErrorDetail</code> objects in <a href="../../schemas/response-envelope.json"><code>response-envelope.json</code></a>.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <pre><code class="language-bash">$ tool list-deployments --stream
@@ -10236,7 +10252,21 @@ $ tool list-events --no-stream
 {&quot;id&quot;: &quot;d2&quot;, &quot;status&quot;: &quot;running&quot;, &quot;target&quot;: &quot;staging&quot;}
 {&quot;ok&quot;: false, &quot;data&quot;: null, &quot;error&quot;: {&quot;code&quot;: &quot;UNAVAILABLE&quot;, &quot;message&quot;: &quot;Deployment API returned 503&quot;, &quot;retryable&quot;: true}, &quot;warnings&quot;: [], &quot;meta&quot;: {&quot;exit_code&quot;: 12, &quot;duration_ms&quot;: 1840}}
 </code></pre>
-<p>Piped into a records consumer, that stream fails the consumer on line 3:</p>
+<p>A mutating stream puts an <code>effect</code> on each event and counts them on the summary line:</p>
+<pre><code class="language-bash">$ tool sync-users --source users.csv --stream
+</code></pre>
+<pre><code class="language-jsonl">{&quot;id&quot;: &quot;u1&quot;, &quot;effect&quot;: &quot;created&quot;}
+{&quot;id&quot;: &quot;u2&quot;, &quot;effect&quot;: &quot;noop&quot;}
+{&quot;id&quot;: &quot;u3&quot;, &quot;effect&quot;: &quot;created&quot;}
+{&quot;_summary&quot;: true, &quot;total&quot;: 3, &quot;effects&quot;: {&quot;created&quot;: 2, &quot;noop&quot;: 1}, &quot;duration_ms&quot;: 412}
+</code></pre>
+<p>The same run with <code>--dry-run</code> changes nothing:</p>
+<pre><code class="language-jsonl">{&quot;id&quot;: &quot;u1&quot;, &quot;effect&quot;: &quot;would_create&quot;}
+{&quot;id&quot;: &quot;u2&quot;, &quot;effect&quot;: &quot;would_noop&quot;}
+{&quot;id&quot;: &quot;u3&quot;, &quot;effect&quot;: &quot;would_create&quot;}
+{&quot;_summary&quot;: true, &quot;total&quot;: 3, &quot;effects&quot;: {&quot;would_create&quot;: 2, &quot;would_noop&quot;: 1}, &quot;dry_run&quot;: true, &quot;duration_ms&quot;: 37}
+</code></pre>
+<p>Piped into a records consumer, the failed <code>list-deployments</code> stream above fails the consumer on line 3:</p>
 <pre><code class="language-bash">$ tool list-deployments --stream | tool annotate --format json
 </code></pre>
 <pre><code class="language-json">{
@@ -10344,6 +10374,31 @@ register command &quot;annotate&quot;:
 <td><a href="../o-039-input-file-flag-for-stdin-commands/">REQ-O-039</a></td>
 <td>O</td>
 <td>Composes: <code>--input-file &lt;path&gt;</code> feeds a records consumer a finished file, so end of file ends the input</td>
+</tr>
+<tr>
+<td><a href="../c-002-command-declares-danger-level/">REQ-C-002</a></td>
+<td>C</td>
+<td>Consumes: <code>danger_level</code> decides whether a stream reports effects and whether it may register at all</td>
+</tr>
+<tr>
+<td><a href="../c-003-mutating-commands-declare-effect-field/">REQ-C-003</a></td>
+<td>C</td>
+<td>Specializes: a mutating stream carries <code>effect</code> on each event and counts them in <code>effects</code></td>
+</tr>
+<tr>
+<td><a href="../c-007-mutating-commands-accept-idempotency-key/">REQ-C-007</a></td>
+<td>C</td>
+<td>Specializes: a streaming mutating command takes no <code>--idempotency-key</code></td>
+</tr>
+<tr>
+<td><a href="../o-048-destructive-commands-default-dry-run/">REQ-O-048</a></td>
+<td>O</td>
+<td>Consumes: the <code>dry_run</code> field a dry-run stream puts on its summary line</td>
+</tr>
+<tr>
+<td><a href="../o-030-opt-in-audit-log/">REQ-O-030</a></td>
+<td>O</td>
+<td>Composes: a stream is one audit entry with its per-effect counts</td>
 </tr>
 <tr>
 <td><a href="../o-038-heartbeat-ms-flag-for-long-running-commands/">REQ-O-038</a></td>

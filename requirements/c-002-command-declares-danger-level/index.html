@@ -10169,13 +10169,15 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: Medium / Time: High / Context: Medium</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Every command MUST declare a <code>danger_level</code> as part of its registration metadata, chosen from: <code>safe</code> (read-only, no side effects), <code>mutating</code> (creates or modifies state), or <code>destructive</code> (permanently deletes or irreversibly modifies state). The framework MUST refuse to register a command without this declaration. The framework MUST use this declaration to enforce related behaviors (e.g., requiring <code>--dry-run</code> for destructive commands per REQ-C-004).</p>
+<p>Every command MUST declare a <code>danger_level</code> as part of its registration metadata, chosen from: <code>safe</code> (read-only, no side effects), <code>mutating</code> (creates or modifies state), or <code>destructive</code> (permanently deletes or irreversibly modifies state). The framework MUST refuse to register a command without this declaration. The framework MUST use this declaration to enforce related behaviors (e.g., requiring <code>--dry-run</code> for destructive commands per REQ-C-004). A streaming command (REQ-O-004) MUST NOT declare <code>destructive</code>, and the framework refuses to register one that does.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Attempting to register a command without <code>danger_level</code> raises a framework error</li>
 <li>The <code>--schema</code> output for every command includes <code>danger_level</code></li>
 <li>Commands with <code>danger_level: "destructive"</code> trigger framework-level dry-run enforcement (REQ-C-004)</li>
 <li>Commands with <code>danger_level: "safe"</code> do not require <code>--idempotency-key</code> (REQ-C-007)</li>
+<li>Commands with <code>danger_level: "mutating"</code> require <code>--idempotency-key</code> unless they stream, and a streaming one that accepts it raises a registration error (REQ-C-007)</li>
+<li>Registering a streaming command with <code>danger_level: "destructive"</code> raises a framework error (REQ-O-004)</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
@@ -10256,7 +10258,12 @@ register command &quot;update-email&quot;:
 <tr>
 <td><a href="../c-007-mutating-commands-accept-idempotency-key/">REQ-C-007</a></td>
 <td>C</td>
-<td>Enforces: <code>danger_level: mutating/destructive</code> requires <code>--idempotency-key</code></td>
+<td>Enforces: <code>danger_level: mutating/destructive</code> requires <code>--idempotency-key</code> on every non-streaming command</td>
+</tr>
+<tr>
+<td><a href="../o-004-output-jsonl-stream-flag/">REQ-O-004</a></td>
+<td>O</td>
+<td>Enforces: a streaming command is never <code>destructive</code></td>
 </tr>
 <tr>
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>

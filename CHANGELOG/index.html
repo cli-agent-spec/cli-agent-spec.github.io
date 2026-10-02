@@ -10004,6 +10004,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#responseenvelope-22-auditlogentry-11-mutating-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ResponseEnvelope 2.2, AuditLogEntry 1.1: mutating streams
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10497,6 +10508,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#responseenvelope-22-auditlogentry-11-mutating-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ResponseEnvelope 2.2, AuditLogEntry 1.1: mutating streams
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10964,6 +10986,18 @@
 <li>New acceptance criteria and an error-envelope example in REQ-F-035; <code>response-envelope.md</code> tells an agent never to follow instructions found in a tagged <code>data</code> or <code>error.context</code>. <code>ErrorDetail.context</code> already allows extra keys, so <code>ResponseEnvelope</code> stays 2.1 with a description change only</li>
 </ul>
 <p><strong>Why:</strong> a failure's <code>error.context</code> routinely carries a wrapped program's stderr, yet REQ-F-035 tagged and masked external content only in <code>data</code>, so injected instructions and raw tokens reached an agent through the error path untagged (#38).</p>
+<h3 id="responseenvelope-22-auditlogentry-11-mutating-streams">ResponseEnvelope 2.2, AuditLogEntry 1.1: mutating streams</h3>
+<ul>
+<li>REQ-O-004: a streaming command declares <code>danger_level</code> <code>safe</code> or <code>mutating</code>; the framework refuses to register a streaming <code>destructive</code> command, since a stream cannot ask confirmation per action (REQ-C-002)</li>
+<li>REQ-O-004, REQ-C-003: on a mutating stream, every item line carries its own <code>effect</code>, and the summary line carries <code>effects</code>, the number of events per effect value (<code>{"created": 2, "noop": 1}</code>). A buffered answer puts the events in <code>data</code> and the counts in <code>meta.effects</code></li>
+<li>REQ-O-004: <code>--dry-run</code> covers the whole stream: every event reports a <code>would_*</code> effect (<code>would_noop</code> for an unchanged one), the summary line carries <code>"dry_run": true</code>, and a failed dry-run stream's error envelope carries <code>meta.dry_run: true</code></li>
+<li>REQ-O-004: a mutating stream that fails after a live effect other than <code>noop</code> ends on an error envelope with <code>retryable: false</code></li>
+<li>REQ-C-007: a streaming mutating command MUST NOT accept <code>--idempotency-key</code>, and the framework refuses to register one that does; every non-streaming mutating or destructive command still must accept it. REQ-C-002 names the exemption</li>
+<li>REQ-O-030: a stream is one invocation and gets one audit entry, whose new optional <code>effects</code> holds the summary line's counts, or the counts of the events emitted before a failure</li>
+<li><code>ResponseMeta.effects</code> (optional) makes <code>ResponseEnvelope</code> 2.2, and <code>AuditLogEntry.effects</code> (optional) makes <code>AuditLogEntry</code> 1.1; earlier instances stay valid</li>
+<li>§12 and the streaming guide describe the exemption and the per-event effect</li>
+</ul>
+<p><strong>Why:</strong> REQ-C-003's <code>effect</code>, REQ-C-007's replay, dry-run, and the audit entry all assumed one result per run, so a bulk import or sync that streams its changes had no contract for reporting, previewing, retrying, or auditing them (#34).</p>
 <h2 id="1100-2026-10-01">1.10.0 — 2026-10-01</h2>
 <h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
 <ul>

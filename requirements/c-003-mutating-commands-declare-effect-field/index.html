@@ -10169,13 +10169,14 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: High / Time: High / Context: Medium</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Every command with <code>danger_level</code> of <code>mutating</code> or <code>destructive</code> MUST include an <code>effect</code> field in its success response. The <code>effect</code> value MUST be one of: <code>"created"</code>, <code>"updated"</code>, <code>"deleted"</code>, <code>"noop"</code>. Command authors MUST determine and set the correct value based on what actually occurred. The framework MUST validate that the <code>effect</code> field is present and has a valid value for all non-safe commands. A passthrough command (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>) is exempt, because the framework cannot know what the delegated tool changed: its <code>data</code> is <code>{"exit_code": n}</code>, and only a deduplicated replay adds <code>effect: "noop"</code>.</p>
+<p>Every command with <code>danger_level</code> of <code>mutating</code> or <code>destructive</code> MUST include an <code>effect</code> field in its success response. The <code>effect</code> value MUST be one of: <code>"created"</code>, <code>"updated"</code>, <code>"deleted"</code>, <code>"noop"</code>. Command authors MUST determine and set the correct value based on what actually occurred. The framework MUST validate that the <code>effect</code> field is present and has a valid value for all non-safe commands. A passthrough command (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>) is exempt, because the framework cannot know what the delegated tool changed: its <code>data</code> is <code>{"exit_code": n}</code>, and only a deduplicated replay adds <code>effect: "noop"</code>. A streaming command (REQ-O-004) reports what it did per event instead: each item line carries its own <code>effect</code>, and the summary line's <code>effects</code> counts the events per effect value.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A mutating command response always includes <code>"effect"</code> at the top level of the envelope</li>
 <li><code>effect: "noop"</code> is returned when the operation was a no-op (e.g., already at desired state)</li>
 <li><code>effect: "created"</code> vs <code>effect: "updated"</code> is accurate (not always one or the other)</li>
 <li>The framework raises a registration or runtime error if a mutating command omits <code>effect</code></li>
+<li>A streaming mutating command puts a valid <code>effect</code> on every item line, and its summary line's <code>effects</code> counts sum to the number of item lines</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
@@ -10268,6 +10269,11 @@
 <td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
 <td>C</td>
 <td>Specializes: a passthrough command's <code>data</code> carries <code>exit_code</code>, not <code>effect</code></td>
+</tr>
+<tr>
+<td><a href="../o-004-output-jsonl-stream-flag/">REQ-O-004</a></td>
+<td>O</td>
+<td>Specializes: a mutating stream carries <code>effect</code> on each event and counts them on the summary line</td>
 </tr>
 </tbody>
 </table>

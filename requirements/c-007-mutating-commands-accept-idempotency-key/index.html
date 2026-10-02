@@ -10170,16 +10170,19 @@
 <hr />
 <h2 id="description">Description</h2>
 <p>Every command with <code>danger_level: "mutating"</code> or <code>"destructive"</code> MUST accept an <code>--idempotency-key &lt;string&gt;</code> argument. The command MUST use this key to detect and short-circuit duplicate invocations, returning the original result with <code>effect: "noop"</code> and the original response data. When no key is supplied, the framework MAY auto-generate one (deterministic, based on command + args + session) or MUST document that the operation is not deduplication-safe.</p>
+<p>A streaming command (one that declares <code>supports_streaming: true</code>, REQ-O-004) is exempt and MUST NOT accept <code>--idempotency-key</code>, in its buffered answer as well as with <code>--stream</code>: a replay returns one stored result, and a stream is a sequence of events with no single result to return. The framework MUST refuse to register a streaming mutating command that accepts the flag. A streaming command is never destructive (REQ-O-004), so the exemption covers only <code>danger_level: "mutating"</code>; every non-streaming mutating or destructive command still MUST accept the key.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Invoking a mutating command twice with the same <code>--idempotency-key</code> returns <code>effect: "noop"</code> on the second call</li>
 <li>The second call's response <code>data</code> matches the first call's response <code>data</code></li>
 <li>An auto-generated idempotency key is deterministic for the same command arguments within a session</li>
+<li>Registering a streaming mutating command that accepts <code>--idempotency-key</code> raises a registration error</li>
+<li>Registering a non-streaming mutating command without <code>--idempotency-key</code> still raises a registration error</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Types:</strong> <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a> · <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a></p>
-<p>The <code>--idempotency-key</code> flag appears in the schema for all mutating and destructive commands.</p>
+<p>The <code>--idempotency-key</code> flag appears in the schema for all mutating and destructive commands except streaming ones.</p>
 <pre><code class="language-json">{
   &quot;flags&quot;: {
     &quot;idempotency-key&quot;: {
@@ -10261,6 +10264,11 @@
 <td><a href="../c-001-command-declares-exit-codes/">REQ-C-001</a></td>
 <td>C</td>
 <td>Composes: <code>SUCCESS (0)</code> covers both the live execution and the noop case</td>
+</tr>
+<tr>
+<td><a href="../o-004-output-jsonl-stream-flag/">REQ-O-004</a></td>
+<td>O</td>
+<td>Specializes: a streaming mutating command takes no <code>--idempotency-key</code></td>
 </tr>
 </tbody>
 </table>

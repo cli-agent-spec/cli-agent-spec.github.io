@@ -10009,6 +10009,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#streams-that-change-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Streams That Change State
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#decision-table" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10117,6 +10128,9 @@
 </ol>
 <p>This decouples liveness signaling from output format. Heartbeat lines are safe to receive by agents that read stdout line-by-line AND by agents that collect all output at exit (heartbeat lines are valid JSONL; the final envelope line is also valid JSONL).</p>
 <hr />
+<h2 id="streams-that-change-state">Streams That Change State</h2>
+<p>A command that applies one change per input item (a bulk import, a sync) can stream its events so the agent sees each one as it lands. It declares <code>danger_level: "mutating"</code>; a destructive command cannot stream, because a stream cannot stop for confirmation before each action. Each event carries its own <code>effect</code>, the summary line counts the events per effect, and <code>--dry-run</code>, when offered, turns every event into a <code>would_*</code> preview. The command takes no <code>--idempotency-key</code>: a retry after a failure starts from the events already received, not from a replayed result (REQ-O-004).</p>
+<hr />
 <h2 id="decision-table">Decision Table</h2>
 <table>
 <thead>
@@ -10159,6 +10173,12 @@
 <td><code>ResponseEnvelope</code> + heartbeats</td>
 </tr>
 <tr>
+<td>Bulk mutation, one change per item</td>
+<td>Variable</td>
+<td>Each change independently</td>
+<td><code>ResponseEnvelope</code> + <code>--stream</code> opt-in, <code>effect</code> per event</td>
+</tr>
+<tr>
 <td>Log tail / watch / follow</td>
 <td>Unbounded</td>
 <td>Each event independently</td>
@@ -10197,6 +10217,10 @@
 <tr>
 <td><a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a></td>
 <td>Enforces: <code>--stream</code> / <code>streaming_default</code> declaration contract</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-003-mutating-commands-declare-effect-field/">REQ-C-003</a></td>
+<td>Provides: the <code>effect</code> values a mutating stream reports on each event</td>
 </tr>
 <tr>
 <td><a href="../../requirements/o-038-heartbeat-ms-flag-for-long-running-commands/">REQ-O-038</a></td>

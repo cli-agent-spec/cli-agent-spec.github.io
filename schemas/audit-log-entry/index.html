@@ -10147,6 +10147,12 @@
 <td>Agent session identifier, recorded verbatim from the framework's one documented session variable (<code>&lt;PREFIX&gt;SESSION_ID</code> unless it already reads a prefixed one)</td>
 </tr>
 <tr>
+<td><code>effects</code></td>
+<td>object</td>
+<td>mutating streams</td>
+<td>Events per effect value of a mutating stream (REQ-O-004): its summary line's <code>effects</code>, or the events emitted before a failure</td>
+</tr>
+<tr>
 <td><code>warnings</code></td>
 <td>string[]</td>
 <td>yes</td>
@@ -10168,6 +10174,10 @@
 <p><strong>Dry run under an over-privileged credential, inside an agent session</strong></p>
 <pre><code class="language-json">{&quot;timestamp&quot;: &quot;2026-03-17T14:05:22Z&quot;, &quot;command&quot;: &quot;delete&quot;, &quot;args&quot;: {&quot;resource_id&quot;: &quot;r-42&quot;, &quot;dry_run&quot;: true}, &quot;exit_code&quot;: 0, &quot;duration_ms&quot;: 8, &quot;request_id&quot;: &quot;req-002&quot;, &quot;session_id&quot;: &quot;s-1&quot;, &quot;warnings&quot;: [&quot;CREDENTIAL_OVER_PRIVILEGED&quot;]}
 </code></pre>
+<p><strong>Mutating stream: one entry for the whole run</strong></p>
+<pre><code class="language-json">{&quot;timestamp&quot;: &quot;2026-03-17T14:06:10Z&quot;, &quot;command&quot;: &quot;sync-users&quot;, &quot;args&quot;: {&quot;source&quot;: &quot;users.csv&quot;}, &quot;exit_code&quot;: 0, &quot;duration_ms&quot;: 412, &quot;request_id&quot;: &quot;req-005&quot;, &quot;effects&quot;: {&quot;created&quot;: 2, &quot;noop&quot;: 1}, &quot;warnings&quot;: []}
+</code></pre>
+<p><code>sync-users</code> streamed three events (REQ-O-004); the entry repeats its summary line's <code>effects</code> instead of logging each event.</p>
 <p><strong>Large payload truncated to fit the entry cap</strong></p>
 <pre><code class="language-json">{&quot;timestamp&quot;: &quot;2026-03-17T14:07:00Z&quot;, &quot;command&quot;: &quot;import&quot;, &quot;args&quot;: {&quot;source&quot;: &quot;s3://bucket/data.json&quot;, &quot;raw_payload&quot;: &quot;[TRUNCATED]&quot;}, &quot;exit_code&quot;: 0, &quot;duration_ms&quot;: 5310, &quot;request_id&quot;: &quot;req-003&quot;, &quot;warnings&quot;: [], &quot;truncated&quot;: true}
 </code></pre>
@@ -10194,6 +10204,7 @@
 <li>Join an entry to a response or trace by <code>request_id</code> or <code>trace_id</code>, never by <code>timestamp</code></li>
 <li><code>exit_code</code> non-zero with <code>args.dry_run</code> or <code>args.validate_only</code> set means nothing was changed; the entry still shows what was attempted</li>
 <li><code>truncated: true</code> means some <code>args</code> values are <code>[TRUNCATED]</code>; do not replay the invocation from the entry</li>
+<li><code>effects</code> marks a mutating stream and counts its events; with a non-zero <code>exit_code</code>, the counts cover the events completed before the failure. An absent <code>effects</code> on an entry written before AuditLogEntry 1.1 means unknown, not zero</li>
 <li><code>args.argv</code> equal to <code>[OMITTED]</code> marks a passthrough command (REQ-C-031): the forwarded arguments were never written, and its <code>exit_code</code> is the delegated tool's, so a <code>2</code> does not rule out side effects</li>
 <li>A <code>[REDACTED]</code> value is a declared secret; never try to recover it from other sources</li>
 <li><code>warnings</code> containing <code>INJECTION_PROTECTION_DISABLED</code> marks an invocation whose external data was returned untagged; treat its outputs as untrusted during review</li>
@@ -10203,7 +10214,8 @@
 <h2 id="coding-agent-notes">Coding agent notes</h2>
 <p><strong>Type representation</strong>
 - Generate <code>args</code> as a string-keyed map of JSON values, not as a typed struct; its keys are the command's argument names
-- Generate <code>warnings</code> as a list of strings and <code>trace_id</code>, <code>session_id</code>, and <code>truncated</code> as optional fields that are omitted, not <code>null</code></p>
+- Generate <code>warnings</code> as a list of strings and <code>trace_id</code>, <code>session_id</code>, <code>effects</code>, and <code>truncated</code> as optional fields that are omitted, not <code>null</code>
+- Generate <code>effects</code> as a string-keyed map of non-negative integers; its keys are effect values such as <code>created</code> or <code>would_create</code></p>
 <p><strong>Construction</strong>
 - Build the entry from the same values the envelope factory writes to <code>meta</code>, after the exit code is known and before the response is emitted
 - Serialize once, check the byte length, and replace the largest <code>args</code> values with <code>[TRUNCATED]</code> until the line fits 16 KiB</p>
