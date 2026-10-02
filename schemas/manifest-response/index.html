@@ -10529,6 +10529,11 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td>Command declares stdin input; <code>--input-file</code> exists and reads the same way. <code>mode</code> is <code>buffered</code> (whole, up to <code>max_bytes</code>), <code>lines</code> (one line at a time, each up to <code>max_line_bytes</code>, no total cap), or <code>records</code> (lines checked against <code>record_schema</code>, ended by a <code>_summary</code> line) (REQ-F-054, REQ-O-004)</td>
 </tr>
 <tr>
+<td><code>idempotent</code></td>
+<td>boolean</td>
+<td>A repeat with the same arguments converges on the same state, whatever a previous attempt left behind; a non-retryable exit with <code>side_effects: "partial"</code> is recovered by rerunning the identical command. Absent means <code>false</code>; redundant on a <code>safe</code> command. Not <code>--idempotency-key</code>, which deduplicates one request (REQ-C-002)</td>
+</tr>
+<tr>
 <td><code>option_placement</code></td>
 <td><code>"any"</code> | <code>"strict"</code></td>
 <td><code>strict</code>: every option, global or local, precedes the first positional; absent means <code>any</code> (REQ-C-027)</td>
@@ -11375,6 +11380,28 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Violation: <code>confirm_flag</code> excludes <code>safe_default: true</code>; a command has one confirmation mechanism, either the injected <code>--live</code> or its own flag.</p>
+<p><strong>Valid — idempotent command whose partial failure is rerun</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.15&quot;,
+  &quot;framework_version&quot;: &quot;0.9.0&quot;,
+  &quot;etag&quot;: &quot;sha256:5be2a0&quot;,
+  &quot;commands&quot;: {
+    &quot;observe&quot;: {
+      &quot;description&quot;: &quot;Rewrite one snapshot file per server from its live state&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;idempotent&quot;: true,
+      &quot;required_scopes&quot;: [&quot;servers:read&quot;],
+      &quot;has_network_io&quot;: true,
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: {
+        &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Every snapshot file is rewritten&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; },
+        &quot;3&quot;: { &quot;name&quot;: &quot;PARTIAL_FAILURE&quot;, &quot;description&quot;: &quot;Some snapshot files are rewritten and others are not&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;partial&quot; }
+      }
+    }
+  }
+}
+</code></pre>
+<p>Exit <code>3</code> stays <code>retryable: false</code> because files were written. <code>idempotent: true</code> tells the agent that rerunning <code>tool observe</code> unchanged converges on the state a clean run leaves, so the rerun is the recovery and no state inspection comes first.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -11416,6 +11443,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Declaring a static <code>default</code> for a flag whose default depends on the environment.</strong> <code>--format</code> resolves to <code>json</code> without a terminal and <code>plain</code> in one (REQ-F-003); omit <code>default</code> and state the rule in <code>description</code>, so an agent passes the value it needs</li>
 <li><strong>Setting <code>default: null</code> for flags without a default.</strong> Omit the key; <code>null</code> reads as "the default value is null"</li>
 <li><strong>Declaring <code>retryable: true</code> with partial side effects in <code>exit_codes</code>.</strong> The <code>ExitCodeEntry</code> invariant rejects it; timeouts that may have written are <code>retryable: false</code></li>
+<li><strong>Declaring <code>retryable: true</code> on a partial exit because the command is idempotent.</strong> <code>retryable: true</code> still promises that nothing was written; keep the exit <code>retryable: false</code>, <code>side_effects: "partial"</code>, and declare <code>idempotent: true</code> on the command</li>
+<li><strong>Declaring <code>idempotent: true</code> on a command that only deduplicates.</strong> A command that skips a repeat by its <code>--idempotency-key</code> (REQ-C-007) but appends, increments, or sends on every new key does not converge; <code>idempotent</code> means the same arguments reach the same state with or without a key</li>
 <li><strong>Repeating global options in every <code>CommandEntry.flags</code>.</strong> A global option appears once, in the root <code>flags</code>; a copy inside a command reads as a local flag that happens to share the name, and hides whether it is accepted before the command path</li>
 <li><strong>Reusing a global short alias for a local flag.</strong> <code>-f</code> meaning <code>--format</code> at the root and <code>--force</code> on one command changes meaning with position; the framework rejects it at registration</li>
 <li><strong>Generating the manifest from a static file.</strong> It must be computed from live registrations or the <code>etag</code> lies</li>
@@ -11511,7 +11540,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Never assume a format value is valid unless it appears in <code>output_formats</code> or is one of the framework defaults</p>
 <p><strong>Pre-planning retries from <code>exit_codes</code></strong>
 - Before the first call, read the command's <code>exit_codes</code> map and identify which codes are retryable
-- Build the retry/rollback plan before calling, not reactively — this avoids ambiguity about whether a retry is safe after a partial failure</p>
+- Build the retry/rollback plan before calling, not reactively — this avoids ambiguity about whether a retry is safe after a partial failure
+- <code>idempotent: true</code> — a non-retryable exit whose entry declares <code>side_effects: "partial"</code> (such as <code>PARTIAL_FAILURE (3)</code>, a <code>TIMEOUT (10)</code> that may have written, or <code>130</code>/<code>143</code> after a signal) is recovered by rerunning the identical command once, without inspecting state. A second failure with the same <code>error.code</code> is deterministic: stop and escalate
+- The rerun rule never covers <code>ARG_ERROR (2)</code> or any error carrying <code>fix_required</code> or <code>fix_command</code>: the identical call fails until the input changes, so apply the fix first. Exits with <code>side_effects: "none"</code> follow <code>retryable</code> as usual
+- An absent <code>idempotent</code> means <code>false</code>, including on a pre-3.15 manifest: verify what was committed before rerunning a mutating command</p>
 <p><strong>Reading declared contracts before calling</strong>
 - <code>danger_level</code> other than <code>safe</code> — prefer <code>--dry-run</code> first; <code>safe_default: true</code> means the command previews until <code>--live</code> is passed
 - <code>filesystem_side_effects</code> with <code>type: "output"</code> — the command writes its product there, even when it is <code>safe</code>; read the result from that path, and do not run <code>tool cleanup</code> expecting it to go. A pre-3.10 manifest cannot mark it and may declare it <code>cache</code>
@@ -11554,6 +11586,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert every <code>type: "object"</code> flag carries a <code>schema</code> the parser enforces, and prefer <code>type: "object"</code> for every flag whose value the parser reads as a JSON object
 - Assert every <code>arguments: "passthrough"</code> command has <code>option_placement: "strict"</code>, empty <code>flags</code>, no <code>positionals</code>, and a <code>danger_level</code> other than <code>destructive</code>, and that <code>help_argv</code> appears only on such commands
 - Assert every <code>confirm_flag</code> names a boolean flag in the command's <code>flags</code> or the root <code>flags</code>, appears only on <code>mutating</code> or <code>destructive</code> commands without <code>safe_default: true</code> or <code>arguments: "passthrough"</code>, and that a call without it previews with <code>meta.dry_run: true</code> while <code>--dry-run</code> plus the flag still previews
+- Assert <code>idempotent: true</code> only on commands whose tests show that a rerun after each declared partial exit leaves the state a clean run leaves; accept it on a <code>safe</code> command without warning
 - Assert every flag's <code>env_vars</code> lists exactly the variables its parser reads, in the order it reads them, with the tool-prefixed name first whenever a name without the prefix is listed, and no name from <code>secret_env_vars</code>
 - Assert root <code>env_vars</code> lists every other variable the tool reads outside the universal exceptions, each with a <code>description</code> and either the tool prefix or a declared name that immediately follows its setting's prefixed entry, and no name that also appears in a flag's <code>env_vars</code>, a <code>secret_env_vars</code>, or a <code>token_env_vars</code>
 - Assert root <code>secret_env_vars</code> lists exactly the secrets every command reads, and that none of them repeats in a command's <code>secret_env_vars</code> or a flag's <code>env_vars</code>; assert no name in an auth command's <code>token_env_vars</code> repeats in that command's <code>secret_env_vars</code>
@@ -11611,7 +11644,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a></td>
-<td>Sources: <code>danger_level</code> per command</td>
+<td>Sources: <code>danger_level</code> and <code>idempotent</code> per command</td>
 </tr>
 <tr>
 <td><a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a></td>

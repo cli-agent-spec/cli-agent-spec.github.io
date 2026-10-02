@@ -10408,7 +10408,7 @@
 <td><code>PARTIAL_FAILURE</code></td>
 <td>no</td>
 <td><strong>partial</strong></td>
-<td>Inspect state before retrying — some writes occurred</td>
+<td>Inspect state before retrying — some writes occurred; a command declared <code>idempotent: true</code> reruns unchanged once instead</td>
 </tr>
 </tbody>
 </table>
@@ -10520,7 +10520,7 @@
 <td><code>TIMEOUT</code></td>
 <td>depends</td>
 <td>partial</td>
-<td>Inspect state before retrying; retry directly only when the command declares <code>side_effects: "none"</code></td>
+<td>Inspect state before retrying; retry directly only when the command declares <code>side_effects: "none"</code>, or rerun once unchanged when it declares <code>idempotent: true</code></td>
 </tr>
 <tr>
 <td>11</td>
@@ -10600,7 +10600,7 @@
 <p><strong>Confusing <code>PERMISSION_DENIED (7)</code> and <code>AUTH_REQUIRED (8)</code>.</strong> <code>PERMISSION_DENIED</code> means the credentials are valid but insufficient — retrying with the same credentials will never succeed. <code>AUTH_REQUIRED</code> means the credentials themselves are the problem</p>
 </li>
 <li>
-<p><strong>Treating all <code>TIMEOUT (10)</code> exits as non-retryable.</strong> For idempotent commands or read-only operations that time out without side effects, declare <code>retryable: true, side_effects: "none"</code> in <code>ExitCodeEntry</code>. Only declare <code>retryable: false</code> when partial writes may have occurred — the <code>ExitCodeEntry</code> invariant requires it when <code>side_effects</code> is <code>"partial"</code></p>
+<p><strong>Treating all <code>TIMEOUT (10)</code> exits as non-retryable.</strong> For operations that time out before any write, declare <code>retryable: true, side_effects: "none"</code> in <code>ExitCodeEntry</code>. Declare <code>retryable: false</code> when partial writes may have occurred, even on a command declared <code>idempotent</code>: the <code>ExitCodeEntry</code> invariant requires it when <code>side_effects</code> is <code>"partial"</code></p>
 </li>
 </ul>
 <hr />
@@ -10611,7 +10611,7 @@
 - Code in <code>64–78</code> — POSIX sysexit; look up the POSIX meaning; treat as non-retryable unless the meaning clearly indicates a transient condition
 - Code in <code>79–125</code> — command-specific; consult that command's <code>exit_codes</code> declaration from the manifest before acting
 - Code <code>126</code> or <code>127</code> — the binary could not be executed or was not found; the command never ran; fix the environment, then reissue
-- Code in <code>129–159</code> (<code>128 + signal</code>) — the process was killed or cancelled mid-run (outer timeout, OOM, SIGINT, SIGTERM); side effects may be partial; inspect state before any retry
+- Code in <code>129–159</code> (<code>128 + signal</code>) — the process was killed or cancelled mid-run (outer timeout, OOM, SIGINT, SIGTERM); side effects may be partial; inspect state before any retry, unless the command's manifest entry declares <code>idempotent: true</code> and its declared entry for the code has <code>side_effects: "partial"</code>, which makes one unchanged rerun the recovery
 - Code outside <code>0–255</code> — treat as <code>GENERAL_ERROR (1)</code>; log for investigation</p>
 <p><strong>Contradictory signals</strong>
 - Envelope and process exit code disagree in either direction — treat the call as failed; the side that reports failure wins
@@ -10625,7 +10625,7 @@
 - <code>UNAVAILABLE (12)</code> — use exponential back-off starting at 1s, cap at 5 minutes</p>
 <p><strong>Side effects under uncertainty</strong>
 - Code is <code>GENERAL_ERROR (1)</code> (side effects unknown) — treat as <code>side_effects: "partial"</code>; inspect state before retrying
-- Code is <code>TIMEOUT (10)</code> — partial side effects are possible; do not assume the operation is idempotent without checking</p>
+- Code is <code>TIMEOUT (10)</code> — partial side effects are possible; do not assume the operation is idempotent unless its manifest entry declares <code>idempotent: true</code>, which makes rerunning the identical command once the recovery</p>
 <hr />
 <h2 id="coding-agent-notes">Coding agent notes</h2>
 <p><strong>Reading <code>exit-code.json</code> vendor extensions</strong>

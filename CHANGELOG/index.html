@@ -10070,6 +10070,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-315-idempotent-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.15: idempotent commands
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10629,6 +10640,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-315-idempotent-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.15: idempotent commands
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -11154,6 +11176,15 @@
 <li>A producer that sets <code>confirm_flag</code> emits <code>schema_version</code> <code>3.14</code>; a pre-3.14 manifest stays valid, and on it an absent <code>confirm_flag</code> means unknown, not "runs without a flag"</li>
 </ul>
 <p><strong>Why:</strong> a mutating command that previews unless its own <code>--yes</code> is given could state that only in the flag's <code>description</code>, because <code>safe_default</code> is a boolean, destructive-only, and names <code>--live</code>. An agent reading the manifest expected a bare call to run (#40).</p>
+<h3 id="manifestresponse-315-idempotent-commands">ManifestResponse 3.15: idempotent commands</h3>
+<ul>
+<li><code>CommandEntry.idempotent</code> (optional boolean, absent means <code>false</code>): a repeat with the same arguments converges on the same state, whatever a previous attempt left behind. A delete of a named resource qualifies as much as a file rewrite; on a <code>safe</code> command the field is redundant and accepted without warning (REQ-C-002)</li>
+<li>The <code>ExitCodeEntry</code> invariant is unchanged: a partial-failure exit of an idempotent command stays <code>retryable: false</code>, <code>side_effects: "partial"</code>, because <code>retryable: true</code> still promises that nothing was written</li>
+<li>New agent rule: on a non-retryable exit whose entry declares <code>side_effects: "partial"</code> from a command declared <code>idempotent: true</code>, rerun the identical command once without inspecting state, and stop if it fails with the same <code>error.code</code>. The rule never covers <code>ARG_ERROR (2)</code> or an error carrying <code>fix_required</code> or <code>fix_command</code>. <code>guides/recoverable-errors.md</code> gains a convergent rung, and <code>exit-code-entry.md</code>, <code>exit-code.md</code>, <code>manifest-response.md</code>, §12, and <code>challenges/triage.md</code>'s default retry policy state the rule</li>
+<li>REQ-C-002 and REQ-C-007 separate <code>idempotent</code> from <code>--idempotency-key</code>, which deduplicates one request and returns <code>effect: "noop"</code>; a command declared <code>idempotent</code> still accepts the key</li>
+<li>A producer that sets <code>idempotent</code> emits <code>schema_version</code> <code>3.15</code>; a pre-3.15 manifest stays valid</li>
+</ul>
+<p><strong>Why:</strong> a mutating command that is safe to rerun after a partial failure (a snapshot writer that rewrites one file per server) had nowhere to say so, and its only honest exit declaration, <code>retryable: false</code> with <code>side_effects: "partial"</code>, sent agents to inspect state before every rerun (#41).</p>
 <h2 id="1100-2026-10-01">1.10.0 — 2026-10-01</h2>
 <h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
 <ul>

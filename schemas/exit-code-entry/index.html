@@ -10246,7 +10246,7 @@
 <p><strong>Valid — timeout declared as non-retryable because side effects are possible (map key <code>"10"</code>)</strong></p>
 <pre><code class="language-json">{ &quot;name&quot;: &quot;TIMEOUT&quot;, &quot;description&quot;: &quot;Deployment timed out — partial writes may have occurred&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;partial&quot; }
 </code></pre>
-<p><strong>Valid — timeout declared as retryable because the command is idempotent (map key <code>"10"</code>)</strong></p>
+<p><strong>Valid — timeout declared as retryable because no writes were attempted (map key <code>"10"</code>)</strong></p>
 <pre><code class="language-json">{ &quot;name&quot;: &quot;TIMEOUT&quot;, &quot;description&quot;: &quot;Config read timed out — no writes were attempted&quot;, &quot;retryable&quot;: true, &quot;side_effects&quot;: &quot;none&quot; }
 </code></pre>
 <p><strong>Invalid — invariant violation</strong></p>
@@ -10262,7 +10262,7 @@
 <ul>
 <li><strong>Omitting the <code>SUCCESS</code> entry (map key <code>"0"</code>).</strong> Every command must declare it — even if the success path is obvious. The manifest and <code>--schema</code> output require it</li>
 <li><strong>Using vague descriptions like <code>"Error"</code> or <code>"Failed"</code>.</strong> The description must state the condition specifically so an agent can act without reading message text</li>
-<li><strong>Setting <code>retryable: true</code> when side effects may have occurred.</strong> The invariant is a hard guarantee. If any write could have occurred, <code>side_effects</code> must be <code>"partial"</code> and <code>retryable</code> must be <code>false</code></li>
+<li><strong>Setting <code>retryable: true</code> when side effects may have occurred.</strong> The invariant is a hard guarantee. If any write could have occurred, <code>side_effects</code> must be <code>"partial"</code> and <code>retryable</code> must be <code>false</code>, even when rerunning is safe; declare that on the command as <code>idempotent: true</code> (<a href="../manifest-response/"><code>manifest-response.md</code></a>)</li>
 <li><strong>Setting <code>retryable: true</code> on validation errors.</strong> Safe is not the same as useful: the identical call fails deterministically until the input changes. Declare <code>retryable: false</code>; the envelope carries <code>fix_required</code> for the correction</li>
 <li><strong>Using <code>side_effects: "complete"</code> on failure codes.</strong> <code>"complete"</code> means the intended operation finished — it is only appropriate for <code>SUCCESS (0)</code></li>
 <li><strong>Declaring only the happy path.</strong> Every code the command may emit must have an entry. An undeclared code emitted at runtime is a contract violation</li>
@@ -10274,6 +10274,8 @@
 <p><strong>Using entries to plan retries</strong>
 - If an entry has <code>retryable: true</code> and <code>side_effects: "none"</code> — the identical call may be re-run directly; no state inspection needed
 - If an entry has <code>retryable: true</code> and <code>side_effects: "partial"</code> — this is a schema violation (see invariant in <strong>Values</strong> above); treat conservatively as non-retryable until state is inspected
+- If an entry has <code>retryable: false</code> and <code>side_effects: "partial"</code>, and the command's manifest entry declares <code>idempotent: true</code> — rerun the identical command once without inspecting state; it converges on the state a clean run leaves. A second failure with the same <code>error.code</code> is deterministic: stop and escalate
+- The convergent rerun never applies to <code>ARG_ERROR (2)</code>, to an exit with <code>side_effects: "none"</code>, or to an error carrying <code>fix_required</code> or <code>fix_command</code>; those follow <code>retryable</code> and the fix fields. Without <code>idempotent: true</code>, inspect state before any rerun
 - If no entry exists for the received exit code — the command violated its contract; treat as <code>GENERAL_ERROR</code> behavior</p>
 <p><strong>Contradiction in received data</strong>
 - <code>retryable: true</code> with <code>side_effects: "partial"</code> or <code>"complete"</code> — schema invariant violated by the command; do not retry without inspecting state

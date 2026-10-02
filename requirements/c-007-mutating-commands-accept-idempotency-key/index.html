@@ -10171,6 +10171,7 @@
 <h2 id="description">Description</h2>
 <p>Every command with <code>danger_level: "mutating"</code> or <code>"destructive"</code> MUST accept an <code>--idempotency-key &lt;string&gt;</code> argument. The command MUST use this key to detect and short-circuit duplicate invocations, returning the original result with <code>effect: "noop"</code> and the original response data. When no key is supplied, the framework MAY auto-generate one (deterministic, based on command + args + session) or MUST document that the operation is not deduplication-safe.</p>
 <p>A streaming command (one that declares <code>supports_streaming: true</code>, REQ-O-004) is exempt and MUST NOT accept <code>--idempotency-key</code>, in its buffered answer as well as with <code>--stream</code>: a replay returns one stored result, and a stream is a sequence of events with no single result to return. The framework MUST refuse to register a streaming mutating command that accepts the flag. A streaming command is never destructive (REQ-O-004), so the exemption covers only <code>danger_level: "mutating"</code>; every non-streaming mutating or destructive command still MUST accept the key.</p>
+<p>The key deduplicates one request; it does not say that a repeat with the same arguments is safe. That property is the command's <code>idempotent</code> declaration (<a href="../c-002-command-declares-danger-level/">REQ-C-002</a>), which tells an agent to recover a partial failure by rerunning the identical command. A non-streaming command declared <code>idempotent</code> still accepts <code>--idempotency-key</code>.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Invoking a mutating command twice with the same <code>--idempotency-key</code> returns <code>effect: "noop"</code> on the second call</li>
@@ -10254,6 +10255,11 @@
 <td><a href="../c-003-mutating-commands-declare-effect-field/">REQ-C-003</a></td>
 <td>C</td>
 <td>Composes: <code>effect: "noop"</code> is the canonical response value for an idempotency-key hit</td>
+</tr>
+<tr>
+<td><a href="../c-002-command-declares-danger-level/">REQ-C-002</a></td>
+<td>C</td>
+<td>Composes: <code>idempotent</code> declares convergence on rerun, which the key does not imply</td>
 </tr>
 <tr>
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>

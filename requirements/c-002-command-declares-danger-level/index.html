@@ -10165,12 +10165,14 @@
 
 <h1 id="req-c-002-command-declares-danger-level">REQ-C-002: Command Declares Danger Level</h1>
 <p><strong>Tier:</strong> Command Contract | <strong>Priority:</strong> P0</p>
-<p><strong>Source:</strong> <a href="../../challenges/03-critical-security/23-critical-destructive-ops/">§23 Side Effects &amp; Destructive Operations</a></p>
+<p><strong>Source:</strong> <a href="../../challenges/03-critical-security/23-critical-destructive-ops/">§23 Side Effects &amp; Destructive Operations</a> · <a href="../../challenges/02-critical-execution-and-reliability/12-critical-idempotency/">§12 Idempotency &amp; Safe Retries</a></p>
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: Medium / Time: High / Context: Medium</p>
 <hr />
 <h2 id="description">Description</h2>
 <p>Every command MUST declare a <code>danger_level</code> as part of its registration metadata, chosen from: <code>safe</code> (read-only, no side effects on state), <code>mutating</code> (creates or modifies state), or <code>destructive</code> (permanently deletes or irreversibly modifies state). The framework MUST refuse to register a command without this declaration. The framework MUST use this declaration to enforce related behaviors (e.g., requiring <code>--dry-run</code> for destructive commands per REQ-C-004). A streaming command (REQ-O-004) MUST NOT declare <code>destructive</code>, and the framework refuses to register one that does.</p>
 <p>Writes of declared <code>cache</code>, <code>log</code>, <code>temp</code>, and <code>output</code> paths (REQ-C-011) are not state changes: a command whose only writes are of those kinds stays <code>safe</code>. A report generator that writes its product to a declared <code>output</code> path is <code>safe</code>, not <code>mutating</code>. Writing a <code>credential</code> or <code>config</code> path, or any undeclared path, is a state change.</p>
+<p>A command MAY also declare <code>idempotent: true</code>: a repeat with the same arguments converges on the same state, whatever a previous attempt left behind. A rewrite of one snapshot file per server, a <code>PUT</code> of a full resource, and a delete of a named resource (<code>danger_level: "destructive"</code>) all qualify; an append, a counter increment, and a message send do not. Absent means <code>false</code>. The declaration does not change any <code>ExitCodeEntry</code>: an exit after some writes stays <code>retryable: false</code> with <code>side_effects: "partial"</code>, because <code>retryable: true</code> still guarantees that nothing was written (REQ-C-001). What it adds is an agent rule: on a non-retryable exit whose entry declares <code>side_effects: "partial"</code>, rerunning the identical command is the recovery, without inspecting state first. The rule never covers <code>ARG_ERROR (2)</code> or an error that carries <code>fix_required</code> or <code>fix_command</code>, which fail until the caller changes something. <code>idempotent</code> on a <code>safe</code> command is redundant (a read-only command converges trivially) and the framework accepts it without warning.</p>
+<p><code>idempotent</code> is distinct from <code>--idempotency-key</code> (<a href="../c-007-mutating-commands-accept-idempotency-key/">REQ-C-007</a>), which deduplicates one request so that its repeat does nothing and returns <code>effect: "noop"</code> (<a href="../c-003-mutating-commands-declare-effect-field/">REQ-C-003</a>). A command can deduplicate without converging (each new key creates another order) and converge without deduplicating (each rerun rewrites the same files); declaring <code>idempotent</code> does not exempt a mutating command from accepting <code>--idempotency-key</code>.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Attempting to register a command without <code>danger_level</code> raises a framework error</li>
@@ -10180,16 +10182,24 @@
 <li>Commands with <code>danger_level: "mutating"</code> require <code>--idempotency-key</code> unless they stream, and a streaming one that accepts it raises a registration error (REQ-C-007)</li>
 <li>Registering a streaming command with <code>danger_level: "destructive"</code> raises a framework error (REQ-O-004)</li>
 <li>A command whose only declared filesystem writes are <code>cache</code>, <code>log</code>, <code>temp</code>, or <code>output</code> paths may register as <code>safe</code></li>
+<li>A command registered with <code>idempotent: true</code> shows <code>"idempotent": true</code> in <code>--schema</code> output and the manifest; a command registered without it omits the field or shows <code>false</code></li>
+<li>Registering <code>idempotent: true</code> with any <code>danger_level</code>, including <code>safe</code> and <code>destructive</code>, succeeds and leaves every declared <code>ExitCodeEntry</code> unchanged</li>
+<li>For a command declared <code>idempotent: true</code>, a rerun of the identical invocation after each declared exit with <code>side_effects: "partial"</code> exits <code>0</code> and leaves the state a single clean run leaves</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Types:</strong> <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a></p>
-<p>The <code>danger_level</code> field appears on every command entry in <code>--schema</code> output and in the manifest. Allowed values: <code>"safe"</code> · <code>"mutating"</code> · <code>"destructive"</code>.</p>
+<p>The <code>danger_level</code> field appears on every command entry in <code>--schema</code> output and in the manifest. Allowed values: <code>"safe"</code> · <code>"mutating"</code> · <code>"destructive"</code>. The optional <code>idempotent</code> field appears when the command declares it; absent means <code>false</code>.</p>
 <pre><code class="language-json">{
   &quot;danger_level&quot;: {
     &quot;type&quot;: &quot;string&quot;,
     &quot;enum&quot;: [&quot;safe&quot;, &quot;mutating&quot;, &quot;destructive&quot;],
     &quot;description&quot;: &quot;Indicates the mutation risk level of the command&quot;
+  },
+  &quot;idempotent&quot;: {
+    &quot;type&quot;: &quot;boolean&quot;,
+    &quot;default&quot;: false,
+    &quot;description&quot;: &quot;A repeat with the same arguments converges on the same state, whatever a previous attempt left behind&quot;
   }
 }
 </code></pre>
@@ -10227,6 +10237,14 @@ register command &quot;list-users&quot;:
   exit_codes:
     SUCCESS(0): description: &quot;User list returned&quot;, retryable: false, side_effects: none
 
+register command &quot;observe&quot;:
+  danger_level: mutating
+  idempotent: true
+  exit_codes:
+    SUCCESS        (0): description: &quot;Every snapshot file is rewritten&quot;,                    retryable: false, side_effects: complete
+    PARTIAL_FAILURE(3): description: &quot;Some snapshot files are rewritten and others are not&quot;, retryable: false, side_effects: partial
+  → after exit 3, the agent reruns &quot;tool observe&quot; unchanged; no state inspection first
+
 register command &quot;update-email&quot;:
   (no danger_level)
   → framework error: danger_level declaration is required
@@ -10245,7 +10263,7 @@ register command &quot;update-email&quot;:
 <tr>
 <td><a href="../c-001-command-declares-exit-codes/">REQ-C-001</a></td>
 <td>C</td>
-<td>Composes: <code>danger_level</code> is part of the same <code>--schema</code> output as <code>exit_codes</code></td>
+<td>Composes: <code>danger_level</code> and <code>idempotent</code> are part of the same <code>--schema</code> output as <code>exit_codes</code>; <code>idempotent</code> leaves the <code>retryable</code> ⇒ <code>side_effects: "none"</code> invariant unchanged</td>
 </tr>
 <tr>
 <td><a href="../c-003-mutating-commands-declare-effect-field/">REQ-C-003</a></td>
@@ -10260,7 +10278,7 @@ register command &quot;update-email&quot;:
 <tr>
 <td><a href="../c-007-mutating-commands-accept-idempotency-key/">REQ-C-007</a></td>
 <td>C</td>
-<td>Enforces: <code>danger_level: mutating/destructive</code> requires <code>--idempotency-key</code> on every non-streaming command</td>
+<td>Enforces: <code>danger_level: mutating/destructive</code> requires <code>--idempotency-key</code> on every non-streaming command, which <code>idempotent</code> does not replace</td>
 </tr>
 <tr>
 <td><a href="../o-004-output-jsonl-stream-flag/">REQ-O-004</a></td>

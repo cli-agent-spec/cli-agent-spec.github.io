@@ -10200,7 +10200,7 @@
 <td>14</td>
 <td>Exit code in <code>129–143</code> (128 + signal number)</td>
 <td><a href="../02-critical-execution-and-reliability/11-critical-timeouts/">§11</a> <a href="../02-critical-execution-and-reliability/16-high-signal-handling/">§16</a></td>
-<td>The process was killed externally (outer timeout, OOM); inspect partial state before any retry</td>
+<td>The process was killed externally (outer timeout, OOM); inspect partial state before any retry, unless the manifest declares the command <code>idempotent: true</code> (one unchanged rerun, see the default retry policy below)</td>
 </tr>
 <tr>
 <td>15</td>

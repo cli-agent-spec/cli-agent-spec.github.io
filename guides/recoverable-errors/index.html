@@ -10094,7 +10094,7 @@
 <p>The corresponding contracts: <a href="../../requirements/c-013-error-responses-include-code-and-message/">REQ-C-013</a> (code + message), <a href="../../requirements/c-014-error-responses-include-retryable-and-retry-after-/">REQ-C-014</a> (retryable + backoff), <a href="../../requirements/c-030-error-responses-include-fix-command/">REQ-C-030</a> (executable remediation).</p>
 <hr />
 <h2 id="the-three-recovery-classes">The three recovery classes</h2>
-<p>Every failure your tool can emit belongs to exactly one class, and the field combination encodes which:</p>
+<p>Every failure your tool can emit belongs to exactly one class, and the field combination (with the command's <code>idempotent</code> declaration) encodes which:</p>
 <table>
 <thead>
 <tr>
@@ -10115,8 +10115,13 @@
 <td>Apply the fix, reissue once</td>
 </tr>
 <tr>
+<td>Convergent</td>
+<td><code>retryable: false</code>, neither fix field, <code>side_effects: "partial"</code> on a command declared <code>idempotent: true</code></td>
+<td>Rerun the identical command once; stop if it fails the same way</td>
+</tr>
+<tr>
 <td>Terminal</td>
-<td><code>retryable: false</code>, neither fix field</td>
+<td><code>retryable: false</code>, neither fix field, no convergent rerun</td>
 <td>Stop; escalate with the error verbatim</td>
 </tr>
 </tbody>
@@ -10126,9 +10131,12 @@
 elif error.fix_command:        run it; if exit 0, reissue once
 elif error.fix_required:       apply the stated fix if achievable, reissue once;
                                else escalate with the condition
+elif command.idempotent and exit_entry.side_effects == &quot;partial&quot;:
+                               reissue once unchanged; same error.code again: escalate
 else:                          stop, escalate verbatim
 </code></pre>
-<p>If any error your tool emits requires logic outside these four lines, the error is misclassified or underspecified. The classification must hold under the spec's <code>retryable</code> semantics: <code>true</code> means the identical unchanged invocation may succeed and no side effects occurred (see <a href="../../schemas/exit-code/"><code>exit-code.md</code></a>); "the user could fix this and retry" is never <code>retryable: true</code> — it is caller-correctable.</p>
+<p><code>exit_entry</code> is the command's declared <code>ExitCodeEntry</code> for the exit code received, and <code>command.idempotent</code> comes from its manifest entry (<a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a>). The convergent rung sits below the fix rungs on purpose: an idempotent command still never reruns a validation failure (<code>exit 2</code> with <code>fix_required</code>), because the identical call fails until the input changes.</p>
+<p>If any error your tool emits requires logic outside these five branches, the error is misclassified or underspecified. The classification must hold under the spec's <code>retryable</code> semantics: <code>true</code> means the identical unchanged invocation may succeed and no side effects occurred (see <a href="../../schemas/exit-code/"><code>exit-code.md</code></a>); "the user could fix this and retry" is never <code>retryable: true</code> — it is caller-correctable. Neither is "rerunning converges": a command that wrote some files before failing declares the exit <code>retryable: false</code> with <code>side_effects: "partial"</code> and declares itself <code>idempotent</code>, so the invariant stays true and the agent still knows the rerun is safe.</p>
 <hr />
 <h2 id="why-prose-suggestions-are-not-remediation">Why prose suggestions are not remediation</h2>
 <p><code>suggestion: "Run tool login to refresh your credentials"</code> looks actionable. It is actionable for a human and for a strong model. A weak model must: extract the command from the sentence, decide whether the surrounding words are part of it, decide whether it is safe, and construct a new tool call. Each step is a failure opportunity, and the extraction step is a prompt-injection reflex waiting to be exploited by any error text that quotes untrusted input.</p>
@@ -10218,6 +10226,14 @@ exit 1
 <tr>
 <td><a href="../../requirements/c-030-error-responses-include-fix-command/">REQ-C-030</a></td>
 <td>Enforces: executable <code>fix_command</code> (rung 4) with registration-time safety checks</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a></td>
+<td>Enforces: the <code>idempotent</code> declaration behind the convergent rerun</td>
+</tr>
+<tr>
+<td><a href="../../challenges/02-critical-execution-and-reliability/12-critical-idempotency/">§12 Idempotency &amp; Safe Retries</a></td>
+<td>Sources: the safe-retry failure the convergent rerun addresses</td>
 </tr>
 <tr>
 <td><a href="../../requirements/f-063-credential-expiry-structured-error/">REQ-F-063</a></td>

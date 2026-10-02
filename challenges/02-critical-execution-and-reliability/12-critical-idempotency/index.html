@@ -10258,6 +10258,7 @@ $ tool increment-counter --key views
 - Mark commands as <code>safe</code> (read-only, always idempotent) or <code>unsafe</code> (mutating)
 - Require <code>--idempotency-key</code> for all <code>unsafe</code> commands, or generate one automatically
 - Exempt streaming commands from the key: a stream has no single result to replay, so each event carries its own <code>effect</code> and the summary line counts them (REQ-O-004)
+- Let a command declare <code>idempotent: true</code> when a repeat with the same arguments converges on the same state, whatever a previous attempt left behind; keep its partial-failure exits <code>retryable: false</code>, <code>side_effects: "partial"</code>
 - Emit <code>effect</code> field in all responses
 - Implement <code>--dry-run</code> as a framework-level feature, not per-command</p>
 <h3 id="evaluation">Evaluation</h3>
@@ -10310,6 +10311,12 @@ if parsed.get(&quot;effect&quot;) == &quot;noop&quot;:
     # Already completed — safe to treat as success
     pass
 </code></pre>
+<p><strong>When the manifest declares the command <code>idempotent: true</code>, rerun it after a partial failure instead of inspecting state:</strong></p>
+<pre><code class="language-bash"># exit 3 (PARTIAL_FAILURE), entry declares retryable: false, side_effects: partial
+# idempotent: true, so the identical rerun converges; one attempt, then escalate
+tool observe
+</code></pre>
+<p>This covers non-retryable exits whose <code>ExitCodeEntry</code> declares <code>side_effects: "partial"</code>. It never covers <code>ARG_ERROR (2)</code> or an error carrying <code>fix_required</code> or <code>fix_command</code>; apply the fix first.</p>
 <p><strong>Before retrying a failed mutating call, check whether the operation succeeded:</strong></p>
 <pre><code class="language-bash"># Query state before retrying — if already in target state, skip the mutation
 tool get-order --id $ORDER_ID --json | jq '.data.status'
