@@ -10176,6 +10176,7 @@
 <li><code>--token-offset &lt;n&gt;</code>: skip the first <code>n</code> tokens of output before beginning emission. When combined with <code>--token-limit</code>, this enables sliding-window access over output that exceeds the caller's context budget.</li>
 </ul>
 <p>Token counting MUST use the same tokenizer as the primary consumer (typically <code>cl100k_base</code> or the framework's declared default). If the tokenizer is configurable, <code>--tokenizer &lt;name&gt;</code> selects it.</p>
+<p><strong>Command-specific formats.</strong> A command that accepts <code>--format</code> values beyond the framework's lists them in its manifest entry's <code>output_formats</code>. Beside it, <code>output_media_types</code> maps a format value to the media type it writes (<code>{"toon": "text/plain"}</code>). It is required for every <code>output_formats</code> value that neither the spec's media type table (REQ-O-001) nor the root <code>format</code> flag's <code>media_types</code> covers, and an entry overrides the root map for that command. Every key is a value the command accepts for <code>--format</code>. <code>output_formats</code> keeps its string-list type.</p>
 <p>These flags are distinct from <code>--fields</code> (which filters by key) and the framework's byte-level hard cap (REQ-F-052). They operate on the token dimension, which is what LLM callers actually spend.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
@@ -10184,6 +10185,7 @@
 <li><code>--token-offset 200 --token-limit 200</code> returns the second window of 200 tokens</li>
 <li>All three flags are available on every command without per-command implementation</li>
 <li><code>meta.token_count</code> is present in every response when <code>--token-count</code> is passed, regardless of <code>--format</code> value</li>
+<li>A command whose <code>output_formats</code> lists a value covered by neither the spec's media type table nor the root <code>media_types</code> declares it in <code>output_media_types</code></li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
@@ -10220,6 +10222,8 @@
 </tr>
 </tbody>
 </table>
+<p><strong>Type:</strong> <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a></p>
+<p><code>CommandEntry.output_formats</code> (string array) lists command-specific format values, and <code>CommandEntry.output_media_types</code> (map from format value to media type) declares what each writes.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <pre><code class="language-bash">$ tool list-events --token-limit 500 --format json
@@ -10298,7 +10302,7 @@ else:
 </tr>
 <tr>
 <td><a href="../../schemas/manifest-response/">schemas/manifest-response.md</a></td>
-<td>Exposes: <code>output_formats</code> field in <code>CommandEntry</code> declares when LLM-optimized formats are available alongside token budget flags</td>
+<td>Exposes: <code>output_formats</code> and <code>output_media_types</code> in <code>CommandEntry</code> declare when LLM-optimized formats are available and what each writes</td>
 <td></td>
 </tr>
 </tbody>

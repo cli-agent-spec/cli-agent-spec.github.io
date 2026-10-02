@@ -10037,6 +10037,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-312-media-types-of-format-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.12: media types of format values
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10563,6 +10574,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-312-media-types-of-format-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.12: media types of format values
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -11060,6 +11082,15 @@
 <li>A producer that sets <code>stderr</code> emits <code>schema_version</code> <code>3.11</code>; earlier manifests stay valid</li>
 </ul>
 <p><strong>Why:</strong> a command that wraps a tool whose log a person reads later had to break auto-quiet silently or hide the log, and the closed <code>CommandEntry</code> left only its <code>description</code> to warn an agent that stderr would be busy (#35).</p>
+<h3 id="manifestresponse-312-media-types-of-format-values">ManifestResponse 3.12: media types of format values</h3>
+<ul>
+<li>REQ-O-001 fixes a media type for each spec format value: <code>json</code> → <code>application/json</code>, <code>jsonl</code> → <code>application/x-ndjson</code>, <code>tsv</code> → <code>text/tab-separated-values</code>, <code>plain</code>, <code>table</code>, and <code>id</code> → <code>text/plain</code></li>
+<li><code>FlagEntry.media_types</code> (optional, root <code>format</code> flag only): a map from format value to lowercase <code>type/subtype</code> media type. Required for every value outside the spec's table; a spec value listed there maps to the table's media type, and every key is one of <code>enum_values</code>. The schema rejects it on any other flag and on a non-<code>enum</code> flag</li>
+<li><code>CommandEntry.output_media_types</code> (optional) is the same map beside REQ-O-049's <code>output_formats</code>, which keeps its type; it is required for a command-specific value that neither the table nor the root map covers, and overrides the root map for that command</li>
+<li>An agent parses only output whose media type is <code>application/json</code>, <code>application/x-ndjson</code>, or a <code>+json</code> type, and treats every other format's output as an opaque artifact</li>
+<li>A producer that sets either map emits <code>schema_version</code> <code>3.12</code>; earlier manifests stay valid</li>
+</ul>
+<p><strong>Why:</strong> a tool can register its own <code>--format</code> values beside the spec's (<code>html</code> for a page a person reads), and an agent had no way to learn from the manifest that such a value is not JSON, short of parsing the flag's <code>description</code> (#36).</p>
 <h2 id="1100-2026-10-01">1.10.0 — 2026-10-01</h2>
 <h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
 <ul>

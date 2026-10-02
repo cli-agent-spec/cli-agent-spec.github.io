@@ -10260,6 +10260,42 @@
 <p>A command whose base is not <code>cwd</code> MUST declare it, because an agent that resolves the path against its working directory otherwise looks for the file in the wrong place.</p>
 <p><strong>Why not <code>--output</code>:</strong> agents learn format selection from two conflicting traditions. Cloud CLIs (<code>aws</code>, <code>kubectl</code>, <code>az</code>, <code>helm</code>) use <code>--output json</code>; build and transfer tools (<code>gcc</code>, <code>curl</code>, <code>sort</code>, <code>pandoc</code>, <code>go build</code>) use <code>--output</code> for a file path. <code>--format</code> selects a representation wherever it appears (<code>gcloud</code>, <code>docker</code>, <code>git</code>, <code>pandoc</code>'s <code>--to</code>), and the representation applies to whatever destination the result goes to: stdout by default, the file named by <code>--output</code> otherwise. An agent that passes <code>--output json</code> to a path-typed flag gets exit <code>0</code>, an empty stdout, and a stray file named <code>json</code>; the reverse mistake (<code>--format report.json</code>) fails loudly as an unsupported value.</p>
 <p><code>--format</code> values MUST come from a closed set declared at registration and listed in the manifest. An unknown value exits <code>2</code> with a structured error listing the supported values; the framework MUST NOT interpret an unrecognized value as a template. Tools that overload <code>--format</code> with templates show why: <code>docker</code> reads any value other than <code>json</code> or <code>table</code> as a Go template, so the typo <code>docker version --format jsn</code> prints <code>jsn</code> instead of failing. <code>git</code> guesses from the value (a <code>%</code> or a <code>tformat:</code> prefix means a template, anything else must be a preset name), which catches <code>--format=json</code> but still leaves the agent to learn a second grammar; <code>gcloud</code> rejects the typo and lists the valid values, which is the behavior this requirement asks for. Field projection belongs to <code>--fields</code> (<a href="../o-002-fields-selector/">REQ-O-002</a>): <code>--format tsv --fields hash,subject</code> covers what <code>--format='%H %s'</code> does, with field names validated against the schema. A CLI that wants free-form text templates for human use registers them under a separate flag (<code>--template</code>), never as a <code>--format</code> value.</p>
+<p><strong>Media types.</strong> The spec fixes the media type of each format value it defines:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Media type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>json</code></td>
+<td><code>application/json</code></td>
+</tr>
+<tr>
+<td><code>jsonl</code></td>
+<td><code>application/x-ndjson</code></td>
+</tr>
+<tr>
+<td><code>tsv</code></td>
+<td><code>text/tab-separated-values</code></td>
+</tr>
+<tr>
+<td><code>plain</code></td>
+<td><code>text/plain</code></td>
+</tr>
+<tr>
+<td><code>table</code></td>
+<td><code>text/plain</code></td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>text/plain</code></td>
+</tr>
+</tbody>
+</table>
+<p>A tool MAY register its own format values beside these, such as <code>html</code> for a self-contained page a person reads. The manifest's root <code>format</code> flag MUST then carry <code>media_types</code>, a map from format value to media type (<code>{"html": "text/html"}</code>), with an entry for every value outside the table above; an entry for a value in the table is optional and, when present, MUST equal the table's media type. Every key MUST be one of the flag's <code>enum_values</code>, and only the <code>format</code> flag carries <code>media_types</code>. A media type is written lowercase as <code>type/subtype</code>, without parameters. A command-specific format value (REQ-O-049) declares its media type in the command's <code>output_media_types</code> instead. An agent parses a format's output as JSON only when its media type is <code>application/json</code>, <code>application/x-ndjson</code>, or a <code>+json</code> type, and treats any other format's output as an opaque artifact.</p>
 <p>If the framework also implements <a href="../o-042-output-format-env-var-default/">REQ-O-042</a>, the environment variable provides only a default value. <code>--format</code> remains the authoritative interface and MUST override the environment variable whenever both are present.</p>
 <h2 id="output-modes-and-the-role-of-format">Output modes and the role of <code>--format</code></h2>
 <p>The framework has two distinct output contexts. The <code>--format</code> flag governs structured output only — it does not replace the default rich terminal experience.</p>
@@ -10373,13 +10409,15 @@
 <li>A command that resolves a relative <code>--output</code> against anything but the working directory declares <code>output_file_base</code>; <code>output_file_base</code> never appears without <code>output_file</code></li>
 <li>On an <code>output_file_base: "project_root"</code> command run from a subdirectory, <code>--output out/r.json</code> writes <code>&lt;project root&gt;/out/r.json</code>, and an absolute <code>--output</code> path is written as given</li>
 <li>On an <code>output_file: "envelope"</code> command, <code>--output result.json --format plain</code> writes a valid JSON <code>ResponseEnvelope</code> to <code>result.json</code></li>
+<li>The root <code>format</code> flag in the manifest carries <code>media_types</code> with an entry for every <code>enum_values</code> value outside the spec's media type table, every key is one of <code>enum_values</code>, and every spec value it lists maps to the table's media type</li>
+<li>No flag other than the root <code>format</code> flag carries <code>media_types</code></li>
 <li><code>--format</code> with a value outside the declared set (<code>--format jsn</code>, <code>--format '%H %s'</code>) exits <code>2</code>, lists the supported values, and writes nothing to stdout or to any file</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Type:</strong> <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a></p>
 <p>The <code>--format json</code> format uses the <code>ResponseEnvelope</code> shape. The <code>--format jsonl</code> and <code>--format tsv</code> formats use command-specific row shapes without the envelope wrapper.</p>
-<p>The manifest declares the <code>--output</code> behavior in <code>CommandEntry.output_file</code> and the base of a relative path in <code>CommandEntry.output_file_base</code> (<a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a>).</p>
+<p>The manifest declares the media type of a tool's own format values in the root <code>format</code> flag's <code>media_types</code> (<a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a>), and the <code>--output</code> behavior in <code>CommandEntry.output_file</code> and the base of a relative path in <code>CommandEntry.output_file_base</code> (<a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a>).</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <pre><code class="language-bash">$ tool deploy --target staging --format json
@@ -10479,6 +10517,16 @@ app.enable_format_flag(formats=[&quot;json&quot;, &quot;jsonl&quot;, &quot;tsv&q
 <td><a href="../c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a></td>
 <td>C</td>
 <td>Composes: a command-chosen product path is a <code>type: "output"</code> side effect, not an <code>--output</code> path</td>
+</tr>
+<tr>
+<td><a href="../o-049-llm-token-budget-flags/">REQ-O-049</a></td>
+<td>O</td>
+<td>Composes: a command-specific format value declares its media type in <code>output_media_types</code></td>
+</tr>
+<tr>
+<td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
+<td>O</td>
+<td>Exposes: <code>media_types</code> appears on the root <code>format</code> flag in the manifest</td>
 </tr>
 </tbody>
 </table>
