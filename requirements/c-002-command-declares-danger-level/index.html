@@ -10169,7 +10169,8 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: Medium / Time: High / Context: Medium</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Every command MUST declare a <code>danger_level</code> as part of its registration metadata, chosen from: <code>safe</code> (read-only, no side effects), <code>mutating</code> (creates or modifies state), or <code>destructive</code> (permanently deletes or irreversibly modifies state). The framework MUST refuse to register a command without this declaration. The framework MUST use this declaration to enforce related behaviors (e.g., requiring <code>--dry-run</code> for destructive commands per REQ-C-004). A streaming command (REQ-O-004) MUST NOT declare <code>destructive</code>, and the framework refuses to register one that does.</p>
+<p>Every command MUST declare a <code>danger_level</code> as part of its registration metadata, chosen from: <code>safe</code> (read-only, no side effects on state), <code>mutating</code> (creates or modifies state), or <code>destructive</code> (permanently deletes or irreversibly modifies state). The framework MUST refuse to register a command without this declaration. The framework MUST use this declaration to enforce related behaviors (e.g., requiring <code>--dry-run</code> for destructive commands per REQ-C-004). A streaming command (REQ-O-004) MUST NOT declare <code>destructive</code>, and the framework refuses to register one that does.</p>
+<p>Writes of declared <code>cache</code>, <code>log</code>, <code>temp</code>, and <code>output</code> paths (REQ-C-011) are not state changes: a command whose only writes are of those kinds stays <code>safe</code>. A report generator that writes its product to a declared <code>output</code> path is <code>safe</code>, not <code>mutating</code>. Writing a <code>credential</code> or <code>config</code> path, or any undeclared path, is a state change.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Attempting to register a command without <code>danger_level</code> raises a framework error</li>
@@ -10178,6 +10179,7 @@
 <li>Commands with <code>danger_level: "safe"</code> do not require <code>--idempotency-key</code> (REQ-C-007)</li>
 <li>Commands with <code>danger_level: "mutating"</code> require <code>--idempotency-key</code> unless they stream, and a streaming one that accepts it raises a registration error (REQ-C-007)</li>
 <li>Registering a streaming command with <code>danger_level: "destructive"</code> raises a framework error (REQ-O-004)</li>
+<li>A command whose only declared filesystem writes are <code>cache</code>, <code>log</code>, <code>temp</code>, or <code>output</code> paths may register as <code>safe</code></li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>

@@ -10169,13 +10169,14 @@
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: Low / Time: Low / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST provide a built-in <code>tool cleanup</code> command that removes all known filesystem side effect paths declared by registered commands. The command MUST accept <code>--scope &lt;type&gt;</code> (one of: <code>all</code>, <code>temp</code>, <code>cache</code>, <code>logs</code>) to limit cleanup to specific categories. The command MUST output a structured JSON summary of what was removed and total disk space reclaimed. The command MUST NOT remove files younger than <code>--min-age &lt;seconds&gt;</code> (default: 0).</p>
+<p>The framework MUST provide a built-in <code>tool cleanup</code> command that removes all known filesystem side effect paths declared by registered commands. The command MUST accept <code>--scope &lt;type&gt;</code> (one of: <code>all</code>, <code>temp</code>, <code>cache</code>, <code>logs</code>) to limit cleanup to specific categories. The command MUST output a structured JSON summary of what was removed and total disk space reclaimed. The command MUST NOT remove files younger than <code>--min-age &lt;seconds&gt;</code> (default: 0). It MUST NOT remove a path declared <code>type: "output"</code> under any scope, <code>all</code> included: that path is a command's product, which the user asked for.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li><code>tool cleanup --scope temp</code> removes all paths declared as <code>type: "temp"</code> in command schemas</li>
 <li><code>tool cleanup --format json</code> returns a list of removed paths and total bytes freed</li>
 <li><code>tool cleanup --min-age 3600</code> does not remove any file or directory created in the last hour</li>
 <li><code>tool cleanup --scope cache</code> does not affect logs or temp files</li>
+<li><code>tool cleanup --scope all</code> leaves every path declared <code>type: "output"</code> in place</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>

@@ -10271,7 +10271,8 @@ tool fetch-schema --url ... --cache-ttl 0
 </code></pre>
 <p><strong>For framework design:</strong>
 - Every command declares <code>filesystem_side_effects</code> in its schema
-- Framework provides <code>tool cleanup</code> that removes all known side effect paths
+- A path the command writes as its product (a report, a rendered page) is declared <code>type: "output"</code>, which <code>tool cleanup</code> never removes
+- Framework provides <code>tool cleanup</code> that removes all known side effect paths except <code>output</code> ones
 - Temp files use a session-scoped directory, auto-cleaned when session ends
 - Log rotation built into framework (max size, max age)</p>
 <h3 id="evaluation">Evaluation</h3>

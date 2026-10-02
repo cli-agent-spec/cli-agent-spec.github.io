@@ -10169,12 +10169,21 @@
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: Low / Time: Low / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Command authors MUST declare all filesystem side effects in the command's registration metadata using the <code>filesystem_side_effects</code> array. Each entry MUST specify: <code>path</code> (template or glob), <code>type</code> (one of: <code>cache</code>, <code>log</code>, <code>temp</code>, <code>credential</code>, <code>config</code>), <code>ttl_seconds</code> (if applicable), and <code>clearable_with</code> (the framework command to clear it). The framework uses this information for <code>tool status --show-side-effects</code> and <code>tool cleanup</code>.</p>
+<p>Command authors MUST declare all filesystem side effects in the command's registration metadata using the <code>filesystem_side_effects</code> array. Each entry MUST specify: <code>path</code> (template or glob), <code>type</code> (one of: <code>cache</code>, <code>log</code>, <code>temp</code>, <code>credential</code>, <code>config</code>, <code>output</code>), <code>ttl_seconds</code> (if applicable), and <code>clearable_with</code> (the framework command to clear it; neither applies to <code>output</code>). The framework uses this information for <code>tool status --show-side-effects</code> and <code>tool cleanup</code>.</p>
+<p><strong>Output paths.</strong> <code>output</code> is a path the command writes as its product: a generated report, a rendered dashboard, collected evidence. <code>tool status --show-side-effects</code> lists it like any other kind, but <code>tool cleanup</code> never removes it under any <code>--scope</code>, because the user asked for it. An <code>output</code> entry carries neither <code>ttl_seconds</code> nor <code>clearable_with</code>: the product does not go stale and is not the framework's to clear. Declaring a product as <code>cache</code> would let <code>cleanup</code> delete what the user asked for, and leaving it undeclared hides a write.</p>
+<p><strong>Output paths and <code>--output</code>.</strong> An <code>output</code> entry declares a location the command chooses itself, fixed or templated, such as <code>{project_root}/tmp/dashboard/</code>. A path the caller names per call with <code>--output &lt;path&gt;</code> or <code>--output-dir &lt;path&gt;</code> is declared by <code>output_file</code> (REQ-O-001), not here; declaring both for the same file describes one write twice. When the command writes its product to a default location in the absence of <code>--output</code>, that default location is an <code>output</code> entry.</p>
+<p><strong>Side effects and <code>danger_level</code>.</strong> <code>cache</code>, <code>log</code>, <code>temp</code>, and <code>output</code> are not state: a command whose only writes are of these kinds keeps <code>danger_level: "safe"</code> (REQ-C-002), and declaring them here is what lets it stay <code>safe</code>. <code>credential</code> and <code>config</code> change state the next invocation reads, so a command that writes them is at least <code>mutating</code>.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A command that writes to a cache directory declares that path in <code>filesystem_side_effects</code></li>
 <li><code>tool status --show-side-effects</code> lists all paths declared by registered commands</li>
 <li><code>tool cleanup</code> removes all paths declared as <code>type: "temp"</code> or <code>type: "cache"</code></li>
+<li>A command that writes a generated report under a path it chooses declares that path with <code>type: "output"</code></li>
+<li><code>tool status --show-side-effects</code> lists <code>output</code> paths with their type and size</li>
+<li><code>tool cleanup</code>, with any <code>--scope</code> including <code>all</code>, removes no path declared as <code>type: "output"</code></li>
+<li>A <code>filesystem_side_effects</code> entry with <code>type: "output"</code> and <code>ttl_seconds</code> or <code>clearable_with</code> fails schema validation</li>
+<li>A command whose only declared writes are <code>cache</code>, <code>log</code>, <code>temp</code>, or <code>output</code> may declare <code>danger_level: "safe"</code></li>
+<li>A command whose result file comes only from <code>--output &lt;path&gt;</code> declares <code>output_file</code>, and no <code>output</code> entry for that path</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
@@ -10188,10 +10197,12 @@
       &quot;required&quot;: [&quot;path&quot;, &quot;type&quot;],
       &quot;properties&quot;: {
         &quot;path&quot;:           { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;Template or glob for paths written by the command&quot; },
-        &quot;type&quot;:           { &quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;cache&quot;, &quot;log&quot;, &quot;temp&quot;, &quot;credential&quot;, &quot;config&quot;], &quot;description&quot;: &quot;Category of the side effect&quot; },
+        &quot;type&quot;:           { &quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;cache&quot;, &quot;log&quot;, &quot;temp&quot;, &quot;credential&quot;, &quot;config&quot;, &quot;output&quot;], &quot;description&quot;: &quot;Category of the side effect; output is the command's product&quot; },
         &quot;ttl_seconds&quot;:    { &quot;type&quot;: &quot;integer&quot;, &quot;description&quot;: &quot;Seconds until the path is considered stale; omit if permanent&quot; },
         &quot;clearable_with&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;Framework command that removes this path&quot; }
-      }
+      },
+      &quot;if&quot;: { &quot;properties&quot;: { &quot;type&quot;: { &quot;const&quot;: &quot;output&quot; } }, &quot;required&quot;: [&quot;type&quot;] },
+      &quot;then&quot;: { &quot;not&quot;: { &quot;anyOf&quot;: [{ &quot;required&quot;: [&quot;ttl_seconds&quot;] }, { &quot;required&quot;: [&quot;clearable_with&quot;] }] } }
     },
     &quot;description&quot;: &quot;All filesystem locations the command may write to&quot;
   }
@@ -10210,6 +10221,15 @@
       &quot;ttl_seconds&quot;: 3600,
       &quot;clearable_with&quot;: &quot;tool cache clear --scope schemas&quot;
     }
+  ]
+}
+</code></pre>
+<p>A read-only command that writes a rendered dashboard as its product:</p>
+<pre><code class="language-json">{
+  &quot;command&quot;: &quot;dashboard.build&quot;,
+  &quot;danger_level&quot;: &quot;safe&quot;,
+  &quot;filesystem_side_effects&quot;: [
+    { &quot;path&quot;: &quot;{project_root}/tmp/dashboard/&quot;, &quot;type&quot;: &quot;output&quot; }
   ]
 }
 </code></pre>
@@ -10238,6 +10258,14 @@ register command &quot;process&quot;:
       clearable_with: &quot;tool cleanup --logs&quot;
   exit_codes:
     SUCCESS(0): description: &quot;Processing completed&quot;, retryable: false, side_effects: complete
+
+register command &quot;services.inspect&quot;:
+  danger_level: safe
+  filesystem_side_effects:
+    - path: &quot;{project_root}/tmp/evidence/{service}/&quot;
+      type: output
+  exit_codes:
+    SUCCESS(0): description: &quot;Evidence collected&quot;, retryable: false, side_effects: complete
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>
@@ -10274,6 +10302,16 @@ register command &quot;process&quot;:
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
 <td>O</td>
 <td>Aggregates: manifest exposes <code>filesystem_side_effects</code> for each command</td>
+</tr>
+<tr>
+<td><a href="../c-002-command-declares-danger-level/">REQ-C-002</a></td>
+<td>C</td>
+<td>Composes: writes of <code>cache</code>, <code>log</code>, <code>temp</code>, and <code>output</code> paths leave a command <code>safe</code></td>
+</tr>
+<tr>
+<td><a href="../o-001-output-format-flag/">REQ-O-001</a></td>
+<td>O</td>
+<td>Composes: a per-call <code>--output</code> path is declared by <code>output_file</code>, a command-chosen product path by <code>type: "output"</code></td>
 </tr>
 </tbody>
 </table>

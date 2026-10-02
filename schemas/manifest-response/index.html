@@ -10785,7 +10785,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><code>FilesystemSideEffect</code></td>
-<td><code>path</code>, <code>type</code> (<code>cache</code> | <code>log</code> | <code>temp</code> | <code>credential</code> | <code>config</code>) required; <code>ttl_seconds</code>, <code>clearable_with</code> optional</td>
+<td><code>path</code>, <code>type</code> (<code>cache</code> | <code>log</code> | <code>temp</code> | <code>credential</code> | <code>config</code> | <code>output</code>) required; <code>ttl_seconds</code>, <code>clearable_with</code> optional, and never on <code>output</code> (the command's product, which <code>cleanup</code> never removes)</td>
 </tr>
 <tr>
 <td><code>SubprocessDeclaration</code></td>
@@ -11154,6 +11154,42 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p><code>ledger --format json ingest extract a.csv</code> hands <code>extract a.csv</code> to beangulp; beangulp writes stdout and chooses the exit code, and the envelope is the last line of stderr. <code>ledger ingest --help</code> runs beangulp with <code>extract --help</code>.</p>
+<p><strong>Valid — safe command that writes its product to a declared <code>output</code> path</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.10&quot;,
+  &quot;framework_version&quot;: &quot;2.5.0&quot;,
+  &quot;etag&quot;: &quot;sha256:0d7e5a&quot;,
+  &quot;commands&quot;: {
+    &quot;dashboard.build&quot;: {
+      &quot;description&quot;: &quot;Render the project dashboard to tmp/dashboard&quot;,
+      &quot;danger_level&quot;: &quot;safe&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;filesystem_side_effects&quot;: [{ &quot;path&quot;: &quot;{project_root}/tmp/dashboard/&quot;, &quot;type&quot;: &quot;output&quot; }],
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: { &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;Dashboard rendered&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; } }
+    }
+  }
+}
+</code></pre>
+<p><code>tool status --show-side-effects</code> lists <code>tmp/dashboard/</code>; <code>tool cleanup</code> leaves it in place. Writing its own product does not make the command <code>mutating</code>.</p>
+<p><strong>Invalid — <code>output</code> path with a TTL and a clear command</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.10&quot;,
+  &quot;framework_version&quot;: &quot;2.5.0&quot;,
+  &quot;etag&quot;: &quot;sha256:0d7e5a&quot;,
+  &quot;commands&quot;: {
+    &quot;dashboard.build&quot;: {
+      &quot;description&quot;: &quot;Render the project dashboard&quot;,
+      &quot;danger_level&quot;: &quot;safe&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;filesystem_side_effects&quot;: [{ &quot;path&quot;: &quot;{project_root}/tmp/dashboard/&quot;, &quot;type&quot;: &quot;output&quot;, &quot;ttl_seconds&quot;: 3600, &quot;clearable_with&quot;: &quot;tool cleanup&quot; }],
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: {}
+    }
+  }
+}
+</code></pre>
+<p>Violation: an <code>output</code> path is the command's product; it does not expire and no clear command owns it. A path the framework may delete is <code>cache</code> or <code>temp</code>.</p>
 <p><strong>Invalid — passthrough command with interspersed options</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.9&quot;,
@@ -11215,6 +11251,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Emitting pairwise <code>prohibited</code> rules next to a <code>one_of</code> group.</strong> <code>one_of</code> already forbids combining its members; the extra rules repeat the constraint and let the two drift apart</li>
 <li><strong>Declaring <code>output_file: "formatted"</code> on a command that returns a binary result.</strong> The file would then hold a JSON or plain wrapper around base64, not the file the caller asked for; a binary result is <code>"binary"</code></li>
 <li><strong>Omitting <code>output_file</code> because the handler writes the file itself.</strong> Absence tells the agent the command has no <code>--output</code>; declare <code>"handler"</code></li>
+<li><strong>Declaring a command's product as <code>cache</code>.</strong> <code>tool cleanup</code> then deletes the report the user asked for; declare it <code>output</code>, which <code>cleanup</code> never removes</li>
+<li><strong>Declaring an <code>output</code> side effect for the <code>--output</code> path.</strong> The caller picks that path per call, and <code>output_file</code> already declares it; <code>type: "output"</code> is for a location the command chooses itself</li>
 <li><strong>Leaving <code>output_file_base</code> out when <code>--output</code> does not resolve against the working directory.</strong> Absence means <code>cwd</code>, so the agent looks for the file in the wrong place; declare <code>project_root</code> or <code>resource</code></li>
 <li><strong>Declaring a JSON-valued flag as <code>type: "string"</code>.</strong> The agent then has no shape to build and no signal that the value is parsed as JSON; declare <code>type: "object"</code> with <code>schema</code></li>
 <li><strong>Naming a flag's environment variables only in its <code>description</code>.</strong> "(read from <code>$A</code> or <code>$B</code> when not passed)" is prose an agent must parse; list the names in <code>env_vars</code>, in precedence order</li>
@@ -11285,6 +11323,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Build the retry/rollback plan before calling, not reactively — this avoids ambiguity about whether a retry is safe after a partial failure</p>
 <p><strong>Reading declared contracts before calling</strong>
 - <code>danger_level</code> other than <code>safe</code> — prefer <code>--dry-run</code> first; <code>safe_default: true</code> means the command previews until <code>--live</code> is passed
+- <code>filesystem_side_effects</code> with <code>type: "output"</code> — the command writes its product there, even when it is <code>safe</code>; read the result from that path, and do not run <code>tool cleanup</code> expecting it to go. A pre-3.10 manifest cannot mark it and may declare it <code>cache</code>
 - <code>option_placement: "strict"</code> — place every option, global or local, before the first positional argument; anything after it is forwarded to the child process
 - <code>requires</code> — evaluate each rule against the flags you plan to send before calling; a violated rule produces <code>ARG_ERROR (2)</code>
 - <code>any_of</code> and <code>one_of</code> groups — send at least one flag of an <code>any_of</code> group and exactly one flag of a <code>one_of</code> group, choosing the one whose value you already hold; a declared <code>default</code> never satisfies either rule

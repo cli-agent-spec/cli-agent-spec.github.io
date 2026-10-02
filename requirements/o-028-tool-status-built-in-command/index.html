@@ -10172,7 +10172,7 @@
 <p>The framework MUST provide a built-in <code>tool status</code> command with subflags <code>--show-config</code> (alias for REQ-O-015), <code>--show-side-effects</code> (inventory of all filesystem side effect paths with sizes), and <code>--show-state-files</code> (list of all global state files with their current values). Each flag produces a structured JSON output. The command MUST be safe (no side effects, <code>danger_level: "safe"</code>).</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
-<li><code>tool status --show-side-effects --format json</code> returns paths, types, and sizes for all declared side effects</li>
+<li><code>tool status --show-side-effects --format json</code> returns paths, types, and sizes for all declared side effects, <code>output</code> paths included</li>
 <li><code>tool status --show-state-files --format json</code> returns paths and summaries of all global state files (e.g., current context, cached tokens)</li>
 <li>The command exits <code>0</code> and produces valid JSON regardless of what state exists</li>
 <li>All path values in the output are absolute</li>

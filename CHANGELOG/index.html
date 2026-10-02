@@ -10015,6 +10015,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-310-an-output-side-effect-kind-for-a-commands-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.10: an output side-effect kind for a command's product
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10519,6 +10530,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-310-an-output-side-effect-kind-for-a-commands-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.10: an output side-effect kind for a command's product
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10998,6 +11020,15 @@
 <li>§12 and the streaming guide describe the exemption and the per-event effect</li>
 </ul>
 <p><strong>Why:</strong> REQ-C-003's <code>effect</code>, REQ-C-007's replay, dry-run, and the audit entry all assumed one result per run, so a bulk import or sync that streams its changes had no contract for reporting, previewing, retrying, or auditing them (#34).</p>
+<h3 id="manifestresponse-310-an-output-side-effect-kind-for-a-commands-product">ManifestResponse 3.10: an <code>output</code> side-effect kind for a command's product</h3>
+<ul>
+<li><code>FilesystemSideEffect.type</code> gains <code>"output"</code>: a path the command writes as its product (a generated report, a rendered dashboard, collected evidence). The schema rejects <code>ttl_seconds</code> and <code>clearable_with</code> on an <code>output</code> entry</li>
+<li>REQ-C-011: <code>tool status --show-side-effects</code> lists an <code>output</code> path; <code>tool cleanup</code> never removes it, under any <code>--scope</code> including <code>all</code> (REQ-O-027, REQ-O-028)</li>
+<li>REQ-C-011 and REQ-C-002: <code>cache</code>, <code>log</code>, <code>temp</code>, and <code>output</code> writes are not state changes, so a command whose only writes are of these kinds stays <code>danger_level: "safe"</code>; <code>credential</code> and <code>config</code> writes make it at least <code>mutating</code></li>
+<li>REQ-C-011 and REQ-O-001: <code>type: "output"</code> declares a location the command chooses itself; a path the caller names per call with <code>--output</code> is declared by <code>output_file</code> and is not repeated as an <code>output</code> entry. A default location used when <code>--output</code> is absent is an <code>output</code> entry</li>
+<li>A producer that declares an <code>output</code> side effect emits <code>schema_version</code> <code>3.10</code>; the other five kinds are unchanged, so earlier manifests stay valid</li>
+</ul>
+<p><strong>Why:</strong> a command that writes its product to a path it chooses had no fitting kind: declaring it <code>cache</code> let <code>cleanup</code> delete what the user asked for, leaving it undeclared broke REQ-C-011, and <code>mutating</code> over-declared a read-only command (#39).</p>
 <h2 id="1100-2026-10-01">1.10.0 — 2026-10-01</h2>
 <h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
 <ul>
