@@ -10169,10 +10169,10 @@
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: High / Time: Low / Context: High</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST provide <code>--quiet</code> (suppress all stderr; stdout JSON only), <code>--verbose</code> (progress messages on stderr), and <code>--debug</code> (full debug trace on stderr) as standard flags on every command. These MUST override the auto-quiet behavior (REQ-F-038). The verbosity levels MUST be mutually exclusive. In <code>--debug</code> mode, all framework-internal operations (config loading, lock acquisition, HTTP requests) MUST be logged to stderr.</p>
+<p>The framework MUST provide <code>--quiet</code> (suppress all stderr; stdout JSON only), <code>--verbose</code> (progress messages on stderr), and <code>--debug</code> (full debug trace on stderr) as standard flags on every command. These MUST override the auto-quiet behavior (REQ-F-038). The verbosity levels MUST be mutually exclusive. <code>--quiet</code> also silences the wrapped program's log of a command that declares <code>stderr: "child_log"</code>, which <code>--verbose</code>, <code>--debug</code>, and auto-quiet leave streaming (REQ-F-038). In <code>--debug</code> mode, all framework-internal operations (config loading, lock acquisition, HTTP requests) MUST be logged to stderr.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
-<li><code>--quiet</code> produces zero bytes on stderr (even for warnings)</li>
+<li><code>--quiet</code> produces zero bytes on stderr (even for warnings), including on a command that declares <code>stderr: "child_log"</code></li>
 <li><code>--verbose</code> produces progress messages on stderr and the JSON result on stdout</li>
 <li><code>--debug</code> produces full diagnostic trace on stderr including all HTTP requests and config resolution steps</li>
 <li>Passing <code>--verbose</code> with <code>CI=true</code> overrides the auto-quiet mode</li>

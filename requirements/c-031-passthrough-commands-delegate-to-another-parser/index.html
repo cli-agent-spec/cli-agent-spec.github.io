@@ -10200,6 +10200,7 @@
 <li>A delegated exit code <code>n</code> is the process exit code; when <code>n</code> is non-zero the envelope has <code>error.code: "DELEGATED_EXIT"</code>, <code>data.exit_code: n</code>, <code>meta.exit_code: n</code>, and <code>retryable: false</code></li>
 <li>An invalid framework option before the command path exits <code>2</code> with <code>ARG_ERROR</code> on stdout and the delegated tool does not start</li>
 <li>The framework rejects at registration a passthrough command that declares <code>danger_level: "destructive"</code></li>
+<li>The framework rejects at registration a passthrough command that declares <code>stderr: "child_log"</code>; the delegated tool's own stderr already precedes the envelope line</li>
 <li>A timed-out or signalled delegated tool ends with exit <code>10</code> or <code>128 + N</code> and an envelope on the last line of stderr</li>
 <li>A repeated argv in the same session does not start the delegated tool and returns <code>effect: "noop"</code></li>
 <li>An audit log entry for a passthrough command has <code>args.argv</code> equal to <code>"[OMITTED]"</code> and contains no forwarded token</li>
@@ -10334,6 +10335,11 @@
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
 <td>O</td>
 <td>Exposes: <code>arguments</code> and <code>help_argv</code> appear in the manifest</td>
+</tr>
+<tr>
+<td><a href="../f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a></td>
+<td>F</td>
+<td>Composes: a passthrough command never declares <code>stderr: "child_log"</code></td>
 </tr>
 </tbody>
 </table>

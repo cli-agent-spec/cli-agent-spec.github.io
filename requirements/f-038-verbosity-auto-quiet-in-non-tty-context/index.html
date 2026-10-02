@@ -10170,19 +10170,41 @@
 <hr />
 <h2 id="description">Description</h2>
 <p>When stdout is not a TTY or when <code>CI</code> is set, the framework MUST automatically suppress all non-essential prose from stderr (equivalent to <code>--quiet</code>). Only the structured JSON output on stdout and explicit errors on stderr MUST remain. Command authors MUST NOT need to check TTY state themselves; the framework's <code>log()</code> and <code>progress()</code> primitives respect this mode automatically.</p>
+<p><strong>Child log exception.</strong> A command that runs another program whose log is the output a person reads later (<code>ansible-playbook</code>, <code>terraform apply</code>) MAY stream that program's output to stderr as plain text, line by line, regardless of <code>--format</code>, auto-quiet, <code>--verbose</code>, and <code>--debug</code>. Such a command MUST declare <code>stderr: "child_log"</code> at registration, and the manifest shows it. <code>--quiet</code> (REQ-O-008) still silences the child log, and stdout still carries only the envelope (REQ-F-006). A command without the declaration keeps every rule above, so its stderr carries the framework's own diagnostics only. A passthrough command (REQ-C-031) never declares <code>child_log</code>: its stdout belongs to the delegated tool and its envelope is the last line of stderr, so the promise that stdout holds only the envelope cannot hold.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>In a non-TTY context, <code>progress()</code> calls produce no output</li>
 <li>In a non-TTY context, <code>log()</code> calls at level INFO and below produce no stderr output</li>
 <li>Error-level <code>log()</code> calls are always emitted regardless of TTY state</li>
 <li>Explicitly passing <code>--verbose</code> overrides auto-quiet mode</li>
+<li>A command that declares <code>stderr: "child_log"</code> streams the wrapped program's output to stderr line by line in a non-TTY context, and stdout holds only the envelope</li>
+<li>With <code>--quiet</code>, a <code>child_log</code> command writes zero bytes to stderr</li>
+<li>In a non-TTY context, a command without <code>stderr: "child_log"</code> writes no wrapped program's output to stderr</li>
+<li>The framework rejects at registration a passthrough command that declares <code>stderr: "child_log"</code></li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
-<p>No dedicated schema type — this requirement governs the framework's output primitives without adding new wire-format fields</p>
+<p><strong>Type:</strong> <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a></p>
+<p><code>CommandEntry.stderr</code> (<code>"child_log"</code>, absent means framework diagnostics only) declares the child log exception. The schema rejects it on an entry with <code>arguments: "passthrough"</code>.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
-<p>No wire-format fields — this requirement governs framework behavior only</p>
+<p>A command that declares the child log exception:</p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.11&quot;,
+  &quot;framework_version&quot;: &quot;2.1.0&quot;,
+  &quot;etag&quot;: &quot;sha256:5be0a3&quot;,
+  &quot;commands&quot;: {
+    &quot;provision&quot;: {
+      &quot;description&quot;: &quot;Run the site playbook against the inventory; ansible-playbook's log streams to stderr&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;stderr&quot;: &quot;child_log&quot;,
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: {}
+    }
+  }
+}
+</code></pre>
 <hr />
 <h2 id="example">Example</h2>
 <p>Framework-Automatic: no command author action needed. The framework checks <code>isatty(stdout)</code> and the <code>CI</code> environment variable at startup. In non-TTY or CI contexts, the <code>progress()</code> and <code>log()</code> primitives are silenced automatically.</p>
@@ -10200,6 +10222,13 @@ $ tool build --target all   (interactive terminal)
 
 $ tool build --target all --verbose | cat
 → --verbose overrides auto-quiet; INFO logs are restored
+
+$ infra --format json provision | cat   (provision declares stderr: &quot;child_log&quot;)
+→ ansible-playbook's log streams to stderr line by line despite auto-quiet
+→ only the JSON response on stdout
+
+$ infra --format json --quiet provision | cat
+→ zero bytes on stderr
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>
@@ -10231,6 +10260,21 @@ $ tool build --target all --verbose | cat
 <td><a href="../f-029-auto-update-suppression-in-non-interactive-mode/">REQ-F-029</a></td>
 <td>F</td>
 <td>Composes: auto-update suppression applies the same non-TTY detection</td>
+</tr>
+<tr>
+<td><a href="../o-008-quiet-verbose-debug-verbosity-flags/">REQ-O-008</a></td>
+<td>O</td>
+<td>Composes: <code>--quiet</code> silences a declared child log too</td>
+</tr>
+<tr>
+<td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
+<td>C</td>
+<td>Composes: a passthrough command never declares <code>stderr: "child_log"</code></td>
+</tr>
+<tr>
+<td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
+<td>O</td>
+<td>Exposes: <code>stderr</code> appears in the manifest</td>
 </tr>
 </tbody>
 </table>

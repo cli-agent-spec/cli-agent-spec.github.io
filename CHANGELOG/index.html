@@ -10026,6 +10026,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-311-child-log-on-stderr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.11: child log on stderr
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10541,6 +10552,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-311-child-log-on-stderr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.11: child log on stderr
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -11029,6 +11051,15 @@
 <li>A producer that declares an <code>output</code> side effect emits <code>schema_version</code> <code>3.10</code>; the other five kinds are unchanged, so earlier manifests stay valid</li>
 </ul>
 <p><strong>Why:</strong> a command that writes its product to a path it chooses had no fitting kind: declaring it <code>cache</code> let <code>cleanup</code> delete what the user asked for, leaving it undeclared broke REQ-C-011, and <code>mutating</code> over-declared a read-only command (#39).</p>
+<h3 id="manifestresponse-311-child-log-on-stderr">ManifestResponse 3.11: child log on stderr</h3>
+<ul>
+<li><code>CommandEntry.stderr</code> (optional, <code>"child_log"</code>; absent means the framework's own diagnostics only) marks a command that streams a wrapped program's output (<code>ansible-playbook</code>, <code>terraform apply</code>) to stderr as plain text, line by line, regardless of <code>--format</code> and verbosity</li>
+<li>REQ-F-038 names the exception: auto-quiet, <code>--verbose</code>, and <code>--debug</code> leave a declared child log streaming, <code>--quiet</code> (REQ-O-008) still silences it, and stdout still carries only the envelope. A command without the declaration is unchanged</li>
+<li>The schema and REQ-C-031 reject <code>child_log</code> on a passthrough command, whose stdout belongs to the delegated tool and whose envelope is the last line of stderr</li>
+<li>An agent may discard stderr for such a command and never reads stderr text as a failure signal; the exit code and the envelope stay authoritative</li>
+<li>A producer that sets <code>stderr</code> emits <code>schema_version</code> <code>3.11</code>; earlier manifests stay valid</li>
+</ul>
+<p><strong>Why:</strong> a command that wraps a tool whose log a person reads later had to break auto-quiet silently or hide the log, and the closed <code>CommandEntry</code> left only its <code>description</code> to warn an agent that stderr would be busy (#35).</p>
 <h2 id="1100-2026-10-01">1.10.0 — 2026-10-01</h2>
 <h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
 <ul>
