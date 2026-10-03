@@ -10826,7 +10826,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><code>ConditionalRule</code></td>
-<td>One of <code>{ if_flag, if_value, then_required }</code>, <code>{ if_flag, prohibited }</code>, <code>{ if_flag, target_flag, default }</code>, <code>{ any_of }</code> (at least one listed flag present), <code>{ one_of }</code> (exactly one listed flag present); <code>any_of</code> and <code>one_of</code> list at least two distinct flags</td>
+<td>One of <code>{ if_flag, if_value, then_required }</code>, <code>{ if_flag, prohibited }</code>, <code>{ if_flag, target_flag, default }</code>, <code>{ any_of }</code> (at least one listed flag present), <code>{ one_of }</code> (exactly one listed flag present); <code>any_of</code> and <code>one_of</code> list at least two distinct flags. A declared <code>default</code> and a boolean flag given as false (<code>--no-exact</code>) are not present; <code>if_value</code> compares values, so <code>if_value: false</code> matches an explicit false (REQ-C-026)</td>
 </tr>
 <tr>
 <td><code>DependencyEntry</code></td>
@@ -11550,7 +11550,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - <code>confirm_flag</code> present: a call without <code>--&lt;confirm_flag&gt;</code> only previews and exits <code>0</code> with <code>meta.dry_run: true</code>. Read the <code>would_*</code> preview, then repeat the call with the flag to run it; check <code>meta.dry_run</code> rather than the exit code to know whether it ran. <code>--dry-run</code> wins, so drop it from the confirmed call. On a pre-3.14 manifest an absent <code>confirm_flag</code> means unknown; read the flag descriptions
 - <code>option_placement: "strict"</code> — place every option, global or local, before the first positional argument; anything after it is forwarded to the child process
 - <code>requires</code> — evaluate each rule against the flags you plan to send before calling; a violated rule produces <code>ARG_ERROR (2)</code>
-- <code>any_of</code> and <code>one_of</code> groups — send at least one flag of an <code>any_of</code> group and exactly one flag of a <code>one_of</code> group, choosing the one whose value you already hold; a declared <code>default</code> never satisfies either rule
+- <code>any_of</code> and <code>one_of</code> groups — send at least one flag of an <code>any_of</code> group and exactly one flag of a <code>one_of</code> group, choosing the one whose value you already hold; a declared <code>default</code> never satisfies either rule, and neither does a boolean flag given as false (<code>--no-exact</code> leaves <code>exact</code> absent)
 - <code>interactive: true</code> or <code>requires_editor: true</code> — always pass <code>--yes</code> / <code>--non-interactive</code> or one of <code>non_interactive_alternatives</code>
 - <code>async: true</code> — the response is a job descriptor; poll with its <code>status_command</code> instead of waiting on the call
 - <code>required_scopes</code> not covered by the active credential — expect <code>AUTH_REQUIRED (8)</code>; do not call until credentials change</p>

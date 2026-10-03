@@ -10179,6 +10179,7 @@
 <li>A command with an <code>any_of</code> rule exits 2 before any I/O when no flag of the group is present</li>
 <li>A command with a <code>one_of</code> rule exits 2 before any I/O when two or more flags of the group are present</li>
 <li>A command with a <code>one_of</code> rule passes Phase 1 validation when exactly one flag of the group is present</li>
+<li>With <code>one_of: ["exact", "fuzzy"]</code> on two boolean flags, <code>--no-exact --fuzzy</code> passes Phase 1 validation, and <code>--no-exact</code> alone exits 2 because no flag of the group is present</li>
 <li>The <code>ARG_ERROR</code> message and its error details name every flag in a violated <code>any_of</code> or <code>one_of</code> group</li>
 </ul>
 <hr />
@@ -10238,7 +10239,7 @@
 </tr>
 </tbody>
 </table>
-<p>A flag is present when the caller supplies it: on the command line, or through any other explicit input channel the framework treats as supplied. A declared <code>default</code> does not make a flag present. <code>any_of</code> and <code>one_of</code> each list at least two distinct flag names. A <code>one_of</code> group already forbids combining its members, so it replaces pairwise <code>if_flag</code>/<code>prohibited</code> rules between them rather than adding to them.</p>
+<p>A flag is present when the caller supplies it: on the command line, or through any other explicit input channel the framework treats as supplied. A declared <code>default</code> does not make a flag present. A boolean flag is present only when its value is true: an explicit false (<code>--no-exact</code>, or false through any other explicit input channel) is the same as leaving the flag out. This definition governs every rule that tests presence or absence: <code>if_present</code>, <code>default_when_absent</code>, <code>any_of</code>, and <code>one_of</code>. An <code>if_value</code> rule compares values instead, so <code>if_value: false</code> still matches an explicit false. <code>any_of</code> and <code>one_of</code> each list at least two distinct flag names. A <code>one_of</code> group already forbids combining its members, so it replaces pairwise <code>if_flag</code>/<code>prohibited</code> rules between them rather than adding to them.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <pre><code class="language-bash">$ tool export --schema

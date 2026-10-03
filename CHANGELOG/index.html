@@ -10081,6 +10081,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#a-boolean-flag-given-as-false-is-not-present" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A boolean flag given as false is not present
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10651,6 +10662,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#a-boolean-flag-given-as-false-is-not-present" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A boolean flag given as false is not present
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -11185,6 +11207,14 @@
 <li>A producer that sets <code>idempotent</code> emits <code>schema_version</code> <code>3.15</code>; a pre-3.15 manifest stays valid</li>
 </ul>
 <p><strong>Why:</strong> a mutating command that is safe to rerun after a partial failure (a snapshot writer that rewrites one file per server) had nowhere to say so, and its only honest exit declaration, <code>retryable: false</code> with <code>side_effects: "partial"</code>, sent agents to inspect state before every rerun (#41).</p>
+<h3 id="a-boolean-flag-given-as-false-is-not-present">A boolean flag given as false is not present</h3>
+<ul>
+<li>REQ-C-026: a boolean flag is present only when its value is true. An explicit false (<code>--no-exact</code>, or false through any other explicit input channel) is the same as leaving the flag out, for <code>if_present</code>, <code>default_when_absent</code>, <code>any_of</code>, and <code>one_of</code> alike</li>
+<li><code>if_value</code> compares values, so <code>if_value: false</code> still matches an explicit false</li>
+<li>New acceptance criterion: with <code>one_of: ["exact", "fuzzy"]</code>, <code>--no-exact --fuzzy</code> passes Phase 1, and <code>--no-exact</code> alone exits 2</li>
+<li><code>ConditionalRule</code> descriptions in <code>manifest-response.json</code> and <code>manifest-response.md</code> state the definition; <code>ManifestResponse</code> stays 3.15 with a description change only</li>
+</ul>
+<p><strong>Why:</strong> REQ-C-026 defined a flag as present when the caller supplies it, so <code>--no-exact</code> could be read as choosing <code>exact</code> in a <code>one_of(exact, fuzzy)</code> group, and two conforming frameworks could accept and reject the same call (#50).</p>
 <h2 id="1100-2026-10-01">1.10.0 — 2026-10-01</h2>
 <h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
 <ul>
