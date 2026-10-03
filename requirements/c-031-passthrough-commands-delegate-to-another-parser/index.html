@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -16,7 +16,7 @@
         <link rel="prev" href="../c-030-error-responses-include-fix-command/">
       
       
-        <link rel="next" href="../f-001-standard-exit-code-table/">
+        <link rel="next" href="../c-032-protocol-server-commands-declare-stdout-protocol/">
       
       
         
@@ -4518,6 +4518,8 @@
       
         
       
+        
+      
     
     
     
@@ -5551,6 +5553,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-032-protocol-server-commands-declare-stdout-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -10346,6 +10376,11 @@
 <td><a href="../f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a></td>
 <td>F</td>
 <td>Composes: a passthrough command never declares <code>stderr: "child_log"</code></td>
+</tr>
+<tr>
+<td><a href="../c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a></td>
+<td>C</td>
+<td>Composes: a protocol command is never passthrough</td>
 </tr>
 </tbody>
 </table>

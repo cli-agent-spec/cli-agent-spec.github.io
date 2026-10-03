@@ -1177,6 +1177,10 @@
          <lastmod>2026-10-03</lastmod>
     </url>
     <url>
+         <loc>https://cli-agent-spec.github.io/requirements/c-032-protocol-server-commands-declare-stdout-protocol/</loc>
+         <lastmod>2026-10-03</lastmod>
+    </url>
+    <url>
          <loc>https://cli-agent-spec.github.io/requirements/f-001-standard-exit-code-table/</loc>
          <lastmod>2026-10-03</lastmod>
     </url>

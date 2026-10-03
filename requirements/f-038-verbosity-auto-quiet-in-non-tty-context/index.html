@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4518,6 +4518,8 @@
       
         
       
+        
+      
     
     
     
@@ -5430,6 +5432,34 @@
     
   
     REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-032-protocol-server-commands-declare-stdout-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
   
 
     
@@ -10275,6 +10305,11 @@ $ infra --format json --quiet provision | cat
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
 <td>O</td>
 <td>Exposes: <code>stderr</code> appears in the manifest</td>
+</tr>
+<tr>
+<td><a href="../c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a></td>
+<td>C</td>
+<td>Composes: a protocol command never declares <code>stderr: "child_log"</code></td>
 </tr>
 </tbody>
 </table>

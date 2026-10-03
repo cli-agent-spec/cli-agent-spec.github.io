@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4516,6 +4516,8 @@
       
         
       
+        
+      
     
     
     
@@ -5425,6 +5427,34 @@
     
   
     REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-032-protocol-server-commands-declare-stdout-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
   
 
     
@@ -10332,7 +10362,7 @@
 <h1 id="schema-manifestresponse">Schema: ManifestResponse</h1>
 <p><strong>File:</strong> <a href="../manifest-response.json"><code>manifest-response.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a> · <a href="../../requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/">REQ-F-054</a> · <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a> · <a href="../../requirements/f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a> · <a href="../../requirements/o-001-output-format-flag/">REQ-O-001</a>
+<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a> · <a href="../../requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/">REQ-F-054</a> · <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a> · <a href="../../requirements/c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a> · <a href="../../requirements/f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a> · <a href="../../requirements/o-001-output-format-flag/">REQ-O-001</a>
 Returned as the <code>data</code> field of a <a href="../response-envelope/"><code>ResponseEnvelope</code></a>.</p>
 </blockquote>
 <hr />
@@ -10547,6 +10577,16 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td><code>help_argv</code></td>
 <td>string[]</td>
 <td>Passthrough only: the argv forwarded in place of a lone <code>--help</code> or <code>-h</code> after the command path; absent means the token is forwarded unchanged (REQ-C-031)</td>
+</tr>
+<tr>
+<td><code>stdout</code></td>
+<td><code>"protocol"</code></td>
+<td><code>protocol</code>: the command serves the protocol named in <code>protocol</code> over stdio; stdout is the protocol channel from the first byte and never carries an envelope. A failure before serving begins goes to stderr (in JSON mode, an envelope on its last line) with a declared exit code; exit <code>0</code> is a clean shutdown such as stdin end-of-file. Absent means stdout carries envelopes. Excludes <code>arguments: "passthrough"</code>, <code>stderr</code>, <code>stdin</code>, <code>interactive: true</code>, <code>streaming_default: true</code>, <code>output_file</code>, <code>output_schema</code>, <code>output_formats</code>, <code>output_media_types</code>, <code>async: true</code>, the REQ-C-010 fields, <code>confirm_flag</code>, and <code>safe_default: true</code> (REQ-C-032)</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>string</td>
+<td>Lowercase kebab-case name of the protocol served: <code>mcp-stdio</code>, <code>lsp</code>, <code>dap</code>, or another protocol's name in the same form. Present exactly when <code>stdout</code> is <code>"protocol"</code> (REQ-C-032)</td>
 </tr>
 <tr>
 <td><code>stderr</code></td>
@@ -11380,6 +11420,38 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Violation: <code>confirm_flag</code> excludes <code>safe_default: true</code>; a command has one confirmation mechanism, either the injected <code>--live</code> or its own flag.</p>
+<p><strong>Valid — MCP server over stdio</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.16&quot;,
+  &quot;framework_version&quot;: &quot;2.0.0&quot;,
+  &quot;etag&quot;: &quot;sha256:7d1f40&quot;,
+  &quot;commands&quot;: {
+    &quot;mcp.serve&quot;: {
+      &quot;description&quot;: &quot;Serve the tool's commands as MCP tools over stdio until stdin closes&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;stdout&quot;: &quot;protocol&quot;,
+      &quot;protocol&quot;: &quot;mcp-stdio&quot;,
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: {
+        &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;The client closed stdin and the server shut down cleanly&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; }
+      }
+    }
+  }
+}
+</code></pre>
+<p>An agent registers <code>tool mcp serve</code> as an MCP server and never parses its stdout as an envelope. When the server fails before serving begins, stdout stays empty and the envelope is the last line of stderr.</p>
+<p><strong>Invalid — protocol server that streams JSONL by default</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.16&quot;,
+  &quot;framework_version&quot;: &quot;2.0.0&quot;,
+  &quot;etag&quot;: &quot;sha256:7d1f40&quot;,
+  &quot;commands&quot;: {
+    &quot;lsp&quot;: { &quot;description&quot;: &quot;Run the language server&quot;, &quot;danger_level&quot;: &quot;safe&quot;, &quot;required_scopes&quot;: [], &quot;stdout&quot;: &quot;protocol&quot;, &quot;protocol&quot;: &quot;lsp&quot;, &quot;streaming_default&quot;: true, &quot;flags&quot;: {}, &quot;exit_codes&quot;: {} }
+  }
+}
+</code></pre>
+<p>Violation: <code>streaming_default: true</code> promises JSONL events on stdout, while <code>stdout: "protocol"</code> gives stdout to LSP messages. A protocol command has no result to stream, format, or write to an <code>--output</code> file.</p>
 <p><strong>Valid — idempotent command whose partial failure is rerun</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.15&quot;,
@@ -11466,6 +11538,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Stating "previews unless <code>--yes</code>" only in a flag's <code>description</code>.</strong> An agent that reads the manifest then expects a bare call to run; declare <code>confirm_flag</code> so the preview default is machine-readable</li>
 <li><strong>Declaring <code>confirm_flag</code> with a name the command does not accept.</strong> The name must be a boolean flag in the command's <code>flags</code> or the root <code>flags</code>; the framework refuses any other at registration</li>
 <li><strong>Declaring <code>help_argv</code> on a declared command.</strong> The framework answers <code>--help</code> itself there; <code>help_argv</code> exists only where a lone <code>--help</code> would otherwise reach the delegated tool</li>
+<li><strong>Saying only in <code>description</code> that a command is an MCP or language server.</strong> An agent that calls it as an ordinary command parses MCP messages as an envelope or waits for an exit that comes only when stdin closes; declare <code>stdout: "protocol"</code> and <code>protocol</code></li>
+<li><strong>Writing a startup error to stdout on a protocol command.</strong> The client reads stdout as protocol messages from the first byte; a failure before serving begins goes to stderr, and stdout stays empty</li>
 <li><strong>Saying only in <code>description</code> that a command streams a wrapped program's log.</strong> An agent cannot match prose before the call; declare <code>stderr: "child_log"</code> so it knows stderr will be busy and carries no failure signal</li>
 <li><strong>Letting auto-quiet or <code>--verbose</code> gate a declared child log.</strong> <code>child_log</code> streams whatever the verbosity; only <code>--quiet</code> silences it, so a log that appears only under <code>--verbose</code> is a framework diagnostic, not a child log</li>
 <li><strong>Listing a borrowed name before the tool-prefixed one.</strong> <code>CLOUDFALL_PROJECT</code> ahead of <code>TOOL_PROJECT</code> lets a variable set for another tool override the one set for this tool (REQ-F-073)</li>
@@ -11560,6 +11634,12 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Classify by <code>error.code</code>: <code>DELEGATED_EXIT</code> means the tool chose the exit code, and <code>data.exit_code</code> repeats it. A delegated <code>2</code> is the tool's usage error and does not rule out side effects; decide from <code>retryable</code>, which is <code>false</code>, not from the code
 - For the tool's own help, call <code>tool &lt;cmd&gt; --help</code>; the framework forwards <code>help_argv</code> when the command declares it
 - An absent <code>arguments</code> means <code>declared</code>, including on a pre-3.9 manifest; such a manifest cannot mark a passthrough command, so treat a <code>strict</code> command whose <code>description</code> says its arguments go to another tool as one</p>
+<p><strong>Starting a protocol server (<code>stdout: "protocol"</code>)</strong>
+- Never parse stdout as an envelope. Start the command only as a client of the protocol named in <code>protocol</code> (<code>mcp-stdio</code>, <code>lsp</code>, <code>dap</code>), keep its stdin open for the session, and expect no exit until you close stdin or send a signal; do not start it when you do not speak that protocol
+- An exit before the first protocol message is a failure before serving: stdout is empty, and in JSON mode the last line of stderr is the envelope. Classify it by <code>error.code</code> and the declared <code>exit_codes</code>; <code>2</code> means a flag was invalid and the server never ran
+- Exit <code>0</code> after you close stdin is a clean shutdown and carries no envelope. <code>143</code> after you sent <code>SIGTERM</code> is the expected end of the session, not a failure to report
+- Stderr while serving holds the framework's plain-text diagnostics; never read it as protocol messages
+- An absent <code>stdout</code> means stdout carries envelopes, including on a pre-3.16 manifest; such a manifest cannot mark a protocol command, so treat a command whose <code>description</code> says it serves MCP, LSP, or another protocol over stdio as one</p>
 <p><strong>Reading stderr from <code>stderr</code></strong>
 - <code>stderr: "child_log"</code>: expect a wrapped program's log on stderr, as plain text, whatever <code>--format</code> and verbosity say. Discard it or keep only its tail for a person; pass <code>--quiet</code> to silence it when no one will read it
 - Never treat stderr text from such a command as a failure signal, even when it contains words like <code>ERROR</code> or <code>failed</code>; the exit code and the envelope on stdout stay authoritative
@@ -11590,6 +11670,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert every flag's <code>env_vars</code> lists exactly the variables its parser reads, in the order it reads them, with the tool-prefixed name first whenever a name without the prefix is listed, and no name from <code>secret_env_vars</code>
 - Assert root <code>env_vars</code> lists every other variable the tool reads outside the universal exceptions, each with a <code>description</code> and either the tool prefix or a declared name that immediately follows its setting's prefixed entry, and no name that also appears in a flag's <code>env_vars</code>, a <code>secret_env_vars</code>, or a <code>token_env_vars</code>
 - Assert root <code>secret_env_vars</code> lists exactly the secrets every command reads, and that none of them repeats in a command's <code>secret_env_vars</code> or a flag's <code>env_vars</code>; assert no name in an auth command's <code>token_env_vars</code> repeats in that command's <code>secret_env_vars</code>
+- Assert <code>stdout: "protocol"</code> and <code>protocol</code> appear together on exactly the commands that serve a protocol over stdio, that such a command writes nothing to stdout before serving begins, ends stderr with the envelope on any non-zero exit in JSON mode, exits <code>0</code> when stdin closes, and declares none of the fields REQ-C-032 excludes
 - Assert <code>stderr: "child_log"</code> appears on exactly the commands that stream a wrapped program's output to stderr, never on a passthrough command, and that <code>--quiet</code> leaves stderr empty for them
 - Assert the root <code>format</code> flag's <code>media_types</code> keys are all in its <code>enum_values</code>, cover every value outside the spec's media type table, and map each spec value they list to the table's media type; assert no other flag carries <code>media_types</code>
 - Assert every <code>output_formats</code> value covered by neither the spec's table nor the root <code>media_types</code> has an <code>output_media_types</code> entry, and every <code>output_media_types</code> key is a value the command accepts
@@ -11689,6 +11770,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
 <td>Sources: <code>arguments</code> and <code>help_argv</code> per command</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a></td>
+<td>Sources: <code>stdout</code> and <code>protocol</code> per command</td>
 </tr>
 <tr>
 <td><a href="../../requirements/f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a></td>

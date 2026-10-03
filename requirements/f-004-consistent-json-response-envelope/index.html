@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4518,6 +4518,8 @@
       
         
       
+        
+      
     
     
     
@@ -5430,6 +5432,34 @@
     
   
     REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-032-protocol-server-commands-declare-stdout-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
   
 
     
@@ -10262,6 +10292,11 @@ Framework wraps:
 <td><a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a></td>
 <td>C</td>
 <td>Specializes: a passthrough command writes the envelope as the last line of stderr</td>
+</tr>
+<tr>
+<td><a href="../c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a></td>
+<td>C</td>
+<td>Specializes: a protocol command writes no envelope to stdout; a failure envelope is the last line of stderr</td>
 </tr>
 </tbody>
 </table>

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 159 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4514,6 +4514,8 @@
       
         
       
+        
+      
     
     
     
@@ -5423,6 +5425,34 @@
     
   
     REQ-C-031: Passthrough Commands Delegate to Another Tool's Parser
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/c-032-protocol-server-commands-declare-stdout-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
   
 
     
@@ -10092,6 +10122,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-316-protocol-servers-on-stdout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.16: protocol servers on stdout
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10673,6 +10714,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-316-protocol-servers-on-stdout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.16: protocol servers on stdout
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -11215,6 +11267,17 @@
 <li><code>ConditionalRule</code> descriptions in <code>manifest-response.json</code> and <code>manifest-response.md</code> state the definition; <code>ManifestResponse</code> stays 3.15 with a description change only</li>
 </ul>
 <p><strong>Why:</strong> REQ-C-026 defined a flag as present when the caller supplies it, so <code>--no-exact</code> could be read as choosing <code>exact</code> in a <code>one_of(exact, fuzzy)</code> group, and two conforming frameworks could accept and reject the same call (#50).</p>
+<h3 id="manifestresponse-316-protocol-servers-on-stdout">ManifestResponse 3.16: protocol servers on stdout</h3>
+<ul>
+<li>New REQ-C-032: a command that serves a long-lived protocol over stdio (<code>tool mcp serve</code>, a language server) declares <code>CommandEntry.stdout: "protocol"</code> and names the protocol in <code>CommandEntry.protocol</code>, a lowercase kebab-case string with documented values <code>mcp-stdio</code>, <code>lsp</code>, and <code>dap</code>. Each field requires the other; absent <code>stdout</code> means stdout carries envelopes, as before</li>
+<li>Stdout is the protocol channel from the first byte and never carries an envelope. A failure before serving begins writes nothing to stdout: it exits with a declared code, and in JSON mode the envelope is the last line of stderr. An invalid flag exits <code>2</code> and the server never starts</li>
+<li>Exit <code>0</code> is a clean shutdown (stdin end-of-file or the protocol's own shutdown sequence) and writes no envelope; any other exit ends stderr with the envelope in JSON mode, and a signal exits <code>128 + N</code>. A malformed request is answered inside the protocol, never by exit <code>2</code></li>
+<li>A protocol server is a foreground process, not a background process (REQ-C-010) or an async job (REQ-C-022). The wall-clock timeout covers only the time before serving begins; the client ends the session by closing stdin or sending a signal</li>
+<li>The schema and the framework reject <code>stdout: "protocol"</code> next to <code>arguments: "passthrough"</code>, <code>stderr</code>, <code>stdin</code>, <code>interactive: true</code>, <code>streaming_default: true</code>, <code>output_file</code>, <code>output_schema</code>, <code>output_formats</code>, <code>output_media_types</code>, <code>async: true</code>, the REQ-C-010 fields, <code>confirm_flag</code>, or <code>safe_default: true</code>. A protocol command takes no <code>--idempotency-key</code> (REQ-C-007) and, even when <code>destructive</code>, no <code>--dry-run</code> (REQ-C-004)</li>
+<li>An agent that sees <code>stdout: "protocol"</code> starts the command only as a client of the named protocol and never parses its stdout as an envelope</li>
+<li>A producer that sets <code>stdout</code> emits <code>schema_version</code> <code>3.16</code>; a pre-3.16 manifest stays valid, and on it an absent <code>stdout</code> cannot mark a protocol command</li>
+</ul>
+<p><strong>Why:</strong> a tool can ship its own protocol server as a command, such as an MCP server over stdio, yet <code>CommandEntry</code> had no way to say that its stdout is not an envelope, so an agent could try to parse one from MCP messages (#51).</p>
 <h2 id="1100-2026-10-01">1.10.0 — 2026-10-01</h2>
 <h3 id="manifestresponse-32-group-rules-in-requires">ManifestResponse 3.2: group rules in requires</h3>
 <ul>
