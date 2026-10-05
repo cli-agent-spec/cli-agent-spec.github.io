@@ -10757,9 +10757,9 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><code>enum_values</code></td>
-<td>string[]</td>
+<td>string[] | integer[]</td>
 <td>no</td>
-<td>Only when <code>type</code> is <code>"enum"</code></td>
+<td>Every value a caller may pass, and nothing else: strings when <code>type</code> is <code>"enum"</code>, integers when <code>type</code> is <code>"integer"</code>; only on those two types (REQ-C-015)</td>
 </tr>
 <tr>
 <td><code>short</code></td>
@@ -10836,9 +10836,9 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><code>enum_values</code></td>
-<td>string[]</td>
+<td>string[] | integer[]</td>
 <td>when <code>type</code> is <code>"enum"</code></td>
-<td>Exhaustive list of accepted values</td>
+<td>Every value a caller may pass, and nothing else: strings when <code>type</code> is <code>"enum"</code>, integers (optional) when <code>type</code> is <code>"integer"</code>; only on those two types (REQ-C-015)</td>
 </tr>
 <tr>
 <td><code>variadic</code></td>
@@ -11498,6 +11498,36 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Violation: <code>mcp</code> is present only when <code>false</code>. A command the MCP server may offer omits the field, so two producers never spell the default two ways.</p>
+<p><strong>Valid — integer flag with a fixed set of values</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.18&quot;,
+  &quot;framework_version&quot;: &quot;2.2.0&quot;,
+  &quot;etag&quot;: &quot;sha256:4a07d2&quot;,
+  &quot;commands&quot;: {
+    &quot;order.sign&quot;: {
+      &quot;description&quot;: &quot;Sign a pending order&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;flags&quot;: {
+        &quot;sig-type&quot;: { &quot;type&quot;: &quot;integer&quot;, &quot;required&quot;: false, &quot;default&quot;: 0, &quot;enum_values&quot;: [0, 1, 2], &quot;description&quot;: &quot;Signature scheme: 0 EOA, 1 proxy, 2 safe&quot; }
+      },
+      &quot;exit_codes&quot;: {}
+    }
+  }
+}
+</code></pre>
+<p><code>--sig-type</code> takes <code>0</code>, <code>1</code>, or <code>2</code> on the command line, and a JSON route such as a payload or an MCP call takes the numbers. Shell completion offers the three values, and <code>--sig-type 3</code> exits <code>2</code>.</p>
+<p><strong>Invalid — integer flag listing its values as strings</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.18&quot;,
+  &quot;framework_version&quot;: &quot;2.2.0&quot;,
+  &quot;etag&quot;: &quot;sha256:4a07d2&quot;,
+  &quot;commands&quot;: {
+    &quot;order.sign&quot;: { &quot;description&quot;: &quot;Sign a pending order&quot;, &quot;danger_level&quot;: &quot;mutating&quot;, &quot;required_scopes&quot;: [], &quot;flags&quot;: { &quot;sig-type&quot;: { &quot;type&quot;: &quot;integer&quot;, &quot;required&quot;: false, &quot;enum_values&quot;: [&quot;0&quot;, &quot;1&quot;, &quot;2&quot;], &quot;description&quot;: &quot;Signature scheme&quot; } }, &quot;exit_codes&quot;: {} }
+  }
+}
+</code></pre>
+<p>Violation: on a <code>type: "integer"</code> entry, <code>enum_values</code> holds integers. Strings belong to a <code>type: "enum"</code> entry, and an integer list on one of those is rejected the same way.</p>
 <p><strong>Valid — idempotent command whose partial failure is rerun</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.15&quot;,
@@ -11576,6 +11606,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Declaring an <code>output</code> side effect for the <code>--output</code> path.</strong> The caller picks that path per call, and <code>output_file</code> already declares it; <code>type: "output"</code> is for a location the command chooses itself</li>
 <li><strong>Leaving <code>output_file_base</code> out when <code>--output</code> does not resolve against the working directory.</strong> Absence means <code>cwd</code>, so the agent looks for the file in the wrong place; declare <code>project_root</code> or <code>resource</code></li>
 <li><strong>Declaring a JSON-valued flag as <code>type: "string"</code>.</strong> The agent then has no shape to build and no signal that the value is parsed as JSON; declare <code>type: "object"</code> with <code>schema</code></li>
+<li><strong>Declaring an integer choice as <code>type: "enum"</code> with <code>["0", "1", "2"]</code>.</strong> A JSON route then sees strings where the command takes numbers; declare <code>type: "integer"</code> with <code>enum_values: [0, 1, 2]</code></li>
+<li><strong>Moving an integer flag's allowed values into its <code>description</code>.</strong> Agents and shell completion cannot read prose as data; list them in <code>enum_values</code></li>
 <li><strong>Naming a flag's environment variables only in its <code>description</code>.</strong> "(read from <code>$A</code> or <code>$B</code> when not passed)" is prose an agent must parse; list the names in <code>env_vars</code>, in precedence order</li>
 <li><strong>Listing a secret in <code>env_vars</code>.</strong> A token or password is not a flag value (REQ-C-016); declare its variable in <code>secret_env_vars</code></li>
 <li><strong>Declaring <code>stdin: {mode: "buffered"}</code> on a command that consumes a record stream.</strong> The 64 KiB total cap then rejects any real pipeline; a command that handles one line at a time declares <code>lines</code> or <code>records</code></li>
@@ -11637,6 +11669,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Pass each option once; a scalar option repeated with a different value produces <code>ARG_ERROR (2)</code>
 - <code>required: true</code> flags must always be present; absence will produce <code>ARG_ERROR (2)</code>
 - <code>type: "enum"</code> — only values in <code>enum_values</code> are accepted; sending any other value produces <code>ARG_ERROR (2)</code>
+- <code>type: "integer"</code> with <code>enum_values</code>: the list is data, not prose; pass one of its integers (as a number on a JSON route, as its decimal text on argv), and any other value produces <code>ARG_ERROR (2)</code>. Shell completion offers the same list. An integer entry without <code>enum_values</code> takes any integer its <code>description</code> allows, including on a pre-3.18 manifest, where the allowed values can appear only in the <code>description</code>
 - <code>type: "object"</code>: pass one argv token of compact JSON text that validates against <code>schema</code> (<code>--filter '{"status":"open"}'</code>); text that is not a JSON object, or does not match, produces <code>ARG_ERROR (2)</code>. An <code>array</code> flag with <code>schema</code> takes each item as such a token
 - <code>default</code> absent — the flag is optional but has no fallback; omitting it changes behavior; include explicitly if the outcome matters
 - <code>short</code> present — both <code>--flag-name value</code> and <code>-f value</code> are valid; prefer long form for clarity in agent-constructed calls</p>
@@ -11716,6 +11749,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert <code>output_file</code> is present on exactly the commands that register <code>--output &lt;path&gt;</code>, and is <code>"binary"</code> exactly when the command's result is a binary value, <code>"handler"</code> exactly when the handler writes the file, and <code>"envelope"</code> exactly when the framework writes the final envelope to it
 - Assert <code>output_file_base</code> appears only with <code>output_file</code>, and that a relative <code>--output</code> path lands under the declared base from a working directory other than that base
 - Assert every <code>type: "object"</code> flag carries a <code>schema</code> the parser enforces, and prefer <code>type: "object"</code> for every flag whose value the parser reads as a JSON object
+- Assert <code>enum_values</code> lists exactly the values the parser accepts, as strings on <code>type: "enum"</code> entries and as integers on <code>type: "integer"</code> entries, and that it appears on no other type; declare an integer choice as <code>type: "integer"</code> with integer <code>enum_values</code>, not as <code>type: "enum"</code> with numeric strings
 - Assert every <code>arguments: "passthrough"</code> command has <code>option_placement: "strict"</code>, empty <code>flags</code>, no <code>positionals</code>, and a <code>danger_level</code> other than <code>destructive</code>, and that <code>help_argv</code> appears only on such commands
 - Assert every <code>confirm_flag</code> names a boolean flag in the command's <code>flags</code> or the root <code>flags</code>, appears only on <code>mutating</code> or <code>destructive</code> commands without <code>safe_default: true</code> or <code>arguments: "passthrough"</code>, and that a call without it previews with <code>meta.dry_run: true</code> while <code>--dry-run</code> plus the flag still previews
 - Assert <code>idempotent: true</code> only on commands whose tests show that a rerun after each declared partial exit leaves the state a clean run leaves; accept it on a <code>safe</code> command without warning
