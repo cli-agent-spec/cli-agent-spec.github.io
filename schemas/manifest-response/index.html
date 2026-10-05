@@ -10875,7 +10875,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><code>DependencyEntry</code></td>
-<td><code>name</code>, <code>check_command</code>, <code>min_version</code> required; <code>version_regex</code>, <code>fix_command</code> optional</td>
+<td><code>name</code>, <code>check_command</code>, <code>min_version</code> required; <code>version_regex</code>, <code>fix_command</code> optional. <code>check_command</code> verifies the dependency is present; when <code>min_version</code> is a version, its output carries the installed version for <code>version_regex</code>. <code>min_version</code> is a minimum version or <code>"*"</code>, meaning any version, presence only: <code>doctor</code> passes it when <code>check_command</code> exits <code>0</code> and needs no <code>version_regex</code> (REQ-O-031)</td>
 </tr>
 <tr>
 <td><code>EnvVarEntry</code></td>

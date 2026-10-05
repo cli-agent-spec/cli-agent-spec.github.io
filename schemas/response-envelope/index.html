@@ -10707,6 +10707,12 @@
 <td>Events per effect value (<code>{"created": 2, "noop": 1}</code>) on the buffered answer of a mutating streaming command; its summary line carries the same field (REQ-O-004)</td>
 </tr>
 <tr>
+<td><code>items_emitted</code></td>
+<td>integer <code>≥ 0</code></td>
+<td>numbered streams</td>
+<td>On the terminal error envelope of a stream whose item lines carry <code>_seq</code>: the last <code>_seq</code> emitted, <code>0</code> when no item line was (REQ-O-004)</td>
+</tr>
+<tr>
 <td><code>audit_log_path</code></td>
 <td>string</td>
 <td>while the audit log is enabled</td>
@@ -10870,6 +10876,16 @@
   &quot;meta&quot;: { &quot;exit_code&quot;: 3, &quot;duration_ms&quot;: 812 }
 }
 </code></pre>
+<p><strong>A numbered stream that fails after two items</strong></p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: false,
+  &quot;data&quot;: null,
+  &quot;error&quot;: { &quot;code&quot;: &quot;UNAVAILABLE&quot;, &quot;message&quot;: &quot;Deployment API returned 503&quot;, &quot;retryable&quot;: true },
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: { &quot;exit_code&quot;: 12, &quot;duration_ms&quot;: 1840, &quot;items_emitted&quot;: 2 }
+}
+</code></pre>
+<p>The terminal line of a REQ-O-004 stream whose item lines carry <code>_seq</code>: the item lines before it carried <code>"_seq": 1</code> and <code>"_seq": 2</code>.</p>
 <p><strong>DELEGATED_EXIT — a passthrough command's tool exited non-zero</strong></p>
 <pre><code class="language-json">{
   &quot;ok&quot;: false,
@@ -10954,7 +10970,8 @@
 <p><strong>Deciding whether to act on <code>data</code></strong>
 - <code>meta.truncated: true</code> — the byte cap cut <code>data</code>; narrow the query before drawing conclusions
 - <code>meta.pagination.has_more: true</code> — more pages exist; pass <code>meta.pagination.next_cursor</code> as <code>--cursor</code> before concluding a list is complete
-- <code>meta.not_modified: true</code> — <code>data</code> is intentionally <code>null</code>; use the previously cached response; this is not an error</p>
+- <code>meta.not_modified: true</code> — <code>data</code> is intentionally <code>null</code>; use the previously cached response; this is not an error
+- <code>meta.items_emitted</code> on a stream's terminal error envelope — the stream stopped after the item line with that <code>_seq</code>. Compare it with the last <code>_seq</code> you read: a higher value means you missed item lines. On a retry, expect the items up to it again unless the command can resume</p>
 <p><strong>Retrying</strong>
 - <code>error.retryable: true</code> without <code>error.retry_after_ms</code> — apply a 1s default back-off before retrying
 - <code>error.retryable: false</code> with <code>error.fix_required</code> or <code>error.redirect</code> present — apply the stated fix, then reissue once; with neither, treat as terminal and stop

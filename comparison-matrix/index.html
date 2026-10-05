@@ -15594,7 +15594,7 @@
 <p><strong>Default timeout per command with structured timeout error</strong> (REQ-F-011, REQ-F-012): No solution enforces a wall-clock timeout automatically. The framework must wrap every command in a timeout, emit <code>{"ok": false, "error": {"code": "TIMEOUT"}}</code> to stdout, and exit with code 7.</p>
 </li>
 <li>
-<p><strong>SIGTERM handler that emits partial JSON before exit</strong> (REQ-F-013): No parser framework installs a SIGTERM handler. The framework must install one at startup, invoke cleanup hooks, emit a <code>{"ok": false, "partial": true, "error": {"code": "CANCELLED"}}</code> response, and exit with code 143.</p>
+<p><strong>SIGTERM handler that emits partial JSON before exit</strong> (REQ-F-013): No parser framework installs a SIGTERM handler. The framework must install one at startup, invoke cleanup hooks, emit a <code>{"ok": false, "data": {"partial": true}, "error": {"code": "CANCELLED"}}</code> response, and exit with code 143.</p>
 </li>
 <li>
 <p><strong>SIGPIPE handler</strong> (REQ-F-014): No framework suppresses Python/Node <code>BrokenPipeError</code> automatically. One-line fix; high-polish signal for agents using pipes.</p>
@@ -15748,7 +15748,7 @@
 </li>
 </ol>
 <hr />
-<p><em>CLI Agent Spec v1.11 — 75 currently mapped failure modes, 12 solutions evaluated. Updated 2026-10-01.</em></p>
+<p><em>CLI Agent Spec v1.12 — 75 currently mapped failure modes, 12 solutions evaluated. Updated 2026-10-01.</em></p>
 
 
 

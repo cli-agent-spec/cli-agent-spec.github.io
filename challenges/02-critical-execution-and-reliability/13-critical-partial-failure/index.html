@@ -10260,26 +10260,35 @@ exit 1
 <p><strong>Structured partial failure output:</strong></p>
 <pre><code class="language-json">{
   &quot;ok&quot;: false,
-  &quot;partial&quot;: true,
-  &quot;completed_steps&quot;: [&quot;backup&quot;, &quot;apply_schema&quot;],
-  &quot;failed_step&quot;: &quot;migrate_data&quot;,
-  &quot;error&quot;: {&quot;code&quot;: &quot;DISK_FULL&quot;, &quot;message&quot;: &quot;...&quot;},
-  &quot;resume_from&quot;: &quot;migrate_data&quot;,
-  &quot;rollback_available&quot;: true
+  &quot;data&quot;: {
+    &quot;partial&quot;: true,
+    &quot;completed_steps&quot;: [&quot;backup&quot;, &quot;apply_schema&quot;],
+    &quot;failed_step&quot;: &quot;migrate_data&quot;,
+    &quot;resume_from&quot;: &quot;migrate_data&quot;,
+    &quot;rollback_available&quot;: true
+  },
+  &quot;error&quot;: {&quot;code&quot;: &quot;DISK_FULL&quot;, &quot;message&quot;: &quot;Disk full during data migration&quot;},
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: {&quot;exit_code&quot;: 3, &quot;duration_ms&quot;: 4210}
 }
 </code></pre>
 <p><strong>Batch result per item:</strong></p>
 <pre><code class="language-json">{
   &quot;ok&quot;: false,
-  &quot;partial&quot;: true,
-  &quot;results&quot;: [
-    {&quot;id&quot;: 1, &quot;ok&quot;: true,  &quot;effect&quot;: &quot;sent&quot;},
-    {&quot;id&quot;: 2, &quot;ok&quot;: true,  &quot;effect&quot;: &quot;sent&quot;},
-    {&quot;id&quot;: 3, &quot;ok&quot;: false, &quot;error&quot;: {&quot;code&quot;: &quot;INVALID_EMAIL&quot;}},
-    {&quot;id&quot;: 4, &quot;ok&quot;: true,  &quot;effect&quot;: &quot;sent&quot;},
-    {&quot;id&quot;: 5, &quot;ok&quot;: false, &quot;error&quot;: {&quot;code&quot;: &quot;RATE_LIMITED&quot;}}
-  ],
-  &quot;summary&quot;: {&quot;total&quot;: 5, &quot;succeeded&quot;: 3, &quot;failed&quot;: 2}
+  &quot;data&quot;: {
+    &quot;partial&quot;: true,
+    &quot;results&quot;: [
+      {&quot;id&quot;: 1, &quot;ok&quot;: true,  &quot;effect&quot;: &quot;sent&quot;},
+      {&quot;id&quot;: 2, &quot;ok&quot;: true,  &quot;effect&quot;: &quot;sent&quot;},
+      {&quot;id&quot;: 3, &quot;ok&quot;: false, &quot;error&quot;: {&quot;code&quot;: &quot;INVALID_EMAIL&quot;}},
+      {&quot;id&quot;: 4, &quot;ok&quot;: true,  &quot;effect&quot;: &quot;sent&quot;},
+      {&quot;id&quot;: 5, &quot;ok&quot;: false, &quot;error&quot;: {&quot;code&quot;: &quot;RATE_LIMITED&quot;}}
+    ],
+    &quot;summary&quot;: {&quot;total&quot;: 5, &quot;succeeded&quot;: 3, &quot;failed&quot;: 2}
+  },
+  &quot;error&quot;: {&quot;code&quot;: &quot;PARTIAL_FAILURE&quot;, &quot;message&quot;: &quot;2 of 5 notifications failed&quot;},
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: {&quot;exit_code&quot;: 3, &quot;duration_ms&quot;: 312}
 }
 </code></pre>
 <p><strong>Resumable commands:</strong></p>
@@ -10318,7 +10327,7 @@ exit 1
 </tr>
 </tbody>
 </table>
-<p><strong>Check:</strong> Trigger a deliberate mid-run failure (e.g., bad step 3 of 5) — the response must contain <code>partial: true</code>, list completed steps, and identify where to resume.</p>
+<p><strong>Check:</strong> Trigger a deliberate mid-run failure (e.g., bad step 3 of 5) — the response must contain <code>data.partial: true</code>, list completed steps, and identify where to resume.</p>
 <hr />
 <h3 id="agent-workaround">Agent Workaround</h3>
 <p><strong>Signature:</strong> <code>exit 1</code> from a multi-step or batch command whose output shows some steps or items succeeded (<code>done</code>, <code>ok</code>) before a failure line</p>
@@ -10328,10 +10337,12 @@ exit 1
 <pre><code class="language-python">result = run([&quot;tool&quot;, &quot;migrate-database&quot;])
 parsed = json.loads(result.stdout)
 
-if parsed.get(&quot;partial&quot;):
-    completed = parsed.get(&quot;completed_steps&quot;, [])
-    resume_from = parsed.get(&quot;resume_from&quot;)
-    rollback_available = parsed.get(&quot;rollback_available&quot;, False)
+data = parsed.get(&quot;data&quot;) or {}
+
+if data.get(&quot;partial&quot;):
+    completed = data.get(&quot;completed_steps&quot;, [])
+    resume_from = data.get(&quot;resume_from&quot;)
+    rollback_available = data.get(&quot;rollback_available&quot;, False)
 
     if rollback_available:
         # Roll back to clean state before retrying from scratch
@@ -10344,7 +10355,7 @@ if parsed.get(&quot;partial&quot;):
         raise RuntimeError(f&quot;Partial failure at unknown step. Completed: {completed}&quot;)
 </code></pre>
 <p><strong>For batch commands, collect failed IDs and retry only those:</strong></p>
-<pre><code class="language-python">results = parsed.get(&quot;results&quot;, [])
+<pre><code class="language-python">results = data.get(&quot;results&quot;, [])
 failed_ids = [r[&quot;id&quot;] for r in results if not r[&quot;ok&quot;]]
 # Retry only failed items
 run([&quot;tool&quot;, &quot;send-notifications&quot;, &quot;--users&quot;, &quot;,&quot;.join(map(str, failed_ids))])

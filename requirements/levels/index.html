@@ -10255,7 +10255,7 @@
 <h2 id="claiming-a-level">Claiming a level</h2>
 <ol>
 <li>Implement every requirement in the level and verify its acceptance criteria</li>
-<li>Run the <a href="../../conformance/">conformance kit</a> with a profile that includes <code>read</code>, <code>invalid</code>, and <code>destructive</code> probes and, for Level 3, a <code>manifest</code> command</li>
+<li>Run the <a href="../../conformance/">conformance kit</a> with a profile that includes <code>read</code>, <code>invalid</code>, and <code>destructive</code> probes and, for Level 3, a <code>manifest</code> command and <code>stream</code> probes (one with <code>signal</code>)</li>
 <li>Publish the kit's <code>ConformanceResult</code> next to the claim</li>
 </ol>
 <p>The kit verifies the mechanically checkable part of each level. A <code>pass</code> verdict is necessary, not sufficient: requirements such as locale-invariant serialization or secret redaction still need their acceptance criteria reviewed. A level verdict of <code>incomplete</code> means the profile lacked a probe kind, and the claim cannot be made until the missing checks run.</p>

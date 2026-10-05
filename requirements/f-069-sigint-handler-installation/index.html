@@ -10199,7 +10199,7 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: Medium / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST install a SIGINT signal handler for every command at startup. On SIGINT, the handler MUST: invoke the command's registered <code>cleanup()</code> hook, release any framework-managed locks, emit a cancellation JSON object to stdout (with <code>"ok": false</code>, <code>"error": {"code": "CANCELLED", "signal": "SIGINT"}</code>), flush stdout, and exit with code <code>130</code> (128 + SIGINT). The handler MUST be re-entrant safe — a second SIGINT during cleanup exits immediately without a double-write.</p>
+<p>The framework MUST install a SIGINT signal handler for every command at startup. On SIGINT, the handler MUST: invoke the command's registered <code>cleanup()</code> hook, release any framework-managed locks, emit a cancellation JSON object to stdout (with <code>"ok": false</code>, <code>"data": {"partial": true}</code>, <code>"error": {"code": "CANCELLED", "context": {"signal": "SIGINT"}}</code>), flush stdout, and exit with code <code>130</code> (128 + SIGINT). The handler MUST be re-entrant safe — a second SIGINT during cleanup exits immediately without a double-write.</p>
 <p>Agents that enforce time budgets by sending SIGINT (Ctrl+C equivalent) rely on exit code <code>130</code> to distinguish "I cancelled this" from "this failed" (exit <code>1</code>). An uncaught SIGINT that produces exit <code>1</code> causes the agent to retry the cancelled operation, compounding side effects.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
@@ -10240,7 +10240,7 @@
 <pre><code>$ tool deploy --env prod &amp;
 [1] 12345
 $ kill -INT 12345
-→ stdout: {&quot;ok&quot;:false,&quot;partial&quot;:true,&quot;data&quot;:null,&quot;error&quot;:{&quot;code&quot;:&quot;CANCELLED&quot;,&quot;signal&quot;:&quot;SIGINT&quot;},...}
+→ stdout: {&quot;ok&quot;:false,&quot;data&quot;:{&quot;partial&quot;:true},&quot;error&quot;:{&quot;code&quot;:&quot;CANCELLED&quot;,&quot;context&quot;:{&quot;signal&quot;:&quot;SIGINT&quot;}},...}
 → exit code: 130
 </code></pre>
 <hr />

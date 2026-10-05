@@ -10275,12 +10275,13 @@ tool operation --connect-timeout 5s # specifically for connection phase
 <p><strong>Emit partial results before timeout:</strong></p>
 <pre><code class="language-json">{
   &quot;ok&quot;: false,
-  &quot;partial&quot;: true,
-  &quot;data&quot;: {&quot;processed&quot;: 42, &quot;total&quot;: 100},
+  &quot;data&quot;: {&quot;partial&quot;: true, &quot;processed&quot;: 42, &quot;total&quot;: 100, &quot;resume_token&quot;: &quot;abc123&quot;},
   &quot;error&quot;: {&quot;code&quot;: &quot;TIMEOUT&quot;, &quot;message&quot;: &quot;Operation timed out after 30s&quot;},
-  &quot;resume_token&quot;: &quot;abc123&quot;   // allows resuming if supported
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: {&quot;exit_code&quot;: 10, &quot;duration_ms&quot;: 30004}
 }
 </code></pre>
+<p><code>data.resume_token</code> allows resuming when the command supports it.</p>
 <p><strong>For framework design:</strong>
 - Every command has a default timeout; <code>--timeout 0</code> means no timeout (must be explicit)
 - Timeout exits with a specific code (e.g., <code>7</code>) and always emits JSON error

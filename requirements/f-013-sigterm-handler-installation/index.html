@@ -10199,7 +10199,7 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: Medium / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST install a SIGTERM signal handler for every command at startup. On SIGTERM, the handler MUST: invoke the command's registered <code>cleanup()</code> hook, release any framework-managed locks, emit a partial-result JSON object to stdout (with <code>"ok": false</code>, <code>"partial": true</code>, <code>"error": {"code": "CANCELLED"}</code>), flush stdout, and exit with code <code>143</code> (128 + SIGTERM). The handler MUST be re-entrant safe (a second SIGTERM during cleanup MUST not cause a double-write).</p>
+<p>The framework MUST install a SIGTERM signal handler for every command at startup. On SIGTERM, the handler MUST: invoke the command's registered <code>cleanup()</code> hook, release any framework-managed locks, emit a partial-result JSON object to stdout (with <code>"ok": false</code>, <code>"data": {"partial": true}</code>, <code>"error": {"code": "CANCELLED"}</code>), flush stdout, and exit with code <code>143</code> (128 + SIGTERM). The handler MUST be re-entrant safe (a second SIGTERM during cleanup MUST not cause a double-write).</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li><code>kill -TERM &lt;pid&gt;</code> on a running command causes stdout to contain a valid JSON cancellation response</li>
@@ -10238,7 +10238,7 @@
 <pre><code>$ tool deploy --env prod &amp;
 [1] 12345
 $ kill -TERM 12345
-→ stdout: {&quot;ok&quot;:false,&quot;partial&quot;:true,&quot;data&quot;:null,&quot;error&quot;:{&quot;code&quot;:&quot;CANCELLED&quot;,&quot;message&quot;:&quot;Command cancelled by SIGTERM&quot;},...}
+→ stdout: {&quot;ok&quot;:false,&quot;data&quot;:{&quot;partial&quot;:true},&quot;error&quot;:{&quot;code&quot;:&quot;CANCELLED&quot;,&quot;message&quot;:&quot;Command cancelled by SIGTERM&quot;},...}
 → exit code: 143
 </code></pre>
 <p>A second SIGTERM during cleanup is ignored — the handler sets a guard flag on first invocation.</p>

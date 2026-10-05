@@ -10012,16 +10012,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#unreleased" class="md-nav__link">
+  <a href="#1120-2026-10-05" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unreleased
+        1.12.0 — 2026-10-05
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Unreleased">
+    <nav class="md-nav" aria-label="1.12.0 — 2026-10-05">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tool-doctor-exits-4-when-a-check-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tool doctor exits 4 when a check fails
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responseenvelope-23-numbered-stream-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ResponseEnvelope 2.3: numbered stream lines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-cancelled-or-partial-run-flags-datapartial-and-names-its-signal-in-errorcontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A cancelled or partial run flags data.partial and names its signal in error.context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-declared-dependency-is-needed-at-any-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A declared dependency is needed at any version
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#required_tools-declares-a-program-needed-at-any-version" class="md-nav__link">
@@ -10050,6 +10094,17 @@
     <span class="md-ellipsis">
       
         ManifestResponse 3.17: commands kept off the MCP server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conformance-kit-stream-probes-check-a-streaming-commands-jsonl-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conformance kit: stream probes check a streaming command's JSONL contract
       
     </span>
   </a>
@@ -10654,16 +10709,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#unreleased" class="md-nav__link">
+  <a href="#1120-2026-10-05" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unreleased
+        1.12.0 — 2026-10-05
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Unreleased">
+    <nav class="md-nav" aria-label="1.12.0 — 2026-10-05">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tool-doctor-exits-4-when-a-check-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tool doctor exits 4 when a check fails
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responseenvelope-23-numbered-stream-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ResponseEnvelope 2.3: numbered stream lines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-cancelled-or-partial-run-flags-datapartial-and-names-its-signal-in-errorcontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A cancelled or partial run flags data.partial and names its signal in error.context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-declared-dependency-is-needed-at-any-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A declared dependency is needed at any version
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#required_tools-declares-a-program-needed-at-any-version" class="md-nav__link">
@@ -10692,6 +10791,17 @@
     <span class="md-ellipsis">
       
         ManifestResponse 3.17: commands kept off the MCP server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conformance-kit-stream-probes-check-a-streaming-commands-jsonl-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conformance kit: stream probes check a streaming command's JSONL contract
       
     </span>
   </a>
@@ -11281,7 +11391,35 @@
 <li>A contract <code>MAJOR</code> increment always ships in a spec <code>MINOR</code> release with a migration section in this file</li>
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
-<h2 id="unreleased">Unreleased</h2>
+<h2 id="1120-2026-10-05">1.12.0 — 2026-10-05</h2>
+<h3 id="tool-doctor-exits-4-when-a-check-fails"><code>tool doctor</code> exits <code>4</code> when a check fails</h3>
+<ul>
+<li>REQ-O-026: the Description now says <code>tool doctor</code> exits <code>4</code> (<code>PRECONDITION</code>) with <code>error.code: "DOCTOR_CHECKS_FAILED"</code> when any check fails, as its acceptance criteria and wire format already did; it no longer says exit <code>1</code></li>
+</ul>
+<p><strong>Why:</strong> the Description and the acceptance criteria named different exit codes for a failed check, so an agent branching on doctor's exit code could not tell which to expect (#71).</p>
+<h3 id="responseenvelope-23-numbered-stream-lines">ResponseEnvelope 2.3: numbered stream lines</h3>
+<ul>
+<li>REQ-O-004: a stream MAY number its item lines with the reserved key <code>_seq</code>, <code>1</code> on the first and one more on each next line. A numbered stream numbers every item line, never a heartbeat or terminal line, puts <code>"_count": N</code> (the number of item lines) on its summary line, and ends a failure on an error envelope with <code>meta.items_emitted</code> (the last <code>_seq</code>, <code>0</code> before the first item). A line's <code>_seq</code> is never item data: an item type with its own <code>_seq</code> field does not number its stream, and a records consumer removes <code>_seq</code> before validating a record. New Description paragraph, three acceptance criteria, and numbered wire-format lines</li>
+<li><code>ResponseMeta.items_emitted</code> (optional, non-negative integer) makes <code>ResponseEnvelope</code> 2.3; <code>response-envelope.md</code> gains the field row, a numbered-stream failure example, and the agent interpretation. Earlier instances stay valid, and a stream without <code>_seq</code> keeps its meaning</li>
+<li>§76 gains numbered lines as an optional enhancement against silent truncation; the streaming guide gains a "Numbering Stream Lines" section</li>
+<li>Conformance kit: <code>stream_contract</code> checks a stream whose first item line carries <code>_seq</code>: <code>_seq</code> on every item line counting up from <code>1</code>, none on heartbeat or terminal lines, <code>_count</code> equal to the number of item lines, and <code>meta.items_emitted</code> equal to the last <code>_seq</code> on an error terminal envelope; a later <code>_seq</code> in an unnumbered stream fails. The good democli mock numbers its <code>deployments list --stream</code> lines, including <code>meta.items_emitted</code> on its SIGINT envelope, and <code>streamcli</code> gains a passing numbered stream and failure, plus eight failing cases</li>
+</ul>
+<p><strong>Why:</strong> a REQ-O-004 stream gave an agent no way to tell a complete short stream from one that lost lines in a pipe, a log, or a truncating runtime, nor which item a failed stream stopped after (#67).</p>
+<h3 id="a-cancelled-or-partial-run-flags-datapartial-and-names-its-signal-in-errorcontext">A cancelled or partial run flags <code>data.partial</code> and names its signal in <code>error.context</code></h3>
+<ul>
+<li>REQ-F-013 and REQ-F-069: the Description and Example now put the partial flag at <code>data.partial: true</code> and REQ-F-069's signal name at <code>error.context.signal</code>, as both wire formats already did. A top-level <code>partial</code> or <code>error.signal</code> fails <code>ResponseEnvelope</code>, which admits no extra properties at either level</li>
+<li>§11, §13, and §16 examples move <code>partial</code> and the other partial-result fields (<code>completed_steps</code>, <code>resume_from</code>, <code>resume_token</code>, <code>results</code>, <code>summary</code>) into <code>data</code> and become complete envelopes; §13's agent workaround reads them from <code>data</code>. <code>comparison-matrix.md</code>'s REQ-F-013 sentence says the same</li>
+<li>Conformance kit: <code>stream_sigint</code> also requires the terminal <code>CANCELLED</code> envelope to carry <code>data.partial: true</code>. The good democli mock's <code>--stream</code> cancellation now emits it, and <code>streamcli</code> gains a failing <code>int-no-partial</code> case. The process-leak test looks only for sleeps from its own run, so concurrent runs in other checkouts no longer fail it</li>
+<li>No contract changes; generated reports under <code>evaluations/</code> are records of past runs and stay as they were</li>
+</ul>
+<p><strong>Why:</strong> REQ-F-013's and REQ-F-069's prose and examples put <code>partial</code> at the top level and the signal on <code>ErrorDetail</code>, which the envelope schema rejects, while their own wire formats used <code>data.partial</code> and <code>error.context.signal</code>, so an implementer had two answers and only one of them validated (#68).</p>
+<h3 id="a-declared-dependency-is-needed-at-any-version">A declared dependency is needed at any version</h3>
+<ul>
+<li>REQ-O-031: a <code>DependencyEntry.min_version</code> value is a minimum version or <code>"*"</code>, meaning any version, presence only. <code>tool doctor</code> runs the dependency's <code>check_command</code> and passes when it exits <code>0</code>, skipping <code>version_regex</code> and the version comparison; a dependency with no <code>--version</code> flag uses a presence command such as <code>command -v bean-format</code>. New acceptance criterion, and a <code>"*"</code> dependency in the wire format and example</li>
+<li>REQ-O-026: the <code>required_tools</code> <code>"*"</code> rule and the declared dependency rule read as one: <code>"*"</code> is a presence check, by <code>PATH</code> lookup for a <code>required_tools</code> entry and by <code>check_command</code> for a dependency, reported as <code>min_version: "*"</code> with no <code>found_version</code> in <code>data.dependencies</code>. New acceptance criterion</li>
+<li><code>manifest-response.md</code> and the <code>min_version</code> description in <code>manifest-response.json</code> say the same. The field stays a required string, so <code>ManifestResponse</code> stays 3.18 with a description change only</li>
+</ul>
+<p><strong>Why:</strong> <code>min_version</code> was a required "minimum supported version" with no way to declare a dependency needed at any version, so a program with no <code>--version</code> flag could not be declared without inventing a version <code>doctor</code> could never check; <code>required_tools</code> gained <code>"*"</code> for the same reason in #58 (#63).</p>
 <h3 id="required_tools-declares-a-program-needed-at-any-version"><code>required_tools</code> declares a program needed at any version</h3>
 <ul>
 <li>REQ-C-018: a <code>required_tools</code> value is a minimum version or <code>"*"</code>, meaning any version; the program need only resolve on <code>PATH</code> and is never run to read a version. New acceptance criterion and a <code>"*"</code> entry in the wire format and example</li>
@@ -11306,6 +11444,16 @@
 <li>A producer that sets <code>mcp</code> emits <code>schema_version</code> <code>3.17</code>; a pre-3.17 manifest stays valid, and on it an absent <code>mcp</code> cannot mark a command kept off the server</li>
 </ul>
 <p><strong>Why:</strong> a tool can serve its commands as MCP tools, yet <code>CommandEntry</code> took no extra properties and had no field to keep a command off that server, so a manifest could say so only in the description (#55).</p>
+<h3 id="conformance-kit-stream-probes-check-a-streaming-commands-jsonl-contract">Conformance kit: <code>stream</code> probes check a streaming command's JSONL contract</h3>
+<ul>
+<li><code>ConformanceProfile</code> adds probe kind <code>stream</code>, with optional <code>deadline_seconds</code> (defaults to <code>timeout_seconds</code>) and optional <code>signal: "INT"</code> plus <code>after_lines</code>, which require each other. The schema and <code>conformance/run.py</code> reject either field on a non-<code>stream</code> probe, and <code>dry_run_flag</code> on a <code>stream</code> probe. Existing profiles stay valid</li>
+<li>A <code>stream</code> probe runs once, outside the single-envelope checks. The kit reads stdout line by line until the process exits; at the deadline it kills the probe's process group and fails the run instead of hanging</li>
+<li>New check <code>stream_contract</code> (level 3, REQ-O-004, §5, §76): every line is one JSON object, the stream ends on exactly one terminal line (the <code>"_summary": true</code> line or an error <code>ResponseEnvelope</code> with <code>ok: false</code>), a summary line exits <code>0</code>, an error envelope's <code>meta.exit_code</code> matches the exit code, and the process exits before the deadline</li>
+<li>New check <code>stream_sigint</code> (level 3, REQ-O-004, §16): with <code>signal</code>, the kit sends SIGINT after <code>after_lines</code> lines and requires exit <code>130</code> and a terminal error envelope with <code>error.code</code> <code>CANCELLED</code> (REQ-F-069). It is skipped on Windows</li>
+<li>A profile without a <code>stream</code> probe now reports both checks as <code>skip</code>, so its <code>level_3</code> verdict is <code>incomplete</code> instead of <code>pass</code></li>
+<li>The good democli mock's <code>deployments list</code> accepts <code>--stream</code>, and <code>democli-good.json</code> adds two <code>stream</code> probes, so it still passes every check. New fixture <code>streamcli</code> with a passing and a failing profile</li>
+</ul>
+<p><strong>Why:</strong> the kit's probes expected one envelope per command, so nothing checked that a streaming command's lines parse, that it ends on one terminal line matching its exit code, or that SIGINT cancels it with exit <code>130</code> (#60).</p>
 <h2 id="1110-2026-10-03">1.11.0 — 2026-10-03</h2>
 <h3 id="external-content-in-errorcontext-is-tagged-and-masked">External content in <code>error.context</code> is tagged and masked</h3>
 <ul>

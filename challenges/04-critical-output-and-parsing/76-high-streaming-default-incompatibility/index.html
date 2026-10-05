@@ -10289,6 +10289,12 @@ result = json.loads(stdout)
 {&quot;id&quot;: &quot;e1&quot;, &quot;type&quot;: &quot;deploy&quot;, &quot;ts&quot;: 1700000001}
 </code></pre>
 <p>A preamble line lets an agent detect JSONL immediately and switch parsers before consuming data.</p>
+<p><strong>Number the item lines (optional enhancement):</strong></p>
+<pre><code class="language-jsonl">{&quot;id&quot;: &quot;e1&quot;, &quot;type&quot;: &quot;deploy&quot;, &quot;ts&quot;: 1700000001, &quot;_seq&quot;: 1}
+{&quot;id&quot;: &quot;e2&quot;, &quot;type&quot;: &quot;rollback&quot;, &quot;ts&quot;: 1700000042, &quot;_seq&quot;: 2}
+{&quot;_summary&quot;: true, &quot;total&quot;: 2, &quot;_count&quot;: 2, &quot;duration_ms&quot;: 18}
+</code></pre>
+<p>A stream that numbers its item lines with <code>_seq</code> and puts <code>_count</code> on its summary line lets an agent detect a truncated read: a last <code>_seq</code> lower than <code>_count</code> means lines were lost (REQ-O-004).</p>
 <h3 id="evaluation">Evaluation</h3>
 <table>
 <thead>

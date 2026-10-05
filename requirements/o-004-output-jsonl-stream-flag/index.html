@@ -10202,6 +10202,7 @@
 <p>For commands that process or return large datasets, the framework MUST support <code>--stream</code> (equivalent to <code>--format jsonl</code>) which emits one JSON object per line as results are produced, rather than buffering all results before emitting. Commands that support streaming MUST declare <code>supports_streaming: true</code>. In streaming mode, pagination metadata MUST be emitted as a final summary line.</p>
 <p>Commands that stream by default (see §76) MUST additionally declare <code>streaming_default: true</code>. A streaming-default command MUST accept <code>--no-stream</code> (equivalent to <code>--format json</code>) to return a buffered <code>ResponseEnvelope</code> for compatibility with envelope-only consumers. The <code>streaming_default</code> field MUST be advertised in the manifest and in <code>--help</code> text.</p>
 <p>A stream ends with exactly one terminal line. On success it is the summary line (<code>"_summary": true</code>). When the command fails after its first line, the terminal line is instead the error <code>ResponseEnvelope</code> (<code>"ok": false</code>, REQ-F-004), and the process exits with that envelope's <code>meta.exit_code</code>. A line holding <code>"_summary": true</code> or an <code>"ok"</code> boolean beside an <code>"error"</code> key is therefore never an item, and neither is a heartbeat line (<code>"heartbeat": true</code>, REQ-O-038).</p>
+<p><strong>Numbered streams.</strong> A stream MAY number its item lines with the reserved key <code>_seq</code> so an agent can detect a dropped line. A stream that uses it puts <code>_seq</code> on every item line: <code>1</code> on the first and one more on each next line. Heartbeat lines and the terminal line carry no <code>_seq</code>. Its summary line carries <code>"_count": N</code>, where N is the number of item lines, and an error terminal envelope carries <code>meta.items_emitted</code>: the last <code>_seq</code> emitted, <code>0</code> when the stream failed before its first item line. An agent that reads a last <code>_seq</code> lower than <code>_count</code> or <code>meta.items_emitted</code> missed lines. <code>_seq</code> is reserved like <code>_summary</code>: a line's <code>_seq</code> is framework metadata, never part of the item's data, so a command whose item type has its own <code>_seq</code> field MUST NOT number its stream. A records consumer removes <code>_seq</code> from a line before it validates and hands over the record. Numbering is optional: a stream without <code>_seq</code> keeps its meaning, and an agent reads its lines as before.</p>
 <p><strong>Mutating streams.</strong> A streaming command declares <code>danger_level</code> <code>safe</code> or <code>mutating</code> (REQ-C-002). The framework MUST refuse to register a streaming command with <code>danger_level: "destructive"</code>: a stream cannot ask confirmation for each action it takes (REQ-O-021). A stream with <code>danger_level: "mutating"</code> reports what it did event by event, not once per run:</p>
 <ul>
 <li>Every item line carries its own top-level <code>effect</code> (REQ-C-003): what that event did. The framework validates each event's <code>effect</code> as it validates a single response's</li>
@@ -10225,6 +10226,9 @@
 <li><code>--stream</code> causes output to begin appearing before the command completes</li>
 <li>Each line of streaming output is a valid, self-contained JSON object</li>
 <li>On success, the final line of streaming output is a summary object containing <code>pagination</code> metadata</li>
+<li>A numbered stream of three items puts <code>"_seq": 1</code>, <code>2</code>, and <code>3</code> on its item lines, none on a heartbeat line, and <code>"_count": 3</code> on its summary line</li>
+<li>A numbered stream that fails after two items ends on an error envelope with <code>meta.items_emitted: 2</code>; one that fails before its first item has <code>meta.items_emitted: 0</code></li>
+<li>A records consumer fed a numbered stream hands the handler records without <code>_seq</code></li>
 <li>A command that does not declare <code>supports_streaming: true</code> emits a warning when <code>--stream</code> is passed</li>
 <li>A command that declares <code>streaming_default: true</code> emits JSONL without any flags</li>
 <li>Passing <code>--no-stream</code> to a streaming-default command returns a valid <code>ResponseEnvelope</code></li>
@@ -10247,7 +10251,7 @@
 <hr />
 <h2 id="schema">Schema</h2>
 <p><strong>Types:</strong> <a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a> (<code>CommandEntry.streaming_default</code>) · <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a> (<code>ResponseMeta</code> field names on the summary line)</p>
-<p>Each streamed line is a self-contained JSON object using the command's declared item type. The final summary line reuses <code>ResponseMeta</code> field names, including <code>effects</code> and <code>dry_run</code> on a mutating stream (ResponseEnvelope 2.2); a failed stream ends with a <code>ResponseEnvelope</code> instead. A records consumer declares <code>CommandEntry.stdin</code> with <code>mode: "records"</code> and <code>record_schema</code> in <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a>; its errors are <code>ErrorDetail</code> objects in <a href="../../schemas/response-envelope.json"><code>response-envelope.json</code></a>.</p>
+<p>Each streamed line is a self-contained JSON object using the command's declared item type. The final summary line reuses <code>ResponseMeta</code> field names, including <code>effects</code> and <code>dry_run</code> on a mutating stream (ResponseEnvelope 2.2); a failed numbered stream's error envelope carries <code>meta.items_emitted</code> (ResponseEnvelope 2.3); a failed stream ends with a <code>ResponseEnvelope</code> instead. A records consumer declares <code>CommandEntry.stdin</code> with <code>mode: "records"</code> and <code>record_schema</code> in <a href="../../schemas/manifest-response.json"><code>manifest-response.json</code></a>; its errors are <code>ErrorDetail</code> objects in <a href="../../schemas/response-envelope.json"><code>response-envelope.json</code></a>.</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <pre><code class="language-bash">$ tool list-deployments --stream
@@ -10256,6 +10260,13 @@
 {&quot;id&quot;: &quot;d2&quot;, &quot;status&quot;: &quot;running&quot;, &quot;target&quot;: &quot;staging&quot;}
 {&quot;id&quot;: &quot;d3&quot;, &quot;status&quot;: &quot;failed&quot;, &quot;target&quot;: &quot;dev&quot;}
 {&quot;_summary&quot;: true, &quot;total&quot;: 3, &quot;duration_ms&quot;: 280}
+</code></pre>
+<p>The same stream, numbered:</p>
+<pre><code class="language-jsonl">{&quot;id&quot;: &quot;d1&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;target&quot;: &quot;prod&quot;, &quot;_seq&quot;: 1}
+{&quot;id&quot;: &quot;d2&quot;, &quot;status&quot;: &quot;running&quot;, &quot;target&quot;: &quot;staging&quot;, &quot;_seq&quot;: 2}
+{&quot;status&quot;: &quot;running&quot;, &quot;heartbeat&quot;: true, &quot;elapsed_ms&quot;: 10012}
+{&quot;id&quot;: &quot;d3&quot;, &quot;status&quot;: &quot;failed&quot;, &quot;target&quot;: &quot;dev&quot;, &quot;_seq&quot;: 3}
+{&quot;_summary&quot;: true, &quot;total&quot;: 3, &quot;_count&quot;: 3, &quot;duration_ms&quot;: 280}
 </code></pre>
 <p>With an unsupported command:</p>
 <pre><code class="language-bash">$ tool deploy --target staging --stream
@@ -10281,6 +10292,11 @@ $ tool list-events --no-stream
 <pre><code class="language-jsonl">{&quot;id&quot;: &quot;d1&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;target&quot;: &quot;prod&quot;}
 {&quot;id&quot;: &quot;d2&quot;, &quot;status&quot;: &quot;running&quot;, &quot;target&quot;: &quot;staging&quot;}
 {&quot;ok&quot;: false, &quot;data&quot;: null, &quot;error&quot;: {&quot;code&quot;: &quot;UNAVAILABLE&quot;, &quot;message&quot;: &quot;Deployment API returned 503&quot;, &quot;retryable&quot;: true}, &quot;warnings&quot;: [], &quot;meta&quot;: {&quot;exit_code&quot;: 12, &quot;duration_ms&quot;: 1840}}
+</code></pre>
+<p>Numbered, the same failure tells the agent where the stream stopped:</p>
+<pre><code class="language-jsonl">{&quot;id&quot;: &quot;d1&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;target&quot;: &quot;prod&quot;, &quot;_seq&quot;: 1}
+{&quot;id&quot;: &quot;d2&quot;, &quot;status&quot;: &quot;running&quot;, &quot;target&quot;: &quot;staging&quot;, &quot;_seq&quot;: 2}
+{&quot;ok&quot;: false, &quot;data&quot;: null, &quot;error&quot;: {&quot;code&quot;: &quot;UNAVAILABLE&quot;, &quot;message&quot;: &quot;Deployment API returned 503&quot;, &quot;retryable&quot;: true}, &quot;warnings&quot;: [], &quot;meta&quot;: {&quot;exit_code&quot;: 12, &quot;duration_ms&quot;: 1840, &quot;items_emitted&quot;: 2}}
 </code></pre>
 <p>A mutating stream puts an <code>effect</code> on each event and counts them on the summary line:</p>
 <pre><code class="language-bash">$ tool sync-users --source users.csv --stream
@@ -10341,6 +10357,7 @@ $ tool list-events --no-stream
 
 register command &quot;list-deployments&quot;:
   supports_streaming: true
+  # numbers its items with _seq and counts them in _count on the summary line (optional)
   # items emitted via framework stream() call as they arrive
 
 # tool list-deployments --stream  →  JSONL lines as items arrive
@@ -10433,7 +10450,7 @@ register command &quot;annotate&quot;:
 <tr>
 <td><a href="../o-038-heartbeat-ms-flag-for-long-running-commands/">REQ-O-038</a></td>
 <td>O</td>
-<td>Composes: a records consumer skips the producer's heartbeat lines, which are neither records nor terminal lines</td>
+<td>Composes: a records consumer skips the producer's heartbeat lines, which are neither records nor terminal lines and carry no <code>_seq</code></td>
 </tr>
 <tr>
 <td><a href="../../challenges/04-critical-output-and-parsing/76-high-streaming-default-incompatibility/">§76</a></td>

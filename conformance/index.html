@@ -9187,6 +9187,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#stream-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stream probes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#fixtures" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10114,6 +10125,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#stream-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stream probes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#fixtures" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10260,10 +10282,33 @@
 <td>REQ-F-067, REQ-F-079</td>
 <td>§69</td>
 </tr>
+<tr>
+<td><code>stream_contract</code></td>
+<td>3</td>
+<td>REQ-O-004</td>
+<td>§5, §76</td>
+</tr>
+<tr>
+<td><code>stream_sigint</code></td>
+<td>3</td>
+<td>REQ-O-004 (REQ-F-069's cancellation on a stream)</td>
+<td>§16</td>
+</tr>
 </tbody>
 </table>
+<h2 id="stream-probes">Stream probes</h2>
+<p>A <code>stream</code> probe runs a command whose stdout is a JSONL stream (REQ-O-004) once, instead of the single-envelope checks. The kit reads stdout line by line until the process exits or the probe's <code>deadline_seconds</code> (default <code>timeout_seconds</code>) passes; at the deadline it kills the whole process group and fails the run, so a stream that never ends cannot hang the kit. <code>stream_contract</code> checks that:</p>
+<ul>
+<li>Every line is one JSON object; blank and non-JSON lines fail. Heartbeat lines (<code>"heartbeat": true</code>, REQ-O-038) count as lines like items</li>
+<li>The stream ends on exactly one terminal line: the summary line (<code>"_summary": true</code>) or an error <code>ResponseEnvelope</code> (an <code>ok</code> boolean beside an <code>error</code> key), which must validate with <code>ok: false</code>. A line after it fails</li>
+<li>A summary line exits <code>0</code>; an error envelope's <code>meta.exit_code</code> equals the process exit code</li>
+<li>The process exits after its terminal line, before the deadline</li>
+<li>When the first item line carries <code>_seq</code>, the stream is numbered: every item line carries <code>_seq</code>, <code>1</code> on the first and one more on each next; heartbeat lines and the terminal line carry none; the summary line's <code>_count</code> equals the number of item lines; an error terminal envelope's <code>meta.items_emitted</code> equals the last <code>_seq</code>. In a stream whose first item line has no <code>_seq</code>, no line may carry it</li>
+</ul>
+<p>With <code>signal: "INT"</code> and <code>after_lines: N</code>, the kit sends SIGINT to the process after reading <code>N</code> lines. <code>stream_sigint</code> then requires exit <code>130</code> and a terminal error envelope with <code>error.code</code> <code>CANCELLED</code> and <code>data.partial</code> <code>true</code> (REQ-F-069). A stream that ends before <code>N</code> lines fails, since the signal was never sent. Signals need POSIX; on Windows the kit skips <code>stream_sigint</code> and does not run signal probes.</p>
+<p>The stream checks are level 3 because streaming is opt-in (REQ-O-004): a profile without a <code>stream</code> probe leaves <code>level_3</code> <code>incomplete</code>, as one without a <code>manifest</code> command does.</p>
 <h2 id="fixtures">Fixtures</h2>
-<p>The benchmark mocks double as fixtures. <a href="profiles/democli-good.json"><code>democli-good.json</code></a> passes every check; <a href="profiles/democli-bad.json"><code>democli-bad.json</code></a> fails the output and safety checks. <code>tests/fixtures/conformance/hangcli</code> covers hangs and illegal exit codes; <code>lastwinscli</code> lets a subcommand default replace a global option given before the command path and keeps the last of two conflicting values. <code>posixcli</code> stops option parsing at the first positional, so an option after it is silently ignored. <code>tests/test_conformance.py</code> asserts every outcome.</p>
+<p>The benchmark mocks double as fixtures. <a href="profiles/democli-good.json"><code>democli-good.json</code></a> passes every check; <a href="profiles/democli-bad.json"><code>democli-bad.json</code></a> fails the output and safety checks. <code>tests/fixtures/conformance/hangcli</code> covers hangs and illegal exit codes; <code>lastwinscli</code> lets a subcommand default replace a global option given before the command path and keeps the last of two conflicting values. <code>posixcli</code> stops option parsing at the first positional, so an option after it is silently ignored. <code>streamcli</code> writes JSONL streams: <code>tests/fixtures/conformance/streamcli-good.json</code> passes both stream checks, numbered streams included, and <code>streamcli.json</code> breaks each one (no terminal line, a line after it, a prose line, a wrong exit code, a stall, numbering that skips, starts at <code>0</code>, misses a line, numbers a heartbeat, starts late, or miscounts in <code>_count</code> or <code>meta.items_emitted</code>, and SIGINT that exits <code>1</code>, reports another code, omits <code>data.partial</code>, is ignored, or hangs). <code>tests/test_conformance.py</code> asserts every outcome.</p>
 
 
 

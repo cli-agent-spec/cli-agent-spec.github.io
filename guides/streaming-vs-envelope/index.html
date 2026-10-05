@@ -10039,6 +10039,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#numbering-stream-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numbering Stream Lines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#streams-that-change-state" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10157,6 +10168,9 @@
 <li>The final output is still a single <code>ResponseEnvelope</code> that <code>json.loads()</code> parses cleanly</li>
 </ol>
 <p>This decouples liveness signaling from output format. Heartbeat lines are safe to receive by agents that read stdout line-by-line AND by agents that collect all output at exit (heartbeat lines are valid JSONL; the final envelope line is also valid JSONL).</p>
+<hr />
+<h2 id="numbering-stream-lines">Numbering Stream Lines</h2>
+<p>An agent that reads a stream through a pipe, a log, or a runtime that may drop lines cannot tell a short stream from a damaged one. A command can number its item lines with <code>_seq</code> (<code>1</code> on the first, one more on each next line) and put <code>"_count": N</code> on its summary line; an error terminal envelope then carries <code>meta.items_emitted</code>, the last <code>_seq</code> emitted. Heartbeat lines and the terminal line carry no <code>_seq</code>. The agent compares the last <code>_seq</code> it read with <code>_count</code> or <code>meta.items_emitted</code>, and a gap between two lines it read shows exactly where a line went missing. Numbering is optional and additive: a consumer that ignores <code>_seq</code> reads the stream as before, so turn it on for any stream whose items an agent counts or resumes from (REQ-O-004).</p>
 <hr />
 <h2 id="streams-that-change-state">Streams That Change State</h2>
 <p>A command that applies one change per input item (a bulk import, a sync) can stream its events so the agent sees each one as it lands. It declares <code>danger_level: "mutating"</code>; a destructive command cannot stream, because a stream cannot stop for confirmation before each action. Each event carries its own <code>effect</code>, the summary line counts the events per effect, and <code>--dry-run</code>, when offered, turns every event into a <code>would_*</code> preview. The command takes no <code>--idempotency-key</code>: a retry after a failure starts from the events already received, not from a replayed result (REQ-O-004).</p>

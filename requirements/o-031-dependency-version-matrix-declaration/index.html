@@ -10199,10 +10199,11 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: High / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST provide a mechanism for declaring all required runtime dependencies (external binaries, runtimes, and system libraries) with their minimum and maximum compatible version constraints. Each declared dependency MUST include: <code>name</code>, <code>check_command</code> (exact shell command to verify presence), <code>version_regex</code> (regex to extract the version string from check_command output), <code>min_version</code>, <code>max_version</code> (optional), and <code>fix_command</code> (exact shell command to install or upgrade). These declarations are automatically consumed by <code>tool doctor</code> (REQ-O-026) and emitted in <code>--schema</code> output.</p>
+<p>The framework MUST provide a mechanism for declaring all required runtime dependencies (external binaries, runtimes, and system libraries) with their minimum and maximum compatible version constraints. Each declared dependency MUST include: <code>name</code>, <code>check_command</code> (exact shell command to verify presence; when <code>min_version</code> is a version, its output carries the installed version for <code>version_regex</code>), <code>version_regex</code> (regex to extract the version string from check_command output), <code>min_version</code>, <code>max_version</code> (optional), and <code>fix_command</code> (exact shell command to install or upgrade). A <code>min_version</code> value is a minimum version, or <code>"*"</code> when any version will do: presence only. For a <code>"*"</code> dependency <code>tool doctor</code> runs <code>check_command</code> and passes when it exits <code>0</code>, skipping <code>version_regex</code> and the version comparison, so <code>version_regex</code> is not needed; a dependency with no <code>--version</code> flag declares a presence command such as <code>command -v bean-format</code> as its <code>check_command</code>. These declarations are automatically consumed by <code>tool doctor</code> (REQ-O-026) and emitted in <code>--schema</code> output.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A declared dependency with a version below <code>min_version</code> appears as a failed check in <code>tool doctor</code></li>
+<li>A declared dependency with <code>min_version: "*"</code> passes <code>tool doctor</code> when its <code>check_command</code> exits <code>0</code> and fails otherwise; <code>doctor</code> applies no <code>version_regex</code> and no version comparison, and reports it with <code>min_version: "*"</code> and no <code>found_version</code></li>
 <li>A declared dependency with a version above <code>max_version</code> appears as a compatibility warning in <code>tool doctor</code></li>
 <li><code>tool doctor --format json</code> includes a <code>dependencies</code> array with all declared dependencies and their check results</li>
 <li>The <code>fix_command</code> for each failed dependency is an executable shell command</li>
@@ -10220,12 +10221,13 @@
     &quot;checks&quot;: [],
     &quot;dependencies&quot;: [
       { &quot;name&quot;: &quot;node&quot;, &quot;check_command&quot;: &quot;node --version&quot;, &quot;version_regex&quot;: &quot;v(\\d+\\.\\d+)&quot;, &quot;min_version&quot;: &quot;18.0.0&quot;, &quot;found_version&quot;: &quot;20.11.0&quot;, &quot;ok&quot;: true },
+      { &quot;name&quot;: &quot;bean-format&quot;, &quot;check_command&quot;: &quot;command -v bean-format&quot;, &quot;min_version&quot;: &quot;*&quot;, &quot;ok&quot;: true },
       { &quot;name&quot;: &quot;terraform&quot;, &quot;check_command&quot;: &quot;terraform version&quot;, &quot;version_regex&quot;: &quot;Terraform v(\\d+\\.\\d+)&quot;, &quot;min_version&quot;: &quot;1.5.0&quot;, &quot;found_version&quot;: null, &quot;ok&quot;: false, &quot;fix_command&quot;: &quot;brew install terraform&quot; }
     ]
   },
   &quot;error&quot;: {
     &quot;code&quot;: &quot;DOCTOR_CHECKS_FAILED&quot;,
-    &quot;message&quot;: &quot;1 of 2 declared dependencies failed&quot;,
+    &quot;message&quot;: &quot;1 of 3 declared dependencies failed&quot;,
     &quot;retryable&quot;: false,
     &quot;fix_required&quot;: &quot;Apply the fix listed for each failed check in data.dependencies&quot;
   },
@@ -10246,9 +10248,17 @@ app.declare_dependency(
   fix_command=&quot;brew install terraform&quot;,
 )
 
+app.declare_dependency(
+  name=&quot;bean-format&quot;,
+  check_command=&quot;command -v bean-format&quot;,   # no --version flag: presence only
+  min_version=&quot;*&quot;,                          # any version; no version_regex needed
+  fix_command=&quot;pip install beancount&quot;,
+)
+
 # Dependency checks run automatically in tool doctor:
 $ tool doctor
 → FAIL terraform: not found (fix: brew install terraform)
+→ OK   bean-format: present (any version)
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>

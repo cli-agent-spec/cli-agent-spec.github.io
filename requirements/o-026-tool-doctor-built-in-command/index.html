@@ -10199,13 +10199,14 @@
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: Medium / Time: Medium / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST provide a built-in <code>tool doctor</code> command that runs all registered <code>preflight()</code> hooks and reports results. Each check MUST include: <code>name</code>, <code>ok</code> (boolean), <code>version</code> found (if applicable), <code>required</code> version (if applicable), <code>error</code> message (if failed), and <code>fix</code> (exact shell command to resolve the issue). The command MUST exit <code>0</code> if all checks pass, exit <code>1</code> if any check fails. The <code>doctor</code> command MUST also test network connectivity and proxy settings for all registered network endpoints. For each command's <code>required_tools</code> (REQ-C-018), a minimum version is checked against the version found; a <code>"*"</code> value means any version, so <code>doctor</code> checks only that the program resolves on <code>PATH</code>, MUST NOT run it, and reports <code>required: "*"</code> with no <code>version</code>.</p>
+<p>The framework MUST provide a built-in <code>tool doctor</code> command that runs all registered <code>preflight()</code> hooks and reports results. Each check MUST include: <code>name</code>, <code>ok</code> (boolean), <code>version</code> found (if applicable), <code>required</code> version (if applicable), <code>error</code> message (if failed), and <code>fix</code> (exact shell command to resolve the issue). The command MUST exit <code>0</code> if all checks pass, and exit <code>4</code> (<code>PRECONDITION</code>) with <code>error.code: "DOCTOR_CHECKS_FAILED"</code> if any check fails. The <code>doctor</code> command MUST also test network connectivity and proxy settings for all registered network endpoints. For each command's <code>required_tools</code> (REQ-C-018), a minimum version is checked against the version found; a <code>"*"</code> value means any version, so <code>doctor</code> checks only that the program resolves on <code>PATH</code>, MUST NOT run it, and reports <code>required: "*"</code> with no <code>version</code>. A declared dependency (REQ-O-031) follows the same rule through its own <code>check_command</code>: a <code>min_version</code> of <code>"*"</code> means any version, so <code>doctor</code> runs <code>check_command</code> and passes when it exits <code>0</code>, skipping <code>version_regex</code> and the version comparison, and reports <code>min_version: "*"</code> with no <code>found_version</code> in <code>data.dependencies</code>. Either way <code>"*"</code> is a presence check: <code>PATH</code> lookup for a <code>required_tools</code> entry, which declares no command, and the declared <code>check_command</code> for a dependency.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li><code>tool doctor --format json</code> returns a structured JSON object with a <code>checks</code> array</li>
 <li>Each failed check includes a <code>fix</code> field with an executable shell command</li>
 <li>A missing required dependency appears as a failed check with <code>ok: false</code></li>
 <li>A <code>required_tools</code> entry declared as <code>"*"</code> passes when the program resolves on <code>PATH</code>, without <code>doctor</code> running it, and its check carries <code>required: "*"</code> and no <code>version</code></li>
+<li>A declared dependency with <code>min_version: "*"</code> passes when its <code>check_command</code> exits <code>0</code>, with no <code>version_regex</code> or version comparison, and is reported with <code>min_version: "*"</code> and no <code>found_version</code></li>
 <li><code>tool doctor</code> exit code is <code>0</code> iff all checks pass; otherwise it exits <code>4</code> (<code>PRECONDITION</code>) with <code>error.code: "DOCTOR_CHECKS_FAILED"</code> and the full report in <code>data</code></li>
 </ul>
 <hr />
@@ -10264,7 +10265,7 @@ $ tool doctor --format json
 <tr>
 <td><a href="../o-031-dependency-version-matrix-declaration/">REQ-O-031</a></td>
 <td>O</td>
-<td>Provides: declared dependency constraints that <code>tool doctor</code> checks</td>
+<td>Provides: declared dependency constraints that <code>tool doctor</code> checks, where <code>"*"</code> means <code>check_command</code> exits <code>0</code></td>
 </tr>
 <tr>
 <td><a href="../c-018-commands-declare-platform-requirements/">REQ-C-018</a></td>

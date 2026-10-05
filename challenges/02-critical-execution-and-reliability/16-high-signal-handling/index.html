@@ -10277,10 +10277,14 @@ def handle_sigterm(signum, frame):
     # Emit partial result to stdout before exit
     result = {
         &quot;ok&quot;: False,
-        &quot;partial&quot;: True,
+        &quot;data&quot;: {
+            &quot;partial&quot;: True,
+            &quot;completed_steps&quot;: get_completed_steps(),
+            &quot;resume_from&quot;: get_current_step()
+        },
         &quot;error&quot;: {&quot;code&quot;: &quot;CANCELLED&quot;, &quot;message&quot;: &quot;Process received SIGTERM&quot;},
-        &quot;completed_steps&quot;: get_completed_steps(),
-        &quot;resume_from&quot;: get_current_step()
+        &quot;warnings&quot;: [],
+        &quot;meta&quot;: {&quot;exit_code&quot;: 143, &quot;duration_ms&quot;: elapsed_ms()}
     }
     sys.stdout.write(json.dumps(result) + &quot;\n&quot;)
     sys.stdout.flush()
