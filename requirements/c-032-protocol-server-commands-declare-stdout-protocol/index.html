@@ -10214,6 +10214,7 @@
 <li><code>async: true</code> (REQ-C-022) or <code>spawns_background_process: true</code>, <code>cleanup_command</code>, and <code>max_lifetime_seconds</code> (REQ-C-010): the server runs in the foreground until the client ends the session</li>
 <li><code>confirm_flag</code> or <code>safe_default: true</code> (REQ-O-048): there is no single action to preview or confirm</li>
 </ul>
+<p><strong>Commands kept off the tool's MCP server.</strong> A tool that serves its commands as MCP tools, such as through an <code>mcp-stdio</code> protocol command, builds the tool list from its manifest. Some commands must never be a tool: an approval a person gives, a project-creating <code>init</code>, a watch loop that never returns. Such a command MUST declare <code>mcp: false</code> at registration. The field is present only when <code>false</code>; absent means the tool's MCP server may offer the command as a tool, and the manifest schema rejects <code>mcp: true</code>. A server built from the manifest never lists a command marked <code>mcp: false</code>, and a call naming it is refused inside the protocol as an unknown tool. An agent runs such a command through the CLI, or hands it to a person. <code>mcp</code> is independent of <code>stdout</code>: it applies to any command, and it says nothing about MCP servers other than the tool's own.</p>
 <p><strong>Exemptions, for protocol commands only:</strong></p>
 <ul>
 <li>REQ-F-004 and REQ-F-006: stdout carries the protocol; the only envelope is the failure envelope on the last line of stderr</li>
@@ -10243,11 +10244,14 @@
 <li>A server that stays idle past the default timeout after serving begins is not terminated by the framework</li>
 <li>A protocol command does not accept <code>--idempotency-key</code>, <code>--dry-run</code>, <code>--output</code>, or <code>--confirm-destructive</code></li>
 <li>A command without <code>stdout</code> behaves exactly as before under REQ-F-004, REQ-F-006, REQ-F-011, and REQ-C-007</li>
+<li><code>tool manifest</code> shows <code>mcp: false</code> on every command the tool's MCP server leaves out, and no <code>mcp</code> field on any other command</li>
+<li>The tool's MCP server lists no command marked <code>mcp: false</code> in its tool list, and a call naming one is answered with a protocol error, not run</li>
+<li>A manifest with <code>mcp: true</code> on any command fails validation against the manifest schema</li>
 </ul>
 <h2 id="schema">Schema</h2>
 <p><strong>Types:</strong></p>
 <ul>
-<li><a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a>: <code>stdout</code> (<code>"protocol"</code>, absent means stdout carries envelopes) and <code>protocol</code> (lowercase kebab-case name, documented values <code>mcp-stdio</code>, <code>lsp</code>, <code>dap</code>) on <code>CommandEntry</code>. Each requires the other, and a protocol entry carries none of the fields that do not combine with it</li>
+<li><a href="../../schemas/manifest-response/"><code>manifest-response.md</code></a>: <code>stdout</code> (<code>"protocol"</code>, absent means stdout carries envelopes) and <code>protocol</code> (lowercase kebab-case name, documented values <code>mcp-stdio</code>, <code>lsp</code>, <code>dap</code>) on <code>CommandEntry</code>. Each requires the other, and a protocol entry carries none of the fields that do not combine with it. <code>mcp</code> (<code>false</code> only; absent means the tool's MCP server may offer the command) on any <code>CommandEntry</code></li>
 <li><a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a>: the failure envelope on the last line of stderr, unchanged in shape</li>
 </ul>
 <h2 id="wire-format">Wire Format</h2>
@@ -10281,6 +10285,25 @@
 <pre><code class="language-json">{&quot;ok&quot;: false, &quot;data&quot;: null, &quot;error&quot;: {&quot;code&quot;: &quot;ARG_ERROR&quot;, &quot;message&quot;: &quot;--read-only expects a boolean, got 'maybe'&quot;, &quot;retryable&quot;: false, &quot;phase&quot;: &quot;validation&quot;}, &quot;warnings&quot;: [], &quot;meta&quot;: {&quot;exit_code&quot;: 2, &quot;duration_ms&quot;: 9}}
 </code></pre>
 <p>The process exits <code>2</code>. Started correctly, the same command writes only MCP messages to stdout and exits <code>0</code> when its client closes stdin.</p>
+<p>A command kept off the MCP server. <code>tool mcp serve</code> never lists <code>release.approve</code> as a tool:</p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.17&quot;,
+  &quot;framework_version&quot;: &quot;2.1.0&quot;,
+  &quot;etag&quot;: &quot;sha256:91c3e7&quot;,
+  &quot;commands&quot;: {
+    &quot;release.approve&quot;: {
+      &quot;description&quot;: &quot;Record a person's approval of a pending release&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [&quot;releases:approve&quot;],
+      &quot;mcp&quot;: false,
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: {
+        &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;The approval is recorded&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; }
+      }
+    }
+  }
+}
+</code></pre>
 <h2 id="example">Example</h2>
 <pre><code>register command &quot;mcp.serve&quot;:
   stdout: protocol
@@ -10294,6 +10317,13 @@
 # stdout: &quot;protocol&quot;, protocol: &quot;mcp-stdio&quot; → register it as an MCP server, never parse its stdout as an envelope
 # Exit 2 before any MCP message arrives → read the last stderr line; the server never started
 # Exit 143 after the agent sent SIGTERM → expected end of the session
+
+register command &quot;release.approve&quot;:
+  mcp: false                          # a person approves; never an MCP tool
+  danger_level: mutating
+
+# mcp.serve builds its tool list from the manifest and leaves out release.approve
+# An agent that needs the approval asks a person to run `tool release approve &lt;id&gt;`
 </code></pre>
 <h2 id="related">Related</h2>
 <table>
@@ -10368,7 +10398,12 @@
 <tr>
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
 <td>O</td>
-<td>Exposes: <code>stdout</code> and <code>protocol</code> appear in the manifest</td>
+<td>Exposes: <code>stdout</code>, <code>protocol</code>, and <code>mcp</code> appear in the manifest</td>
+</tr>
+<tr>
+<td><a href="../o-035-tool-mcp-validate-built-in-command/">REQ-O-035</a></td>
+<td>O</td>
+<td>Composes: a command marked <code>mcp: false</code> is never reported as missing from the MCP schema</td>
 </tr>
 </tbody>
 </table>

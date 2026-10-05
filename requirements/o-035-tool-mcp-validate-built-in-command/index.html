@@ -10199,12 +10199,13 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: High / Context: Medium</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>When the tool is wrapped as an MCP server, the framework MUST provide a built-in <code>tool mcp-validate</code> command that compares the MCP tool schemas with the current CLI command schemas and reports any drift. Schema drift is defined as: a field present in the CLI schema but absent from the MCP schema; a field present in the MCP schema but absent from the CLI schema; a field type that differs between the two schemas; a new command added to the CLI but not exposed in the MCP wrapper. The command MUST accept <code>--mcp-schema-file &lt;path&gt;</code> or <code>--mcp-server-url &lt;url&gt;</code> as the source of truth for the MCP schema.</p>
+<p>When the tool is wrapped as an MCP server, the framework MUST provide a built-in <code>tool mcp-validate</code> command that compares the MCP tool schemas with the current CLI command schemas and reports any drift. Schema drift is defined as: a field present in the CLI schema but absent from the MCP schema; a field present in the MCP schema but absent from the CLI schema; a field type that differs between the two schemas; a new command added to the CLI but not exposed in the MCP wrapper, unless its manifest entry carries <code>mcp: false</code> (REQ-C-032). The command MUST accept <code>--mcp-schema-file &lt;path&gt;</code> or <code>--mcp-server-url &lt;url&gt;</code> as the source of truth for the MCP schema.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li><code>tool mcp-validate --mcp-schema-file mcp.json</code> exits 0 if schemas match, non-zero if drift is detected</li>
 <li>Drift is reported as a structured JSON diff with <code>added</code>, <code>removed</code>, and <code>changed</code> fields</li>
 <li>A new CLI command not present in the MCP schema is reported as a <code>missing_from_mcp</code> drift entry</li>
+<li>A command marked <code>mcp: false</code> is never reported as <code>missing_from_mcp</code></li>
 <li>The command can be run in CI to detect schema staleness before deployment</li>
 </ul>
 <hr />
@@ -10268,6 +10269,11 @@ $ tool mcp-validate --mcp-schema-file ./mcp-server/schema.json
 <td><a href="../o-041-tool-manifest-built-in-command/">REQ-O-041</a></td>
 <td>O</td>
 <td>Provides: manifest used as the canonical CLI schema source for comparison</td>
+</tr>
+<tr>
+<td><a href="../c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a></td>
+<td>C</td>
+<td>Consumes: <code>mcp: false</code> marks a command the MCP server leaves out on purpose</td>
 </tr>
 </tbody>
 </table>

@@ -10589,6 +10589,11 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td>Lowercase kebab-case name of the protocol served: <code>mcp-stdio</code>, <code>lsp</code>, <code>dap</code>, or another protocol's name in the same form. Present exactly when <code>stdout</code> is <code>"protocol"</code> (REQ-C-032)</td>
 </tr>
 <tr>
+<td><code>mcp</code></td>
+<td><code>false</code></td>
+<td><code>false</code>: the tool's own MCP server never offers the command as a tool (an approval a person gives, a project-creating <code>init</code>, a watch loop that never returns); an agent runs it through the CLI or hands it to a person. Present only when <code>false</code>; <code>true</code> is rejected, and absent means the tool's MCP server may offer the command as a tool (REQ-C-032)</td>
+</tr>
+<tr>
 <td><code>stderr</code></td>
 <td><code>"child_log"</code></td>
 <td><code>child_log</code>: stderr carries a wrapped program's output as plain text, line by line, whatever <code>--format</code> and verbosity say; <code>--quiet</code> silences it, and stdout carries only the envelope. Absent means stderr carries the framework's own diagnostics only. Never on a passthrough command (REQ-F-038)</td>
@@ -11452,6 +11457,47 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Violation: <code>streaming_default: true</code> promises JSONL events on stdout, while <code>stdout: "protocol"</code> gives stdout to LSP messages. A protocol command has no result to stream, format, or write to an <code>--output</code> file.</p>
+<p><strong>Valid — commands kept off the MCP server</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.17&quot;,
+  &quot;framework_version&quot;: &quot;2.1.0&quot;,
+  &quot;etag&quot;: &quot;sha256:91c3e7&quot;,
+  &quot;commands&quot;: {
+    &quot;release.approve&quot;: {
+      &quot;description&quot;: &quot;Record a person's approval of a pending release&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [&quot;releases:approve&quot;],
+      &quot;mcp&quot;: false,
+      &quot;flags&quot;: {},
+      &quot;positionals&quot;: [{ &quot;name&quot;: &quot;release&quot;, &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: true, &quot;description&quot;: &quot;Release ID to approve&quot; }],
+      &quot;exit_codes&quot;: {
+        &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;The approval is recorded&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; }
+      }
+    },
+    &quot;release.list&quot;: {
+      &quot;description&quot;: &quot;List pending releases&quot;,
+      &quot;danger_level&quot;: &quot;safe&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: {
+        &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;The releases are listed&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; }
+      }
+    }
+  }
+}
+</code></pre>
+<p>The tool's MCP server offers <code>release.list</code> as a tool and never lists <code>release.approve</code>. An agent that needs an approval hands <code>tool release approve &lt;id&gt;</code> to a person rather than calling it from an MCP session.</p>
+<p><strong>Invalid — <code>mcp: true</code></strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.17&quot;,
+  &quot;framework_version&quot;: &quot;2.1.0&quot;,
+  &quot;etag&quot;: &quot;sha256:91c3e7&quot;,
+  &quot;commands&quot;: {
+    &quot;release.list&quot;: { &quot;description&quot;: &quot;List pending releases&quot;, &quot;danger_level&quot;: &quot;safe&quot;, &quot;required_scopes&quot;: [], &quot;mcp&quot;: true, &quot;flags&quot;: {}, &quot;exit_codes&quot;: {} }
+  }
+}
+</code></pre>
+<p>Violation: <code>mcp</code> is present only when <code>false</code>. A command the MCP server may offer omits the field, so two producers never spell the default two ways.</p>
 <p><strong>Valid — idempotent command whose partial failure is rerun</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.15&quot;,
@@ -11540,6 +11586,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Declaring <code>help_argv</code> on a declared command.</strong> The framework answers <code>--help</code> itself there; <code>help_argv</code> exists only where a lone <code>--help</code> would otherwise reach the delegated tool</li>
 <li><strong>Saying only in <code>description</code> that a command is an MCP or language server.</strong> An agent that calls it as an ordinary command parses MCP messages as an envelope or waits for an exit that comes only when stdin closes; declare <code>stdout: "protocol"</code> and <code>protocol</code></li>
 <li><strong>Writing a startup error to stdout on a protocol command.</strong> The client reads stdout as protocol messages from the first byte; a failure before serving begins goes to stderr, and stdout stays empty</li>
+<li><strong>Saying only in <code>description</code> that a command is not an MCP tool.</strong> "(not an MCP tool)" is prose a server generator and an agent must parse; declare <code>mcp: false</code></li>
+<li><strong>Emitting <code>mcp: true</code>.</strong> The schema rejects it; a command the MCP server may offer omits <code>mcp</code></li>
 <li><strong>Saying only in <code>description</code> that a command streams a wrapped program's log.</strong> An agent cannot match prose before the call; declare <code>stderr: "child_log"</code> so it knows stderr will be busy and carries no failure signal</li>
 <li><strong>Letting auto-quiet or <code>--verbose</code> gate a declared child log.</strong> <code>child_log</code> streams whatever the verbosity; only <code>--quiet</code> silences it, so a log that appears only under <code>--verbose</code> is a framework diagnostic, not a child log</li>
 <li><strong>Listing a borrowed name before the tool-prefixed one.</strong> <code>CLOUDFALL_PROJECT</code> ahead of <code>TOOL_PROJECT</code> lets a variable set for another tool override the one set for this tool (REQ-F-073)</li>
@@ -11640,6 +11688,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Exit <code>0</code> after you close stdin is a clean shutdown and carries no envelope. <code>143</code> after you sent <code>SIGTERM</code> is the expected end of the session, not a failure to report
 - Stderr while serving holds the framework's plain-text diagnostics; never read it as protocol messages
 - An absent <code>stdout</code> means stdout carries envelopes, including on a pre-3.16 manifest; such a manifest cannot mark a protocol command, so treat a command whose <code>description</code> says it serves MCP, LSP, or another protocol over stdio as one</p>
+<p><strong>Commands kept off the MCP server (<code>mcp: false</code>)</strong>
+- <code>mcp: false</code>: the tool's own MCP server never offers the command as a tool. Run it through the CLI, or hand it to a person when it needs one (an approval, a project-creating <code>init</code>); never expect to find it among the server's tools
+- When building an MCP tool list from the manifest, leave out every entry with <code>mcp: false</code>
+- An absent <code>mcp</code> means the tool's MCP server may offer the command as a tool, including on a pre-3.17 manifest; such a manifest cannot mark a command kept off the server, so read its <code>description</code> for a note such as "not an MCP tool"</p>
 <p><strong>Reading stderr from <code>stderr</code></strong>
 - <code>stderr: "child_log"</code>: expect a wrapped program's log on stderr, as plain text, whatever <code>--format</code> and verbosity say. Discard it or keep only its tail for a person; pass <code>--quiet</code> to silence it when no one will read it
 - Never treat stderr text from such a command as a failure signal, even when it contains words like <code>ERROR</code> or <code>failed</code>; the exit code and the envelope on stdout stay authoritative
@@ -11671,6 +11723,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert root <code>env_vars</code> lists every other variable the tool reads outside the universal exceptions, each with a <code>description</code> and either the tool prefix or a declared name that immediately follows its setting's prefixed entry, and no name that also appears in a flag's <code>env_vars</code>, a <code>secret_env_vars</code>, or a <code>token_env_vars</code>
 - Assert root <code>secret_env_vars</code> lists exactly the secrets every command reads, and that none of them repeats in a command's <code>secret_env_vars</code> or a flag's <code>env_vars</code>; assert no name in an auth command's <code>token_env_vars</code> repeats in that command's <code>secret_env_vars</code>
 - Assert <code>stdout: "protocol"</code> and <code>protocol</code> appear together on exactly the commands that serve a protocol over stdio, that such a command writes nothing to stdout before serving begins, ends stderr with the envelope on any non-zero exit in JSON mode, exits <code>0</code> when stdin closes, and declares none of the fields REQ-C-032 excludes
+- Assert <code>mcp: false</code> appears on exactly the commands the tool's MCP server leaves out, that the server's tool list holds every other command it serves and none marked <code>mcp: false</code>, and that no entry carries <code>mcp: true</code>
 - Assert <code>stderr: "child_log"</code> appears on exactly the commands that stream a wrapped program's output to stderr, never on a passthrough command, and that <code>--quiet</code> leaves stderr empty for them
 - Assert the root <code>format</code> flag's <code>media_types</code> keys are all in its <code>enum_values</code>, cover every value outside the spec's media type table, and map each spec value they list to the table's media type; assert no other flag carries <code>media_types</code>
 - Assert every <code>output_formats</code> value covered by neither the spec's table nor the root <code>media_types</code> has an <code>output_media_types</code> entry, and every <code>output_media_types</code> key is a value the command accepts
@@ -11773,7 +11826,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 </tr>
 <tr>
 <td><a href="../../requirements/c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a></td>
-<td>Sources: <code>stdout</code> and <code>protocol</code> per command</td>
+<td>Sources: <code>stdout</code>, <code>protocol</code>, and <code>mcp</code> per command</td>
 </tr>
 <tr>
 <td><a href="../../requirements/f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a></td>

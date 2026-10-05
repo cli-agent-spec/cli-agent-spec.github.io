@@ -10034,6 +10034,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-317-commands-kept-off-the-mcp-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.17: commands kept off the MCP server
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10654,6 +10665,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manifestresponse-317-commands-kept-off-the-mcp-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ManifestResponse 3.17: commands kept off the MCP server
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -11245,6 +11267,15 @@
 <li><code>manifest-response.md</code> and the <code>required_tools</code> description in <code>manifest-response.json</code> say the same. The value type stays a string, so <code>ManifestResponse</code> stays 3.16 with a description change only</li>
 </ul>
 <p><strong>Why:</strong> <code>required_tools</code> mapped each program to a minimum version with no way to declare one needed at any version, so a program with no <code>--version</code> flag, such as <code>bean-format</code>, could not be declared without inventing a version <code>doctor</code> could never check (#58).</p>
+<h3 id="manifestresponse-317-commands-kept-off-the-mcp-server">ManifestResponse 3.17: commands kept off the MCP server</h3>
+<ul>
+<li>REQ-C-032: a command the tool's own MCP server must never offer as a tool (an approval a person gives, a project-creating <code>init</code>, a watch loop that never returns) declares <code>CommandEntry.mcp: false</code>. The field is present only when <code>false</code>; absent means the tool's MCP server may offer the command, and the schema rejects <code>mcp: true</code></li>
+<li>A server built from the manifest never lists a command marked <code>mcp: false</code>, and a call naming one is refused inside the protocol; an agent runs such a command through the CLI or hands it to a person</li>
+<li>REQ-O-035: <code>tool mcp-validate</code> never reports a command marked <code>mcp: false</code> as <code>missing_from_mcp</code></li>
+<li><code>manifest-response.md</code> gains the field row, a valid and an invalid example, the agent interpretation, and a generated assertion; <code>tests/test_manifest_schema.py</code> pins the schema behaviour</li>
+<li>A producer that sets <code>mcp</code> emits <code>schema_version</code> <code>3.17</code>; a pre-3.17 manifest stays valid, and on it an absent <code>mcp</code> cannot mark a command kept off the server</li>
+</ul>
+<p><strong>Why:</strong> a tool can serve its commands as MCP tools, yet <code>CommandEntry</code> took no extra properties and had no field to keep a command off that server, so a manifest could say so only in the description (#55).</p>
 <h2 id="1110-2026-10-03">1.11.0 — 2026-10-03</h2>
 <h3 id="external-content-in-errorcontext-is-tagged-and-masked">External content in <code>error.context</code> is tagged and masked</h3>
 <ul>
