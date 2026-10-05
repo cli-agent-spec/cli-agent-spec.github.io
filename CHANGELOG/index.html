@@ -10020,6 +10020,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required_tools-declares-a-program-needed-at-any-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        required_tools declares a program needed at any version
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -10623,6 +10640,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required_tools-declares-a-program-needed-at-any-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        required_tools declares a program needed at any version
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -11204,6 +11238,13 @@
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
 <h2 id="unreleased">Unreleased</h2>
+<h3 id="required_tools-declares-a-program-needed-at-any-version"><code>required_tools</code> declares a program needed at any version</h3>
+<ul>
+<li>REQ-C-018: a <code>required_tools</code> value is a minimum version or <code>"*"</code>, meaning any version; the program need only resolve on <code>PATH</code> and is never run to read a version. New acceptance criterion and a <code>"*"</code> entry in the wire format and example</li>
+<li>REQ-O-026: <code>tool doctor</code> checks a <code>"*"</code> entry by <code>PATH</code> lookup only, never runs the program, and reports <code>required: "*"</code> with no <code>version</code>. New acceptance criterion and a passing <code>"*"</code> check in the wire format</li>
+<li><code>manifest-response.md</code> and the <code>required_tools</code> description in <code>manifest-response.json</code> say the same. The value type stays a string, so <code>ManifestResponse</code> stays 3.16 with a description change only</li>
+</ul>
+<p><strong>Why:</strong> <code>required_tools</code> mapped each program to a minimum version with no way to declare one needed at any version, so a program with no <code>--version</code> flag, such as <code>bean-format</code>, could not be declared without inventing a version <code>doctor</code> could never check (#58).</p>
 <h2 id="1110-2026-10-03">1.11.0 — 2026-10-03</h2>
 <h3 id="external-content-in-errorcontext-is-tagged-and-masked">External content in <code>error.context</code> is tagged and masked</h3>
 <ul>

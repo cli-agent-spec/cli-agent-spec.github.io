@@ -10199,10 +10199,11 @@
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: Medium / Time: Medium / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Commands that have platform-specific requirements MUST declare them in their registration metadata: <code>platform</code> (array of supported OS names), <code>shell_requirements</code> (minimum shell version if applicable), and <code>required_tools</code> (array of external tool dependencies with minimum versions). The framework uses this information to populate <code>tool doctor</code> checks (REQ-O-026) and to emit a warning when a command is invoked on an unsupported platform.</p>
+<p>Commands that have platform-specific requirements MUST declare them in their registration metadata: <code>platform</code> (array of supported OS names), <code>shell_requirements</code> (minimum shell version if applicable), and <code>required_tools</code> (a map from each external program the command invokes to the minimum version it needs). A <code>required_tools</code> value is a minimum version, or <code>"*"</code> when any version will do: the program need only resolve on <code>PATH</code> and is never run to read a version, which suits a program with no <code>--version</code> flag. The framework uses this information to populate <code>tool doctor</code> checks (REQ-O-026) and to emit a warning when a command is invoked on an unsupported platform.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li><code>tool doctor</code> reports a check failure for each missing or outdated required tool</li>
+<li>A required tool declared as <code>"*"</code> passes <code>tool doctor</code> when it resolves on <code>PATH</code> and fails when it does not; <code>doctor</code> never runs it</li>
 <li>Invoking a Linux-only command on macOS emits a compatibility warning in <code>meta.warnings</code></li>
 <li>The <code>--schema</code> output for each command includes <code>platform</code> and <code>required_tools</code></li>
 </ul>
@@ -10227,7 +10228,7 @@
 <tr>
 <td><code>required_tools</code></td>
 <td><code>Record&lt;string, string&gt;</code></td>
-<td>External binary dependencies; key is tool name, value is minimum version (semver)</td>
+<td>External binary dependencies; key is tool name, value is minimum version (semver) or <code>"*"</code> for any version (presence on <code>PATH</code> only)</td>
 </tr>
 </tbody>
 </table>
@@ -10242,7 +10243,8 @@
   &quot;platform&quot;: [&quot;linux&quot;],
   &quot;required_tools&quot;: {
     &quot;dpkg-deb&quot;: &quot;1.19.0&quot;,
-    &quot;fakeroot&quot;: &quot;1.20.0&quot;
+    &quot;fakeroot&quot;: &quot;1.20.0&quot;,
+    &quot;lintian&quot;: &quot;*&quot;
   },
   &quot;exit_codes&quot;: {
     &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;,   &quot;description&quot;: &quot;Package built successfully&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; },
@@ -10257,10 +10259,11 @@
   required_tools:
     dpkg-deb: &quot;&gt;=1.19.0&quot;
     fakeroot: &quot;&gt;=1.20.0&quot;
+    lintian: &quot;*&quot;          # any version; doctor checks PATH only and never runs it
   parameters:
     output: type=string, required=true, description=&quot;Output archive path&quot;
 
-# tool doctor  →  reports check failure if dpkg-deb or fakeroot is missing/outdated
+# tool doctor  →  reports check failure if dpkg-deb or fakeroot is missing/outdated, or lintian is missing
 # tool package (on macOS)  →  emits meta.warnings: [&quot;Command not supported on darwin; expected linux&quot;]
 </code></pre>
 <hr />
@@ -10283,6 +10286,11 @@
 <td><a href="../f-004-consistent-json-response-envelope/">REQ-F-004</a></td>
 <td>F</td>
 <td>Wraps: platform compatibility warnings surface in <code>ResponseEnvelope.warnings</code></td>
+</tr>
+<tr>
+<td><a href="../o-026-tool-doctor-built-in-command/">REQ-O-026</a></td>
+<td>O</td>
+<td>Consumes: <code>tool doctor</code> checks each <code>required_tools</code> entry, a <code>"*"</code> one by <code>PATH</code> lookup only</td>
 </tr>
 </tbody>
 </table>

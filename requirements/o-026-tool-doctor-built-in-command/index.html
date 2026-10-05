@@ -10199,12 +10199,13 @@
 <p><strong>Addresses:</strong> Severity: Medium / Token Spend: Medium / Time: Medium / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST provide a built-in <code>tool doctor</code> command that runs all registered <code>preflight()</code> hooks and reports results. Each check MUST include: <code>name</code>, <code>ok</code> (boolean), <code>version</code> found (if applicable), <code>required</code> version (if applicable), <code>error</code> message (if failed), and <code>fix</code> (exact shell command to resolve the issue). The command MUST exit <code>0</code> if all checks pass, exit <code>1</code> if any check fails. The <code>doctor</code> command MUST also test network connectivity and proxy settings for all registered network endpoints.</p>
+<p>The framework MUST provide a built-in <code>tool doctor</code> command that runs all registered <code>preflight()</code> hooks and reports results. Each check MUST include: <code>name</code>, <code>ok</code> (boolean), <code>version</code> found (if applicable), <code>required</code> version (if applicable), <code>error</code> message (if failed), and <code>fix</code> (exact shell command to resolve the issue). The command MUST exit <code>0</code> if all checks pass, exit <code>1</code> if any check fails. The <code>doctor</code> command MUST also test network connectivity and proxy settings for all registered network endpoints. For each command's <code>required_tools</code> (REQ-C-018), a minimum version is checked against the version found; a <code>"*"</code> value means any version, so <code>doctor</code> checks only that the program resolves on <code>PATH</code>, MUST NOT run it, and reports <code>required: "*"</code> with no <code>version</code>.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li><code>tool doctor --format json</code> returns a structured JSON object with a <code>checks</code> array</li>
 <li>Each failed check includes a <code>fix</code> field with an executable shell command</li>
 <li>A missing required dependency appears as a failed check with <code>ok: false</code></li>
+<li>A <code>required_tools</code> entry declared as <code>"*"</code> passes when the program resolves on <code>PATH</code>, without <code>doctor</code> running it, and its check carries <code>required: "*"</code> and no <code>version</code></li>
 <li><code>tool doctor</code> exit code is <code>0</code> iff all checks pass; otherwise it exits <code>4</code> (<code>PRECONDITION</code>) with <code>error.code: "DOCTOR_CHECKS_FAILED"</code> and the full report in <code>data</code></li>
 </ul>
 <hr />
@@ -10220,12 +10221,13 @@
   &quot;data&quot;: {
     &quot;checks&quot;: [
       { &quot;name&quot;: &quot;node&quot;, &quot;ok&quot;: true, &quot;version&quot;: &quot;20.11.0&quot;, &quot;required&quot;: &quot;&gt;=18.0.0&quot; },
+      { &quot;name&quot;: &quot;bean-format&quot;, &quot;ok&quot;: true, &quot;required&quot;: &quot;*&quot; },
       { &quot;name&quot;: &quot;aws-cli&quot;, &quot;ok&quot;: false, &quot;version&quot;: null, &quot;required&quot;: &quot;&gt;=2.0.0&quot;, &quot;error&quot;: &quot;not found in PATH&quot;, &quot;fix&quot;: &quot;brew install awscli&quot; }
     ]
   },
   &quot;error&quot;: {
     &quot;code&quot;: &quot;DOCTOR_CHECKS_FAILED&quot;,
-    &quot;message&quot;: &quot;1 of 2 environment checks failed&quot;,
+    &quot;message&quot;: &quot;1 of 3 environment checks failed&quot;,
     &quot;retryable&quot;: false,
     &quot;fix_required&quot;: &quot;Apply the fix listed for each failed check in data.checks&quot;
   },
@@ -10242,6 +10244,7 @@ app.enable_doctor()
 register command &quot;deploy&quot;:
   preflight:
     - check_binary(&quot;aws&quot;, min_version=&quot;2.0.0&quot;, fix=&quot;brew install awscli&quot;)
+    - check_binary(&quot;bean-format&quot;, min_version=&quot;*&quot;, fix=&quot;pip install beancount&quot;)   # PATH lookup only, never run
     - check_network(&quot;https://api.example.com/health&quot;)
 
 $ tool doctor --format json
@@ -10262,6 +10265,11 @@ $ tool doctor --format json
 <td><a href="../o-031-dependency-version-matrix-declaration/">REQ-O-031</a></td>
 <td>O</td>
 <td>Provides: declared dependency constraints that <code>tool doctor</code> checks</td>
+</tr>
+<tr>
+<td><a href="../c-018-commands-declare-platform-requirements/">REQ-C-018</a></td>
+<td>C</td>
+<td>Provides: each command's <code>required_tools</code>, where <code>"*"</code> means a <code>PATH</code> check only</td>
 </tr>
 <tr>
 <td><a href="../f-036-http-client-proxy-environment-variable-compliance/">REQ-F-036</a></td>
