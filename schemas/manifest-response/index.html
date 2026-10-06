@@ -11528,6 +11528,29 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Violation: on a <code>type: "integer"</code> entry, <code>enum_values</code> holds integers. Strings belong to a <code>type: "enum"</code> entry, and an integer list on one of those is rejected the same way.</p>
+<p><strong>Valid — exit codes that name their <code>error.code</code> values</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.19&quot;,
+  &quot;framework_version&quot;: &quot;2.3.0&quot;,
+  &quot;etag&quot;: &quot;sha256:0c6e5b&quot;,
+  &quot;commands&quot;: {
+    &quot;resource.create&quot;: {
+      &quot;description&quot;: &quot;Create a named resource&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [&quot;resources:write&quot;],
+      &quot;flags&quot;: {
+        &quot;name&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: true, &quot;description&quot;: &quot;Name of the resource to create&quot; }
+      },
+      &quot;exit_codes&quot;: {
+        &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;The resource is created&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot;, &quot;error_codes&quot;: [] },
+        &quot;2&quot;: { &quot;name&quot;: &quot;ARG_ERROR&quot;, &quot;description&quot;: &quot;The resource name is invalid&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot;, &quot;error_codes&quot;: [&quot;INVALID_NAME&quot;] },
+        &quot;6&quot;: { &quot;name&quot;: &quot;CONFLICT&quot;, &quot;description&quot;: &quot;A resource with this name already exists; data holds it&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot;, &quot;error_codes&quot;: [&quot;ALREADY_EXISTS&quot;] }
+      }
+    }
+  }
+}
+</code></pre>
+<p>Before the first call, an agent reads that exit <code>6</code> carries <code>error.code: "ALREADY_EXISTS"</code> and plans to take the existing resource from <code>data</code> (REQ-C-028). The empty list on <code>0</code> says the success exit carries no <code>error.code</code>.</p>
 <p><strong>Valid — idempotent command whose partial failure is rerun</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.15&quot;,
@@ -11698,7 +11721,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Build the retry/rollback plan before calling, not reactively — this avoids ambiguity about whether a retry is safe after a partial failure
 - <code>idempotent: true</code> — a non-retryable exit whose entry declares <code>side_effects: "partial"</code> (such as <code>PARTIAL_FAILURE (3)</code>, a <code>TIMEOUT (10)</code> that may have written, or <code>130</code>/<code>143</code> after a signal) is recovered by rerunning the identical command once, without inspecting state. A second failure with the same <code>error.code</code> is deterministic: stop and escalate
 - The rerun rule never covers <code>ARG_ERROR (2)</code> or any error carrying <code>fix_required</code> or <code>fix_command</code>: the identical call fails until the input changes, so apply the fix first. Exits with <code>side_effects: "none"</code> follow <code>retryable</code> as usual
-- An absent <code>idempotent</code> means <code>false</code>, including on a pre-3.15 manifest: verify what was committed before rerunning a mutating command</p>
+- An absent <code>idempotent</code> means <code>false</code>, including on a pre-3.15 manifest: verify what was committed before rerunning a mutating command
+- <code>error_codes</code> on an entry lists the <code>error.code</code> values that exit carries; plan a branch for each, then branch on the received <code>error.code</code>. An absent <code>error_codes</code> means not declared, never "none", including on a pre-3.19 manifest, where an entry cannot carry the field; <code>[]</code> means the exit carries no <code>error.code</code></p>
 <p><strong>Reading declared contracts before calling</strong>
 - <code>danger_level</code> other than <code>safe</code> — prefer <code>--dry-run</code> first; <code>safe_default: true</code> means the command previews until <code>--live</code> is passed
 - <code>filesystem_side_effects</code> with <code>type: "output"</code> — the command writes its product there, even when it is <code>safe</code>; read the result from that path, and do not run <code>tool cleanup</code> expecting it to go. A pre-3.10 manifest cannot mark it and may declare it <code>cache</code>

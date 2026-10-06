@@ -10200,6 +10200,7 @@
 <hr />
 <h2 id="description">Description</h2>
 <p>Every command MUST declare a complete, exhaustive map of all exit codes it may emit, as part of its registration metadata. The framework MUST refuse to register a command that lacks this declaration. The exit code map MUST use the framework's named constants (REQ-F-001). The declared exit codes MUST be exposed in the command's <code>--schema</code> output. A passthrough command (<a href="../c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a>) declares only the codes the framework emits for it; the delegated tool's own codes pass through as <code>DELEGATED_EXIT</code> undeclared.</p>
+<p>Each entry SHOULD list in <code>error_codes</code> the <code>error.code</code> values (<a href="../c-013-error-responses-include-code-and-message/">REQ-C-013</a>) the command emits under that exit code, so an agent can plan a branch for each before the first call. An absent <code>error_codes</code> means the command does not declare them; an empty array means the exit carries no <code>error.code</code>.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>Attempting to register a command without an <code>exit_codes</code> declaration raises a framework error</li>
@@ -10207,6 +10208,7 @@
 <li>Attempting to register an entry with <code>retryable: true</code> and <code>side_effects</code> not equal to <code>"none"</code> raises a framework error</li>
 <li>The <code>--schema</code> output for every command includes an <code>exit_codes</code> object keyed by code string, each value conforming to <code>ExitCodeEntry</code></li>
 <li>A command that emits an exit code not in its declared map triggers a framework warning in development mode</li>
+<li>When an entry declares <code>error_codes</code>, every response the command emits under that exit code carries an <code>error.code</code> from the list, or none when the list is empty</li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
@@ -10234,7 +10236,7 @@
     &quot;0&quot;:  { &quot;name&quot;: &quot;SUCCESS&quot;,   &quot;description&quot;: &quot;Deployment completed&quot;,       &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; },
     &quot;2&quot;:  { &quot;name&quot;: &quot;ARG_ERROR&quot;, &quot;description&quot;: &quot;Invalid target environment&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot;     },
     &quot;5&quot;:  { &quot;name&quot;: &quot;NOT_FOUND&quot;, &quot;description&quot;: &quot;Target cluster not found&quot;,   &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot;     },
-    &quot;6&quot;:  { &quot;name&quot;: &quot;CONFLICT&quot;,  &quot;description&quot;: &quot;Version already deployed&quot;,   &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot;     },
+    &quot;6&quot;:  { &quot;name&quot;: &quot;CONFLICT&quot;,  &quot;description&quot;: &quot;Version already deployed&quot;,   &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot;, &quot;error_codes&quot;: [&quot;ALREADY_DEPLOYED&quot;] },
     &quot;10&quot;: { &quot;name&quot;: &quot;TIMEOUT&quot;,   &quot;description&quot;: &quot;Deployment timed out — partial writes may have occurred&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;partial&quot;  }
   }
 }
@@ -10247,7 +10249,7 @@
     SUCCESS  (0): description: &quot;Deployment completed&quot;,                              retryable: false, side_effects: complete
     ARG_ERROR(2): description: &quot;Invalid target environment&quot;,                        retryable: false, side_effects: none
     NOT_FOUND(5): description: &quot;Target cluster not found&quot;,                          retryable: false, side_effects: none
-    CONFLICT (6): description: &quot;Version already deployed&quot;,                          retryable: false, side_effects: none
+    CONFLICT (6): description: &quot;Version already deployed&quot;,                          retryable: false, side_effects: none, error_codes: [ALREADY_DEPLOYED]
     TIMEOUT (10): description: &quot;Deployment timed out — partial writes may have occurred&quot;, retryable: false, side_effects: partial
 
 register command &quot;no-success&quot;:

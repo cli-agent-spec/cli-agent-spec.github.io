@@ -10199,7 +10199,7 @@
 <p><strong>Addresses:</strong> Severity: High / Token Spend: Medium / Time: Medium / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>Commands that create resources MUST handle the "resource already exists" case by returning a structured <code>ALREADY_EXISTS</code> response — not a generic error. The response MUST include the existing resource in the <code>data</code> field (identical to what a <code>get</code> command would return), set <code>"ok": false</code>, exit <code>6</code> (<code>CONFLICT</code>) with <code>error.code: "ALREADY_EXISTS"</code>, and set <code>"retryable": false</code>.</p>
+<p>Commands that create resources MUST handle the "resource already exists" case by returning a structured <code>ALREADY_EXISTS</code> response — not a generic error. The response MUST include the existing resource in the <code>data</code> field (identical to what a <code>get</code> command would return), set <code>"ok": false</code>, exit <code>6</code> (<code>CONFLICT</code>) with <code>error.code: "ALREADY_EXISTS"</code>, and set <code>"retryable": false</code>. The command's <code>CONFLICT (6)</code> entry SHOULD list <code>ALREADY_EXISTS</code> in its <code>error_codes</code>, so an agent reading the manifest knows before the first call that exit <code>6</code> means the resource already exists.</p>
 <p>This pattern allows agents that retry failed creates to recover gracefully: they receive the existing resource and can proceed as if the create succeeded. Without this pattern, agents must make a separate <code>get</code> call after every create failure to determine whether the failure was a conflict or a genuine error.</p>
 <p>The inverse — delete on a non-existent resource — MUST exit <code>0</code> with <code>{"ok": true, "data": {"status": "not_found"}}</code>.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
@@ -10209,12 +10209,21 @@
 <li>Agent can use <code>data</code> from the second call directly without a follow-up <code>get</code></li>
 <li>Delete of non-existent resource exits <code>0</code> with structured <code>not_found</code> confirmation</li>
 <li><code>CONFLICT (6)</code> is declared in the command's exit code table with a description naming the already-exists case</li>
+<li>The <code>CONFLICT (6)</code> entry lists <code>"ALREADY_EXISTS"</code> in <code>error_codes</code>, together with any other <code>error.code</code> the command emits under exit <code>6</code></li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
-<p><a href="../../schemas/exit-code-entry/"><code>exit-code-entry.md</code></a> — commands declare <code>CONFLICT (6)</code> for the already-exists case · <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a> — <code>data</code> carries the existing resource as a declared failure payload</p>
+<p><a href="../../schemas/exit-code-entry/"><code>exit-code-entry.md</code></a> — commands declare <code>CONFLICT (6)</code> for the already-exists case, with <code>ALREADY_EXISTS</code> in <code>error_codes</code> · <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a> — <code>data</code> carries the existing resource as a declared failure payload</p>
 <hr />
 <h2 id="wire-format">Wire Format</h2>
+<p><code>tool resource create --schema</code> → <code>.exit_codes</code>:</p>
+<pre><code class="language-json">{
+  &quot;exit_codes&quot;: {
+    &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;,  &quot;description&quot;: &quot;The resource is created&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; },
+    &quot;6&quot;: { &quot;name&quot;: &quot;CONFLICT&quot;, &quot;description&quot;: &quot;A resource with this name already exists; data holds it&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot;, &quot;error_codes&quot;: [&quot;ALREADY_EXISTS&quot;] }
+  }
+}
+</code></pre>
 <p>Create called on existing resource:</p>
 <pre><code class="language-json">{
   &quot;ok&quot;: false,

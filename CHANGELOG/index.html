@@ -10020,6 +10020,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exitcodeentry-11-error_codes-names-the-errorcode-values-under-each-exit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ExitCodeEntry 1.1: error_codes names the error.code values under each exit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -10728,6 +10745,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exitcodeentry-11-error_codes-names-the-errorcode-values-under-each-exit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ExitCodeEntry 1.1: error_codes names the error.code values under each exit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -11414,6 +11448,15 @@
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
 <h2 id="unreleased">Unreleased</h2>
+<h3 id="exitcodeentry-11-error_codes-names-the-errorcode-values-under-each-exit">ExitCodeEntry 1.1: <code>error_codes</code> names the <code>error.code</code> values under each exit</h3>
+<ul>
+<li><code>ExitCodeEntry</code> gains optional <code>error_codes</code>: a unique array of the <code>error.code</code> values the command emits under that exit, each matching <code>^[A-Z][A-Z0-9_]+$</code>, the pattern <code>ResponseEnvelope</code> puts on <code>error.code</code>. Absent means the command does not declare them, never "none"; an empty array means the exit carries no <code>error.code</code></li>
+<li>REQ-C-001: each entry SHOULD list its <code>error.code</code> values in <code>error_codes</code>. New acceptance criterion (a response under a declared list carries a listed code, or none for <code>[]</code>), and the <code>CONFLICT (6)</code> entry in the wire format and example lists <code>ALREADY_DEPLOYED</code></li>
+<li>REQ-C-028: the <code>CONFLICT (6)</code> entry SHOULD list <code>ALREADY_EXISTS</code> in <code>error_codes</code>. New acceptance criterion and an <code>exit_codes</code> table in the wire format</li>
+<li><code>exit-code-entry.md</code> gains the field row, a valid and an invalid example, common mistakes, the agent interpretation (branch on the received <code>error.code</code>; the list says in advance which values to plan for), and generated assertions; <code>manifest-response.md</code> gains a <code>3.19</code> example and the agent interpretation; <code>tests/test_manifest_schema.py</code> pins the schema behaviour</li>
+<li><code>ManifestResponse</code> becomes 3.19, since its <code>exit_codes</code> maps carry <code>ExitCodeEntry</code>. A producer that lists <code>error_codes</code> emits <code>schema_version</code> <code>3.19</code>; earlier manifests stay valid, and on them an exit's <code>error.code</code> values can appear only in its <code>description</code></li>
+</ul>
+<p><strong>Why:</strong> an <code>ExitCodeEntry</code> named the exit code (<code>6</code> <code>CONFLICT</code>) but not the <code>error.code</code> an agent branches on, and its closed schema left a REQ-C-028 command no way to publish <code>ALREADY_EXISTS</code> in its manifest (#78).</p>
 <h2 id="1120-2026-10-05">1.12.0 — 2026-10-05</h2>
 <h3 id="tool-doctor-exits-4-when-a-check-fails"><code>tool doctor</code> exits <code>4</code> when a check fails</h3>
 <ul>
