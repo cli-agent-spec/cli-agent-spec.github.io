@@ -10550,7 +10550,7 @@
 <td><code>TIMEOUT</code></td>
 <td>depends</td>
 <td>partial</td>
-<td>Inspect state before retrying; retry directly only when the command declares <code>side_effects: "none"</code>, or rerun once unchanged when it declares <code>idempotent: true</code></td>
+<td>Inspect state before retrying; retry directly only when the command's <code>TIMEOUT</code> entry declares <code>retryable: true</code> (which requires <code>side_effects: "none"</code>), reissue with a larger <code>--timeout</code> when <code>error.fix_required</code> names one, or rerun once unchanged when it declares <code>idempotent: true</code></td>
 </tr>
 <tr>
 <td>11</td>
@@ -10602,6 +10602,12 @@
 3
 11
 </code></pre>
+<p><strong>Valid — <code>TIMEOUT</code> from a read-only command whose run length depends on its input</strong></p>
+<pre><code class="language-json">10
+</code></pre>
+<p>The command declares the code as <code>retryable: false</code> with <code>side_effects: "none"</code>: nothing was written, but the identical re-run times out again, so the error carries <code>fix_required</code> naming a larger <code>--timeout</code>:</p>
+<pre><code class="language-json">{ &quot;name&quot;: &quot;TIMEOUT&quot;, &quot;description&quot;: &quot;Scan exceeded --timeout; the same input needs a larger --timeout&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; }
+</code></pre>
 <p><strong>Schema-valid but wrong by convention</strong></p>
 <pre><code class="language-json">1
 </code></pre>
@@ -10630,7 +10636,10 @@
 <p><strong>Confusing <code>PERMISSION_DENIED (7)</code> and <code>AUTH_REQUIRED (8)</code>.</strong> <code>PERMISSION_DENIED</code> means the credentials are valid but insufficient — retrying with the same credentials will never succeed. <code>AUTH_REQUIRED</code> means the credentials themselves are the problem</p>
 </li>
 <li>
-<p><strong>Treating all <code>TIMEOUT (10)</code> exits as non-retryable.</strong> For operations that time out before any write, declare <code>retryable: true, side_effects: "none"</code> in <code>ExitCodeEntry</code>. Declare <code>retryable: false</code> when partial writes may have occurred, even on a command declared <code>idempotent</code>: the <code>ExitCodeEntry</code> invariant requires it when <code>side_effects</code> is <code>"partial"</code></p>
+<p><strong>Treating all <code>TIMEOUT (10)</code> exits as non-retryable.</strong> For operations that time out before any write on a transient stall the identical re-run can clear, declare <code>retryable: true, side_effects: "none"</code> in <code>ExitCodeEntry</code>. Declare <code>retryable: false</code> when partial writes may have occurred, even on a command declared <code>idempotent</code>: the <code>ExitCodeEntry</code> invariant requires it when <code>side_effects</code> is <code>"partial"</code></p>
+</li>
+<li>
+<p><strong>Declaring every read-only <code>TIMEOUT (10)</code> retryable.</strong> <code>side_effects: "none"</code> permits <code>retryable: true</code> but does not imply it. A read-only command whose run length depends on its input (a scan of a large tree, a query over a large range) times out again on the identical re-run: declare <code>retryable: false, side_effects: "none"</code>, and the error carries <code>fix_required</code> naming a larger <code>--timeout</code></p>
 </li>
 </ul>
 <hr />

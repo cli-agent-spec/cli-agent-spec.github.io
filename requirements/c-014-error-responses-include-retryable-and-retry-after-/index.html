@@ -10205,7 +10205,8 @@
 <li>Every error response includes <code>error.retryable</code> as a boolean</li>
 <li>A <code>RATE_LIMITED</code> error includes <code>error.retry_after_ms &gt; 0</code></li>
 <li>A <code>VALIDATION_ERROR</code> error has <code>error.retryable: false</code> and <code>error.fix_required</code> present</li>
-<li>A <code>TIMEOUT</code> error from a command whose <code>TIMEOUT</code> entry declares <code>side_effects: "none"</code> has <code>retryable: true</code>; when the entry declares <code>side_effects: "partial"</code>, <code>retryable</code> MUST be <code>false</code></li>
+<li>A <code>TIMEOUT</code> error's <code>retryable</code> equals the <code>retryable</code> of the command's declared <code>TIMEOUT</code> entry; when the entry declares <code>side_effects: "partial"</code>, <code>retryable</code> MUST be <code>false</code>. <code>side_effects: "none"</code> permits <code>retryable: true</code> but does not imply it</li>
+<li>A command whose run length depends on its input declares <code>TIMEOUT</code> with <code>retryable: false, side_effects: "none"</code>, and its <code>TIMEOUT</code> error carries <code>error.fix_required</code> naming a larger <code>--timeout</code></li>
 <li>The framework error registry maps all standard error codes to default <code>retryable</code> values</li>
 </ul>
 <hr />
@@ -10266,7 +10267,7 @@
   &quot;meta&quot;: { &quot;exit_code&quot;: 11, &quot;duration_ms&quot;: 8 }
 }
 </code></pre>
-<p>Timeout error from a command that declared <code>TIMEOUT</code> with <code>side_effects: "none"</code> (retryable, no delay):</p>
+<p>Timeout error from a command that declared <code>TIMEOUT</code> with <code>retryable: true, side_effects: "none"</code> (a transient stall the identical re-run can clear; retryable, no delay):</p>
 <pre><code class="language-json">{
   &quot;ok&quot;: false,
   &quot;data&quot;: null,
@@ -10279,6 +10280,21 @@
   },
   &quot;warnings&quot;: [],
   &quot;meta&quot;: { &quot;exit_code&quot;: 10, &quot;duration_ms&quot;: 30001 }
+}
+</code></pre>
+<p>Timeout error from a read-only command whose run length depends on its input, declared <code>TIMEOUT</code> with <code>retryable: false, side_effects: "none"</code> (the identical re-run times out again; raise <code>--timeout</code>, then reissue):</p>
+<pre><code class="language-json">{
+  &quot;ok&quot;: false,
+  &quot;data&quot;: null,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;TIMEOUT&quot;,
+    &quot;message&quot;: &quot;Scan of 48213 files exceeded the 30 s timeout&quot;,
+    &quot;retryable&quot;: false,
+    &quot;fix_required&quot;: &quot;Reissue with a larger --timeout, such as --timeout 300s&quot;,
+    &quot;phase&quot;: &quot;execution&quot;
+  },
+  &quot;warnings&quot;: [],
+  &quot;meta&quot;: { &quot;exit_code&quot;: 10, &quot;duration_ms&quot;: 30004, &quot;timeout_ms&quot;: 30000 }
 }
 </code></pre>
 <p>Validation error (identical retry fails; fix the input, then reissue):</p>
@@ -10307,6 +10323,10 @@
     RATE_LIMITED(11): retryable: true, side_effects: none,
                       retry_after_ms: 30000, retry_strategy: exponential_backoff
     ARG_ERROR(2): retryable: false, side_effects: none
+
+register command &quot;scan&quot;:       # read-only; run length grows with the input
+  exit_codes:
+    TIMEOUT (10): retryable: false, side_effects: none   # same input, same timeout
 </code></pre>
 <hr />
 <h2 id="related">Related</h2>

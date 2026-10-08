@@ -10020,6 +10020,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-read-only-timeout-is-not-retryable-by-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A read-only TIMEOUT is not retryable by default
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -10756,6 +10773,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-read-only-timeout-is-not-retryable-by-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A read-only TIMEOUT is not retryable by default
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -11470,6 +11504,15 @@
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
 <h2 id="unreleased">Unreleased</h2>
+<h3 id="a-read-only-timeout-is-not-retryable-by-default">A read-only <code>TIMEOUT</code> is not retryable by default</h3>
+<ul>
+<li>REQ-C-014: the <code>TIMEOUT</code> acceptance criterion no longer says <code>side_effects: "none"</code> makes a timeout <code>retryable: true</code>. A <code>TIMEOUT</code> error's <code>retryable</code> equals the command's declared <code>TIMEOUT</code> entry; <code>side_effects: "partial"</code> forces <code>false</code>, and <code>side_effects: "none"</code> permits <code>true</code> without implying it</li>
+<li>REQ-C-014: new acceptance criterion: a command whose run length depends on its input declares <code>TIMEOUT</code> with <code>retryable: false, side_effects: "none"</code>, and its error carries <code>error.fix_required</code> naming a larger <code>--timeout</code>. The wire format and example gain that case beside the retryable timeout</li>
+<li>REQ-F-011: a command whose run length depends on its input declares a per-command default timeout sized for its expected inputs; no new mechanism</li>
+<li>§19: the retry taxonomy no longer lists <code>TIMEOUT</code> as <code>retryable: true</code>, and the exit code alignment says <code>side_effects: "none"</code> is necessary for a retryable timeout, not sufficient</li>
+<li><code>exit-code-entry.md</code> and <code>exit-code.md</code> gain the input-dependent read-only timeout as a valid <code>retryable: false, side_effects: "none"</code> example and name declaring it retryable as a common mistake; the <code>TIMEOUT (10)</code> agent action in <code>exit-code.md</code> follows the entry's <code>retryable</code> and <code>fix_required</code>. No JSON schema changes</li>
+</ul>
+<p><strong>Why:</strong> REQ-C-014 defines <code>retryable</code> as "the identical invocation, unchanged, may succeed", yet its criterion made every side-effect-free timeout retryable, though a read-only command whose run length depends on its input times out again on the identical re-run (#82).</p>
 <h2 id="1130-2026-10-06">1.13.0 — 2026-10-06</h2>
 <h3 id="exitcodeentry-11-error_codes-names-the-errorcode-values-under-each-exit">ExitCodeEntry 1.1: <code>error_codes</code> names the <code>error.code</code> values under each exit</h3>
 <ul>

@@ -10285,6 +10285,10 @@
 <p><strong>Valid — timeout declared as retryable because no writes were attempted (map key <code>"10"</code>)</strong></p>
 <pre><code class="language-json">{ &quot;name&quot;: &quot;TIMEOUT&quot;, &quot;description&quot;: &quot;Config read timed out — no writes were attempted&quot;, &quot;retryable&quot;: true, &quot;side_effects&quot;: &quot;none&quot; }
 </code></pre>
+<p><strong>Valid — read-only timeout declared as non-retryable because run length depends on the input (map key <code>"10"</code>)</strong></p>
+<pre><code class="language-json">{ &quot;name&quot;: &quot;TIMEOUT&quot;, &quot;description&quot;: &quot;Scan exceeded --timeout; the same input needs a larger --timeout&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot; }
+</code></pre>
+<p>The identical re-run times out again, so <code>retryable</code> stays <code>false</code> though nothing was written; the error carries <code>error.fix_required</code> naming a larger <code>--timeout</code> (<a href="../../requirements/c-014-error-responses-include-retryable-and-retry-after-/">REQ-C-014</a>).</p>
 <p><strong>Valid — conflict exit that names its <code>error.code</code> (map key <code>"6"</code>)</strong></p>
 <pre><code class="language-json">{ &quot;name&quot;: &quot;CONFLICT&quot;, &quot;description&quot;: &quot;A resource with this name already exists; data holds it&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot;, &quot;error_codes&quot;: [&quot;ALREADY_EXISTS&quot;] }
 </code></pre>
@@ -10308,6 +10312,7 @@
 <li><strong>Using vague descriptions like <code>"Error"</code> or <code>"Failed"</code>.</strong> The description must state the condition specifically so an agent can act without reading message text</li>
 <li><strong>Setting <code>retryable: true</code> when side effects may have occurred.</strong> The invariant is a hard guarantee. If any write could have occurred, <code>side_effects</code> must be <code>"partial"</code> and <code>retryable</code> must be <code>false</code>, even when rerunning is safe; declare that on the command as <code>idempotent: true</code> (<a href="../manifest-response/"><code>manifest-response.md</code></a>)</li>
 <li><strong>Setting <code>retryable: true</code> on validation errors.</strong> Safe is not the same as useful: the identical call fails deterministically until the input changes. Declare <code>retryable: false</code>; the envelope carries <code>fix_required</code> for the correction</li>
+<li><strong>Declaring <code>TIMEOUT</code> retryable because the command is read-only.</strong> <code>side_effects: "none"</code> permits <code>retryable: true</code> but does not imply it. When run length depends on the input, the identical re-run times out again: declare <code>retryable: false, side_effects: "none"</code>, and the error carries <code>fix_required</code> naming a larger <code>--timeout</code></li>
 <li><strong>Using <code>side_effects: "complete"</code> on failure codes.</strong> <code>"complete"</code> means the intended operation finished — it is only appropriate for <code>SUCCESS (0)</code></li>
 <li><strong>Declaring only the happy path.</strong> Every code the command may emit must have an entry. An undeclared code emitted at runtime is a contract violation</li>
 <li><strong>Listing an <code>error.code</code> the command never emits under that exit.</strong> <code>error_codes</code> is a promise about this exit only. A code emitted under a different exit belongs in that exit's entry, and a code the command never emits misleads the agent's branch planning</li>
