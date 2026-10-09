@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -2657,6 +2657,8 @@
       
         
       
+        
+      
     
     
     
@@ -3068,6 +3070,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4661,6 +4691,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5598,6 +5640,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7782,6 +7908,90 @@
     
   
     REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
   
 
     
@@ -10282,9 +10492,10 @@ tool operation --connect-timeout 5s # specifically for connection phase
 }
 </code></pre>
 <p><code>data.resume_token</code> allows resuming when the command supports it.</p>
+<p><strong>When the run length depends on the input</strong>, a timeout cannot be right for every call: too short kills working runs, too long outlasts the caller. Such work bounds each call instead and keeps its progress across calls (<a href="../79-critical-work-outlives-budget/">§79</a>).</p>
 <p><strong>For framework design:</strong>
 - Every command has a default timeout; <code>--timeout 0</code> means no timeout (must be explicit)
-- Timeout exits with a specific code (e.g., <code>7</code>) and always emits JSON error
+- Timeout exits with <code>TIMEOUT (10)</code> and always emits JSON error
 - Provide <code>--heartbeat-interval</code> to control stderr progress frequency
 - Track and report wall time in every JSON response's <code>meta.duration_ms</code></p>
 <h3 id="evaluation">Evaluation</h3>

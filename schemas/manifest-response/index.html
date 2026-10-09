@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -2647,6 +2647,8 @@
       
         
       
+        
+      
     
     
     
@@ -2940,6 +2942,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4518,6 +4548,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5455,6 +5497,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7639,6 +7765,90 @@
     
   
     REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
   
 
     
@@ -10362,7 +10572,7 @@
 <h1 id="schema-manifestresponse">Schema: ManifestResponse</h1>
 <p><strong>File:</strong> <a href="../manifest-response.json"><code>manifest-response.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a> · <a href="../../requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/">REQ-F-054</a> · <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a> · <a href="../../requirements/c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a> · <a href="../../requirements/f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a> · <a href="../../requirements/o-001-output-format-flag/">REQ-O-001</a>
+<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a> · <a href="../../requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/">REQ-F-054</a> · <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a> · <a href="../../requirements/c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a> · <a href="../../requirements/f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a> · <a href="../../requirements/o-001-output-format-flag/">REQ-O-001</a> · <a href="../../requirements/c-033-commands-declare-interruption/">REQ-C-033</a> · <a href="../../requirements/f-081-detached-job-runtime/">REQ-F-081</a>
 Returned as the <code>data</code> field of a <a href="../response-envelope/"><code>ResponseEnvelope</code></a>.</p>
 </blockquote>
 <hr />
@@ -10581,7 +10791,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><code>stdout</code></td>
 <td><code>"protocol"</code></td>
-<td><code>protocol</code>: the command serves the protocol named in <code>protocol</code> over stdio; stdout is the protocol channel from the first byte and never carries an envelope. A failure before serving begins goes to stderr (in JSON mode, an envelope on its last line) with a declared exit code; exit <code>0</code> is a clean shutdown such as stdin end-of-file. Absent means stdout carries envelopes. Excludes <code>arguments: "passthrough"</code>, <code>stderr</code>, <code>stdin</code>, <code>interactive: true</code>, <code>streaming_default: true</code>, <code>output_file</code>, <code>output_schema</code>, <code>output_formats</code>, <code>output_media_types</code>, <code>async: true</code>, the REQ-C-010 fields, <code>confirm_flag</code>, and <code>safe_default: true</code> (REQ-C-032)</td>
+<td><code>protocol</code>: the command serves the protocol named in <code>protocol</code> over stdio; stdout is the protocol channel from the first byte and never carries an envelope. A failure before serving begins goes to stderr (in JSON mode, an envelope on its last line) with a declared exit code; exit <code>0</code> is a clean shutdown such as stdin end-of-file. Absent means stdout carries envelopes. Excludes <code>arguments: "passthrough"</code>, <code>stderr</code>, <code>stdin</code>, <code>interactive: true</code>, <code>streaming_default: true</code>, <code>output_file</code>, <code>output_schema</code>, <code>output_formats</code>, <code>output_media_types</code>, <code>async: true</code>, the REQ-C-010 fields, <code>interruption</code>, <code>confirm_flag</code>, and <code>safe_default: true</code> (REQ-C-032)</td>
 </tr>
 <tr>
 <td><code>protocol</code></td>
@@ -10672,6 +10882,11 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td><code>job_descriptor_schema</code></td>
 <td>object</td>
 <td>JSON Schema of that job descriptor (REQ-C-022)</td>
+</tr>
+<tr>
+<td><code>interruption</code></td>
+<td><code>{detach, resume, idle_timeout_ms?, max_lifetime_ms?}</code></td>
+<td>How the work survives the caller's sync call budget (REQ-F-080): <code>detach</code> hands it to a background job, <code>resume</code> saves checkpoints so the identical invocation continues it; at least one is <code>true</code>. Requires an <code>INCOMPLETE (14)</code> entry in <code>exit_codes</code>; excludes <code>async: true</code>, <code>streaming_default: true</code>, and <code>stdout</code>. Absent means neither, and the wall-clock timeout of REQ-F-011 applies (REQ-C-033)</td>
 </tr>
 <tr>
 <td><code>requires_editor</code></td>
@@ -11573,6 +11788,27 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Exit <code>3</code> stays <code>retryable: false</code> because files were written. <code>idempotent: true</code> tells the agent that rerunning <code>tool observe</code> unchanged converges on the state a clean run leaves, so the rerun is the recovery and no state inspection comes first.</p>
+<p><strong>Valid — long read-only command that outlives the call budget</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.20&quot;,
+  &quot;framework_version&quot;: &quot;2.4.0&quot;,
+  &quot;etag&quot;: &quot;sha256:91d4c7&quot;,
+  &quot;commands&quot;: {
+    &quot;analyze&quot;: {
+      &quot;description&quot;: &quot;Compute statistics over a data file&quot;,
+      &quot;danger_level&quot;: &quot;safe&quot;,
+      &quot;required_scopes&quot;: [],
+      &quot;interruption&quot;: { &quot;detach&quot;: true, &quot;resume&quot;: true, &quot;idle_timeout_ms&quot;: 300000 },
+      &quot;flags&quot;: {},
+      &quot;exit_codes&quot;: {
+        &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;The statistics are computed&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; },
+        &quot;14&quot;: { &quot;name&quot;: &quot;INCOMPLETE&quot;, &quot;description&quot;: &quot;The work continues; run data.continue_command&quot;, &quot;retryable&quot;: true, &quot;side_effects&quot;: &quot;none&quot;, &quot;error_codes&quot;: [&quot;INCOMPLETE&quot;] }
+      }
+    }
+  }
+}
+</code></pre>
+<p>Before the first call, an agent reads that <code>tool analyze</code> returns within the call budget whatever the file size: with the result, or with exit <code>14</code> and a <code>continue_command</code>. It plans a loop over <code>continue_command</code> instead of raising its own timeout, and knows that rerunning the identical command after a lost response continues from the last checkpoint.</p>
 <p><strong>Invalid — command entry without required contract fields</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.0&quot;,
@@ -11615,6 +11851,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Setting <code>default: null</code> for flags without a default.</strong> Omit the key; <code>null</code> reads as "the default value is null"</li>
 <li><strong>Declaring <code>retryable: true</code> with partial side effects in <code>exit_codes</code>.</strong> The <code>ExitCodeEntry</code> invariant rejects it; timeouts that may have written are <code>retryable: false</code></li>
 <li><strong>Declaring <code>retryable: true</code> on a partial exit because the command is idempotent.</strong> <code>retryable: true</code> still promises that nothing was written; keep the exit <code>retryable: false</code>, <code>side_effects: "partial"</code>, and declare <code>idempotent: true</code> on the command</li>
+<li><strong>Declaring <code>interruption</code> without the code paths behind it.</strong> <code>detach: true</code> needs nothing from the handler but progress reports (REQ-C-034); <code>resume: true</code> promises checkpoints (REQ-C-035). A command that declares <code>resume</code> and starts over on every call sends the agent into the same budget again</li>
 <li><strong>Declaring <code>idempotent: true</code> on a command that only deduplicates.</strong> A command that skips a repeat by its <code>--idempotency-key</code> (REQ-C-007) but appends, increments, or sends on every new key does not converge; <code>idempotent</code> means the same arguments reach the same state with or without a key</li>
 <li><strong>Repeating global options in every <code>CommandEntry.flags</code>.</strong> A global option appears once, in the root <code>flags</code>; a copy inside a command reads as a local flag that happens to share the name, and hides whether it is accepted before the command path</li>
 <li><strong>Reusing a global short alias for a local flag.</strong> <code>-f</code> meaning <code>--format</code> at the root and <code>--force</code> on one command changes meaning with position; the framework rejects it at registration</li>
@@ -11732,6 +11969,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - <code>any_of</code> and <code>one_of</code> groups — send at least one flag of an <code>any_of</code> group and exactly one flag of a <code>one_of</code> group, choosing the one whose value you already hold; a declared <code>default</code> never satisfies either rule, and neither does a boolean flag given as false (<code>--no-exact</code> leaves <code>exact</code> absent)
 - <code>interactive: true</code> or <code>requires_editor: true</code> — always pass <code>--yes</code> / <code>--non-interactive</code> or one of <code>non_interactive_alternatives</code>
 - <code>async: true</code> — the response is a job descriptor; poll with its <code>status_command</code> instead of waiting on the call
+- <code>interruption</code> present — every call returns within the sync call budget (<code>meta.budget_ms</code>); exit <code>14</code> hands back <code>data.continue_command</code>, which the agent runs until the result arrives. With <code>resume: true</code>, the identical invocation continues the work after a lost response or a killed process. Absent on a pre-3.20 manifest, where a long command's only bound is its wall-clock timeout
 - <code>required_scopes</code> not covered by the active credential — expect <code>AUTH_REQUIRED (8)</code>; do not call until credentials change</p>
 <p><strong>Calling a passthrough command (<code>arguments: "passthrough"</code>)</strong>
 - Put every global option and framework flag (<code>--format</code>, <code>--output</code>, <code>--timeout</code>) before the command path; every token after it goes to the delegated tool, <code>--help</code> and <code>--</code> included

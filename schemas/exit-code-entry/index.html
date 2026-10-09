@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -2647,6 +2647,8 @@
       
         
       
+        
+      
     
     
     
@@ -2940,6 +2942,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4518,6 +4548,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5455,6 +5497,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7639,6 +7765,90 @@
     
   
     REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
   
 
     
@@ -10240,7 +10450,7 @@
 <td><code>name</code></td>
 <td>string</td>
 <td>no†</td>
-<td>Named constant for this code (e.g. <code>"ARG_ERROR"</code>). For framework codes <code>0–13</code>: derived from <code>ExitCode</code> enum if omitted. For command-specific codes <code>79–125</code>: must be provided — there is no enum to derive from</td>
+<td>Named constant for this code (e.g. <code>"ARG_ERROR"</code>). For framework codes <code>0–14</code>: derived from <code>ExitCode</code> enum if omitted. For command-specific codes <code>79–125</code>: must be provided — there is no enum to derive from</td>
 </tr>
 <tr>
 <td><code>description</code></td>
@@ -10268,7 +10478,7 @@
 </tr>
 </tbody>
 </table>
-<p>† Required for command-specific codes (<code>79–125</code>); optional for framework codes (<code>0–13</code>) where the framework derives it from the <code>ExitCode</code> enum.</p>
+<p>† Required for command-specific codes (<code>79–125</code>); optional for framework codes (<code>0–14</code>) where the framework derives it from the <code>ExitCode</code> enum.</p>
 <p><strong>Invariant (enforced by <code>if/then</code> in the schema):</strong> <code>retryable: true</code> implies <code>side_effects: "none"</code>. Validate at registration, not at runtime.</p>
 <hr />
 <h2 id="examples">Examples</h2>
@@ -10317,7 +10527,7 @@
 <li><strong>Declaring only the happy path.</strong> Every code the command may emit must have an entry. An undeclared code emitted at runtime is a contract violation</li>
 <li><strong>Listing an <code>error.code</code> the command never emits under that exit.</strong> <code>error_codes</code> is a promise about this exit only. A code emitted under a different exit belongs in that exit's entry, and a code the command never emits misleads the agent's branch planning</li>
 <li><strong>Writing <code>error_codes</code> in another case than the envelope.</strong> <code>"already_exists"</code> fails the pattern; list the exact <code>error.code</code> string the envelope carries</li>
-<li><strong>Omitting <code>name</code> for command-specific codes (<code>79–125</code>).</strong> For framework codes <code>0–13</code>, the framework can derive the constant name from the <code>ExitCode</code> enum. For command-specific codes, there is no enum — omitting <code>name</code> leaves agents with no readable label for the code</li>
+<li><strong>Omitting <code>name</code> for command-specific codes (<code>79–125</code>).</strong> For framework codes <code>0–14</code>, the framework can derive the constant name from the <code>ExitCode</code> enum. For command-specific codes, there is no enum — omitting <code>name</code> leaves agents with no readable label for the code</li>
 </ul>
 <hr />
 <h2 id="agent-interpretation">Agent interpretation</h2>
@@ -10336,7 +10546,7 @@
 <p><strong>Contradiction in received data</strong>
 - <code>retryable: true</code> with <code>side_effects: "partial"</code> or <code>"complete"</code> — schema invariant violated by the command; do not retry without inspecting state
 - <code>description</code> is absent or empty — fall back to the exit code's default description from <a href="../exit-code/"><code>exit-code.md</code></a>
-- <code>name</code> is absent — for codes <code>0–13</code>, look up the constant name in <a href="../exit-code.json"><code>exit-code.json</code></a> <code>x-enum-varnames</code> by index; for codes <code>79–125</code>, use the numeric code as a fallback label and log a schema warning</p>
+- <code>name</code> is absent — for codes <code>0–14</code>, look up the constant name in <a href="../exit-code.json"><code>exit-code.json</code></a> <code>x-enum-varnames</code> by index; for codes <code>79–125</code>, use the numeric code as a fallback label and log a schema warning</p>
 <p><strong>Before invoking a command</strong>
 - Fetch the command's <code>exit_codes</code> map from the manifest once and cache it for the session
 - Use <code>retryable</code> and <code>side_effects</code> values to pre-plan the retry/rollback strategy before the first call, not reactively after failure</p>

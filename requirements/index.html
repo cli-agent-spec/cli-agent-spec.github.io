@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -2647,6 +2647,8 @@
       
         
       
+        
+      
     
     
     
@@ -2940,6 +2942,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4520,6 +4550,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5460,6 +5502,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7644,6 +7770,90 @@
     
   
     REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
   
 
     
@@ -10049,14 +10259,14 @@
 
 <h1 id="requirements-index">Requirements Index</h1>
 <blockquote>
-<p>All requirements for an agent-compatible CLI framework, derived from the CLI Agent Spec's 75 documented failure modes.</p>
+<p>All requirements for an agent-compatible CLI framework, derived from the CLI Agent Spec's 76 documented failure modes.</p>
 </blockquote>
-<p><strong>160 total</strong> &nbsp;|&nbsp; 78 Framework-Automatic · 32 Command Contract · 50 Opt-In — amended 2026-10-02</p>
-<p><strong>By priority:</strong> P0: 51 · P1: 66 · P2: 34 · P3: 9 — REQ-F-026 (append-only audit log) merged into opt-in REQ-O-030; the ID is retired</p>
-<p><strong>By level</strong> (<a href="levels/"><code>levels.md</code></a>): Level 1: 12 · Level 2: 51 · Level 3: 160</p>
+<p><strong>166 total</strong> &nbsp;|&nbsp; 81 Framework-Automatic · 35 Command Contract · 50 Opt-In — amended 2026-10-08</p>
+<p><strong>By priority:</strong> P0: 51 · P1: 71 · P2: 35 · P3: 9 — REQ-F-026 (append-only audit log) merged into opt-in REQ-O-030; the ID is retired</p>
+<p><strong>By level</strong> (<a href="levels/"><code>levels.md</code></a>): Level 1: 12 · Level 2: 51 · Level 3: 166</p>
 <hr />
 <h2 id="framework-automatic-f">Framework-Automatic (F)</h2>
-<p><strong>78 requirements</strong> &nbsp;|&nbsp; P0: 33 · P1: 30 · P2: 14 · P3: 1</p>
+<p><strong>81 requirements</strong> &nbsp;|&nbsp; P0: 33 · P1: 33 · P2: 14 · P3: 1</p>
 <table>
 <thead>
 <tr>
@@ -10614,11 +10824,32 @@
 <td><a href="../challenges/01-critical-ecosystem-runtime-agent-specific/69-high-argument-order-ambiguity/">§69</a> <a href="../challenges/01-critical-ecosystem-runtime-agent-specific/78-high-output-flag-meaning-collision/">§78</a></td>
 <td>3</td>
 </tr>
+<tr>
+<td><a href="f-080-sync-call-budget/">REQ-F-080</a></td>
+<td>P1</td>
+<td>Sync Call Budget</td>
+<td><a href="../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a></td>
+<td>3</td>
+</tr>
+<tr>
+<td><a href="f-081-detached-job-runtime/">REQ-F-081</a></td>
+<td>P1</td>
+<td>Detached Job Runtime</td>
+<td><a href="../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a> <a href="../challenges/01-critical-ecosystem-runtime-agent-specific/49-high-async-job-polling/">§49</a></td>
+<td>3</td>
+</tr>
+<tr>
+<td><a href="f-082-incomplete-work-response/">REQ-F-082</a></td>
+<td>P1</td>
+<td>Incomplete-Work Response</td>
+<td><a href="../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a></td>
+<td>3</td>
+</tr>
 </tbody>
 </table>
 <hr />
 <h2 id="command-contract-c">Command Contract (C)</h2>
-<p><strong>32 requirements</strong> &nbsp;|&nbsp; P0: 12 · P1: 17 · P2: 1 · P3: 2</p>
+<p><strong>35 requirements</strong> &nbsp;|&nbsp; P0: 12 · P1: 19 · P2: 2 · P3: 2</p>
 <table>
 <thead>
 <tr>
@@ -10852,6 +11083,27 @@
 <td>P1</td>
 <td>Protocol Server Commands Declare Their Stdout Protocol</td>
 <td><a href="../challenges/04-critical-output-and-parsing/03-high-stderr-stdout/">§3</a> <a href="../challenges/04-critical-output-and-parsing/02-critical-output-format/">§2</a> <a href="../challenges/01-critical-ecosystem-runtime-agent-specific/50-critical-stdin-deadlock/">§50</a> <a href="../challenges/02-critical-execution-and-reliability/11-critical-timeouts/">§11</a></td>
+<td>3</td>
+</tr>
+<tr>
+<td><a href="c-033-commands-declare-interruption/">REQ-C-033</a></td>
+<td>P1</td>
+<td>Commands Declare Interruption</td>
+<td><a href="../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a></td>
+<td>3</td>
+</tr>
+<tr>
+<td><a href="c-034-long-running-commands-report-progress/">REQ-C-034</a></td>
+<td>P1</td>
+<td>Long-Running Commands Report Progress</td>
+<td><a href="../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a> <a href="../challenges/02-critical-execution-and-reliability/11-critical-timeouts/">§11</a></td>
+<td>3</td>
+</tr>
+<tr>
+<td><a href="c-035-resumable-commands-checkpoint-at-safe-points/">REQ-C-035</a></td>
+<td>P2</td>
+<td>Resumable Commands Checkpoint at Safe Points</td>
+<td><a href="../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a> <a href="../challenges/02-critical-execution-and-reliability/13-critical-partial-failure/">§13</a> <a href="../challenges/02-critical-execution-and-reliability/16-high-signal-handling/">§16</a></td>
 <td>3</td>
 </tr>
 </tbody>
@@ -11223,7 +11475,7 @@
 </tbody>
 </table>
 <hr />
-<p><em>CLI Agent Spec v1.14 — 160 requirements (78 REQ-F + 32 REQ-C + 50 REQ-O). Updated 2026-10-02.</em></p>
+<p><em>CLI Agent Spec v1.14 — 166 requirements (81 REQ-F + 35 REQ-C + 50 REQ-O). Updated 2026-10-08.</em></p>
 
 
 

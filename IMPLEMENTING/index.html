@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -1389,6 +1389,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#long-running-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Long-running commands
+      
+    </span>
+  </a>
   
 </li>
       
@@ -2904,6 +2915,8 @@
       
         
       
+        
+      
     
     
     
@@ -3197,6 +3210,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4775,6 +4816,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5712,6 +5765,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7896,6 +8033,90 @@
     
   
     REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
   
 
     
@@ -10456,6 +10677,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#long-running-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Long-running commands
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -11367,6 +11599,78 @@ ajv compile -s &quot;schemas/*.json&quot; --spec=draft7 --strict=false
 </tr>
 </tbody>
 </table>
+<hr />
+<h2 id="long-running-commands">Long-running commands</h2>
+<p>A command whose run length depends on its input cannot pick one timeout that is right for every call (<a href="../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a>). Six requirements replace the timeout's kill with a bounded call that keeps its work:</p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Title</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../requirements/c-033-commands-declare-interruption/">REQ-C-033</a></td>
+<td>Commands Declare Interruption</td>
+<td><code>interruption: {detach, resume}</code>; opt-in per command</td>
+</tr>
+<tr>
+<td><a href="../requirements/c-034-long-running-commands-report-progress/">REQ-C-034</a></td>
+<td>Long-Running Commands Report Progress</td>
+<td><code>ctx.progress()</code>; feeds the response and the idle watchdog</td>
+</tr>
+<tr>
+<td><a href="../requirements/f-082-incomplete-work-response/">REQ-F-082</a></td>
+<td>Incomplete-Work Response</td>
+<td>Exit <code>14</code>, <code>continue_command</code>; build first</td>
+</tr>
+<tr>
+<td><a href="../requirements/f-080-sync-call-budget/">REQ-F-080</a></td>
+<td>Sync Call Budget</td>
+<td><code>--budget</code>, <code>AGENT_CALL_BUDGET_MS</code>, default <code>30000</code> ms</td>
+</tr>
+<tr>
+<td><a href="../requirements/c-035-resumable-commands-checkpoint-at-safe-points/">REQ-C-035</a></td>
+<td>Resumable Commands Checkpoint at Safe Points</td>
+<td><code>ctx.restore()</code>, <code>ctx.checkpoint()</code>; needs no process model</td>
+</tr>
+<tr>
+<td><a href="../requirements/f-081-detached-job-runtime/">REQ-F-081</a></td>
+<td>Detached Job Runtime</td>
+<td>Worker process, job directory, <code>job wait</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Order.</strong> Build the response (F-082) and the budget (F-080) with <code>resume</code> first: a resume-only command runs in-process, stops at its next checkpoint when the budget runs out, and needs no background process. Add <code>detach</code> (F-081) second; it is the larger piece.</p>
+<p><strong>Detaching without hanging the caller.</strong> The caller waits for end-of-file on stdout and stderr, not only for the process to exit, so a background job that inherits those descriptors hangs the caller after the front process has exited. Spawn the worker from the start rather than forking at the deadline: after <code>fork()</code> only the calling thread survives, locks held by other threads stay held, and Windows has no <code>fork()</code>. The front process starts the worker in its own session with its own descriptors and waits for it up to the budget:</p>
+<pre><code class="language-python">import subprocess
+import sys
+
+from tool.jobs import Budget, Job  # the framework's own job directory and budget types
+
+
+def run_detachable(argv: list[str], job: Job, budget: Budget) -&gt; int:
+    worker = subprocess.Popen(
+        [sys.executable, &quot;-m&quot;, &quot;tool&quot;, &quot;--job-worker&quot;, str(job.id), *argv],
+        stdin=job.stdin_file(),                  # stdin spooled into the job directory beforehand
+        stdout=job.log_file(),
+        stderr=subprocess.STDOUT,                # the caller's pipes are not inherited
+        start_new_session=True,                  # setsid: no SIGHUP, outside the caller's process group
+    )
+    try:
+        worker.wait(timeout=budget.seconds)
+    except subprocess.TimeoutExpired:
+        sys.stdout.write(job.incomplete_response(state=&quot;running&quot;).to_json() + &quot;\n&quot;)
+        return 14                                # INCOMPLETE; the worker runs on
+    result = job.result()
+    sys.stdout.write(result.to_json() + &quot;\n&quot;)
+    return result.exit_code
+</code></pre>
+<p>On Windows, pass <code>creationflags=subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP</code> in place of <code>start_new_session</code>. The worker writes its status, progress, and final response into the job directory by rename (REQ-F-070), so <code>job wait</code> in another process reads a whole file or the previous one, never half of one.</p>
+<p><strong>A dead worker.</strong> <code>job wait</code> checks the worker's PID (<code>kill(pid, 0)</code> on POSIX) whenever the status file is not terminal; a missing process with no terminal status is <code>JOB_LOST</code>, reported with the tail of the job log, never a wait that lasts until the caller's own budget runs out.</p>
+<p><strong>Costs.</strong> Spawning a worker costs a process start on every call of a <code>detach</code> command (50–200 ms for an interpreted runtime), which is why detaching is a declaration and not a default. A command with a cheap estimate of its work can skip the in-call wait and hand off at once.</p>
 
 
 

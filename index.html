@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -2780,6 +2780,8 @@
       
         
       
+        
+      
     
     
     
@@ -3073,6 +3075,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4651,6 +4681,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5588,6 +5630,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements/c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements/c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements/c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7772,6 +7898,90 @@
     
   
     REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements/f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements/f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements/f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
   
 
     
@@ -10232,7 +10442,7 @@
 
 <h1 id="cli-agent-spec">CLI Agent Spec</h1>
 <p><strong>Your CLI tool works perfectly for humans. For AI agents, it silently hangs, corrupts data, leaks secrets, and exhausts context windows — and you would never know.</strong></p>
-<p>This is a specification for building CLI tools that AI agents can call reliably: <strong>75 documented failure modes</strong>, <strong>160 requirements</strong> to eliminate them, machine-readable schemas an agent can consume directly, and design guides for CLI authors.</p>
+<p>This is a specification for building CLI tools that AI agents can call reliably: <strong>76 documented failure modes</strong>, <strong>166 requirements</strong> to eliminate them, machine-readable schemas an agent can consume directly, and design guides for CLI authors.</p>
 <blockquote>
 <p><strong>No existing CLI framework covers more than 59% of the currently mapped failure modes.</strong></p>
 </blockquote>
@@ -10260,8 +10470,8 @@ $ tool list users --format json   # parsed as: list &quot;users&quot; &quot;--fo
 <p>These are not edge cases. They are the <strong>default behavior</strong> of most CLI tools today — including tools from major companies. The cost falls on the agent: wasted tokens, stalled pipelines, data corruption from blind retries, cascading failures with no root cause.</p>
 <hr />
 <h2 id="what-this-spec-defines">What this spec defines</h2>
-<p><strong>75 failure modes</strong> — each documented with severity, frequency, detectability, token cost, time cost, and context cost from the agent's perspective. Grouped into 7 parts: ecosystem/runtime, execution, security, output, environment, errors, and observability.</p>
-<p><strong>160 requirements</strong> across 3 tiers:</p>
+<p><strong>76 failure modes</strong> — each documented with severity, frequency, detectability, token cost, time cost, and context cost from the agent's perspective. Grouped into 7 parts: ecosystem/runtime, execution, security, output, environment, errors, and observability.</p>
+<p><strong>166 requirements</strong> across 3 tiers:</p>
 <table>
 <thead>
 <tr>
@@ -10273,12 +10483,12 @@ $ tool list users --format json   # parsed as: list &quot;users&quot; &quot;--fo
 <tbody>
 <tr>
 <td><strong>F</strong> — Framework-Automatic</td>
-<td>78</td>
+<td>81</td>
 <td>The framework enforces it; command authors get it for free</td>
 </tr>
 <tr>
 <td><strong>C</strong> — Command Contract</td>
-<td>32</td>
+<td>35</td>
 <td>Command authors declare it at registration</td>
 </tr>
 <tr>
@@ -10292,7 +10502,7 @@ $ tool list users --format json   # parsed as: list &quot;users&quot; &quot;--fo
 <p><strong>A comparison matrix</strong> — 12 existing frameworks (argparse, Click, Cobra, Clap, Typer, Commander.js, and more) scored against 71 currently mapped failure modes. No framework exceeds 59%.</p>
 <hr />
 <h2 id="the-three-contracts-that-matter-most">The three contracts that matter most</h2>
-<p><strong>Exit codes</strong> — 14 named codes (0–13) with machine-readable guarantees per code: <code>retryable: true/false</code>, <code>side_effects: "none" | "partial" | "complete"</code>. An agent receiving exit 11 (<code>RATE_LIMITED</code>) knows nothing was written and the call is safe to retry after back-off. Receiving exit 3 (<code>PARTIAL_FAILURE</code>) knows some writes happened and it must inspect state before retrying. Receiving exit 6 (<code>CONFLICT</code>) knows the resource already exists and a retry cannot succeed. See <a href="schemas/exit-code.json"><code>exit-code.json</code></a>.</p>
+<p><strong>Exit codes</strong> — 15 named codes (0–14) with machine-readable guarantees per code: <code>retryable: true/false</code>, <code>side_effects: "none" | "partial" | "complete"</code>. An agent receiving exit 11 (<code>RATE_LIMITED</code>) knows nothing was written and the call is safe to retry after back-off. Receiving exit 3 (<code>PARTIAL_FAILURE</code>) knows some writes happened and it must inspect state before retrying. Receiving exit 6 (<code>CONFLICT</code>) knows the resource already exists and a retry cannot succeed. See <a href="schemas/exit-code.json"><code>exit-code.json</code></a>.</p>
 <p><strong>Response envelope</strong> — every command wraps its output in <code>{ ok, data, error, warnings, meta }</code>. The same keys are always present, and <code>meta.exit_code</code> repeats the process exit code so an agent holding only stdout can still classify the outcome. Errors and warnings carry stable codes; agents never parse free text to determine success or failure. See <a href="schemas/response-envelope.json"><code>response-envelope.json</code></a>.</p>
 <p><strong>Tool manifest</strong> — <code>tool manifest --format json</code> returns the complete command tree: every subcommand, flag, type, description, exit code map, and example. One call replaces O(N) <code>--help</code> iterations and eliminates trial-and-error argument discovery. See <a href="schemas/manifest-response.json"><code>manifest-response.json</code></a>.</p>
 <hr />
@@ -10307,11 +10517,11 @@ $ tool list users --format json   # parsed as: list &quot;users&quot; &quot;--fo
 <tbody>
 <tr>
 <td><a href="challenges/"><code>challenges/</code></a></td>
-<td>75 failure modes, each with problem, impact, solutions, 0–3 evaluation rubric, and agent workaround; <a href="challenges/index.json"><code>index.json</code></a> carries the same taxonomy as data</td>
+<td>76 failure modes, each with problem, impact, solutions, 0–3 evaluation rubric, and agent workaround; <a href="challenges/index.json"><code>index.json</code></a> carries the same taxonomy as data</td>
 </tr>
 <tr>
 <td><a href="requirements/"><code>requirements/</code></a></td>
-<td>160 requirements with acceptance criteria, wire format, and examples, grouped into three <a href="requirements/levels/">conformance levels</a></td>
+<td>166 requirements with acceptance criteria, wire format, and examples, grouped into three <a href="requirements/levels/">conformance levels</a></td>
 </tr>
 <tr>
 <td><a href="conformance/"><code>conformance/</code></a></td>
@@ -10350,7 +10560,7 @@ $ tool list users --format json   # parsed as: list &quot;users&quot; &quot;--fo
 <hr />
 <h2 id="where-this-fits">Where this fits</h2>
 <p>The field is converging on <strong>Agent Experience (AX)</strong> as the term for "how well is a system designed to be consumed by an AI agent" — the machine-facing analog of Developer Experience (DX) or User Experience (UX). It applies across APIs, databases, SDKs, web services, and CLIs.</p>
-<p>This spec is AX research applied to the CLI layer. CLIs are the most underserved slice of the problem: they are the primary interface through which agents interact with infrastructure, but they were designed for human terminal sessions. The gap between CLI defaults and agent requirements is where the 75 failure modes live.</p>
+<p>This spec is AX research applied to the CLI layer. CLIs are the most underserved slice of the problem: they are the primary interface through which agents interact with infrastructure, but they were designed for human terminal sessions. The gap between CLI defaults and agent requirements is where the 76 failure modes live.</p>
 <p><strong>What distinguishes this project from other AX work:</strong></p>
 <ul>
 <li><strong>It names failure</strong> — most AX guidance is prescriptive ("do this"). The failure mode taxonomy is a named, scored, reproducible catalog of what goes wrong and why, making automated evaluation possible</li>
@@ -10415,7 +10625,7 @@ npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-diagnose
 <p>The spec is a living document. New failure modes are documented when confirmed against real tooling. New requirements follow from new failure modes.</p>
 <p>Before contributing, read <a href="AGENTS/"><code>AGENTS.md</code></a> for conventions: file format, required sections, naming rules, and how to run <code>/validate-links</code> to verify cross-references after any edit.</p>
 <hr />
-<p><em>CLI Agent Spec v1.14 — 75 failure modes · 160 requirements · 6 canonical schemas · 12 frameworks evaluated</em></p>
+<p><em>CLI Agent Spec v1.14 — 76 failure modes · 166 requirements · 6 canonical schemas · 12 frameworks evaluated</em></p>
 
 
 

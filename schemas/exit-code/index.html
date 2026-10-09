@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -2647,6 +2647,8 @@
       
         
       
+        
+      
     
     
     
@@ -2940,6 +2942,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4518,6 +4548,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5455,6 +5497,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7659,6 +7785,90 @@
   
   
     <li class="md-nav__item">
+      <a href="../../requirements/f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../requirements/levels/" class="md-nav__link">
         
   
@@ -9362,6 +9572,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#continuation-work-not-finished-not-lost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continuation — work not finished, not lost
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10301,6 +10522,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#continuation-work-not-finished-not-lost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continuation — work not finished, not lost
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10384,7 +10616,7 @@
 <h1 id="schema-exitcode">Schema: ExitCode</h1>
 <p><strong>File:</strong> <a href="../exit-code.json"><code>exit-code.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/f-001-standard-exit-code-table/">REQ-F-001</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-013-error-responses-include-code-and-message/">REQ-C-013</a> · <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a></p>
+<p><strong>Used by:</strong> <a href="../../requirements/f-001-standard-exit-code-table/">REQ-F-001</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-013-error-responses-include-code-and-message/">REQ-C-013</a> · <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/f-082-incomplete-work-response/">REQ-F-082</a></p>
 </blockquote>
 <hr />
 <h2 id="purpose">Purpose</h2>
@@ -10589,9 +10821,30 @@
 </tr>
 </tbody>
 </table>
+<h3 id="continuation-work-not-finished-not-lost">Continuation — work not finished, not lost</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Constant</th>
+<th>Retryable</th>
+<th>Side effects</th>
+<th>Agent action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14</td>
+<td><code>INCOMPLETE</code></td>
+<td>per entry</td>
+<td>none or partial</td>
+<td>Run <code>data.continue_command</code> verbatim; stop and run <code>data.cancel_command</code> when <code>data.progress.done</code> stops growing across continuations (REQ-F-082)</td>
+</tr>
+</tbody>
+</table>
 <p>* <em>after fix</em>: the identical invocation fails until the caller corrects the stated condition, then reissues. Declared as <code>retryable: false</code> in <code>ExitCodeEntry</code>; the envelope carries <code>fix_required</code> (or <code>error.redirect</code>) with the correction.</p>
 <p><strong>Reserved ranges:</strong>
-- <code>14–63</code> framework extensions
+- <code>15–63</code> framework extensions
 - <code>64–78</code> POSIX sysexits compatibility (optional mapping)
 - <code>79–125</code> command-specific (declare per REQ-C-001)
 - <code>126–255</code> shell-reserved: commands MUST NOT emit these; framework signal handlers alone emit <code>128 + N</code> (<code>130</code> on SIGINT per REQ-F-069, <code>143</code> on SIGTERM per REQ-F-013), declared in every command's <code>exit_codes</code> with <code>retryable: false</code> and <code>side_effects: "partial"</code></p>
@@ -10611,11 +10864,11 @@
 <p><strong>Schema-valid but wrong by convention</strong></p>
 <pre><code class="language-json">1
 </code></pre>
-<p>Violation: <code>GENERAL_ERROR</code> is a last resort. If the condition matches any specific code (3–13), use that code instead.</p>
+<p>Violation: <code>GENERAL_ERROR</code> is a last resort. If the condition matches any specific code (3–14), use that code instead.</p>
 <p><strong>Invalid — framework extension range</strong></p>
-<pre><code class="language-json">14
+<pre><code class="language-json">15
 </code></pre>
-<p>Violation: code <code>14</code> is in the framework extensions range (<code>14–63</code>), reserved for future use. Commands must not emit it.</p>
+<p>Violation: code <code>15</code> is in the framework extensions range (<code>15–63</code>), reserved for future use. Commands must not emit it.</p>
 <p><strong>Invalid — shell-reserved range</strong></p>
 <pre><code class="language-json">130
 </code></pre>
@@ -10636,6 +10889,9 @@
 <p><strong>Confusing <code>PERMISSION_DENIED (7)</code> and <code>AUTH_REQUIRED (8)</code>.</strong> <code>PERMISSION_DENIED</code> means the credentials are valid but insufficient — retrying with the same credentials will never succeed. <code>AUTH_REQUIRED</code> means the credentials themselves are the problem</p>
 </li>
 <li>
+<p><strong>Emitting <code>TIMEOUT (10)</code> for work that goes on.</strong> A command that hands its work to the background or saves it at a checkpoint when the caller's budget runs out has not timed out: it exits <code>INCOMPLETE (14)</code> with <code>data.continue_command</code>. <code>TIMEOUT</code> means the work stopped and its progress since the last checkpoint is gone</p>
+</li>
+<li>
 <p><strong>Treating all <code>TIMEOUT (10)</code> exits as non-retryable.</strong> For operations that time out before any write on a transient stall the identical re-run can clear, declare <code>retryable: true, side_effects: "none"</code> in <code>ExitCodeEntry</code>. Declare <code>retryable: false</code> when partial writes may have occurred, even on a command declared <code>idempotent</code>: the <code>ExitCodeEntry</code> invariant requires it when <code>side_effects</code> is <code>"partial"</code></p>
 </li>
 <li>
@@ -10646,7 +10902,7 @@
 <h2 id="agent-interpretation">Agent interpretation</h2>
 <p>Rules for agents consuming exit codes at runtime. Apply these when the response is ambiguous, contradictory, or outside the known table.</p>
 <p><strong>Unknown code received</strong>
-- Code in <code>14–63</code> — framework extension; treat as <code>GENERAL_ERROR (1)</code> behavior: inspect <code>error.detail</code>, do not assume retryability
+- Code in <code>15–63</code> — framework extension; treat as <code>GENERAL_ERROR (1)</code> behavior: inspect <code>error.detail</code>, do not assume retryability
 - Code in <code>64–78</code> — POSIX sysexit; look up the POSIX meaning; treat as non-retryable unless the meaning clearly indicates a transient condition
 - Code in <code>79–125</code> — command-specific; consult that command's <code>exit_codes</code> declaration from the manifest before acting
 - Code <code>126</code> or <code>127</code> — the binary could not be executed or was not found; the command never ran; fix the environment, then reissue
@@ -10661,7 +10917,8 @@
 - Codes marked retryable do not imply infinite retries — apply a retry budget (e.g. 3 attempts) before escalating
 - Codes marked <em>after fix</em> — apply the fix stated in <code>error.fix_required</code> (or <code>error.redirect</code>), reissue once; if no fix is stated, treat as terminal
 - <code>RATE_LIMITED (11)</code> without <code>error.retry_after_ms</code> — default to 60 seconds before retrying
-- <code>UNAVAILABLE (12)</code> — use exponential back-off starting at 1s, cap at 5 minutes</p>
+- <code>UNAVAILABLE (12)</code> — use exponential back-off starting at 1s, cap at 5 minutes
+- <code>INCOMPLETE (14)</code> — not a retry: run <code>data.continue_command</code>, which is either a wait on the running job or the original invocation resuming from its checkpoint. Compare <code>data.progress.done</code> between continuations; when it has not grown over three of them, run <code>data.cancel_command</code> and escalate</p>
 <p><strong>Side effects under uncertainty</strong>
 - Code is <code>GENERAL_ERROR (1)</code> (side effects unknown) — treat as <code>side_effects: "partial"</code>; inspect state before retrying
 - Code is <code>TIMEOUT (10)</code> — partial side effects are possible; do not assume the operation is idempotent unless its manifest entry declares <code>idempotent: true</code>, which makes rerunning the identical command once the recovery</p>
@@ -10694,6 +10951,7 @@
 <li>The hard invariants that commands may not relax: <code>ARG_ERROR (2)</code> is always <code>side_effects: none</code>; <code>PARTIAL_FAILURE (3)</code> is always <code>retryable: false</code>; <code>SUCCESS (0)</code> is the only code with <code>side_effects: complete</code></li>
 <li><code>ARG_ERROR (2)</code> requires a hard phase boundary between validation and execution. No side effect may begin before this code can be emitted</li>
 <li><code>AUTH_REQUIRED (8)</code> intentionally does not distinguish expired from invalid at the exit code level. The distinction is in <code>error.code</code> in the JSON payload — a more controlled channel. See <a href="../response-envelope.json"><code>response-envelope.json</code></a> <code>ErrorDetail.code</code> values: <code>TOKEN_EXPIRED</code>, <code>TOKEN_INVALID</code>, <code>TOKEN_MISSING</code></li>
+<li><code>INCOMPLETE (14)</code> requires <code>data.continue_command</code> and <code>data.progress</code> in the response (REQ-F-082). Its <code>retryable</code> follows the command's declared entry: <code>true</code> with <code>side_effects: "none"</code> for read-only work, whose identical re-run continues; <code>false</code> with <code>side_effects: "partial"</code> for mutating work, which the agent continues through <code>continue_command</code> rather than retries</li>
 <li><code>REDIRECTED (13)</code> requires the <code>error.redirect</code> field in the response. See <a href="../response-envelope.json"><code>response-envelope.json</code></a> <code>Redirect</code> definition</li>
 </ul>
 

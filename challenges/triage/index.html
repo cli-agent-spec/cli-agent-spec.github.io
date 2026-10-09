@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -2655,6 +2655,8 @@
       
         
       
+        
+      
     
     
     
@@ -2951,6 +2953,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-critical-execution-and-reliability/79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4544,6 +4574,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5481,6 +5523,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7665,6 +7791,90 @@
     
   
     REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
   
 
     
@@ -10151,8 +10361,8 @@
 <tr>
 <td>1</td>
 <td>stdout parses as a JSON envelope containing <code>"ok": false</code></td>
-<td><a href="../06-high-errors-and-discoverability/18-high-error-quality/">§18</a> <a href="../06-high-errors-and-discoverability/19-high-retry-hints/">§19</a></td>
-<td>Branch on <code>error.code</code>; obey <code>retryable</code>, <code>retry_after_ms</code>, <code>fix_required</code>; run <code>fix_command</code> verbatim when present, then reissue once</td>
+<td><a href="../06-high-errors-and-discoverability/18-high-error-quality/">§18</a> <a href="../06-high-errors-and-discoverability/19-high-retry-hints/">§19</a> <a href="../02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a></td>
+<td>Branch on <code>error.code</code>; obey <code>retryable</code>, <code>retry_after_ms</code>, <code>fix_required</code>; run <code>fix_command</code> verbatim when present, then reissue once. <code>INCOMPLETE</code> (exit <code>14</code>) is not a failure: run <code>data.continue_command</code> verbatim until the exit is not <code>14</code>, and run <code>data.cancel_command</code> when <code>data.progress.done</code> has not grown over three continuations</td>
 </tr>
 <tr>
 <td>2</td>
@@ -10163,7 +10373,7 @@
 <tr>
 <td>3</td>
 <td>Process hangs with no output; completes only when killed by timeout</td>
-<td><a href="../02-critical-execution-and-reliability/10-critical-interactivity/">§10</a> <a href="../01-critical-ecosystem-runtime-agent-specific/50-critical-stdin-deadlock/">§50</a> <a href="../01-critical-ecosystem-runtime-agent-specific/37-critical-repl-triggering/">§37</a> <a href="../01-critical-ecosystem-runtime-agent-specific/62-critical-editor-trap/">§62</a> <a href="../01-critical-ecosystem-runtime-agent-specific/64-critical-headless-gui/">§64</a> <a href="../01-critical-ecosystem-runtime-agent-specific/45-critical-headless-auth/">§45</a> <a href="../01-critical-ecosystem-runtime-agent-specific/60-critical-output-buffer-deadlock/">§60</a> <a href="../02-critical-execution-and-reliability/11-critical-timeouts/">§11</a></td>
+<td><a href="../02-critical-execution-and-reliability/10-critical-interactivity/">§10</a> <a href="../01-critical-ecosystem-runtime-agent-specific/50-critical-stdin-deadlock/">§50</a> <a href="../01-critical-ecosystem-runtime-agent-specific/37-critical-repl-triggering/">§37</a> <a href="../01-critical-ecosystem-runtime-agent-specific/62-critical-editor-trap/">§62</a> <a href="../01-critical-ecosystem-runtime-agent-specific/64-critical-headless-gui/">§64</a> <a href="../01-critical-ecosystem-runtime-agent-specific/45-critical-headless-auth/">§45</a> <a href="../01-critical-ecosystem-runtime-agent-specific/60-critical-output-buffer-deadlock/">§60</a> <a href="../02-critical-execution-and-reliability/11-critical-timeouts/">§11</a> <a href="../02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a></td>
 <td>Re-run once with the non-interactive bundle below: stdin closed, suppression env vars, timeout wrapper</td>
 </tr>
 <tr>
@@ -10229,7 +10439,7 @@
 <tr>
 <td>14</td>
 <td>Exit code in <code>129–143</code> (128 + signal number)</td>
-<td><a href="../02-critical-execution-and-reliability/11-critical-timeouts/">§11</a> <a href="../02-critical-execution-and-reliability/16-high-signal-handling/">§16</a></td>
+<td><a href="../02-critical-execution-and-reliability/11-critical-timeouts/">§11</a> <a href="../02-critical-execution-and-reliability/16-high-signal-handling/">§16</a> <a href="../02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a></td>
 <td>The process was killed externally (outer timeout, OOM); inspect partial state before any retry, unless the manifest declares the command <code>idempotent: true</code> (one unchanged rerun, see the default retry policy below)</td>
 </tr>
 <tr>

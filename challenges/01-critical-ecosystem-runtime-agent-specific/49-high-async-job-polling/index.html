@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -2772,6 +2772,8 @@
       
         
       
+        
+      
     
     
     
@@ -3068,6 +3070,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-critical-execution-and-reliability/79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4661,6 +4691,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5598,6 +5640,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7782,6 +7908,90 @@
     
   
     REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
   
 
     
@@ -10274,15 +10484,16 @@ $ echo $?
 </code></pre>
 <p><strong>Status command uses distinct exit codes:</strong></p>
 <pre><code>exit 0  = job complete (terminal, success)
-exit 3  = job still running (non-terminal, poll again)
+exit 14 = job still running (INCOMPLETE: non-terminal, poll again)
 exit 4  = job failed (terminal, failure)
-exit 7  = job timed out (terminal)
+exit 10 = job timed out (TIMEOUT: terminal)
 exit 5  = job ID not found / expired
 </code></pre>
 <p><strong>Terminal vs non-terminal distinction in response:</strong></p>
 <pre><code class="language-json">{ &quot;status&quot;: &quot;running&quot;, &quot;terminal&quot;: false, &quot;progress_pct&quot;: 60 }
 { &quot;status&quot;: &quot;complete&quot;, &quot;terminal&quot;: true, &quot;result&quot;: {...} }
 </code></pre>
+<p>A command that is not always slow, only sometimes (its run length depends on its input), should not be declared async: Pattern A is fixed for it by a bounded call that hands off to a job only when the call budget runs out (<a href="../../02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a>).</p>
 <p><strong>For framework design:</strong>
 - Provide a first-class <code>AsyncJob</code> return type; framework automatically generates <code>job status &lt;id&gt;</code> and <code>job cancel &lt;id&gt;</code> subcommands
 - The job descriptor schema (status_command, cancel_command, poll_interval_ms, timeout_ms) must be part of the standard response envelope for any async operation
@@ -10306,7 +10517,7 @@ exit 5  = job ID not found / expired
 </tr>
 <tr>
 <td>2</td>
-<td>Async response includes <code>job_id</code>, <code>status_command</code>, <code>poll_interval_ms</code>; status command uses distinct exit codes (0=done, 3=running, 4=failed)</td>
+<td>Async response includes <code>job_id</code>, <code>status_command</code>, <code>poll_interval_ms</code>; status command uses distinct exit codes (0=done, 14=running, 4=failed)</td>
 </tr>
 <tr>
 <td>3</td>
@@ -10314,7 +10525,7 @@ exit 5  = job ID not found / expired
 </tr>
 </tbody>
 </table>
-<p><strong>Check:</strong> Start an async job and immediately call the status command — verify exit code is 3 (not 0) while running, and exit code changes to 0 when complete.</p>
+<p><strong>Check:</strong> Start an async job and immediately call the status command — verify exit code is 14 (not 0) while running, and exit code changes to 0 when complete.</p>
 <hr />
 <h3 id="agent-workaround">Agent Workaround</h3>
 <p><strong>Signature:</strong> long-running command blocks silently until timeout; or returns a job ID with <code>exit 0</code> and the status query also exits <code>0</code> while the job still runs</p>

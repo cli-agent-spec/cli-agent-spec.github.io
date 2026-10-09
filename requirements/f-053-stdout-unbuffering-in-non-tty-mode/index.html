@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -2647,6 +2647,8 @@
       
         
       
+        
+      
     
     
     
@@ -2940,6 +2942,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4520,6 +4550,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5460,6 +5502,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7757,6 +7883,90 @@
     
   
     REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
   
 
     
@@ -10199,13 +10409,11 @@
 <p><strong>Addresses:</strong> Severity: Critical / Token Spend: High / Time: Critical / Context: Low</p>
 <hr />
 <h2 id="description">Description</h2>
-<p>The framework MUST disable OS-level stdout buffering when stdout is not a TTY. In Python this means calling <code>sys.stdout.reconfigure(line_buffering=True)</code> and setting <code>PYTHONUNBUFFERED=1</code> before any output. In Node.js this means calling <code>process.stdout.cork()</code> / <code>uncork()</code> appropriately or using unbuffered streams. This MUST be performed in the framework's bootstrap, before any command code runs. For long-running commands (&gt;5s), the framework MUST additionally emit a JSON heartbeat object to stdout every configurable interval (default: 10000ms) via the <code>--heartbeat-ms</code> flag (REQ-O-038).</p>
+<p>The framework MUST disable OS-level stdout buffering when stdout is not a TTY. In Python this means calling <code>sys.stdout.reconfigure(line_buffering=True)</code> and setting <code>PYTHONUNBUFFERED=1</code> before any output. In Node.js this means calling <code>process.stdout.cork()</code> / <code>uncork()</code> appropriately or using unbuffered streams. This MUST be performed in the framework's bootstrap, before any command code runs. Heartbeats are not part of this requirement: they are opt-in (<a href="../o-012-heartbeat-interval-flag/">REQ-O-012</a>, <a href="../o-038-heartbeat-ms-flag-for-long-running-commands/">REQ-O-038</a>), and unbuffering is what lets them, like every other line, reach the caller as written.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A command that emits one log line per second is received by the agent one line at a time, not in a single flush after the process exits</li>
 <li><code>PYTHONUNBUFFERED=1</code> is set in the process environment before the first <code>output()</code> call</li>
-<li>A 30-second command with heartbeats enabled emits at least 2 heartbeat JSON objects to stdout before completing</li>
-<li>Heartbeat objects are valid JSON matching <code>{"status": "running", "heartbeat": true, "elapsed_ms": N}</code></li>
 </ul>
 <hr />
 <h2 id="schema">Schema</h2>
@@ -10213,7 +10421,7 @@
 <hr />
 <h2 id="wire-format">Wire Format</h2>
 <p>No wire-format fields — this requirement governs framework behavior only. The effect is observable: output bytes reach the caller immediately as emitted rather than in a single post-exit flush.</p>
-<p>Heartbeat lines (emitted via REQ-O-038) are JSON objects on stdout when enabled:</p>
+<p>When a caller opts into heartbeats (REQ-O-038), unbuffered stdout is what delivers each line as it is written:</p>
 <pre><code class="language-json">{&quot;status&quot;: &quot;running&quot;, &quot;heartbeat&quot;: true, &quot;elapsed_ms&quot;: 10012}
 {&quot;status&quot;: &quot;running&quot;, &quot;heartbeat&quot;: true, &quot;elapsed_ms&quot;: 20031}
 {&quot;ok&quot;: true, &quot;data&quot;: {&quot;result&quot;: &quot;done&quot;}, &quot;error&quot;: null, &quot;warnings&quot;: [], &quot;meta&quot;: { &quot;exit_code&quot;: 0,&quot;duration_ms&quot;: 22418}}

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="75 failure modes + 160 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -2647,6 +2647,8 @@
       
         
       
+        
+      
     
     
     
@@ -2940,6 +2942,34 @@
     
   
     77 high no batch dispatch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../challenges/02-critical-execution-and-reliability/79-critical-work-outlives-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    79 critical work outlives budget
   
 
     
@@ -4520,6 +4550,18 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5460,6 +5502,90 @@
     
   
     REQ-C-032: Protocol Server Commands Declare Their Stdout Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-033-commands-declare-interruption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-033: Commands Declare Interruption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-034-long-running-commands-report-progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-034: Long-Running Commands Report Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c-035-resumable-commands-checkpoint-at-safe-points/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-035: Resumable Commands Checkpoint at Safe Points
   
 
     
@@ -7757,6 +7883,90 @@
     
   
     REQ-F-079: Global Option Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f-080-sync-call-budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-080: Sync Call Budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f-081-detached-job-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-081: Detached Job Runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f-082-incomplete-work-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-F-082: Incomplete-Work Response
   
 
     
@@ -10200,6 +10410,7 @@
 <hr />
 <h2 id="description">Description</h2>
 <p>The framework MUST apply a default wall-clock timeout to every command execution. The default value MUST be configurable at the framework level and overridable per command. A command whose run length depends on its input declares a per-command default sized for its expected inputs, since a timeout on it is not cleared by re-running the identical invocation (REQ-C-014). A command that exceeds its timeout MUST be terminated by the framework, not left to run indefinitely. The timeout MUST be enforced even if the command itself does not implement any timeout logic.</p>
+<p>A command that declares <code>interruption</code> (<a href="../c-033-commands-declare-interruption/">REQ-C-033</a>) is still bounded, but a run that outlasts one call is not killed: the sync call budget (<a href="../f-080-sync-call-budget/">REQ-F-080</a>) bounds each call, and the wall-clock limit bounds the whole work across its continuations. Without an explicit <code>--timeout</code>, that limit is the command's <code>interruption.max_lifetime_ms</code>, and a background job that stops making progress ends after <code>interruption.idle_timeout_ms</code> (<a href="../f-081-detached-job-runtime/">REQ-F-081</a>). For such a command, the per-command default sized for its expected inputs is <code>interruption.max_lifetime_ms</code>, not a per-call limit, and it never needs <code>--timeout 0</code> to survive a large input.</p>
 <h2 id="acceptance-criteria">Acceptance Criteria</h2>
 <ul>
 <li>A command that sleeps indefinitely exits within <code>default_timeout + 5s</code> without manual intervention</li>
@@ -10274,6 +10485,16 @@ meta.timeout_ms = 30000    # all other commands
 <td><a href="../c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a></td>
 <td>C</td>
 <td>Specializes: a protocol command's timeout stops when serving begins</td>
+</tr>
+<tr>
+<td><a href="../f-080-sync-call-budget/">REQ-F-080</a></td>
+<td>F</td>
+<td>Composes: the budget bounds one call; this limit bounds the whole work</td>
+</tr>
+<tr>
+<td><a href="../f-081-detached-job-runtime/">REQ-F-081</a></td>
+<td>F</td>
+<td>Specializes: an interruptible command's limit is its job lifetime, with an idle limit beside it</td>
 </tr>
 </tbody>
 </table>
