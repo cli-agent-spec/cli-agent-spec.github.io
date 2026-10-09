@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 167 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4560,6 +4560,8 @@
       
         
       
+        
+      
     
     
     
@@ -5581,6 +5583,34 @@
     
   
     REQ-C-035: Resumable Commands Checkpoint at Safe Points
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-036-person-only-commands-declare-requires-person/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-036: Person-Only Commands Declare requires_person
   
 
     
@@ -10572,7 +10602,7 @@
 <h1 id="schema-manifestresponse">Schema: ManifestResponse</h1>
 <p><strong>File:</strong> <a href="../manifest-response.json"><code>manifest-response.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a> · <a href="../../requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/">REQ-F-054</a> · <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a> · <a href="../../requirements/c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a> · <a href="../../requirements/f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a> · <a href="../../requirements/o-001-output-format-flag/">REQ-O-001</a> · <a href="../../requirements/c-033-commands-declare-interruption/">REQ-C-033</a> · <a href="../../requirements/f-081-detached-job-runtime/">REQ-F-081</a>
+<p><strong>Used by:</strong> <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-013-schema-output-schema-flag/">REQ-O-013</a> · <a href="../../requirements/c-001-command-declares-exit-codes/">REQ-C-001</a> · <a href="../../requirements/c-002-command-declares-danger-level/">REQ-C-002</a> · <a href="../../requirements/c-005-interactive-commands-must-support-yes-non-interact/">REQ-C-005</a> · <a href="../../requirements/c-008-multi-step-commands-emit-step-manifest/">REQ-C-008</a> · <a href="../../requirements/c-010-background-process-commands-declare-metadata/">REQ-C-010</a> · <a href="../../requirements/c-011-commands-declare-filesystem-side-effects/">REQ-C-011</a> · <a href="../../requirements/c-012-commands-with-network-i-o-support-timeout/">REQ-C-012</a> · <a href="../../requirements/c-015-commands-declare-input-and-output-schema/">REQ-C-015</a> · <a href="../../requirements/c-016-secrets-accepted-only-via-env-var-or-file/">REQ-C-016</a> · <a href="../../requirements/c-018-commands-declare-platform-requirements/">REQ-C-018</a> · <a href="../../requirements/c-019-subprocess-invoking-commands-declare-argument-sche/">REQ-C-019</a> · <a href="../../requirements/c-020-resource-id-fields-declare-validation-pattern/">REQ-C-020</a> · <a href="../../requirements/c-021-auth-commands-declare-headless-mode-support/">REQ-C-021</a> · <a href="../../requirements/c-022-async-commands-declare-job-descriptor-schema/">REQ-C-022</a> · <a href="../../requirements/c-023-editor-requiring-commands-declare-non-interactive-/">REQ-C-023</a> · <a href="../../requirements/c-024-gui-launching-commands-declare-headless-behavior/">REQ-C-024</a> · <a href="../../requirements/c-025-config-writing-commands-declare-write-scope/">REQ-C-025</a> · <a href="../../requirements/c-026-commands-declare-conditional-argument-dependencies/">REQ-C-026</a> · <a href="../../requirements/c-027-commands-declare-option-placement/">REQ-C-027</a> · <a href="../../requirements/c-029-command-declares-required-scopes/">REQ-C-029</a> · <a href="../../requirements/f-051-debug-and-trace-mode-secret-redaction/">REQ-F-051</a> · <a href="../../requirements/f-073-env-var-namespace-prefix/">REQ-F-073</a> · <a href="../../requirements/f-079-global-option-scope/">REQ-F-079</a> · <a href="../../requirements/o-004-output-jsonl-stream-flag/">REQ-O-004</a> · <a href="../../requirements/o-031-dependency-version-matrix-declaration/">REQ-O-031</a> · <a href="../../requirements/o-042-output-format-env-var-default/">REQ-O-042</a> · <a href="../../requirements/o-048-destructive-commands-default-dry-run/">REQ-O-048</a> · <a href="../../requirements/o-049-llm-token-budget-flags/">REQ-O-049</a> · <a href="../../requirements/f-054-stdin-payload-size-cap-with-input-file-fallback/">REQ-F-054</a> · <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a> · <a href="../../requirements/c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a> · <a href="../../requirements/f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a> · <a href="../../requirements/o-001-output-format-flag/">REQ-O-001</a> · <a href="../../requirements/c-033-commands-declare-interruption/">REQ-C-033</a> · <a href="../../requirements/f-081-detached-job-runtime/">REQ-F-081</a> · <a href="../../requirements/c-036-person-only-commands-declare-requires-person/">REQ-C-036</a>
 Returned as the <code>data</code> field of a <a href="../response-envelope/"><code>ResponseEnvelope</code></a>.</p>
 </blockquote>
 <hr />
@@ -10812,6 +10842,11 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <td><code>interactive</code></td>
 <td>boolean</td>
 <td>Command may prompt in a TTY; <code>--yes</code> and <code>--non-interactive</code> exist (REQ-C-005)</td>
+</tr>
+<tr>
+<td><code>requires_person</code></td>
+<td><code>true</code></td>
+<td>A person, not the calling agent, confirms the command by typing back an expected string at a terminal; no flag answers the prompt, <code>--yes</code> included. Off a terminal or under <code>--non-interactive</code> it exits <code>4</code> with <code>PERSON_REQUIRED</code>; a wrong answer exits <code>4</code> with <code>ATTESTATION_MISMATCH</code>. Requires <code>interactive: true</code> and <code>mcp: false</code>; present only when <code>true</code> (REQ-C-036)</td>
 </tr>
 <tr>
 <td><code>has_network_io</code></td>
@@ -11713,6 +11748,41 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 }
 </code></pre>
 <p>Violation: <code>mcp</code> is present only when <code>false</code>. A command the MCP server may offer omits the field, so two producers never spell the default two ways.</p>
+<p><strong>Valid — a command only a person confirms</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.21&quot;,
+  &quot;framework_version&quot;: &quot;2.5.0&quot;,
+  &quot;etag&quot;: &quot;sha256:3e8a51&quot;,
+  &quot;commands&quot;: {
+    &quot;decisions.approve&quot;: {
+      &quot;description&quot;: &quot;Record a person's approval of a decision an agent proposed&quot;,
+      &quot;danger_level&quot;: &quot;mutating&quot;,
+      &quot;required_scopes&quot;: [&quot;decisions:approve&quot;],
+      &quot;interactive&quot;: true,
+      &quot;mcp&quot;: false,
+      &quot;requires_person&quot;: true,
+      &quot;flags&quot;: {},
+      &quot;positionals&quot;: [{ &quot;name&quot;: &quot;id&quot;, &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: true, &quot;description&quot;: &quot;ID of the decision to approve&quot; }],
+      &quot;exit_codes&quot;: {
+        &quot;0&quot;: { &quot;name&quot;: &quot;SUCCESS&quot;, &quot;description&quot;: &quot;The approval is recorded&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;complete&quot; },
+        &quot;4&quot;: { &quot;name&quot;: &quot;PRECONDITION&quot;, &quot;description&quot;: &quot;No person confirmed the approval at a terminal; nothing is recorded&quot;, &quot;retryable&quot;: false, &quot;side_effects&quot;: &quot;none&quot;, &quot;error_codes&quot;: [&quot;PERSON_REQUIRED&quot;, &quot;ATTESTATION_MISMATCH&quot;] }
+      }
+    }
+  }
+}
+</code></pre>
+<p>Before the first call, an agent reads that <code>--yes</code> does not confirm <code>decisions.approve</code> and that the tool's MCP server never offers it. It hands <code>tool decisions approve &lt;id&gt;</code> to a person instead of calling it.</p>
+<p><strong>Invalid — person-only command an MCP server may offer</strong></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;3.21&quot;,
+  &quot;framework_version&quot;: &quot;2.5.0&quot;,
+  &quot;etag&quot;: &quot;sha256:3e8a51&quot;,
+  &quot;commands&quot;: {
+    &quot;decisions.approve&quot;: { &quot;description&quot;: &quot;Record a person's approval of a decision&quot;, &quot;danger_level&quot;: &quot;mutating&quot;, &quot;required_scopes&quot;: [], &quot;interactive&quot;: true, &quot;requires_person&quot;: true, &quot;flags&quot;: {}, &quot;exit_codes&quot;: {} }
+  }
+}
+</code></pre>
+<p>Violation: <code>requires_person: true</code> requires <code>mcp: false</code>. An MCP call has no terminal and no person behind it, so a server that offered the command could only ever fail it.</p>
 <p><strong>Valid — integer flag with a fixed set of values</strong></p>
 <pre><code class="language-json">{
   &quot;schema_version&quot;: &quot;3.18&quot;,
@@ -11880,6 +11950,8 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <li><strong>Writing a startup error to stdout on a protocol command.</strong> The client reads stdout as protocol messages from the first byte; a failure before serving begins goes to stderr, and stdout stays empty</li>
 <li><strong>Saying only in <code>description</code> that a command is not an MCP tool.</strong> "(not an MCP tool)" is prose a server generator and an agent must parse; declare <code>mcp: false</code></li>
 <li><strong>Emitting <code>mcp: true</code>.</strong> The schema rejects it; a command the MCP server may offer omits <code>mcp</code></li>
+<li><strong>Letting <code>--yes</code> answer a person-only confirmation.</strong> An agent passes <code>--yes</code> as readily as any flag, so it approves its own proposal; declare <code>requires_person: true</code>, which no flag answers (REQ-C-036)</li>
+<li><strong>Declaring <code>requires_person: true</code> without <code>interactive: true</code> and <code>mcp: false</code>.</strong> The schema rejects it: the attestation is a prompt, and an MCP call has no person behind it</li>
 <li><strong>Saying only in <code>description</code> that a command streams a wrapped program's log.</strong> An agent cannot match prose before the call; declare <code>stderr: "child_log"</code> so it knows stderr will be busy and carries no failure signal</li>
 <li><strong>Letting auto-quiet or <code>--verbose</code> gate a declared child log.</strong> <code>child_log</code> streams whatever the verbosity; only <code>--quiet</code> silences it, so a log that appears only under <code>--verbose</code> is a framework diagnostic, not a child log</li>
 <li><strong>Listing a borrowed name before the tool-prefixed one.</strong> <code>CLOUDFALL_PROJECT</code> ahead of <code>TOOL_PROJECT</code> lets a variable set for another tool override the one set for this tool (REQ-F-073)</li>
@@ -11983,6 +12055,11 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Exit <code>0</code> after you close stdin is a clean shutdown and carries no envelope. <code>143</code> after you sent <code>SIGTERM</code> is the expected end of the session, not a failure to report
 - Stderr while serving holds the framework's plain-text diagnostics; never read it as protocol messages
 - An absent <code>stdout</code> means stdout carries envelopes, including on a pre-3.16 manifest; such a manifest cannot mark a protocol command, so treat a command whose <code>description</code> says it serves MCP, LSP, or another protocol over stdio as one</p>
+<p><strong>Commands only a person confirms (<code>requires_person: true</code>)</strong>
+- <code>requires_person: true</code>: a person must type the confirmation at a terminal. Hand the command to a person with its exact arguments; never add <code>--yes</code> or another flag to get past it
+- Exit <code>4</code> with <code>error.code: "PERSON_REQUIRED"</code>: the command ran off a terminal and did nothing. Do not retry it, with or without flags, and do not start it under a pseudo-terminal; hand it to a person
+- Exit <code>4</code> with <code>error.code: "ATTESTATION_MISMATCH"</code>: the person typed the wrong confirmation and nothing ran; leave the retry to them
+- An absent <code>requires_person</code> means an agent may confirm the command, including on a pre-3.21 manifest, which cannot mark a person-only command; read its <code>description</code>, and treat <code>mcp: false</code> with <code>interactive: true</code> as a hint that a person may be needed</p>
 <p><strong>Commands kept off the MCP server (<code>mcp: false</code>)</strong>
 - <code>mcp: false</code>: the tool's own MCP server never offers the command as a tool. Run it through the CLI, or hand it to a person when it needs one (an approval, a project-creating <code>init</code>); never expect to find it among the server's tools
 - When building an MCP tool list from the manifest, leave out every entry with <code>mcp: false</code>
@@ -12020,6 +12097,7 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 - Assert root <code>secret_env_vars</code> lists exactly the secrets every command reads, and that none of them repeats in a command's <code>secret_env_vars</code> or a flag's <code>env_vars</code>; assert no name in an auth command's <code>token_env_vars</code> repeats in that command's <code>secret_env_vars</code>
 - Assert <code>stdout: "protocol"</code> and <code>protocol</code> appear together on exactly the commands that serve a protocol over stdio, that such a command writes nothing to stdout before serving begins, ends stderr with the envelope on any non-zero exit in JSON mode, exits <code>0</code> when stdin closes, and declares none of the fields REQ-C-032 excludes
 - Assert <code>mcp: false</code> appears on exactly the commands the tool's MCP server leaves out, that the server's tool list holds every other command it serves and none marked <code>mcp: false</code>, and that no entry carries <code>mcp: true</code>
+- Assert <code>requires_person: true</code> appears on exactly the commands that ask for an attestation, always with <code>interactive: true</code> and <code>mcp: false</code>, and that each one exits <code>4</code> with <code>PERSON_REQUIRED</code> under <code>--yes</code> with stdin from <code>/dev/null</code>
 - Assert <code>stderr: "child_log"</code> appears on exactly the commands that stream a wrapped program's output to stderr, never on a passthrough command, and that <code>--quiet</code> leaves stderr empty for them
 - Assert the root <code>format</code> flag's <code>media_types</code> keys are all in its <code>enum_values</code>, cover every value outside the spec's media type table, and map each spec value they list to the table's media type; assert no other flag carries <code>media_types</code>
 - Assert every <code>output_formats</code> value covered by neither the spec's table nor the root <code>media_types</code> has an <code>output_media_types</code> entry, and every <code>output_media_types</code> key is a value the command accepts
@@ -12123,6 +12201,10 @@ Returned as the <code>data</code> field of a <a href="../response-envelope/"><co
 <tr>
 <td><a href="../../requirements/c-032-protocol-server-commands-declare-stdout-protocol/">REQ-C-032</a></td>
 <td>Sources: <code>stdout</code>, <code>protocol</code>, and <code>mcp</code> per command</td>
+</tr>
+<tr>
+<td><a href="../../requirements/c-036-person-only-commands-declare-requires-person/">REQ-C-036</a></td>
+<td>Sources: <code>requires_person</code> per command</td>
 </tr>
 <tr>
 <td><a href="../../requirements/f-038-verbosity-auto-quiet-in-non-tty-context/">REQ-F-038</a></td>

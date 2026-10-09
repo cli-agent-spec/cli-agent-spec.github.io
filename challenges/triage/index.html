@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 167 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4586,6 +4586,8 @@
       
         
       
+        
+      
     
     
     
@@ -5607,6 +5609,34 @@
     
   
     REQ-C-035: Resumable Commands Checkpoint at Safe Points
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-036-person-only-commands-declare-requires-person/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-036: Person-Only Commands Declare requires_person
   
 
     
@@ -10362,7 +10392,7 @@
 <td>1</td>
 <td>stdout parses as a JSON envelope containing <code>"ok": false</code></td>
 <td><a href="../06-high-errors-and-discoverability/18-high-error-quality/">§18</a> <a href="../06-high-errors-and-discoverability/19-high-retry-hints/">§19</a> <a href="../02-critical-execution-and-reliability/79-critical-work-outlives-budget/">§79</a></td>
-<td>Branch on <code>error.code</code>; obey <code>retryable</code>, <code>retry_after_ms</code>, <code>fix_required</code>; run <code>fix_command</code> verbatim when present, then reissue once. <code>INCOMPLETE</code> (exit <code>14</code>) is not a failure: run <code>data.continue_command</code> verbatim until the exit is not <code>14</code>, and run <code>data.cancel_command</code> when <code>data.progress.done</code> has not grown over three continuations</td>
+<td>Branch on <code>error.code</code>; obey <code>retryable</code>, <code>retry_after_ms</code>, <code>fix_required</code>; run <code>fix_command</code> verbatim when present, then reissue once. <code>INCOMPLETE</code> (exit <code>14</code>) is not a failure: run <code>data.continue_command</code> verbatim until the exit is not <code>14</code>, and run <code>data.cancel_command</code> when <code>data.progress.done</code> has not grown over three continuations. <code>PERSON_REQUIRED</code> (exit <code>4</code>) needs a person at a terminal (<a href="../02-critical-execution-and-reliability/10-critical-interactivity/">§10</a>): hand the exact command to a person and never retry it</td>
 </tr>
 <tr>
 <td>2</td>

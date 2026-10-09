@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 167 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4747,6 +4747,8 @@
       
         
       
+        
+      
     
     
     
@@ -5768,6 +5770,34 @@
     
   
     REQ-C-035: Resumable Commands Checkpoint at Safe Points
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/c-036-person-only-commands-declare-requires-person/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-036: Person-Only Commands Declare requires_person
   
 
     
@@ -10584,6 +10614,7 @@ exit 4   # precondition not met
 - Auto-detect <code>sys.stdin.isatty()</code> and set <code>--non-interactive</code> implicitly
 - Never use pagers; respect <code>NO_COLOR</code>, <code>TERM=dumb</code>, <code>CI</code> env vars
 - Any command with a confirmation prompt MUST have a <code>--yes</code>/<code>--force</code> flag
+- The one exception is a confirmation only a person may give, such as approving a change an agent proposed: declare <code>requires_person: true</code> (<a href="../../../requirements/c-036-person-only-commands-declare-requires-person/">REQ-C-036</a>), which no flag answers and which fails fast with exit <code>4</code> and <code>PERSON_REQUIRED</code> off a terminal instead of hanging
 - Document which commands are interactive in help text
 - Set <code>PAGER=cat</code> and <code>GIT_PAGER=cat</code> in agent execution environments</p>
 <hr />
@@ -10700,6 +10731,7 @@ tool --help | grep -E '\-\-(yes|non-interactive|no-input|defaults|force)'
 # Then call with all applicable flags
 tool deploy --yes --non-interactive
 </code></pre>
+<p><strong>A person-only command is not a hang to work around:</strong> exit <code>4</code> with <code>error.code: "PERSON_REQUIRED"</code>, or <code>requires_person: true</code> in the manifest, means a person must confirm the command at a terminal (<a href="../../../requirements/c-036-person-only-commands-declare-requires-person/">REQ-C-036</a>). Hand the exact command to a person and never retry it, with <code>--yes</code> or any other flag.</p>
 <p><strong>Limitation:</strong> <code>stdin=DEVNULL</code> suppresses prompts that read from <code>sys.stdin</code>, but tools that open <code>/dev/tty</code> directly will still block — this is a CLI bug with no agent-side fix; report it and use the timeout as a circuit breaker</p>
 
 

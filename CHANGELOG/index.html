@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 167 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4558,6 +4558,8 @@
       
         
       
+        
+      
     
     
     
@@ -5579,6 +5581,34 @@
     
   
     REQ-C-035: Resumable Commands Checkpoint at Safe Points
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/c-036-person-only-commands-declare-requires-person/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-036: Person-Only Commands Declare requires_person
   
 
     
@@ -10230,6 +10260,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-confirmation-only-a-person-gives-requires_person" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A confirmation only a person gives: requires_person
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -11022,6 +11069,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Unreleased">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-confirmation-only-a-person-gives-requires_person" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A confirmation only a person gives: requires_person
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -11792,6 +11856,15 @@
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
 <h2 id="unreleased">Unreleased</h2>
+<h3 id="a-confirmation-only-a-person-gives-requires_person">A confirmation only a person gives: <code>requires_person</code></h3>
+<ul>
+<li>REQ-C-036 Person-Only Commands Declare <code>requires_person</code> (P1): a command whose confirmation only a person may give, such as approving a change an agent proposed, declares <code>requires_person: true</code> with <code>interactive: true</code> and <code>mcp: false</code>. It asks the person to type back an expected string, only when stdin and stdout are terminals and <code>--non-interactive</code> is absent, and no flag answers it, <code>--yes</code> included. Off a terminal it exits <code>4</code> with <code>error.code: "PERSON_REQUIRED"</code>, <code>retryable: false</code>, and a suggestion that names no flag; a wrong answer exits <code>4</code> with <code>ATTESTATION_MISMATCH</code>; neither runs anything. The requirement states its non-goal: a speed bump and an honest record, not a security boundary, since an agent running as the same OS user can fake a terminal</li>
+<li>REQ-C-005: its first criterion gains the one exception, a command with <code>requires_person: true</code> ignores <code>--yes</code> for its attestation</li>
+<li>ManifestResponse 3.21: <code>CommandEntry.requires_person</code> (<code>true</code> only, absent otherwise); the schema requires <code>interactive: true</code> and <code>mcp: false</code> beside it. A producer that declares it emits <code>schema_version</code> <code>3.21</code>; earlier manifests stay valid. <code>manifest-response.md</code> gains a valid and an invalid example, common mistakes, and the agent interpretation; <code>tests/test_manifest_schema.py</code> pins the behaviour</li>
+<li><code>response-envelope.md</code> gains the agent interpretation of <code>PERSON_REQUIRED</code> and <code>ATTESTATION_MISMATCH</code>: hand the command to a person and never retry it</li>
+<li>§10 and §23 point person-only confirmations at REQ-C-036 in their solutions, §10's agent workaround says to hand a <code>PERSON_REQUIRED</code> command to a person, and <code>triage.md</code> row 1 routes <code>PERSON_REQUIRED</code>. No new failure mode</li>
+</ul>
+<p><strong>Why:</strong> REQ-C-005 made <code>--yes</code> answer every confirmation, so a conformant CLI could not have a step only a person takes; an agent approved its own proposal with <code>decisions approve &lt;id&gt; --yes</code> (#86).</p>
 <h2 id="1150-2026-10-09">1.15.0 — 2026-10-09</h2>
 <h3 id="79-work-outlives-the-callers-budget-bounded-calls-that-keep-their-work">§79 Work Outlives the Caller's Budget: bounded calls that keep their work</h3>
 <ul>

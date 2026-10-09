@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 167 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4560,6 +4560,8 @@
       
         
       
+        
+      
     
     
     
@@ -5581,6 +5583,34 @@
     
   
     REQ-C-035: Resumable Commands Checkpoint at Safe Points
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/c-036-person-only-commands-declare-requires-person/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-036: Person-Only Commands Declare requires_person
   
 
     
@@ -10584,7 +10614,7 @@
 <h1 id="schema-responseenvelope">Schema: ResponseEnvelope</h1>
 <p><strong>File:</strong> <a href="../response-envelope.json"><code>response-envelope.json</code></a></p>
 <blockquote>
-<p><strong>Used by:</strong> <a href="../../requirements/f-004-consistent-json-response-envelope/">REQ-F-004</a> · <a href="../../requirements/f-018-pagination-metadata-on-list-commands/">REQ-F-018</a> · <a href="../../requirements/f-023-tool-version-in-every-response/">REQ-F-023</a> · <a href="../../requirements/f-024-request-id-and-trace-id-in-every-response/">REQ-F-024</a> · <a href="../../requirements/c-009-multi-step-commands-report-completed-failed-skippe/">REQ-C-009</a> · <a href="../../requirements/c-013-error-responses-include-code-and-message/">REQ-C-013</a> · <a href="../../requirements/c-014-error-responses-include-retryable-and-retry-after-/">REQ-C-014</a> · <a href="../../requirements/c-028-already-exists-response-pattern/">REQ-C-028</a> · <a href="../../requirements/c-030-error-responses-include-fix-command/">REQ-C-030</a> · <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-050-tool-exec-built-in-command/">REQ-O-050</a> · <a href="../../requirements/f-080-sync-call-budget/">REQ-F-080</a> · <a href="../../requirements/f-082-incomplete-work-response/">REQ-F-082</a> · all commands in JSON output mode</p>
+<p><strong>Used by:</strong> <a href="../../requirements/f-004-consistent-json-response-envelope/">REQ-F-004</a> · <a href="../../requirements/f-018-pagination-metadata-on-list-commands/">REQ-F-018</a> · <a href="../../requirements/f-023-tool-version-in-every-response/">REQ-F-023</a> · <a href="../../requirements/f-024-request-id-and-trace-id-in-every-response/">REQ-F-024</a> · <a href="../../requirements/c-009-multi-step-commands-report-completed-failed-skippe/">REQ-C-009</a> · <a href="../../requirements/c-013-error-responses-include-code-and-message/">REQ-C-013</a> · <a href="../../requirements/c-014-error-responses-include-retryable-and-retry-after-/">REQ-C-014</a> · <a href="../../requirements/c-028-already-exists-response-pattern/">REQ-C-028</a> · <a href="../../requirements/c-030-error-responses-include-fix-command/">REQ-C-030</a> · <a href="../../requirements/c-031-passthrough-commands-delegate-to-another-parser/">REQ-C-031</a> · <a href="../../requirements/o-030-opt-in-audit-log/">REQ-O-030</a> · <a href="../../requirements/o-041-tool-manifest-built-in-command/">REQ-O-041</a> · <a href="../../requirements/o-050-tool-exec-built-in-command/">REQ-O-050</a> · <a href="../../requirements/f-080-sync-call-budget/">REQ-F-080</a> · <a href="../../requirements/f-082-incomplete-work-response/">REQ-F-082</a> · <a href="../../requirements/c-036-person-only-commands-declare-requires-person/">REQ-C-036</a> · all commands in JSON output mode</p>
 </blockquote>
 <hr />
 <h2 id="purpose">Purpose</h2>
@@ -11221,6 +11251,9 @@
 - <code>error.fix_command</code> present — run it verbatim (it is declared safe: read-only or idempotent), then reissue the original call once; if either step fails, stop and escalate
 - <code>error.retryable</code> absent — fall back to the exit code's retryability from <a href="../exit-code/"><code>exit-code.md</code></a>
 - Never retry more than 3 times on the same error code without a state change</p>
+<p><strong>Person-only commands</strong>
+- <code>error.code: "PERSON_REQUIRED"</code> (exit <code>4</code>) — the command needs a person to confirm it at a terminal (REQ-C-036) and did nothing. Never retry it, with <code>--yes</code> or any other flag; hand the exact command to a person
+- <code>error.code: "ATTESTATION_MISMATCH"</code> (exit <code>4</code>) — a person typed the wrong confirmation and nothing ran; the retry is theirs, not the agent's</p>
 <p><strong>Auth flow</strong>
 - <code>error.code: "TOKEN_EXPIRED"</code> — refresh token, replace credential, retry the original call once; if the retry also returns <code>TOKEN_EXPIRED</code>, escalate to <code>TOKEN_INVALID</code> handling
 - <code>error.code: "TOKEN_INVALID"</code> or <code>"TOKEN_MISSING"</code> — do not retry; acquire new credentials from the appropriate source</p>

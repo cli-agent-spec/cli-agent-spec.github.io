@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 167 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4693,6 +4693,8 @@
       
         
       
+        
+      
     
     
     
@@ -5714,6 +5716,34 @@
     
   
     REQ-C-035: Resumable Commands Checkpoint at Safe Points
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="requirements/c-036-person-only-commands-declare-requires-person/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-036: Person-Only Commands Declare requires_person
   
 
     
@@ -10442,7 +10472,7 @@
 
 <h1 id="cli-agent-spec">CLI Agent Spec</h1>
 <p><strong>Your CLI tool works perfectly for humans. For AI agents, it silently hangs, corrupts data, leaks secrets, and exhausts context windows — and you would never know.</strong></p>
-<p>This is a specification for building CLI tools that AI agents can call reliably: <strong>76 documented failure modes</strong>, <strong>166 requirements</strong> to eliminate them, machine-readable schemas an agent can consume directly, and design guides for CLI authors.</p>
+<p>This is a specification for building CLI tools that AI agents can call reliably: <strong>76 documented failure modes</strong>, <strong>167 requirements</strong> to eliminate them, machine-readable schemas an agent can consume directly, and design guides for CLI authors.</p>
 <blockquote>
 <p><strong>No existing CLI framework covers more than 59% of the currently mapped failure modes.</strong></p>
 </blockquote>
@@ -10471,7 +10501,7 @@ $ tool list users --format json   # parsed as: list &quot;users&quot; &quot;--fo
 <hr />
 <h2 id="what-this-spec-defines">What this spec defines</h2>
 <p><strong>76 failure modes</strong> — each documented with severity, frequency, detectability, token cost, time cost, and context cost from the agent's perspective. Grouped into 7 parts: ecosystem/runtime, execution, security, output, environment, errors, and observability.</p>
-<p><strong>166 requirements</strong> across 3 tiers:</p>
+<p><strong>167 requirements</strong> across 3 tiers:</p>
 <table>
 <thead>
 <tr>
@@ -10488,7 +10518,7 @@ $ tool list users --format json   # parsed as: list &quot;users&quot; &quot;--fo
 </tr>
 <tr>
 <td><strong>C</strong> — Command Contract</td>
-<td>35</td>
+<td>36</td>
 <td>Command authors declare it at registration</td>
 </tr>
 <tr>
@@ -10521,7 +10551,7 @@ $ tool list users --format json   # parsed as: list &quot;users&quot; &quot;--fo
 </tr>
 <tr>
 <td><a href="requirements/"><code>requirements/</code></a></td>
-<td>166 requirements with acceptance criteria, wire format, and examples, grouped into three <a href="requirements/levels/">conformance levels</a></td>
+<td>167 requirements with acceptance criteria, wire format, and examples, grouped into three <a href="requirements/levels/">conformance levels</a></td>
 </tr>
 <tr>
 <td><a href="conformance/"><code>conformance/</code></a></td>
@@ -10625,7 +10655,7 @@ npx skills install cli-agent-spec/cli-agent-spec/skills/cli-agent-diagnose
 <p>The spec is a living document. New failure modes are documented when confirmed against real tooling. New requirements follow from new failure modes.</p>
 <p>Before contributing, read <a href="AGENTS/"><code>AGENTS.md</code></a> for conventions: file format, required sections, naming rules, and how to run <code>/validate-links</code> to verify cross-references after any edit.</p>
 <hr />
-<p><em>CLI Agent Spec v1.15 — 76 failure modes · 166 requirements · 6 canonical schemas · 12 frameworks evaluated</em></p>
+<p><em>CLI Agent Spec v1.15 — 76 failure modes · 167 requirements · 6 canonical schemas · 12 frameworks evaluated</em></p>
 
 
 

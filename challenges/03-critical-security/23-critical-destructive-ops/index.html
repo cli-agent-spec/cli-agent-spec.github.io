@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="76 failure modes + 166 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 167 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4703,6 +4703,8 @@
       
         
       
+        
+      
     
     
     
@@ -5724,6 +5726,34 @@
     
   
     REQ-C-035: Resumable Commands Checkpoint at Safe Points
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/c-036-person-only-commands-declare-requires-person/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-036: Person-Only Commands Declare requires_person
   
 
     
@@ -10504,6 +10534,7 @@ Deleted.
 - Commands declare <code>danger_level</code> in their schema
 - Framework enforces <code>--dry-run</code> availability for all <code>destructive</code> commands
 - <code>--yes</code> / <code>--confirm-destructive</code> flags auto-supplied by agent harness
+- A step a person must take, not the agent (approving a change the agent proposed), declares <code>requires_person: true</code> (<a href="../../../requirements/c-036-person-only-commands-declare-requires-person/">REQ-C-036</a>): no flag the harness supplies answers it, and the tool's MCP server never offers it
 - Generate audit log entries for all <code>mutating</code> and <code>destructive</code> operations</p>
 <h3 id="evaluation">Evaluation</h3>
 <table>
