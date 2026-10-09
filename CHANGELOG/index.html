@@ -10260,7 +10260,18 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Unreleased">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1160-2026-10-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.16.0 — 2026-10-09
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.16.0 — 2026-10-09">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -11069,7 +11080,18 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Unreleased">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1160-2026-10-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.16.0 — 2026-10-09
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.16.0 — 2026-10-09">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -11856,6 +11878,7 @@
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
 <h2 id="unreleased">Unreleased</h2>
+<h2 id="1160-2026-10-09">1.16.0 — 2026-10-09</h2>
 <h3 id="a-confirmation-only-a-person-gives-requires_person">A confirmation only a person gives: <code>requires_person</code></h3>
 <ul>
 <li>REQ-C-036 Person-Only Commands Declare <code>requires_person</code> (P1): a command whose confirmation only a person may give, such as approving a change an agent proposed, declares <code>requires_person: true</code> with <code>interactive: true</code> and <code>mcp: false</code>. It asks the person to type back an expected string, only when stdin and stdout are terminals and <code>--non-interactive</code> is absent, and no flag answers it, <code>--yes</code> included. Off a terminal it exits <code>4</code> with <code>error.code: "PERSON_REQUIRED"</code>, <code>retryable: false</code>, and a suggestion that names no flag; a wrong answer exits <code>4</code> with <code>ATTESTATION_MISMATCH</code>; neither runs anything. The requirement states its non-goal: a speed bump and an honest record, not a security boundary, since an agent running as the same OS user can fake a terminal</li>
