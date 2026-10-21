@@ -10559,7 +10559,46 @@ fi
 <h3 id="agent-workaround">Agent Workaround</h3>
 <p><strong>Signature:</strong> stderr shows <code>cannot open display</code>, <code>Failed to open URI</code>, or <code>open: command not found</code> with <code>exit 127</code>; or process hangs after the operation completes</p>
 <p><strong>Tier:</strong> C (stateful logic; weak models apply the fallback below)
-<strong>Fallback:</strong> `CI=true NO_BROWSER=1 BROWSER=true DISPLAY= timeout 60 tool <args> </p>
+<strong>Fallback:</strong> <code>CI=true NO_BROWSER=1 BROWSER=true DISPLAY= timeout 60 tool &lt;args&gt; &lt;/dev/null</code> (never pass <code>--open-browser</code>); if that fails, escalate with the command, exit code, stdout, and stderr</p>
+<p><strong>Set headless environment variables; detect and avoid GUI-launching flags; handle URLs from headless fallback:</strong></p>
+<pre><code class="language-python">import subprocess, json, os
+
+env = {
+    **os.environ,
+    &quot;CI&quot;: &quot;true&quot;,                   # many tools skip GUI in CI mode
+    &quot;DISPLAY&quot;: &quot;&quot;,                  # unset display server — forces headless detection
+    &quot;BROWSER&quot;: &quot;true&quot;,              # no-op browser command
+    &quot;NO_BROWSER&quot;: &quot;1&quot;,              # some tools check this
+}
+
+# Check schema for GUI operations before calling
+schema = load_schema(&quot;tool&quot;)  # from §52 workaround
+cmd_schema = find_command(schema, &quot;deploy&quot;)
+if cmd_schema and &quot;browser_open&quot; in cmd_schema.get(&quot;gui_operations&quot;, []):
+    headless_behavior = cmd_schema.get(&quot;headless_behavior&quot;)
+    if headless_behavior == &quot;emit_url_in_output&quot;:
+        pass  # safe: URL will be in JSON
+    elif not headless_behavior:
+        print(&quot;WARNING: Command may launch browser in headless env — proceed with caution&quot;)
+
+result = subprocess.run(
+    [&quot;tool&quot;, &quot;deploy&quot;, &quot;--env&quot;, &quot;prod&quot;, &quot;--format&quot;, &quot;json&quot;],
+    # Note: never pass --open-browser in agent context
+    capture_output=True, text=True,
+    stdin=subprocess.DEVNULL,
+    env=env,
+    timeout=60,
+)
+parsed = json.loads(result.stdout)
+
+# Handle headless URL fallback
+data = parsed.get(&quot;data&quot;, {})
+if &quot;url&quot; in data and not data.get(&quot;opened&quot;, True):
+    url = data[&quot;url&quot;]
+    print(f&quot;Browser action deferred (headless): {url}&quot;)
+    # Agent can surface this URL to a human or use it for API calls
+</code></pre>
+<p><strong>Limitation:</strong> If the tool does not detect headless mode and launches a browser or GUI without a fallback, kill the process after a short timeout (5–10 seconds) and check whether the operation itself completed by calling a status command — the GUI launch may be post-operation and non-blocking for some tools</p>
 
 
 

@@ -10310,6 +10310,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#default-retry-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default retry policy
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -10543,8 +10554,27 @@ BROWSER=true DISPLAY= \
 timeout 60 tool &lt;args&gt; &lt;/dev/null
 </code></pre>
 <ul>
-<li>`</li>
+<li><code>&lt;/dev/null</code> closes stdin: kills prompt waits (§10), stdin deadlocks (§50), and REPL fallbacks (§37)</li>
+<li><code>EDITOR=true VISUAL=true</code> makes editor launches exit instantly (§62)</li>
+<li><code>PAGER=cat GIT_PAGER=cat MANPAGER=cat</code> disables pagers (§10; the full pager var set is in <a href="../../requirements/f-046-pager-environment-variable-suppression/">REQ-F-046</a>)</li>
+<li><code>BROWSER=true DISPLAY=</code> makes browser and GUI launches no-ops (§45, §64)</li>
+<li><code>CI=true TERM=dumb</code> signals a non-TTY context to most frameworks (§10)</li>
+<li><code>timeout 60</code> bounds the damage if the tool still hangs (§11)</li>
 </ul>
+<p>If the bundled retry also times out with no output, the tool blocks on something the environment cannot suppress (browser auth §45, GUI §64, full output buffer §60): stop and escalate rather than retrying again.</p>
+<hr />
+<h2 id="default-retry-policy">Default retry policy</h2>
+<p>When no signal decides, these rules bound the damage. They restate the corpus-wide consensus (§1, §12, §13, §19, §53) in one place; the attempt budgets and back-off constants are canonical in the Agent interpretation sections of <a href="../../schemas/exit-code/"><code>exit-code.md</code></a> and <a href="../../schemas/response-envelope/"><code>response-envelope.md</code></a>:</p>
+<ul>
+<li>Read-only command: retry once after a 1 s back-off; a second identical failure is deterministic — stop</li>
+<li>Mutating command: never blind-retry; verify what was committed first (<a href="../02-critical-execution-and-reliability/12-critical-idempotency/">§12</a>, <a href="../02-critical-execution-and-reliability/13-critical-partial-failure/">§13</a>); resume rather than re-run</li>
+<li>Mutating command the manifest declares <code>idempotent: true</code>, after a non-retryable exit whose <code>ExitCodeEntry</code> declares <code>side_effects: "partial"</code>: rerun the identical command once without inspecting state; a second failure with the same <code>error.code</code> is deterministic, so stop. Never for <code>exit 2</code> or an error carrying <code>fix_required</code> or <code>fix_command</code></li>
+<li>Explicitly retryable signals (<code>retryable: true</code>, <code>exit 11</code>, <code>exit 12</code>): at most 3 attempts with exponential back-off</li>
+<li>Unknown signals: at most 1 retry, then treat as non-retryable</li>
+<li>Escalate with all four observables captured verbatim; never paraphrase stderr</li>
+</ul>
+<hr />
+<p><em>Companion to <a href="../"><code>index.md</code></a>. When adding a failure mode with a distinct observable signature, add or extend a row here.</em></p>
 
 
 

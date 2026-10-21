@@ -10548,7 +10548,17 @@ my-cli doctor --json         # optional: structured health check
 <h3 id="agent-workaround">Agent Workaround</h3>
 <p><strong>Signature:</strong> install command hangs at a prompt ending in <code>[y/N]:</code>; or hangs silently on stdin; sending EOF makes it exit non-zero; occurs on fresh CI or container hosts</p>
 <p><strong>Tier:</strong> C (stateful logic; weak models apply the fallback below)
-<strong>Fallback:</strong> `CI=true DEBIAN_FRONTEND=noninteractive PIP_NO_INPUT=1 NPM_CONFIG_YES=true timeout 300 <install command> </p>
+<strong>Fallback:</strong> <code>CI=true DEBIAN_FRONTEND=noninteractive PIP_NO_INPUT=1 NPM_CONFIG_YES=true timeout 300 &lt;install command&gt; &lt;/dev/null</code>; if that fails, escalate with the command, exit code, stdout, and stderr</p>
+<p>Before attempting installation, scan AGENTS.md and README for an explicit non-interactive install command. Prefer commands that include <code>-y</code>, <code>--yes</code>, <code>--non-interactive</code>, <code>DEBIAN_FRONTEND=noninteractive</code>, or equivalent flags.</p>
+<p>Set these environment variables before running any install command:</p>
+<pre><code>CI=true
+DEBIAN_FRONTEND=noninteractive
+PIP_NO_INPUT=1
+NPM_CONFIG_YES=true
+</code></pre>
+<p>If installation hangs, send EOF to stdin (<code>Ctrl-D</code> equivalent) and observe the exit code. If it exits non-zero, report the exact install command and exit code to the user — do not retry interactively.</p>
+<p>If no non-interactive install path exists, halt and report: the CLI cannot be installed in an agent environment without human intervention. Do not attempt workarounds that require reading stdin.</p>
+<p><strong>Limitation:</strong> If the installer has no non-interactive mode at all, no workaround exists — agent must escalate to a human operator to perform the installation step.</p>
 
 
 
