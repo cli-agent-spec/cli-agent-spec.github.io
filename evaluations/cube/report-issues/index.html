@@ -10729,103 +10729,103 @@
 <p><strong>Discovered during:</strong> §42 evaluation — 2026-08-06
 <strong>Symptom:</strong> The documented <code>--token</code> flag places the credential verbatim in the process command line; the fake value <code>cli-visible-secret</code> was visible through <code>ps</code> while a request was active. Prefer <code>CUBE_API_KEY</code> for agent and CI use.
 <strong>Impact:</strong> Credentials can leak into process inventories, diagnostics, or agent logs.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --token cli-visible-secret --debug whoami &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --token cli-visible-secret --debug whoami &lt; /dev/null</code></p>
 <hr />
 <h3 id="43-candidate-unbounded-single-result-output">§43 candidate — unbounded single-result output</h3>
 <p><strong>Discovered during:</strong> §43 evaluation — 2026-08-06
 <strong>Symptom:</strong> <code>cube --json api GET /large</code> printed a 70 KiB field in full (71,748 stdout bytes) with no <code>meta.truncated</code>, total-size metadata, <code>--max-output</code>, or field-selection guard. A single API response can therefore overflow an agent context.
 <strong>Impact:</strong> One API result can exhaust the agent context before it can post-process the response.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api GET /large &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api GET /large &lt; /dev/null</code></p>
 <hr />
 <h3 id="45-candidate-json-authentication-failures-are-prose-only">§45 candidate — <code>--json</code> authentication failures are prose-only</h3>
 <p><strong>Discovered during:</strong> §45 evaluation — 2026-08-06
 <strong>Symptom:</strong> With an isolated empty config and closed stdin, <code>cube --json whoami</code> failed promptly but wrote a human sentence to stderr and exited 1. It did not emit an <code>AUTH_REQUIRED</code> object or enumerate available headless authentication methods.
 <strong>Impact:</strong> Agents must parse English prose to select authentication recovery.
-<strong>Trigger:</strong> <code>env -u CUBE_API_URL -u CUBE_API_KEY CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 XDG_CONFIG_HOME=/Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/tmp/xdg-empty /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --json whoami &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env -u CUBE_API_URL -u CUBE_API_KEY CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 XDG_CONFIG_HOME=/path/to/workdir/tmp/xdg-empty /path/to/workdir/work/bin/cube --json whoami &lt; /dev/null</code></p>
 <hr />
 <h3 id="50-candidate-closed-stdin-is-reported-as-malformed-json">§50 candidate — closed stdin is reported as malformed JSON</h3>
 <p><strong>Discovered during:</strong> §50 evaluation — 2026-08-06
 <strong>Symptom:</strong> <code>cube api POST /mutate -d -</code> with stdin closed exits promptly, but reports an EOF parser failure instead of declaring that stdin input is required or suggesting <code>-d @file.json</code>/inline JSON.
 <strong>Impact:</strong> Agents cannot distinguish absent stdin from malformed JSON using a stable code.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api POST /mutate -d - &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api POST /mutate -d - &lt; /dev/null</code></p>
 <hr />
 <h3 id="53-candidate-expired-credentials-have-no-machine-readable-identity">§53 candidate — expired credentials have no machine-readable identity</h3>
 <p><strong>Discovered during:</strong> §53 evaluation — 2026-08-06
 <strong>Symptom:</strong> A mocked 401 yields useful prose (<code>session expired</code> and <code>cube login</code>) but still exits 1 and emits no <code>CREDENTIALS_EXPIRED</code>, <code>expired_at</code>, or <code>reauth_command</code> field. Agents must parse English text to distinguish expiry from other auth failures.
 <strong>Impact:</strong> Retry policy cannot reliably distinguish refreshable expiry from permanent denial.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --api-url http://127.0.0.1:18765 --token expired-audit-token --json api GET /expired &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --api-url http://127.0.0.1:18765 --token expired-audit-token --json api GET /expired &lt; /dev/null</code></p>
 <hr />
 <h3 id="60-candidate-http-responses-are-fully-buffered-before-output">§60 candidate — HTTP responses are fully buffered before output</h3>
 <p><strong>Discovered during:</strong> §60 evaluation — 2026-08-06
 <strong>Symptom:</strong> A streaming mock response flushed one JSON fragment immediately and another three seconds later. Cube emitted nothing at the first observation point, then printed the entire document after completion. Long responses therefore provide no incremental progress or heartbeat.
 <strong>Impact:</strong> Long operations can appear dead and provide no liveness evidence before completion.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api GET /stream &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api GET /stream &lt; /dev/null</code></p>
 <hr />
 <h3 id="61-candidate-stdin-payloads-have-no-declared-or-enforced-size-limit">§61 candidate — stdin payloads have no declared or enforced size limit</h3>
 <p><strong>Discovered during:</strong> §61 evaluation — 2026-08-06
 <strong>Symptom:</strong> Cube accepted a 70,014-byte JSON object from stdin and simultaneously returned 71,727 bytes. The run completed, but there was no size ceiling or overflow signal. Agents should switch to the supported <code>-d @file.json</code> form before large payloads reach the pipe.
 <strong>Impact:</strong> Large bidirectional pipes have no enforced safety boundary or overflow signal.
-<strong>Trigger:</strong> <code>perl -e 'print "{\"payload\":\"", "x" x 70000, "\"}"' | env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api POST /large -d -</code></p>
+<strong>Trigger:</strong> <code>perl -e 'print "{\"payload\":\"", "x" x 70000, "\"}"' | env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api POST /large -d -</code></p>
 <hr />
 <h3 id="64-candidate-login-launches-a-browser-and-blocks-in-headless-ci">§64 candidate — login launches a browser and blocks in headless CI</h3>
 <p><strong>Discovered during:</strong> §64 evaluation — 2026-08-06
 <strong>Symptom:</strong> With <code>CI=true</code>, closed stdin, isolated config, and <code>--json</code>, <code>cube login</code> still invoked the platform browser command and entered its authorization polling loop. The URL was emitted as ANSI-decorated prose, not a machine-readable headless fallback. A harmless local browser shim was used so no real GUI opened.
 <strong>Impact:</strong> Headless jobs can open a GUI path and remain blocked awaiting human approval.
-<strong>Trigger:</strong> <code>env PATH=/Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/tmp/headless-bin CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 XDG_CONFIG_HOME=/Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/tmp/xdg-empty /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --json login --url http://127.0.0.1:18765 &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env PATH=/path/to/workdir/tmp/headless-bin CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 XDG_CONFIG_HOME=/path/to/workdir/tmp/xdg-empty /path/to/workdir/work/bin/cube --json login --url http://127.0.0.1:18765 &lt; /dev/null</code></p>
 <hr />
 <h3 id="10-candidate-oauth-login-ignores-non-tty-execution">§10 candidate — OAuth login ignores non-TTY execution</h3>
 <p><strong>Discovered during:</strong> §10 evaluation — 2026-08-06
 <strong>Symptom:</strong> <code>cube login --url ...</code> with closed stdin and <code>CI=true</code> remained active beyond five seconds in its device-flow polling loop and required cancellation. There is no non-TTY guard or structured <code>INTERACTIVE_REQUIRED</code> failure; agents must avoid <code>login</code> and inject <code>CUBE_API_KEY</code> instead.
 <strong>Impact:</strong> A non-TTY agent can stall until an external supervisor cancels the login.
-<strong>Trigger:</strong> <code>env PATH=/Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/tmp/headless-bin CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 XDG_CONFIG_HOME=/Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/tmp/xdg-empty /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube login --url http://127.0.0.1:18765 &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env PATH=/path/to/workdir/tmp/headless-bin CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 XDG_CONFIG_HOME=/path/to/workdir/tmp/xdg-empty /path/to/workdir/work/bin/cube login --url http://127.0.0.1:18765 &lt; /dev/null</code></p>
 <hr />
 <h3 id="11-candidate-network-operations-have-no-user-configurable-timeout">§11 candidate — network operations have no user-configurable timeout</h3>
 <p><strong>Discovered during:</strong> §11 evaluation — 2026-08-06
 <strong>Symptom:</strong> The global parser rejects <code>--timeout</code>. Against a localhost endpoint that withheld its response, Cube produced no output and remained active after three seconds until cancelled. There is no structured timeout, duration, heartbeat, or resume data.
 <strong>Impact:</strong> Network or lock stalls consume the entire orchestration budget unless the caller kills them.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --timeout 2 --api-url http://127.0.0.1:18765 --token audit-token --json api GET /slow &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --timeout 2 --api-url http://127.0.0.1:18765 --token audit-token --json api GET /slow &lt; /dev/null</code></p>
 <hr />
 <h3 id="12-candidate-mutating-commands-have-no-idempotency-key">§12 candidate — mutating commands have no idempotency key</h3>
 <p><strong>Discovered during:</strong> §12 evaluation — 2026-08-06
 <strong>Symptom:</strong> The <code>api</code> mutation path rejects <code>--idempotency-key</code>, and the global command surface exposes no equivalent. Agents cannot safely identify retries or distinguish a repeated creation from a noop without separately querying state.
 <strong>Impact:</strong> Retries can duplicate mutations because the CLI cannot identify a logical operation.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api POST /mutate -d '{}' --idempotency-key audit-1 &lt; /dev/null</code> (run twice)</p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api POST /mutate -d '{}' --idempotency-key audit-1 &lt; /dev/null</code> (run twice)</p>
 <hr />
 <h3 id="13-candidate-deploy-partial-failures-are-not-structured">§13 candidate — deploy partial failures are not structured</h3>
 <p><strong>Discovered during:</strong> §13 evaluation — 2026-08-06
 <strong>Symptom:</strong> A deliberately failed upload step showed useful prose progress and the failing endpoint, but <code>--json</code> emitted no JSON at all. The output does not say whether the upload transaction remains open, which steps completed, whether rollback is possible, or where a safe retry should resume.
 <strong>Impact:</strong> Agents cannot know which deploy steps committed or where a safe resume begins.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json deploy 1 --directory /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/tmp/deploy-project -m 'audit partial failure' &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json deploy 1 --directory /path/to/workdir/tmp/deploy-project -m 'audit partial failure' &lt; /dev/null</code></p>
 <hr />
 <h3 id="23-candidate-destructive-calls-have-no-preview-or-confirmation-contract">§23 candidate — destructive calls have no preview or confirmation contract</h3>
 <p><strong>Discovered during:</strong> §23 evaluation — 2026-08-06
 <strong>Symptom:</strong> The raw API escape hatch rejects <code>--dry-run</code>, while an otherwise identical DELETE executes immediately without confirmation. The observed deletion was confined to the localhost mock; the production-facing command surface offers no machine-readable danger level or affected-scope preview.
 <strong>Impact:</strong> A mistaken destructive request can execute before an agent can preview affected scope.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api DELETE /delete --dry-run &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api DELETE /delete --dry-run &lt; /dev/null</code></p>
 <hr />
 <h3 id="25-candidate-external-content-is-returned-without-trust-boundaries">§25 candidate — external content is returned without trust boundaries</h3>
 <p><strong>Discovered during:</strong> §25 evaluation — 2026-08-06
 <strong>Symptom:</strong> The raw API command emitted instruction-like user content as a normal <code>message</code> field alongside identifiers, with no envelope or <code>trusted: false</code> marker. Agents cannot distinguish CLI-owned metadata from untrusted external text without endpoint-specific knowledge.
 <strong>Impact:</strong> Instruction-like external content can be mistaken for trusted tool guidance.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api GET /external &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json api GET /external &lt; /dev/null</code></p>
 <hr />
 <h3 id="74-candidate-minimum-credential-scopes-are-undiscoverable">§74 candidate — minimum credential scopes are undiscoverable</h3>
 <p><strong>Discovered during:</strong> §74 evaluation — 2026-08-06
 <strong>Symptom:</strong> Cube has no schema/manifest or <code>check-permissions</code> command, and its CLI documentation explains credential mechanisms without declaring the minimum permissions required by each command group. Agents cannot pre-flight least privilege or detect an over-privileged token.
 <strong>Impact:</strong> Agents cannot prove least privilege or detect over-privileged credentials.
-<strong>Trigger:</strong> <code>/Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --schema &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>/path/to/workdir/work/bin/cube --schema &lt; /dev/null</code></p>
 <hr />
 <h3 id="1-candidate-runtime-failures-collapse-to-exit-1">§1 candidate — runtime failures collapse to exit 1</h3>
 <p><strong>Discovered during:</strong> §1 evaluation — 2026-08-06
 <strong>Symptom:</strong> Argument validation exits 2, but a not-found response and a connection failure both exit 1. The errors contain useful prose yet provide no documented semantic code or JSON <code>exit_code</code>, so retry and recovery policies must parse text.
 <strong>Impact:</strong> Agents cannot map not-found, network, and other runtime failures to safe recovery from exit status.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube api &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube api &lt; /dev/null</code></p>
 <hr />
 <h3 id="2-candidate-json-does-not-define-one-successerror-envelope">§2 candidate — <code>--json</code> does not define one success/error envelope</h3>
 <p><strong>Discovered during:</strong> §2 evaluation — 2026-08-06
 <strong>Symptom:</strong> <code>cube --json regions</code> returned valid raw API JSON with no <code>ok</code>/<code>data</code>, while <code>cube --json api GET /missing</code> returned no JSON at all—only prose on stderr. Agent integrations need separate parsers for success and failure and cannot rely on one machine contract.
 <strong>Impact:</strong> Integrations need separate success and failure parsers and cannot validate one response schema.
-<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /Users/roman/Documents/Codex/2026-08-06/cli-agent-evaluate-batch-users-roman/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json regions &lt; /dev/null</code></p>
+<strong>Trigger:</strong> <code>env CI=true CUBE_NO_UPDATE_CHECK=1 CUBE_NO_TELEMETRY=1 /path/to/workdir/work/bin/cube --api-url http://127.0.0.1:18765 --token audit-token --json regions &lt; /dev/null</code></p>
 <hr />
 <hr />
 <h2 id="failure-mode-gaps-score-02-sorted-score-asc-severity-desc-3-entries-listed-last">Failure-Mode Gaps  <em>(score 0–2, sorted: score asc, severity desc; ?/3 entries listed last)</em></h2>

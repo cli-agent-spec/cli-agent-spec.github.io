@@ -10380,27 +10380,27 @@
 <p><strong>Discovered during:</strong> §45 evaluation - 2026-07-05
 <strong>Symptom:</strong> <code>neon projects list --output json</code> with an empty temporary config and stdin closed launched browser OAuth and did not exit before the 3 second probe timeout.
 <strong>Impact:</strong> An agent blocks waiting for an out-of-band browser login and receives no parseable auth-required response.
-<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/neon projects list --output json --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code></p>
+<strong>Trigger:</strong> <code>~/.hermes/node/bin/neon projects list --output json --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code></p>
 <h3 id="64-headless-auth-has-no-json-url-fallback">§64 - headless auth has no JSON URL fallback</h3>
 <p><strong>Discovered during:</strong> §64 evaluation - 2026-07-05
 <strong>Symptom:</strong> <code>neon auth</code> with <code>DISPLAY=</code> and stdin closed still launched browser OAuth and timed out.
 <strong>Impact:</strong> Headless environments cannot recover programmatically; the URL is buried in stderr prose.
-<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/neon auth --config-dir tmp/neon-auth-config --no-color --no-analytics</code></p>
+<strong>Trigger:</strong> <code>~/.hermes/node/bin/neon auth --config-dir tmp/neon-auth-config --no-color --no-analytics</code></p>
 <h3 id="10-documented-offline-link-path-still-triggers-login">§10 - documented offline link path still triggers login</h3>
 <p><strong>Discovered during:</strong> §10 evaluation - 2026-07-05
 <strong>Symptom:</strong> <code>neon link --no-checks --org-id org-abc123 --project-id polished-snowflake-12345678 --no-env-pull --context-file tmp/neon-link-context</code> launched browser OAuth and timed out.
 <strong>Impact:</strong> Agents cannot rely on the documented offline write path for CI or reproducible setup.
-<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/neon link --no-checks --org-id org-abc123 --project-id polished-snowflake-12345678 --no-env-pull --context-file tmp/neon-link-context --no-color --no-analytics</code></p>
+<strong>Trigger:</strong> <code>~/.hermes/node/bin/neon link --no-checks --org-id org-abc123 --project-id polished-snowflake-12345678 --no-env-pull --context-file tmp/neon-link-context --no-color --no-analytics</code></p>
 <h3 id="50-documented-stdin-sentinel-is-parsed-as-a-command">§50 - documented stdin sentinel is parsed as a command</h3>
 <p><strong>Discovered during:</strong> §50 evaluation - 2026-07-05
 <strong>Symptom:</strong> <code>neon api /projects --data - --output json --api-key SECRET_CANARY_NEON_AUDIT_12345</code> exited with <code>ERROR: Unknown command: -</code>.
 <strong>Impact:</strong> Agents following help text for stdin input hit an argument parser failure instead of a structured stdin contract.
-<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/neon api /projects --data - --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --no-color --no-analytics</code></p>
+<strong>Trigger:</strong> <code>~/.hermes/node/bin/neon api /projects --data - --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --no-color --no-analytics</code></p>
 <h3 id="2-json-output-mode-does-not-apply-to-error-paths">§2 - JSON output mode does not apply to error paths</h3>
 <p><strong>Discovered during:</strong> §2 evaluation - 2026-07-05
 <strong>Symptom:</strong> Commands run with <code>--output json</code> for missing arguments, invalid credentials, and validation errors emitted prose stderr and empty stdout.
 <strong>Impact:</strong> Agent parsers must branch into brittle stderr parsing for common failures.
-<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/neon projects get --output json --no-color --no-analytics</code></p>
+<strong>Trigger:</strong> <code>~/.hermes/node/bin/neon projects get --output json --no-color --no-analytics</code></p>
 <h3 id="1-distinct-failures-collapse-to-exit-code-1">§1 - distinct failures collapse to exit code 1</h3>
 <p><strong>Discovered during:</strong> §1 evaluation - 2026-07-05
 <strong>Symptom:</strong> Invalid output value, missing required argument, and invalid API key probes all exited with code 1.

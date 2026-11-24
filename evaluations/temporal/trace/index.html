@@ -10638,7 +10638,7 @@ Error: required flag(s) &quot;task-queue&quot;, &quot;type&quot; not set
 <h2 id="25-prompt-injection-via-output">§25 — Prompt Injection via Output</h2>
 <p><strong>Date:</strong> 2026-07-07
 <strong>CLI version:</strong> temporal version 1.7.2 (Server 1.31.1, UI 2.49.1)
-<strong>Check command:</strong> <code>/opt/homebrew/bin/temporal --env-file /Users/roman/Documents/Codex/2026-07-07/cli-agent-audit-users-roman-pycharmprojects/tmp/temporal-audit/temporal.yaml --config-file /Users/roman/Documents/Codex/2026-07-07/cli-agent-audit-users-roman-pycharmprojects/tmp/temporal-audit/temporal.toml --output json env list</code>
+<strong>Check command:</strong> <code>/opt/homebrew/bin/temporal --env-file /path/to/workdir/tmp/temporal-audit/temporal.yaml --config-file /path/to/workdir/tmp/temporal-audit/temporal.toml --output json env list</code>
 <strong>Exit code:</strong> 0
 <strong>Score:</strong> 0/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10788,7 +10788,7 @@ Error: required flag(s) &quot;name&quot; not set
 <h2 id="53-credential-expiry-mid-session">§53 — Credential Expiry Mid-Session</h2>
 <p><strong>Date:</strong> 2026-07-07
 <strong>CLI version:</strong> temporal version 1.7.2 (Server 1.31.1, UI 2.49.1)
-<strong>Check command:</strong> <code>/opt/homebrew/bin/temporal --output json --address 127.0.0.1:1 --tls-cert-path /Users/roman/Documents/Codex/2026-07-07/cli-agent-audit-users-roman-pycharmprojects/tmp/temporal-audit/missing.crt workflow list</code>
+<strong>Check command:</strong> <code>/opt/homebrew/bin/temporal --output json --address 127.0.0.1:1 --tls-cert-path /path/to/workdir/tmp/temporal-audit/missing.crt workflow list</code>
 <strong>Exit code:</strong> 1
 <strong>Score:</strong> ?/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>

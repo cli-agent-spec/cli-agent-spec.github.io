@@ -10454,13 +10454,13 @@
 <p><strong>Discovered during:</strong> §24 evaluation — 2026-07-06
 <strong>Symptom:</strong> <code>whoami -q</code> returned <code>"authenticated": true</code> for a synthetic <code>--api-key</code>.
 <strong>Impact:</strong> Agents may treat key presence as server-validated authentication and proceed with later commands that fail.
-<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/resend --api-key re_CANARY_SECRET_12345678901234567890 whoami -q</code></p>
+<strong>Trigger:</strong> <code>~/.hermes/node/bin/resend --api-key re_CANARY_SECRET_12345678901234567890 whoami -q</code></p>
 <hr />
 <h3 id="64-opendocs-still-launch-the-os-browser-in-quiet-or-json-mode">§64 — <code>open</code>/<code>docs</code> still launch the OS browser in quiet or JSON mode</h3>
 <p><strong>Discovered during:</strong> §64 evaluation — 2026-07-06
 <strong>Symptom:</strong> Help and code show browser-opening behavior with no JSON URL fallback.
 <strong>Impact:</strong> Headless agents may trigger GUI behavior or stall around browser launches instead of receiving a URL.
-<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/resend open --help</code></p>
+<strong>Trigger:</strong> <code>~/.hermes/node/bin/resend open --help</code></p>
 <hr />
 <h3 id="43-dry-run-can-emit-unbounded-user-provided-file-content">§43 — dry-run can emit unbounded user-provided file content</h3>
 <p><strong>Discovered during:</strong> §43 evaluation — 2026-07-06
@@ -10484,7 +10484,7 @@
 <p><strong>Discovered during:</strong> §1 evaluation — 2026-07-06
 <strong>Symptom:</strong> Validation, auth, unknown-command, invalid API key, and confirmation-required failures all exited 1.
 <strong>Impact:</strong> Agents cannot decide retry/fix/stop behavior from exit status alone.
-<strong>Trigger:</strong> <code>/Users/roman/.hermes/node/bin/resend emails send -q</code></p>
+<strong>Trigger:</strong> <code>~/.hermes/node/bin/resend emails send -q</code></p>
 <hr />
 <h2 id="failure-mode-gaps">Failure-Mode Gaps</h2>
 <h3 id="1-exit-codes-status-signaling-critical-score-03">§1 — Exit Codes &amp; Status Signaling [Critical · score 0/3]</h3>

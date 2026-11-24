@@ -10454,7 +10454,7 @@
 <hr />
 <h3 id="10-candidate-undeclared-writes-to-user-preferences">§10 candidate — undeclared writes to user preferences</h3>
 <p><strong>Discovered during:</strong> §10 evaluation — 2026-05-28
-<strong>Symptom:</strong> Several commands attempted writes under <code>/Users/roman/Library/Preferences/...</code>, causing sandbox <code>EPERM</code> stack traces.
+<strong>Symptom:</strong> Several commands attempted writes under <code>~/Library/Preferences/...</code>, causing sandbox <code>EPERM</code> stack traces.
 <strong>Impact:</strong> Restricted agent environments can fail before command-specific validation or structured errors are reached.
 <strong>Trigger:</strong> theme command probes under the workspace sandbox</p>
 <hr />

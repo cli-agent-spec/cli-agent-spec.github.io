@@ -10322,7 +10322,7 @@
 
 <h1 id="resend-issues">resend — Issues</h1>
 <h3 id="24-candidate-whoami-reports-fake-flag-api-key-as-authenticated">§24 candidate — <code>whoami</code> reports fake flag API key as authenticated</h3>
-<p><code>/Users/roman/.hermes/node/bin/resend --api-key re_CANARY_SECRET_12345678901234567890 whoami -q</code> exited 0 and returned <code>"authenticated": true</code> with <code>"source": "flag"</code> even though the key was synthetic. This can mislead agents into treating credential presence as credential validity.
+<p><code>~/.hermes/node/bin/resend --api-key re_CANARY_SECRET_12345678901234567890 whoami -q</code> exited 0 and returned <code>"authenticated": true</code> with <code>"source": "flag"</code> even though the key was synthetic. This can mislead agents into treating credential presence as credential validity.
 Discovered during §24 evaluation on 2026-07-06.</p>
 <h3 id="64-candidate-opendocs-still-launch-the-os-browser-in-quiet-or-json-mode">§64 candidate — <code>open</code>/<code>docs</code> still launch the OS browser in quiet or JSON mode</h3>
 <p>The help for <code>resend open</code> and <code>resend docs</code> advertises browser-opening commands, and code inspection shows the browser opener is called before quiet/JSON output suppression. Headless agents get no structured URL fallback and may still trigger GUI behavior.

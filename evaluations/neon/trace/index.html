@@ -10500,7 +10500,7 @@
 <h2 id="34-shell-injection-via-agent-constructed-commands">§34 - Shell Injection via Agent-Constructed Commands</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon projects create --name acme%2Fwidgets --output ../../etc/test --no-color --no-analytics</code>
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon projects create --name acme%2Fwidgets --output ../../etc/test --no-color --no-analytics</code>
 <strong>Exit code:</strong> 1
 <strong>Score:</strong> 1/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10512,7 +10512,7 @@
 <h2 id="37-repl-interactive-mode-accidental-triggering">§37 - REPL / Interactive Mode Accidental Triggering</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon psql --output json --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code> with stdin closed and 3s timeout
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon psql --output json --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code> with stdin closed and 3s timeout
 <strong>Exit code:</strong> 124
 <strong>Score:</strong> 0/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10524,7 +10524,7 @@ INFO: Auth Url: https://oauth2.neon.tech/oauth2/auth?...response_type=code
 <h2 id="42-debug-trace-mode-secret-leakage">§42 - Debug / Trace Mode Secret Leakage</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon projects list --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code>
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon projects list --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code>
 <strong>Exit code:</strong> 1
 <strong>Score:</strong> 1/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10536,7 +10536,7 @@ INFO: Authentication failed, deleting credentials...
 <h2 id="43-tool-output-result-size-unboundedness">§43 - Tool Output Result Size Unboundedness</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>rg -n "meta\\.truncated|total_bytes|max-output|max-length" /Users/roman/.hermes/node/lib/node_modules/neon/README.md /Users/roman/.hermes/node/lib/node_modules/neon/dist</code>
+<strong>Check command:</strong> <code>rg -n "meta\\.truncated|total_bytes|max-output|max-length" ~/.hermes/node/lib/node_modules/neon/README.md ~/.hermes/node/lib/node_modules/neon/dist</code>
 <strong>Exit code:</strong> 1
 <strong>Score:</strong> 0/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10546,7 +10546,7 @@ INFO: Authentication failed, deleting credentials...
 <h2 id="45-headless-authentication-oauth-browser-flow-blocking">§45 - Headless Authentication / OAuth Browser Flow Blocking</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon projects list --output json --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code> with stdin closed and 3s timeout
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon projects list --output json --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code> with stdin closed and 3s timeout
 <strong>Exit code:</strong> 124
 <strong>Score:</strong> 0/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10558,7 +10558,7 @@ INFO: Auth Url: https://oauth2.neon.tech/oauth2/auth?...response_type=code
 <h2 id="50-stdin-consumption-deadlock">§50 - Stdin Consumption Deadlock</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon api /projects --data - --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --no-color --no-analytics</code>
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon api /projects --data - --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --no-color --no-analytics</code>
 <strong>Exit code:</strong> 1
 <strong>Score:</strong> 1/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10591,7 +10591,7 @@ INFO: Auth Url: https://oauth2.neon.tech/oauth2/auth?...response_type=code
 <h2 id="61-bidirectional-pipe-payload-deadlock">§61 - Bidirectional Pipe Payload Deadlock</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon api /projects --data - --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --no-color --no-analytics</code> with 70KB stdin
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon api /projects --data - --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --no-color --no-analytics</code> with 70KB stdin
 <strong>Exit code:</strong> 1
 <strong>Score:</strong> 1/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10614,7 +10614,7 @@ INFO: Auth Url: https://oauth2.neon.tech/oauth2/auth?...response_type=code
 <h2 id="64-headless-display-and-gui-launch-blocking">§64 - Headless Display and GUI Launch Blocking</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon auth --config-dir tmp/neon-auth-config --no-color --no-analytics</code> with DISPLAY empty, stdin closed, and 3s timeout
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon auth --config-dir tmp/neon-auth-config --no-color --no-analytics</code> with DISPLAY empty, stdin closed, and 3s timeout
 <strong>Exit code:</strong> 124
 <strong>Score:</strong> 0/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10626,7 +10626,7 @@ INFO: Auth Url: https://oauth2.neon.tech/oauth2/auth?...response_type=code
 <h2 id="71-non-interactive-installation-absence">§71 - Non-Interactive Installation Absence</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>npm install -g neon --no-fund --no-audit</code> followed by <code>/Users/roman/.hermes/node/bin/neon --version</code>
+<strong>Check command:</strong> <code>npm install -g neon --no-fund --no-audit</code> followed by <code>~/.hermes/node/bin/neon --version</code>
 <strong>Exit code:</strong> 0
 <strong>Score:</strong> 2/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10638,7 +10638,7 @@ INFO: Auth Url: https://oauth2.neon.tech/oauth2/auth?...response_type=code
 <h2 id="10-interactivity-tty-requirements">§10 - Interactivity &amp; TTY Requirements</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon link --no-checks --org-id org-abc123 --project-id polished-snowflake-12345678 --no-env-pull --context-file tmp/neon-link-context --no-color --no-analytics</code> with stdin closed and 3s timeout
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon link --no-checks --org-id org-abc123 --project-id polished-snowflake-12345678 --no-env-pull --context-file tmp/neon-link-context --no-color --no-analytics</code> with stdin closed and 3s timeout
 <strong>Exit code:</strong> 124
 <strong>Score:</strong> 0/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10661,7 +10661,7 @@ INFO: Auth Url: https://oauth2.neon.tech/oauth2/auth?...response_type=code
 <h2 id="12-idempotency-safe-retries">§12 - Idempotency &amp; Safe Retries</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>rg -n "idempotency|idempotency-key|effect" /Users/roman/.hermes/node/lib/node_modules/neon/README.md /Users/roman/.hermes/node/lib/node_modules/neon/dist</code>
+<strong>Check command:</strong> <code>rg -n "idempotency|idempotency-key|effect" ~/.hermes/node/lib/node_modules/neon/README.md ~/.hermes/node/lib/node_modules/neon/dist</code>
 <strong>Exit code:</strong> 1
 <strong>Score:</strong> 0/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10671,7 +10671,7 @@ INFO: Auth Url: https://oauth2.neon.tech/oauth2/auth?...response_type=code
 <h2 id="13-partial-failure-atomicity">§13 - Partial Failure &amp; Atomicity</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>rg -n "partial|completed_steps|failed_step|resume|rollback" /Users/roman/.hermes/node/lib/node_modules/neon/README.md /Users/roman/.hermes/node/lib/node_modules/neon/dist</code>
+<strong>Check command:</strong> <code>rg -n "partial|completed_steps|failed_step|resume|rollback" ~/.hermes/node/lib/node_modules/neon/README.md ~/.hermes/node/lib/node_modules/neon/dist</code>
 <strong>Exit code:</strong> 0
 <strong>Score:</strong> 0/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10682,7 +10682,7 @@ INFO: Auth Url: https://oauth2.neon.tech/oauth2/auth?...response_type=code
 <h2 id="23-side-effects-destructive-operations">§23 - Side Effects &amp; Destructive Operations</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon projects delete --help</code>
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon projects delete --help</code>
 <strong>Exit code:</strong> 0
 <strong>Score:</strong> 0/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10696,7 +10696,7 @@ Options include --context-file only.
 <h2 id="24-authentication-secret-handling">§24 - Authentication &amp; Secret Handling</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon projects list --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code>
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon projects list --output json --api-key SECRET_CANARY_NEON_AUDIT_12345 --config-dir tmp/neon-empty-config --context-file tmp/missing-neon-context --no-color --no-analytics</code>
 <strong>Exit code:</strong> 1
 <strong>Score:</strong> 1/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10719,7 +10719,7 @@ INFO: Authentication failed, deleting credentials...
 <h2 id="74-credential-scope-declaration-absence">§74 - Credential Scope Declaration Absence</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon --schema</code>, <code>/Users/roman/.hermes/node/bin/neon manifest</code>, and static scan for <code>required_scopes</code>
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon --schema</code>, <code>~/.hermes/node/bin/neon manifest</code>, and static scan for <code>required_scopes</code>
 <strong>Exit code:</strong> 1
 <strong>Score:</strong> 0/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>
@@ -10744,7 +10744,7 @@ No JSON error body or documented semantic exit code table was observed.
 <h2 id="2-output-format-parseability">§2 - Output Format &amp; Parseability</h2>
 <p><strong>Date:</strong> 2026-07-05
 <strong>CLI version:</strong> 2.30.1
-<strong>Check command:</strong> <code>/Users/roman/.hermes/node/bin/neon projects get --output json --no-color --no-analytics</code>
+<strong>Check command:</strong> <code>~/.hermes/node/bin/neon projects get --output json --no-color --no-analytics</code>
 <strong>Exit code:</strong> 1
 <strong>Score:</strong> 1/3</p>
 <p><strong>stdout</strong> (first 20 lines):</p>

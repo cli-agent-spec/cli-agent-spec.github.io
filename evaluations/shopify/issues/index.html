@@ -10323,7 +10323,7 @@ Discovered during §2 evaluation on 2026-05-28.</p>
 <p>Theme commands accept <code>--password=&lt;value&gt;</code> even though that places credentials in command histories/process lists; env var alternatives exist but are not enforced.
 Discovered during §24 evaluation on 2026-05-28.</p>
 <h3 id="30-candidate-undeclared-writes-to-user-preferences">§30 candidate — undeclared writes to user preferences</h3>
-<p>Several commands attempted to write under <code>/Users/roman/Library/Preferences/...</code>, causing sandbox <code>EPERM</code> failures and stack traces before command-specific validation could run.
+<p>Several commands attempted to write under <code>~/Library/Preferences/...</code>, causing sandbox <code>EPERM</code> failures and stack traces before command-specific validation could run.
 Discovered during §10 and §2 evaluation on 2026-05-28.</p>
 
 
