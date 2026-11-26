@@ -10293,6 +10293,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#1170-2026-11-26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.17.0 — 2026-11-26
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.17.0 — 2026-11-26">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1162-2026-11-24" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -10305,7 +10344,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#changed" class="md-nav__link">
+  <a href="#changed_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Changed
@@ -11064,7 +11103,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -11075,7 +11114,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_1" class="md-nav__link">
+  <a href="#changed_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Changed
@@ -11169,6 +11208,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#1170-2026-11-26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.17.0 — 2026-11-26
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.17.0 — 2026-11-26">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1162-2026-11-24" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -11181,7 +11259,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#changed" class="md-nav__link">
+  <a href="#changed_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Changed
@@ -11940,7 +12018,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -11951,7 +12029,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_1" class="md-nav__link">
+  <a href="#changed_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Changed
@@ -12020,8 +12098,17 @@
 <li><code>meta.schema_version</code> inside a response is neither: it versions one command's output shape (REQ-F-022)</li>
 </ul>
 <h2 id="unreleased">Unreleased</h2>
-<h2 id="1162-2026-11-24">1.16.2 — 2026-11-24</h2>
+<h2 id="1170-2026-11-26">1.17.0 — 2026-11-26</h2>
+<h3 id="added">Added</h3>
+<ul>
+<li>REQ-C-037 Item-Wise Commands Accept Every Item in One Call (P1, Level 3): a command whose operation applies to each of several items takes them all in one invocation, through a variadic last positional declared <code>variadic: true</code> in the manifest's <code>positionals</code>, or a declared batch input on stdin or <code>--input-file</code>. Every item is validated before any is acted on, and the response reports each item in <code>summary</code> and <code>results[]</code> as REQ-C-009 does, the same shape for one item or many. §70 (single-argument arity) now maps to a requirement; the corpus has 168 requirements (#110)</li>
+</ul>
 <h3 id="changed">Changed</h3>
+<ul>
+<li><code>comparison-matrix.md</code> rates all 76 active failure modes: a §79 row (MCP ~, every other solution ✗), coverage scores recomputed over 76, and an intro that no longer pins v1.7; <code>scripts/validate_links.py</code> gains a <code>matrix</code> check that fails when a row or a score drifts from the catalog (#112)</li>
+</ul>
+<h2 id="1162-2026-11-24">1.16.2 — 2026-11-24</h2>
+<h3 id="changed_1">Changed</h3>
 <ul>
 <li>Evaluation records no longer show local machine paths</li>
 </ul>
@@ -12466,7 +12553,7 @@
 <li>IMPLEMENTING.md Path A no longer calls timeouts retryable</li>
 <li>README exit code example names the right codes</li>
 </ul>
-<h3 id="added">Added</h3>
+<h3 id="added_1">Added</h3>
 <ul>
 <li><code>requirements/levels.md</code>: conformance levels 1 (12 requirements), 2 (all <code>P0</code>), 3 (all)</li>
 <li><code>conformance/run.py</code>: deterministic conformance kit with eleven checks and level verdicts</li>
@@ -12475,7 +12562,7 @@
 <li>Benchmark harness v2: trials per cell, tool-log grading, per-trial state isolation, <code>--regrade</code>, rendered results</li>
 <li><code>cli-agent-diagnose</code>: classifier reads <code>challenges/index.json</code> and a rule table (<code>signal_rules.py</code>) covering 31 failure modes, one or more rules per triage row; trace capture and analysis scripts (<code>filter.py</code>, <code>analyze.py</code>, <code>stats.py</code>, <code>traj.py</code>); OpenRouter models for <code>--llm</code></li>
 </ul>
-<h3 id="changed_1">Changed</h3>
+<h3 id="changed_2">Changed</h3>
 <ul>
 <li><code>cli-agent-diagnose</code> classifies a shell <code>command not found</code> as §20 (missing dependency) per triage row 4, not §52</li>
 </ul>
