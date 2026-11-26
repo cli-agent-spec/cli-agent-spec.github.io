@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="76 failure modes + 167 requirements for building CLIs that AI agents can call reliably">
+        <meta name="description" content="76 failure modes + 168 requirements for building CLIs that AI agents can call reliably">
       
       
       
@@ -4705,6 +4705,8 @@
       
         
       
+        
+      
     
     
     
@@ -5754,6 +5756,34 @@
     
   
     REQ-C-036: Person-Only Commands Declare requires_person
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requirements/c-037-item-wise-commands-accept-every-item-in-one-call/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REQ-C-037: Item-Wise Commands Accept Every Item in One Call
   
 
     
@@ -10527,7 +10557,8 @@ Args: cobra.MinimumNArgs(1),
 - Commands that perform the same stateless operation per item MUST accept <code>nargs="+"</code> (one or more) positional arguments
 - Per-item results MUST be returned as an array even when a single path is passed, so the agent can parse the response uniformly
 - The manifest's <code>args</code> array MUST include <code>nargs</code> (<code>"1"</code>, <code>"?"</code>, <code>"*"</code>, <code>"+"</code>); absence of <code>nargs</code> MUST be treated as <code>"1"</code> by agents
-- Partial success MUST be reported per-item with a top-level <code>ok: false</code> when any item fails; the agent must not have to infer failure count from missing output</p>
+- Partial success MUST be reported per-item with a top-level <code>ok: false</code> when any item fails; the agent must not have to infer failure count from missing output
+- <a href="../../../requirements/c-037-item-wise-commands-accept-every-item-in-one-call/">REQ-C-037</a> states the contract: a variadic last positional declared <code>variadic: true</code> in the manifest's <code>positionals</code> (or a declared batch input on stdin), every item validated before any is acted on, and per-item <code>summary</code> and <code>results[]</code> as REQ-C-009 reports them</p>
 <h3 id="evaluation">Evaluation</h3>
 <table>
 <thead>
